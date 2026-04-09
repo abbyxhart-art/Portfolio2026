@@ -52,9 +52,9 @@ export default function CardDrinks({
         {unlockedCount >= 4 && onReset ? (
           <button
             onClick={onReset}
-            className="bg-transparent border-none cursor-pointer p-0 font-[family-name:var(--text-font\/default,'Inter_Tight',sans-serif)] text-[length:var(--text-size\/default,18px)] text-[color:var(--text\/tertiary,#7e7c87)] hover:text-[color:var(--text\/primary,#232226)] transition-colors leading-none"
+            className="bg-transparent border-none cursor-pointer p-0 font-[family-name:var(--text-font\/default,'Inter_Tight',sans-serif)] font-normal text-[length:var(--text-size\/default,18px)] text-[color:var(--text\/tertiary,#7e7c87)] hover:text-[color:var(--text\/primary,#232226)] transition-colors leading-none"
           >
-            new cup, please?
+            Reset drinks
           </button>
         ) : (
           <p className="relative shrink-0 text-[color:var(--text\/tertiary,#7e7c87)] text-center">
