@@ -61,7 +61,7 @@ export default function MiniInteractionLycheeRose() {
 
       <p
         className="font-['Inter_Tight',sans-serif] leading-[1.2] not-italic text-[14px] text-center tracking-[-0.28px] w-[42px]"
-        style={{ color: hovered ? "var(--text/primary, #232226)" : "var(--text/tertiary, #7e7c87)", transition: "color 150ms ease-out" }}
+        style={{ color: hovered ? "var(--text-primary, #232226)" : "var(--text-tertiary, #7e7c87)", transition: "color 150ms ease-out" }}
       >
         {isEmpty ? "Refill" : "Sip"}
       </p>
