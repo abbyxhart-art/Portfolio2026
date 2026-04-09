@@ -16,6 +16,7 @@ type CardDrinksProps = {
   className?: string;
   property1?: CardDrinksProperty;
   onDrinkClick?: (drink: DrinkKey) => void;
+  onReset?: () => void;
 };
 
 const drinks = [
@@ -29,6 +30,7 @@ export default function CardDrinks({
   className,
   property1 = "Drink 1 Unlocked",
   onDrinkClick,
+  onReset,
 }: CardDrinksProps) {
   const unlockedCount = parseInt(property1.charAt(6));
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
@@ -47,16 +49,29 @@ export default function CardDrinks({
         <p className="relative shrink-0 text-[color:var(--text\/primary,#232226)]">
           Want to drink while you scroll?
         </p>
-        <p className="relative shrink-0 text-[color:var(--text\/tertiary,#7e7c87)] text-center">
-          Visit again to unlock more flavors!
-        </p>
+        {unlockedCount >= 4 && onReset ? (
+          <button
+            onClick={onReset}
+            className="bg-transparent border-none cursor-pointer p-0 font-[family-name:var(--text-font\/default,'Inter_Tight',sans-serif)] text-[length:var(--text-size\/default,18px)] text-[color:var(--text\/tertiary,#7e7c87)] hover:text-[color:var(--text\/primary,#232226)] transition-colors leading-none"
+          >
+            new cup, please?
+          </button>
+        ) : (
+          <p className="relative shrink-0 text-[color:var(--text\/tertiary,#7e7c87)] text-center">
+            Visit again to unlock more flavors!
+          </p>
+        )}
       </div>
       <div className="content-stretch flex gap-[36px] items-center relative shrink-0 w-full">
         {drinks.map(({ drinkType, index }) => {
           const isUnlocked = index <= unlockedCount;
           const drinkState = getDrinkState(index);
 
-          if (!isUnlocked) return null;
+          if (!isUnlocked) {
+            return (
+              <DrinkMenu key={drinkType} drinkType={drinkType} state="Locked" />
+            );
+          }
 
           return (
             <div

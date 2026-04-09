@@ -207,6 +207,11 @@ export default function Home() {
                 className="border border-[#b6b1c8] border-solid flex flex-col gap-[42px] items-center p-[36px] rounded-[12px] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.07)] shrink-0"
                 property1={`Drink ${unlockedCount} Unlocked` as CardDrinksProperty}
                 onDrinkClick={(drink) => setSelectedDrink(drink)}
+                onReset={() => {
+                  localStorage.setItem("visitCount", "1");
+                  sessionStorage.removeItem("visitedThisSession");
+                  setUnlockedCount(1);
+                }}
               />
             </motion.div>
           </div>
