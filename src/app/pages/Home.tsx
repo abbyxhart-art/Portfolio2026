@@ -62,18 +62,17 @@ export default function Home() {
   const shouldAnimate = useNavEntrance();
   const [scrolled, setScrolled] = useState(false);
   const [scrollingUp, setScrollingUp] = useState(false);
-  const [unlockedCount, setUnlockedCount] = useState(3);
+  const [unlockedCount, setUnlockedCount] = useState(1);
   const { setSelectedDrink } = useDrink();
 
   useEffect(() => {
     const stored = localStorage.getItem("visitCount");
     if (!stored) {
-      // Seed as if 3 visits have already happened
-      localStorage.setItem("visitCount", "3");
+      localStorage.setItem("visitCount", "1");
       sessionStorage.setItem("visitedThisSession", "true");
     }
     const alreadyVisited = sessionStorage.getItem("visitedThisSession");
-    let count = parseInt(localStorage.getItem("visitCount") || "3", 10);
+    let count = parseInt(localStorage.getItem("visitCount") || "1", 10);
     if (!alreadyVisited) {
       count = Math.min(count + 1, 4);
       localStorage.setItem("visitCount", String(count));
@@ -219,7 +218,7 @@ export default function Home() {
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: "easeOut", delay: 0.9 }}
-          className="flex flex-wrap gap-[64px] items-start w-full"
+          className="flex flex-wrap gap-[32px] sm:gap-[64px] items-start w-full"
         >
           {caseStudies.map((cs, i) => {
             const card = (
@@ -238,33 +237,33 @@ export default function Home() {
             );
             if (i === 0) {
               return (
-                <Link key={i} to="/casestudy/figma-rit" className="w-[calc(50%-32px)] no-underline">
+                <Link key={i} to="/casestudy/figma-rit" className="w-full sm:w-[calc(50%-32px)] no-underline">
                   {card}
                 </Link>
               );
             }
             if (i === 1) {
               return (
-                <Link key={i} to="/casestudy/gentle-monster" className="w-[calc(50%-32px)] no-underline">
+                <Link key={i} to="/casestudy/gentle-monster" className="w-full sm:w-[calc(50%-32px)] no-underline">
                   {card}
                 </Link>
               );
             }
             if (i === 2) {
               return (
-                <Link key={i} to="/casestudy/tian-airlines" className="w-[calc(50%-32px)] no-underline">
+                <Link key={i} to="/casestudy/tian-airlines" className="w-full sm:w-[calc(50%-32px)] no-underline">
                   {card}
                 </Link>
               );
             }
             if (i === 3) {
               return (
-                <Link key={i} to="/casestudy/aixels" className="w-[calc(50%-32px)] no-underline">
+                <Link key={i} to="/casestudy/aixels" className="w-full sm:w-[calc(50%-32px)] no-underline">
                   {card}
                 </Link>
               );
             }
-            return <div key={i} className="w-[calc(50%-32px)]">{card}</div>;
+            return <div key={i} className="w-full sm:w-[calc(50%-32px)]">{card}</div>;
           })}
         </motion.div>
 

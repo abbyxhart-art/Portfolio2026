@@ -1,7 +1,10 @@
-import { useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Link } from "react-router";
 import iconArrow from "../../assets/icon-arrow.svg";
 import { useCursor } from "../context/CursorContext";
+import LSystemGarden, { LSystemGardenHandle } from "./LSystemGarden";
+
+const undoArrow = "https://www.figma.com/api/mcp/asset/765fe8f5-c2ae-462d-b905-6569fb8a1501";
 
 const connectLinks = [
   { label: "LinkedIn",  href: "https://www.linkedin.com/in/abbyxhart/" },
@@ -52,8 +55,28 @@ function AnimatedNavLink({ label, to }: { label: string; to: string }) {
 }
 
 export default function Footer() {
+  const [hasFlowers, setHasFlowers] = useState(false);
+  const gardenRef = useRef<LSystemGardenHandle>(null);
+
+  const clearGarden = useCallback(() => {
+    gardenRef.current?.reset();
+  }, []);
+
+  useEffect(() => {
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.shiftKey && e.key.toLowerCase() === "x") clearGarden();
+    };
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, [clearGarden]);
+
   return (
     <footer className="border-t border-[var(--border\/default,#d1cedc)] border-solid content-stretch flex flex-col h-[402px] items-start justify-between overflow-clip pb-[16px] pt-[100px] relative w-full">
+      {/* Garden background */}
+      <div className="absolute inset-0">
+        <LSystemGarden ref={gardenRef} onHasFlowers={setHasFlowers} />
+      </div>
+
       {/* Purple Gradient */}
       <div
         className="absolute inset-x-0 bottom-0 h-[600px] pointer-events-none"
@@ -130,6 +153,27 @@ export default function Footer() {
           <p className="relative shrink-0 text-[color:var(--text\/tertiary,#7e7c87)]">Mobile Design and Development, Fine Arts</p>
         </div>
       </div>
+
+      {hasFlowers && (
+        <button
+          onClick={clearGarden}
+          className="absolute border border-[color:var(--border\/default,#d1cedc)] border-solid flex gap-[9px] items-center pl-[12px] pr-[16px] py-[8px] rounded-[24px] bg-[color:var(--surface\/primary,#f7f6fb)] cursor-pointer bottom-[16px] right-[16px]"
+          style={{ borderWidth: "0.75px" }}
+        >
+          <div className="relative shrink-0 size-[24px] overflow-clip">
+            <div className="absolute inset-[20.83%_12.5%]">
+              <img alt="undo" className="block size-full" src={undoArrow} />
+            </div>
+          </div>
+          <div className="flex gap-[2px] items-center">
+            {["shift", "X"].map((key) => (
+              <div key={key} className="bg-[color:var(--border\/light,#e8e7f0)] flex items-center justify-center p-[10px] rounded-[4px] size-[24px]">
+                <span className="font-[family-name:var(--text-font\/default,'Inter_Tight:Regular',sans-serif)] text-[12px] text-[color:var(--text\/secondary,#585564)]">{key}</span>
+              </div>
+            ))}
+          </div>
+        </button>
+      )}
     </footer>
   );
 }

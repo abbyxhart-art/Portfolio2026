@@ -56,11 +56,7 @@ export default function CardDrinks({
           const isUnlocked = index <= unlockedCount;
           const drinkState = getDrinkState(index);
 
-          if (!isUnlocked) {
-            return (
-              <DrinkMenu key={drinkType} drinkType={drinkType} state="Locked" />
-            );
-          }
+          if (!isUnlocked) return null;
 
           return (
             <div
