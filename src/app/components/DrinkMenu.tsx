@@ -13,7 +13,7 @@ export default function DrinkMenu({ drinkType = "Mango Coconut", state = "Defaul
   const isLocked = state === "Locked";
   const isActive = state === "Hover" || state === "Active";
   const labelStyle = {
-    color: isActive ? "var(--text-primary)" : "var(--text-tertiary)",
+    color: isActive ? "var(--text/primary, #232226)" : "var(--text/tertiary, #7e7c87)",
     transition: "color 150ms ease-out",
   };
 
