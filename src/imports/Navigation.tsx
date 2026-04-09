@@ -47,7 +47,7 @@ export default function Navigation({ scrolledDown = false }: { scrolledDown?: bo
           The Booth
         </Link>
       </div>
-      {showCursor && <Cursor x={mousePos.x} y={mousePos.y} instance="Internal Link" />}
+      {showCursor && <Cursor x={mousePos.x} y={mousePos.y} instance="Black" />}
     </>
   );
 }

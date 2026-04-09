@@ -1,13 +1,36 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import { useNavEntrance } from "../hooks/useNavEntrance";
+import ButtonFilled from "../components/ButtonFilled";
 import { motion, AnimatePresence } from "motion/react";
 import Navigation from "../../imports/Navigation";
 import HomeButton from "../components/HomeButton";
 import imgCos1 from "../../assets/project/booth/cos1_2x1.png";
 import imgCos2 from "../../assets/project/booth/cos2_2x1.png";
+import munsonVideo from "../../assets/project/booth/munson.mp4";
+import imgIrisDefault from "../../assets/project/booth/iris_default.png";
+import irisHoverVideo from "../../assets/project/booth/iris_hover.MOV";
+import imgBeyondDefault from "../../assets/project/booth/beyondfashion_default.png";
+import imgBeyondHover from "../../assets/project/booth/beyondfashion_hover.JPG";
+import imgSgOlivia from "../../assets/project/booth/sg_olivia.png";
+import imgSgGaby from "../../assets/project/booth/sg_gaby.png";
+import imgSgPole from "../../assets/project/booth/sg_pole.png";
+import igImg1 from "../../assets/project/booth/ig_1.png";
+import igVid2 from "../../assets/project/booth/ig_2.mov";
+import igImg4 from "../../assets/project/booth/ig_4.jpg";
 
 export default function Booth() {
+  const shouldAnimate = useNavEntrance();
   const [scrolled, setScrolled] = useState(false);
   const [scrollingUp, setScrollingUp] = useState(false);
+  const [hoverIris, setHoverIris] = useState(false);
+  const [hoverBeyond, setHoverBeyond] = useState(false);
+  const irisVideoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    if (hoverIris && irisVideoRef.current) {
+      irisVideoRef.current.play();
+    }
+  }, [hoverIris]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -45,7 +68,7 @@ export default function Booth() {
       </AnimatePresence>
 
       <motion.div
-        initial={{ opacity: 0, y: -20 }}
+        initial={shouldAnimate ? { opacity: 0, y: -20 } : false}
         animate={{ opacity: 1, y: 0, top: scrolled && !scrollingUp ? "0px" : "12px" }}
         transition={{ duration: 0.4, ease: "easeOut" }}
         className="fixed left-[24px] right-[24px] z-50"
@@ -77,16 +100,63 @@ export default function Booth() {
               <p className="font-normal leading-[1.5] text-[#908e99] text-[16px]">Fashion shows to university wide events</p>
             </div>
             <div className="flex gap-[24px] items-start w-full">
-              {[
-                "DJ Munson's Last Spin: Motion Experience with New Media Club and College Activities Board",
-                "Beyond Fashion 2025 Vignelli Cup installation",
-                "IRIS : An AI planner gone wrong, Creative Collision 2024",
-              ].map((caption, i) => (
-                <div key={i} className="flex flex-1 flex-col gap-[8px] items-start min-w-0">
-                  <div className="aspect-[1080/1920] bg-[#d9d9d9] rounded-[4px] w-full" />
-                  <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.5] text-[#908e99] text-[14px] w-full">{caption}</p>
+
+              {/* Munson — autoplay video */}
+              <div className="flex flex-1 flex-col gap-[8px] items-start min-w-0">
+                <div className="aspect-[1080/1920] rounded-[4px] w-full overflow-hidden bg-[#d9d9d9]">
+                  <video autoPlay loop muted playsInline preload="auto" className="w-full h-full object-cover" src={munsonVideo} />
                 </div>
-              ))}
+                <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.5] text-[#908e99] text-[14px] w-full">
+                  Mograph Wall and Kiosk Takeaways. DJ Munson's Last Spin, 2025
+                </p>
+              </div>
+
+              {/* Beyond Fashion — crossfade between default and hover images */}
+              <div
+                className="flex flex-1 flex-col gap-[8px] items-start min-w-0"
+                onMouseEnter={() => setHoverBeyond(true)}
+              >
+                <div className="aspect-[1080/1920] rounded-[4px] w-full overflow-hidden bg-[#d9d9d9]">
+                  <img
+                    src={hoverBeyond ? imgBeyondHover : imgBeyondDefault}
+                    alt="Beyond Fashion"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.5] text-[#908e99] text-[14px] w-full">
+                  Beyond Fashion 2025
+                </p>
+              </div>
+
+              {/* IRIS — image default, hover reveals preloaded video */}
+              <div
+                className="flex flex-1 flex-col gap-[8px] items-start min-w-0"
+                onMouseEnter={() => setHoverIris(true)}
+              >
+                <div className="aspect-[1080/1920] rounded-[4px] w-full overflow-hidden bg-[#d9d9d9] relative">
+                  {!hoverIris && (
+                    <img
+                      src={imgIrisDefault}
+                      alt="IRIS"
+                      className="absolute inset-0 w-full h-full object-cover"
+                    />
+                  )}
+                  <video
+                    ref={irisVideoRef}
+                    loop
+                    muted
+                    playsInline
+                    preload="auto"
+                    className="absolute inset-0 w-full h-full object-cover"
+                    src={irisHoverVideo}
+                    style={{ display: hoverIris ? "block" : "none" }}
+                  />
+                </div>
+                <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.5] text-[#908e99] text-[14px] w-full">
+                  IRIS : An AI planner gone wrong, Creative Collision 2024
+                </p>
+              </div>
+
             </div>
           </div>
 
@@ -99,10 +169,10 @@ export default function Booth() {
             <div className="flex gap-[24px] items-start w-full">
               {[
                 { caption: "Bates Study Center gave me the opportunity to create playful site branding alongside a math-centered logo!", img: imgCos1 },
-                { caption: "COS Strategic Plan was designed to be visualized goals released to staff and faculty", img: imgCos2 },
+                { caption: "COS Strategic Plan: Released to staff and faculty, sprinted in Figma, designed in InDesign", img: imgCos2 },
               ].map(({ caption, img }, i) => (
                 <div key={i} className="flex flex-1 flex-col gap-[8px] items-start min-w-0">
-                  <img src={img} alt={caption} className="aspect-[312/170] rounded-[4px] w-full object-cover" />
+                  <img src={img} alt={caption} className="aspect-[2/1] rounded-[4px] w-full object-cover" />
                   <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.5] text-[#908e99] text-[14px] w-full">{caption}</p>
                 </div>
               ))}
@@ -117,12 +187,12 @@ export default function Booth() {
             </div>
             <div className="flex gap-[24px] items-start w-full">
               {[
-                "Olivia's Macbook, 2025",
-                "Gaby's Macbook, 2024",
-                "Phone pole, 2023",
-              ].map((caption, i) => (
+                { caption: "Olivia's Macbook, 2025", img: imgSgOlivia },
+                { caption: "Gaby's Macbook, 2024", img: imgSgGaby },
+                { caption: "Phone pole, 2023", img: imgSgPole },
+              ].map(({ caption, img }, i) => (
                 <div key={i} className="flex flex-1 flex-col gap-[8px] items-start min-w-0">
-                  <div className="aspect-[400/300] bg-[#d9d9d9] rounded-[4px] w-full" />
+                  <img src={img} alt={caption} className="aspect-[400/300] rounded-[4px] w-full object-cover" />
                   <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.5] text-[#908e99] text-[14px] w-full">{caption}</p>
                 </div>
               ))}
@@ -137,18 +207,22 @@ export default function Booth() {
               </p>
               <div className="flex gap-[8px] items-center">
                 <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#908e99] text-[16px] whitespace-nowrap">
-                  I post way more games, 3D, and applets on
+                  I post all of my creativity on
                 </p>
-                <div className="bg-[#e8e7f0] flex items-center justify-center px-[6px] py-[4px] rounded-[2px] shrink-0">
-                  <p className="font-['Inter_Tight',sans-serif] leading-none text-[#585564] text-[16px] whitespace-nowrap">Instagram</p>
-                </div>
+                <ButtonFilled label="Instagram" type="Purple" size="Default" />
               </div>
             </div>
-            {/* 4 square images */}
-            <div className="flex gap-[24px] items-start w-full">
-              {[0, 1, 2, 3].map((i) => (
-                <div key={i} className="aspect-square bg-[#d9d9d9] flex-1 min-w-0 rounded-[4px]" />
-              ))}
+            {/* 3 IG blocks — ig_2 takes double width */}
+            <div className="flex gap-[24px] items-center w-full">
+              <div className="flex-1 min-w-0 rounded-[4px] overflow-hidden bg-[#d9d9d9]">
+                <img src={igImg1} alt="" className="w-full h-full object-cover" />
+              </div>
+              <div className="flex-[2] min-w-0 rounded-[4px] overflow-hidden bg-[#d9d9d9]">
+                <video autoPlay loop muted playsInline preload="auto" className="w-full h-full object-cover" src={igVid2} />
+              </div>
+              <div className="flex-1 min-w-0 rounded-[4px] overflow-hidden bg-[#d9d9d9]">
+                <img src={igImg4} alt="" className="w-full h-full object-cover" />
+              </div>
             </div>
           </div>
 

@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { useNavEntrance } from "../hooks/useNavEntrance";
 import { motion, AnimatePresence, useScroll, useTransform, useMotionValue } from "motion/react";
 import Navigation from "../../imports/Navigation";
 import HomeButton from "../components/HomeButton";
@@ -34,6 +35,7 @@ const ArrowIcon = () => (
 );
 
 export default function CasestudyGentleMonster() {
+  const shouldAnimate = useNavEntrance();
   const [scrolled, setScrolled] = useState(false);
   const [scrollingUp, setScrollingUp] = useState(false);
   const [activeJourneyTab, setActiveJourneyTab] = useState<"Full Flow" | "Checkout" | "Prescription">("Full Flow");
@@ -112,7 +114,7 @@ export default function CasestudyGentleMonster() {
       </AnimatePresence>
 
       <motion.div
-        initial={{ opacity: 0, y: -20 }}
+        initial={shouldAnimate ? { opacity: 0, y: -20 } : false}
         animate={{ opacity: 1, y: 0, top: scrolled && !scrollingUp ? "0px" : "12px" }}
         transition={{ duration: 0.4, ease: "easeOut" }}
         className="fixed left-[24px] right-[24px] z-50"

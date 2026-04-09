@@ -65,6 +65,7 @@ export default function CardCasestudy({
             loop
             muted
             playsInline
+            preload="auto"
             className="absolute inset-0 max-w-none object-cover size-full"
             src={video}
           />

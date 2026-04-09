@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { useNavEntrance } from "../hooks/useNavEntrance";
 import { motion, AnimatePresence, useScroll, useTransform, useMotionValue } from "motion/react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Mousewheel } from "swiper/modules";
@@ -23,6 +24,7 @@ const vidForms = new URL("../../assets/project/tianair/tian_forms_2x1.mp4", impo
 const vidEndscreen = new URL("../../assets/project/tianair/tian_endscreen_2x1.mp4", import.meta.url).href;
 
 export default function CasestudyTianAirlines() {
+  const shouldAnimate = useNavEntrance();
   const [scrolled, setScrolled] = useState(false);
   const [scrollingUp, setScrollingUp] = useState(false);
   const { scrollY } = useScroll();
@@ -101,7 +103,7 @@ export default function CasestudyTianAirlines() {
       </AnimatePresence>
 
       <motion.div
-        initial={{ opacity: 0, y: -20 }}
+        initial={shouldAnimate ? { opacity: 0, y: -20 } : false}
         animate={{ opacity: 1, y: 0, top: scrolled && !scrollingUp ? "0px" : "12px" }}
         transition={{ duration: 0.4, ease: "easeOut" }}
         className="fixed left-[24px] right-[24px] z-50"
@@ -111,19 +113,28 @@ export default function CasestudyTianAirlines() {
       </motion.div>
 
       <div className="flex flex-col items-center px-[10px] pt-[15vh] pb-[15vh]">
-        <div className="flex flex-col gap-[8vh] items-center w-full max-w-[886px]">
+        <div className="flex flex-col items-center w-full max-w-[886px]">
 
-          {/* ── Hero ── */}
+          {/* ── Hero video (scaled) ── */}
           <motion.div
             ref={heroRef}
-            className="aspect-[2/1] bg-[#505050] w-full overflow-hidden"
-            style={{ scale: heroScale, borderRadius: heroBorderRadius, transformOrigin: "top center" }}
+            className="w-full"
+            style={{ scale: heroScale, transformOrigin: "top center" }}
           >
-            <video autoPlay loop muted playsInline className="w-full h-full object-cover" src={heroVideo} />
+            <motion.div
+              className="aspect-[2/1] bg-[#505050] w-full overflow-hidden"
+              style={{ borderRadius: heroBorderRadius }}
+            >
+              <video autoPlay loop muted playsInline className="w-full h-full object-cover" src={heroVideo} />
+            </motion.div>
           </motion.div>
 
-          {/* ── Content below hero (moves with it) ── */}
-          <motion.div style={{ y: contentY }} className="flex flex-col gap-[8vh] items-center w-full">
+          {/* ── Caption + content (y-translated, not scaled) ── */}
+          <motion.div style={{ y: contentY }} className="flex flex-col gap-[8vh] items-center w-full pt-[8px]">
+
+          <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.2] text-[#908e99] text-[14px] w-full">
+            Prototype Full Flow
+          </p>
 
           {/* ── Overview ── */}
           <div className="flex flex-col gap-[32px] items-start w-full">

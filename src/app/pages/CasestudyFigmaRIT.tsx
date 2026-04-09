@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { useNavEntrance } from "../hooks/useNavEntrance";
 import { motion, AnimatePresence, useScroll, useTransform, useMotionValue } from "motion/react";
 import Navigation from "../../imports/Navigation";
 import HomeButton from "../components/HomeButton";
@@ -21,6 +22,7 @@ const imgEllipseLeft = "https://www.figma.com/api/mcp/asset/3dd2db2e-ae82-4d9a-8
 const imgEllipseRight2 = "https://www.figma.com/api/mcp/asset/2723c383-f0ba-4c93-b4d9-a7fff39445ab";
 
 export default function CasestudyFigmaRIT() {
+  const shouldAnimate = useNavEntrance();
   const [scrolled, setScrolled] = useState(false);
   const [scrollingUp, setScrollingUp] = useState(false);
   const { scrollY } = useScroll();
@@ -89,7 +91,7 @@ export default function CasestudyFigmaRIT() {
       </AnimatePresence>
 
       <motion.div
-        initial={{ opacity: 0, y: -20 }}
+        initial={shouldAnimate ? { opacity: 0, y: -20 } : false}
         animate={{ opacity: 1, y: 0, top: scrolled && !scrollingUp ? "0px" : "12px" }}
         transition={{ duration: 0.4, ease: "easeOut" }}
         className="fixed left-[24px] right-[24px] z-50"

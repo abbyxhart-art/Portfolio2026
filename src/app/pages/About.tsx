@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { useNavEntrance } from "../hooks/useNavEntrance";
 import { motion, AnimatePresence } from "motion/react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Mousewheel } from "swiper/modules";
@@ -6,6 +7,17 @@ import type { Swiper as SwiperType } from "swiper";
 import "swiper/css";
 import Navigation from "../../imports/Navigation";
 import HomeButton from "../components/HomeButton";
+import ButtonFilled from "../components/ButtonFilled";
+import Cursor from "../components/Cursor";
+import about1 from "../../assets/project/about/about_1.jpg";
+import about3 from "../../assets/project/about/about_3.png";
+import about4 from "../../assets/project/about/about_4.png";
+import imgFood from "../../assets/project/about/food.png";
+import imgFashion from "../../assets/project/about/fashion.png";
+import imgMusic from "../../assets/project/about/music.png";
+import imgGraffiti from "../../assets/project/about/graffti.png";
+import imgRunning from "../../assets/project/about/running.png";
+import imgEtsy from "../../assets/project/about/etsy.JPG";
 
 const quotes = [
   {
@@ -31,12 +43,22 @@ const quotes = [
 ];
 
 export default function About() {
+  const shouldAnimate = useNavEntrance();
   const [scrolled, setScrolled] = useState(false);
   const [scrollingUp, setScrollingUp] = useState(false);
   const [activePhoto, setActivePhoto] = useState(0);
   const swiperRef = useRef<SwiperType | null>(null);
-  const quotesRef = useRef<HTMLDivElement>(null);
+  const quotesOuterRef = useRef<HTMLDivElement>(null);
+  const quotesInnerRef = useRef<HTMLDivElement>(null);
   const [activeQuote, setActiveQuote] = useState(0);
+  const [offlineLabel, setOfflineLabel] = useState<string | null>(null);
+  const [offlineMousePos, setOfflineMousePos] = useState({ x: 0, y: 0 });
+
+  const posRef      = useRef(-80);   // start below so first quote has time to be read
+  const shRef       = useRef(0);     // single-set height (half of inner height)
+  const visibleRef  = useRef(false);
+  const prevTimeRef = useRef(0);
+  const rafRef      = useRef(0);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -56,17 +78,69 @@ export default function About() {
   }, []);
 
 
-  // Track which quote is active
   useEffect(() => {
-    const el = quotesRef.current;
-    if (!el) return;
-    const handleScroll = () => {
-      const itemHeight = el.scrollHeight / quotes.length;
-      const index = Math.round(el.scrollTop / itemHeight);
-      setActiveQuote(Math.min(index, quotes.length - 1));
+    const outer = quotesOuterRef.current;
+    const inner = quotesInnerRef.current;
+    if (!outer || !inner) return;
+
+    const SPEED = 25; // px per second
+
+    const tick = (time: number) => {
+      if (visibleRef.current && prevTimeRef.current) {
+        const dt = time - prevTimeRef.current;
+        posRef.current += (SPEED * dt) / 1000;
+
+        const sh = shRef.current;
+        if (sh > 0) {
+          if (posRef.current >= sh)   posRef.current -= sh;
+          if (posRef.current < -sh)   posRef.current += sh;
+        }
+
+        inner.style.transform = `translateY(-${posRef.current}px)`;
+
+        // update quote counter from position
+        if (sh > 0) {
+          const norm = ((posRef.current % sh) + sh) % sh;
+          const idx  = Math.floor((norm / sh) * quotes.length) % quotes.length;
+          setActiveQuote(idx);
+        }
+      }
+      prevTimeRef.current = time;
+      rafRef.current = requestAnimationFrame(tick);
     };
-    el.addEventListener("scroll", handleScroll, { passive: true });
-    return () => el.removeEventListener("scroll", handleScroll);
+
+    // measure after first paint so offsetHeight is accurate
+    rafRef.current = requestAnimationFrame(() => {
+      shRef.current = inner.offsetHeight / 2;
+      rafRef.current = requestAnimationFrame(tick);
+    });
+
+    // only animate when visible
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        visibleRef.current = entry.isIntersecting;
+        if (!entry.isIntersecting) prevTimeRef.current = 0;
+      },
+      { threshold: 0.1 }
+    );
+    observer.observe(outer);
+
+    // wheel — scroll the animation, resume from that point
+    const handleWheel = (e: WheelEvent) => {
+      e.preventDefault();
+      if (e.deltaY <= 0) return; // only allow scrolling forward
+      posRef.current += e.deltaY * 0.6;
+      const sh = shRef.current;
+      if (sh > 0 && posRef.current >= sh) posRef.current -= sh;
+      inner.style.transform = `translateY(-${posRef.current}px)`;
+    };
+    outer.addEventListener('wheel', handleWheel, { passive: false });
+
+    return () => {
+      cancelAnimationFrame(rafRef.current);
+      observer.disconnect();
+      outer.removeEventListener('wheel', handleWheel);
+    };
   }, []);
 
   return (
@@ -89,7 +163,7 @@ export default function About() {
       </AnimatePresence>
 
       <motion.div
-        initial={{ opacity: 0, y: -20 }}
+        initial={shouldAnimate ? { opacity: 0, y: -20 } : false}
         animate={{ opacity: 1, y: 0, top: scrolled && !scrollingUp ? "0px" : "12px" }}
         transition={{ duration: 0.4, ease: "easeOut" }}
         className="fixed left-[24px] right-[24px] z-50"
@@ -99,8 +173,8 @@ export default function About() {
       </motion.div>
 
       {/* Page content */}
-      <div className="flex justify-center px-[10px] pt-[15vh] pb-[15vh]">
-        <div className="flex flex-col gap-[75px] items-start w-full max-w-[640px]">
+      <div className="flex justify-center px-[10px] pt-[calc(15vh+60px)] pb-[15vh]">
+        <div className="flex flex-col gap-[75px] items-start w-full max-w-[728px]">
 
           {/* Intro */}
           <div className="font-['Inter_Tight',sans-serif] font-normal text-black text-[18px] w-full">
@@ -113,7 +187,7 @@ export default function About() {
           <div className="flex flex-col gap-[24px] w-full">
             {/* Title + blurb + body */}
             <div className="flex flex-col gap-[24px] items-start w-full">
-              <div className="flex flex-col gap-[16px] items-start w-full">
+              <div className="flex flex-col gap-[24px] items-start w-full">
                 <p className="font-['Inter_Tight',sans-serif] leading-none text-[#232226] text-[18px]">
                   Highschool → RIT
                 </p>
@@ -121,15 +195,17 @@ export default function About() {
                   <p className="font-['Inter_Tight',sans-serif] leading-[1.5] text-[#908e99] text-[16px] whitespace-nowrap">
                     Let's start the
                   </p>
-                  <div className="bg-[#e8e7f0] flex items-center justify-center px-[4px] py-[2px]">
-                    <p className="font-['Inter_Tight',sans-serif] leading-[1.5] text-[#908e99] text-[16px] whitespace-nowrap">
-                      next chapter
-                    </p>
-                  </div>
+                  <ButtonFilled
+                    label="next chapter"
+                    size="Default"
+                    type="Default"
+                    cursor="Black"
+                    onClick={() => window.open(`mailto:abbyxhart@gmail.com?subject=${encodeURIComponent("Loved your portfolio, let's chat!")}`)}
+                  />
                 </div>
               </div>
-              <div className="font-['Inter_Tight',sans-serif] text-[#908e99] text-[18px] w-full">
-                <p className="leading-[1.65] mb-[16px]">My friend Lana and I found our calling AP Compsci; me with mini GUI applets and her with algorithms and robotics.</p>
+              <div className="font-['Inter_Tight',sans-serif] text-[#232226] text-[18px] w-full">
+                <p className="leading-[1.65] mb-[16px]">My friend Lana and I found our calling in AP Compsci; me with mini GUI applets and her with algorithms and robotics.</p>
                 <p className="leading-[1.65]">I opened Figma for the first time to propose our towns first hackathon, leading me to RIT where I've met so many talented and inspiring friends!</p>
               </div>
             </div>
@@ -160,11 +236,15 @@ export default function About() {
                   className="w-full"
                   style={{ overflow: "visible" }}
                 >
-                  {["Me, Etc, Etc", "Me, Etc, Etc", "Me, Etc, Etc", "Me, Etc, Etc"].map((caption, i) => (
+                  {[
+                    { caption: "Me + Lana @ CC Meet, we won!", img: about1 },
+                    { caption: "Charlotte, Miggi, Me, Troy, Lasya @ New Media Club", img: about3 },
+                    { caption: "Angie, Me, Ivo, TJ, Leah @ NYC", img: about4 },
+                  ].map(({ caption, img }, i) => (
                     <SwiperSlide key={i} style={{ width: "calc(100% - 120px)" }}>
                       <div className="flex flex-col gap-[24px]">
-                        <div className="aspect-[2/1] bg-[#d9d9d9] rounded-[4px] w-full" />
-                        <p className="font-['Inter_Tight',sans-serif] leading-[1.5] text-black text-[16px] text-center w-full">
+                        <img src={img} alt={caption} className="aspect-[2/1] rounded-[4px] w-full object-cover" />
+                        <p className="font-['Inter_Tight',sans-serif] font-normal leading-none text-[#908e99] text-[14px] text-center w-full">
                           {caption}
                         </p>
                       </div>
@@ -174,11 +254,11 @@ export default function About() {
               </div>
               {/* Dots */}
               <div className="flex gap-[8px] items-center justify-center">
-                {[0, 1, 2, 3].map((i) => (
+                {[0, 1, 2].map((i) => (
                   <button
                     key={i}
                     onClick={() => swiperRef.current?.slideTo(i)}
-                    className="w-[10px] h-[10px] rounded-[2px] cursor-pointer border-0 p-0 transition-colors duration-150"
+                    className="w-[6px] h-[6px] rounded-[1px] cursor-pointer border-0 p-0 transition-colors duration-150"
                     style={{ background: i === activePhoto ? "#9a47ff" : "#d1cedc" }}
                   />
                 ))}
@@ -193,10 +273,28 @@ export default function About() {
               <p className="font-['Inter_Tight',sans-serif] leading-[1.5] text-[#908e99] text-[16px]">Refueling mind and body</p>
             </div>
             <div className="grid grid-cols-3 gap-x-[16px] gap-y-[18px] w-full">
-              {Array.from({ length: 6 }).map((_, i) => (
-                <div key={i} className="aspect-square bg-[#e8e7f0] rounded-[4px] w-full" />
+              {[
+                { img: imgFood,     label: "Found my fav cafe" },
+                { img: imgFashion,  label: "Books + Fashion!" },
+                { img: imgMusic,    label: "Planning my next concert" },
+                { img: imgGraffiti, label: "Noticing stickers / art!" },
+                { img: imgRunning,  label: "Ran a marathon" },
+                { img: imgEtsy,     label: "Had a 5 star etsy in hs!" },
+              ].map(({ img, label }, i) => (
+                <img
+                  key={i}
+                  src={img}
+                  alt=""
+                  className="aspect-square rounded-[4px] w-full object-cover cursor-none"
+                  onMouseEnter={() => setOfflineLabel(label)}
+                  onMouseLeave={() => setOfflineLabel(null)}
+                  onMouseMove={(e) => setOfflineMousePos({ x: e.clientX, y: e.clientY })}
+                />
               ))}
             </div>
+            {offlineLabel && (
+              <Cursor x={offlineMousePos.x} y={offlineMousePos.y} instance="Text" label={offlineLabel} />
+            )}
           </div>
 
           {/* Ethos */}
@@ -210,7 +308,7 @@ export default function About() {
             <div className="relative h-[301px] w-full overflow-hidden rounded-[12px]">
               {/* Top gradient */}
               <div className="absolute inset-x-0 top-0 h-[76px] z-10 pointer-events-none"
-                style={{ background: "linear-gradient(to bottom, #eeedf5, rgba(238,237,245,0))" }} />
+                style={{ background: "linear-gradient(to bottom, #eeedf5 40%, rgba(238,237,245,0))" }} />
               {/* Bottom gradient */}
               <div className="absolute inset-x-0 bottom-0 h-[76px] z-10 pointer-events-none"
                 style={{ background: "linear-gradient(to top, #eeedf5, rgba(238,237,245,0))" }} />
@@ -220,14 +318,13 @@ export default function About() {
                 Quote {activeQuote + 1}/{quotes.length}
               </p>
 
-              {/* Scrollable list */}
-              <div
-                ref={quotesRef}
-                className="h-full overflow-y-auto"
-                style={{ scrollbarWidth: "none" }}
-              >
-                <div className="flex flex-col gap-[50px] px-[24px] pt-[122px] pb-[122px]">
-                  {quotes.map((q, i) => (
+              {/* Animated quotes list */}
+              <div ref={quotesOuterRef} className="h-full overflow-hidden">
+                <div
+                  ref={quotesInnerRef}
+                  className="flex flex-col gap-[50px] px-[24px] py-[25px]"
+                >
+                  {[...quotes, ...quotes].map((q, i) => (
                     <div key={i} className="flex flex-col gap-[8px] items-start">
                       <p className="font-['Inter_Tight',sans-serif] leading-[1.3] text-black text-[16px] whitespace-pre-line">
                         {q.text}

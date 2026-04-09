@@ -7,7 +7,7 @@ import { useCursor } from '../context/CursorContext';
 export default function CustomCursor() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isVisible, setIsVisible] = useState(false);
-  const { hoveredProject } = useCursor();
+  const { hoveredProject, isPurple } = useCursor();
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -84,7 +84,9 @@ export default function CustomCursor() {
           }}
           transition={{ duration: 0.2, ease: "easeOut" }}
         >
-          {isProjectHovered ? (
+          {isPurple ? (
+            <div className="size-[28px] rounded-[18.667px] bg-[rgba(154,71,255,0.2)] border-[0.75px] border-solid border-[#dbbdfe]" />
+          ) : isProjectHovered ? (
             <motion.div 
               className="bg-[#faf9ff] relative rounded-[16px] h-[28px] flex items-center justify-center"
               initial={{ opacity: 0 }}

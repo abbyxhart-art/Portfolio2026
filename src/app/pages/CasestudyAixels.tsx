@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { useNavEntrance } from "../hooks/useNavEntrance";
 import { motion, AnimatePresence, useScroll, useTransform, useMotionValue } from "motion/react";
 import Navigation from "../../imports/Navigation";
 import HomeButton from "../components/HomeButton";
@@ -16,6 +17,7 @@ import imgMe from "../../assets/project/aixels/me.JPG";
 const imgGradientOverlay = "https://www.figma.com/api/mcp/asset/a7a94903-cfd1-4c04-a17f-9db5c0552ed7";
 
 export default function CasestudyAixels() {
+  const shouldAnimate = useNavEntrance();
   const [scrolled, setScrolled] = useState(false);
   const [scrollingUp, setScrollingUp] = useState(false);
 
@@ -85,7 +87,7 @@ export default function CasestudyAixels() {
       </AnimatePresence>
 
       <motion.div
-        initial={{ opacity: 0, y: -20 }}
+        initial={shouldAnimate ? { opacity: 0, y: -20 } : false}
         animate={{ opacity: 1, y: 0, top: scrolled && !scrollingUp ? "0px" : "12px" }}
         transition={{ duration: 0.4, ease: "easeOut" }}
         className="fixed left-[24px] right-[24px] z-50"

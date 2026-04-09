@@ -5,3 +5,8 @@
 html, body {
   overscroll-behavior: none;
 }
+
+::selection {
+  background-color: #DBBDFE;
+  color: #000000;
+}

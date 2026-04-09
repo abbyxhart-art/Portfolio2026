@@ -1,5 +1,6 @@
 import { motion, AnimatePresence } from "motion/react";
 import { useState, useEffect } from "react";
+import { useNavEntrance } from "../hooks/useNavEntrance";
 import { Link } from "react-router";
 import Navigation from "../../imports/Navigation";
 import CardDrinks, { CardDrinksProperty } from "../components/CardDrinks";
@@ -58,6 +59,7 @@ const caseStudies: {
 ];
 
 export default function Home() {
+  const shouldAnimate = useNavEntrance();
   const [scrolled, setScrolled] = useState(false);
   const [scrollingUp, setScrollingUp] = useState(false);
   const [unlockedCount, setUnlockedCount] = useState(3);
@@ -124,7 +126,7 @@ export default function Home() {
 
       {/* Navigation */}
       <motion.div
-        initial={{ opacity: 0, y: -20 }}
+        initial={shouldAnimate ? { opacity: 0, y: -20 } : false}
         animate={{ opacity: 1, y: 0, top: scrolled && !scrollingUp ? "0px" : "12px" }}
         transition={{ duration: 0.4, ease: "easeOut" }}
         className="fixed left-[24px] right-[24px] z-50"
