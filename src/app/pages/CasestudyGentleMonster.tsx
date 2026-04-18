@@ -21,18 +21,13 @@ const imgHirise = new URL("../../assets/project/gentlemonster/hirise_2x1.png", i
 const imgAr = new URL("../../assets/project/gentlemonster/ar_2x1.png", import.meta.url).href;
 const imgStickyDesktop = new URL("../../assets/project/gentlemonster/sticky_desktop.png", import.meta.url).href;
 
-const imgEllipse2865 = "https://www.figma.com/api/mcp/asset/903ebcb5-ff08-428f-ac7d-800cd1b2c670";
-const imgEllipse2866 = "https://www.figma.com/api/mcp/asset/52719bb5-57d0-4e7e-b213-302d881c5232";
-const imgEllipse2867 = "https://www.figma.com/api/mcp/asset/e1e42d5a-9601-4fc2-990f-a44386029ac9";
-const imgEllipse2868 = "https://www.figma.com/api/mcp/asset/3ec10b7a-0dd2-423b-9ed4-8c77ca7fad2b";
-const imgEllipse2869 = "https://www.figma.com/api/mcp/asset/29253ed0-15ec-4e7d-b067-2c5130447547";
-const imgEllipse2870 = "https://www.figma.com/api/mcp/asset/9322bac1-14ce-460b-a511-9210527a31f5";
+const blobGM_pink_left  = "radial-gradient(ellipse at center, rgba(185,175,255,0.5) 0%, rgba(185,175,255,0) 70%)";
+const blobGM_pink_right = "radial-gradient(ellipse at center, rgba(200,190,255,0.45) 0%, rgba(200,190,255,0) 70%)";
+const blobGM_lav_left   = "radial-gradient(ellipse at center, rgba(185,175,255,0.45) 0%, rgba(185,175,255,0) 70%)";
+const blobGM_lav_right  = "radial-gradient(ellipse at center, rgba(200,190,255,0.4) 0%, rgba(200,190,255,0) 70%)";
+const blobGM_large_left = "radial-gradient(ellipse at center, rgba(185,175,255,0.4) 0%, rgba(185,175,255,0) 70%)";
+const blobGM_large_right= "radial-gradient(ellipse at center, rgba(185,175,255,0.35) 0%, rgba(185,175,255,0) 70%)";
 
-const ArrowIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 18 18" fill="none" className="shrink-0">
-    <path d="M5 13L13 5M13 5H7M13 5V11" stroke="#908e99" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-  </svg>
-);
 
 export default function CasestudyGentleMonster() {
   const shouldAnimate = useNavEntrance();
@@ -123,10 +118,10 @@ export default function CasestudyGentleMonster() {
         <Navigation scrolledDown={scrolled && !scrollingUp} />
       </motion.div>
 
-      <div className="flex flex-col items-center px-[10px] pt-[15vh] pb-[15vh]">
+      <div className="flex flex-col items-center px-[8vw] pt-[15vh] pb-[15vh]">
 
         {/* Segment 1: Hero + Overview */}
-        <div className="flex flex-col gap-[9vh] items-center w-full max-w-[886px]">
+        <div className="flex flex-col gap-[9vh] items-center w-full">
 
           {/* ── 1. Hero ── */}
           <motion.div
@@ -341,17 +336,17 @@ export default function CasestudyGentleMonster() {
         </div>
 
         {/* Segment 2: rest of content */}
-        <div className="flex flex-col gap-[9vh] items-center w-full max-w-[886px] mt-[9vh]">
+        <div className="flex flex-col gap-[9vh] items-center w-full mt-[9vh]">
 
           {/* ── 4. Basic Flow Card ── */}
           <div className="bg-[#faf9ff] border border-[#e8e7f0] flex flex-col gap-[16px] items-start overflow-clip p-[24px] relative rounded-[8px] w-full">
             {/* Left blob */}
             <div className="absolute pointer-events-none" style={{ width: "545px", height: "306px", left: "-274px", top: "calc(50% + 42px)", transform: "translateY(-50%)" }}>
-              <img alt="" className="absolute block max-w-none size-full" src={imgEllipse2865} />
+              <div style={{width:"100%",height:"100%",background:blobGM_pink_left}} />
             </div>
             {/* Right blob */}
             <div className="absolute pointer-events-none" style={{ width: "528px", height: "306px", right: "-144px", top: "calc(50% - 55px)", transform: "translateY(-50%)" }}>
-              <img alt="" className="absolute block max-w-none size-full" src={imgEllipse2867} />
+              <div style={{width:"100%",height:"100%",background:blobGM_pink_right}} />
             </div>
             {/* Content */}
             <p className="font-['Inter_Tight',sans-serif] leading-none text-[#908e99] text-[16px] relative z-10">
@@ -363,10 +358,6 @@ export default function CasestudyGentleMonster() {
             <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#585564] text-[18px] relative z-10">
               Sharing key clips of the main flow and summarizing design decisions
             </p>
-            <button className="border border-[#d1cedc] flex gap-[8px] items-center px-[12px] py-[8px] rounded-[4px] relative z-10">
-              <span className="font-['Inter_Tight',sans-serif] text-[#908e99] text-[18px]">Skip to UX Research</span>
-              <ArrowIcon />
-            </button>
           </div>
 
           {/* ── 5. Section: Brand Research + Flow ── */}
@@ -407,11 +398,11 @@ export default function CasestudyGentleMonster() {
             <div className="bg-[#faf9ff] border border-[#e8e7f0] flex flex-col gap-[16px] items-start overflow-clip p-[24px] relative rounded-[8px] w-full">
               {/* Left blob */}
               <div className="absolute pointer-events-none" style={{ width: "545px", height: "306px", left: "-274px", top: "calc(50% + 42px)", transform: "translateY(-50%)" }}>
-                <img alt="" className="absolute block max-w-none size-full" src={imgEllipse2865} />
+                <div style={{width:"100%",height:"100%",background:blobGM_pink_left}} />
               </div>
               {/* Right blob */}
               <div className="absolute pointer-events-none" style={{ width: "528px", height: "306px", right: "-144px", top: "calc(50% - 55px)", transform: "translateY(-50%)" }}>
-                <img alt="" className="absolute block max-w-none size-full" src={imgEllipse2867} />
+                <div style={{width:"100%",height:"100%",background:blobGM_pink_right}} />
               </div>
               <p className="font-['Inter_Tight',sans-serif] leading-none text-[#908e99] text-[16px] relative z-10">
                 The typical Gentle Monster shopper
@@ -428,11 +419,11 @@ export default function CasestudyGentleMonster() {
             <div className="border border-[#d1cedc] flex flex-col gap-[24px] items-start overflow-clip p-[24px] relative rounded-[12px] w-full">
               {/* Left blob large */}
               <div className="absolute pointer-events-none" style={{ width: "611px", height: "743px", left: "-274.5px", top: "calc(50% - 11.75px)", transform: "translateY(-50%)" }}>
-                <img alt="" className="absolute block max-w-none size-full" src={imgEllipse2869} />
+                <div style={{width:"100%",height:"100%",background:blobGM_large_left}} />
               </div>
               {/* Right blob large */}
               <div className="absolute pointer-events-none" style={{ width: "528px", height: "673px", right: "-171.5px", top: "calc(50% + 217.25px)", transform: "translateY(-50%)" }}>
-                <img alt="" className="absolute block max-w-none size-full" src={imgEllipse2870} />
+                <div style={{width:"100%",height:"100%",background:blobGM_large_right}} />
               </div>
               {/* Text content */}
               <div className="flex flex-col gap-[16px] items-start relative z-10 w-full">
@@ -521,10 +512,10 @@ export default function CasestudyGentleMonster() {
               {/* Left card */}
               <div className="bg-[#faf9ff] border border-[#e8e7f0] flex flex-col gap-[16px] items-start overflow-clip p-[24px] relative rounded-[8px] flex-1 min-w-0">
                 <div className="absolute pointer-events-none" style={{ width: "545px", height: "306px", left: "-274px", top: "calc(50% + 42px)", transform: "translateY(-50%)" }}>
-                  <img alt="" className="absolute block max-w-none size-full" src={imgEllipse2866} />
+                  <div style={{width:"100%",height:"100%",background:blobGM_lav_left}} />
                 </div>
                 <div className="absolute pointer-events-none" style={{ width: "528px", height: "306px", right: "-144px", top: "calc(50% - 55px)", transform: "translateY(-50%)" }}>
-                  <img alt="" className="absolute block max-w-none size-full" src={imgEllipse2868} />
+                  <div style={{width:"100%",height:"100%",background:blobGM_lav_right}} />
                 </div>
                 <p className="font-['Inter_Tight',sans-serif] leading-none text-[16px] relative z-10">
                   <span className="text-[#908e99]">Defining prescription flow: </span>
@@ -540,10 +531,10 @@ export default function CasestudyGentleMonster() {
               {/* Right card */}
               <div className="bg-[#faf9ff] border border-[#e8e7f0] flex flex-col gap-[16px] items-start overflow-clip p-[24px] relative rounded-[8px] flex-1 min-w-0">
                 <div className="absolute pointer-events-none" style={{ width: "545px", height: "306px", left: "-274px", top: "calc(50% + 42px)", transform: "translateY(-50%)" }}>
-                  <img alt="" className="absolute block max-w-none size-full" src={imgEllipse2866} />
+                  <div style={{width:"100%",height:"100%",background:blobGM_lav_left}} />
                 </div>
                 <div className="absolute pointer-events-none" style={{ width: "528px", height: "306px", right: "-144px", top: "calc(50% - 55px)", transform: "translateY(-50%)" }}>
-                  <img alt="" className="absolute block max-w-none size-full" src={imgEllipse2868} />
+                  <div style={{width:"100%",height:"100%",background:blobGM_lav_right}} />
                 </div>
                 <p className="font-['Inter_Tight',sans-serif] leading-none text-[16px] relative z-10">
                   <span className="text-[#908e99]">Defining prescription flow:</span>
@@ -614,11 +605,11 @@ export default function CasestudyGentleMonster() {
             <div className="bg-[#faf9ff] border border-[#e8e7f0] flex flex-col gap-[16px] items-start overflow-clip p-[24px] relative rounded-[8px] w-full">
               {/* Left blob */}
               <div className="absolute pointer-events-none" style={{ width: "545px", height: "306px", left: "-274px", top: "calc(50% + 42px)", transform: "translateY(-50%)" }}>
-                <img alt="" className="absolute block max-w-none size-full" src={imgEllipse2866} />
+                <div style={{width:"100%",height:"100%",background:blobGM_lav_left}} />
               </div>
               {/* Right blob */}
               <div className="absolute pointer-events-none" style={{ width: "528px", height: "306px", right: "-144px", top: "calc(50% - 55px)", transform: "translateY(-50%)" }}>
-                <img alt="" className="absolute block max-w-none size-full" src={imgEllipse2868} />
+                <div style={{width:"100%",height:"100%",background:blobGM_lav_right}} />
               </div>
               <p className="font-['Inter_Tight',sans-serif] leading-none text-[#908e99] text-[16px] relative z-10">
                 The key problem
@@ -669,11 +660,11 @@ export default function CasestudyGentleMonster() {
             <div className="bg-[#faf9ff] border border-[#e8e7f0] flex flex-col gap-[16px] items-start overflow-clip p-[24px] relative rounded-[8px] w-full">
               {/* Left blob */}
               <div className="absolute pointer-events-none" style={{ width: "545px", height: "306px", left: "-274px", top: "calc(50% + 42px)", transform: "translateY(-50%)" }}>
-                <img alt="" className="absolute block max-w-none size-full" src={imgEllipse2866} />
+                <div style={{width:"100%",height:"100%",background:blobGM_lav_left}} />
               </div>
               {/* Right blob */}
               <div className="absolute pointer-events-none" style={{ width: "528px", height: "306px", right: "-144px", top: "calc(50% - 55px)", transform: "translateY(-50%)" }}>
-                <img alt="" className="absolute block max-w-none size-full" src={imgEllipse2868} />
+                <div style={{width:"100%",height:"100%",background:blobGM_lav_right}} />
               </div>
               <p className="font-['Inter_Tight',sans-serif] leading-none text-[#908e99] text-[16px] relative z-10">
                 The obvious solution
@@ -793,7 +784,7 @@ export default function CasestudyGentleMonster() {
             </div>
 
             {/* Card 2 */}
-            <div className="flex gap-[16px] items-start p-[16px] rounded-[8px] border border-[#d1cedc] w-full" style={{ background: "rgba(245,189,254,0.2)" }}>
+            <div className="flex gap-[16px] items-start p-[16px] rounded-[8px] border border-[#d1cedc] w-full" style={{ background: "rgba(219,189,254,0.2)" }}>
               <p className="font-['Inter_Tight',sans-serif] font-normal leading-[2.05] text-[#908e99] text-[14px] shrink-0">
                 2
               </p>

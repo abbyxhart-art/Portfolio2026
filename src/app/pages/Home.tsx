@@ -9,7 +9,7 @@ import { useDrink } from "../context/DrinkContext";
 import aixelsMeImg from "../../assets/project/aixels/me.JPG";
 const figbuildMacstudioVideo = new URL("../../assets/project/figbuild/figbuild_macstudio_2x1.mp4", import.meta.url).href;
 import gmTeaserVideo from "../../assets/project/gentlemonster/GM_Teaser_2x1.mp4";
-
+const tianHeroVideo = new URL("../../assets/project/tianair/tian_fullflow_macstudio_2x1.mp4", import.meta.url).href;
 
 const caseStudies: {
   accentType: AccentType;
@@ -46,6 +46,7 @@ const caseStudies: {
     date: "Fall 2025",
     tag1Label: "Agentic Design",
     tag2Label: "Designathon",
+    video: tianHeroVideo,
   },
   {
     accentType: "4",

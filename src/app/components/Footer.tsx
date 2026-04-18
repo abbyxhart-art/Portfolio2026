@@ -4,7 +4,6 @@ import iconArrow from "../../assets/icon-arrow.svg";
 import { useCursor } from "../context/CursorContext";
 import LSystemGarden, { LSystemGardenHandle } from "./LSystemGarden";
 
-const undoArrow = "https://www.figma.com/api/mcp/asset/765fe8f5-c2ae-462d-b905-6569fb8a1501";
 
 const connectLinks = [
   { label: "LinkedIn",  href: "https://www.linkedin.com/in/abbyxhart/" },
@@ -162,7 +161,10 @@ export default function Footer() {
         >
           <div className="relative shrink-0 size-[24px] overflow-clip">
             <div className="absolute inset-[20.83%_12.5%]">
-              <img alt="undo" className="block size-full" src={undoArrow} />
+              <svg className="block size-full" viewBox="0 0 24 24" fill="none">
+                <path d="M3 7H14C17.3 7 20 9.7 20 13C20 16.3 17.3 19 14 19H7" stroke="#585564" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M6 4L3 7L6 10" stroke="#585564" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
             </div>
           </div>
           <div className="flex gap-[2px] items-center">

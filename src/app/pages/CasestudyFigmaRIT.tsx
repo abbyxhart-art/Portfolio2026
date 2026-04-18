@@ -17,9 +17,8 @@ import badge04 from "../../assets/project/figbuild/badge04.png";
 import badge05 from "../../assets/project/figbuild/badge05.png";
 
 const badges = [badge01, badge02, badge03, badge04, badge05];
-const imgEllipseRight = "https://www.figma.com/api/mcp/asset/7e4c0ecc-d966-49e5-a90d-2abf77e4fb79";
-const imgEllipseLeft = "https://www.figma.com/api/mcp/asset/3dd2db2e-ae82-4d9a-8cc2-3c76c0b2c071";
-const imgEllipseRight2 = "https://www.figma.com/api/mcp/asset/2723c383-f0ba-4c93-b4d9-a7fff39445ab";
+const blobFIG_left  = "radial-gradient(ellipse at center, rgba(154,71,255,0.22) 0%, rgba(154,71,255,0) 70%)";
+const blobFIG_right = "radial-gradient(ellipse at center, rgba(154,71,255,0.2) 0%, rgba(154,71,255,0) 70%)";
 
 export default function CasestudyFigmaRIT() {
   const shouldAnimate = useNavEntrance();
@@ -100,8 +99,8 @@ export default function CasestudyFigmaRIT() {
         <Navigation scrolledDown={scrolled && !scrollingUp} />
       </motion.div>
 
-      <div className="flex flex-col items-center px-[10px] pt-[15vh] pb-[15vh]">
-        <div className="flex flex-col gap-[75px] items-end w-full max-w-[891px]">
+      <div className="flex flex-col items-center px-[8vw] pt-[15vh] pb-[15vh]">
+        <div className="flex flex-col gap-[75px] items-end w-full">
 
           {/* ── Hero ── */}
           <motion.div
@@ -193,7 +192,7 @@ export default function CasestudyFigmaRIT() {
             {/* Card: Workflow */}
             <div className="bg-[#faf9ff] border border-[#e8e7f0] flex flex-col gap-[16px] items-start overflow-clip p-[24px] relative rounded-[8px] w-full">
               <div className="-translate-y-1/2 absolute h-[306px] right-[487.5px] top-[calc(50%-130px)] w-[528px] pointer-events-none">
-                <img alt="" className="absolute block max-w-none size-full" src={imgEllipseRight} />
+                <div style={{width:"100%",height:"100%",background:blobFIG_right}} />
               </div>
               <div className="flex flex-col font-['Inter_Tight',sans-serif] gap-[16px] items-start relative shrink-0">
                 <p className="leading-none text-[#908e99] text-[16px]">Workflow</p>
@@ -216,10 +215,10 @@ export default function CasestudyFigmaRIT() {
           {/* ── Card: Results ── */}
           <div className="bg-[#faf9ff] border border-[#e8e7f0] flex flex-col gap-[16px] items-start overflow-clip p-[24px] relative rounded-[8px] w-full">
             <div className="-translate-y-1/2 absolute h-[306px] left-[-274px] top-[calc(50%+41.63px)] w-[545px] pointer-events-none">
-              <img alt="" className="absolute block max-w-none size-full" src={imgEllipseLeft} />
+              <div style={{width:"100%",height:"100%",background:blobFIG_left}} />
             </div>
             <div className="-translate-y-1/2 absolute h-[306px] right-[-144px] top-[calc(50%-55.38px)] w-[528px] pointer-events-none">
-              <img alt="" className="absolute block max-w-none size-full" src={imgEllipseRight2} />
+              <div style={{width:"100%",height:"100%",background:blobFIG_right}} />
             </div>
             <div className="flex flex-col gap-[16px] items-start relative shrink-0">
               <p className="font-['Inter_Tight',sans-serif] leading-none text-[#908e99] text-[16px]">Results</p>

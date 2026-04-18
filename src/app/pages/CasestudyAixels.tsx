@@ -14,7 +14,7 @@ import imgSetup from "../../assets/project/aixels/setup_2x1.png";
 import imgSogniai from "../../assets/project/aixels/sogniai.jpeg";
 import imgMe from "../../assets/project/aixels/me.JPG";
 
-const imgGradientOverlay = "https://www.figma.com/api/mcp/asset/a7a94903-cfd1-4c04-a17f-9db5c0552ed7";
+const blobAIX = "radial-gradient(ellipse at center, rgba(255,130,80,0.18) 0%, rgba(255,130,80,0) 70%)";
 
 export default function CasestudyAixels() {
   const shouldAnimate = useNavEntrance();
@@ -96,8 +96,8 @@ export default function CasestudyAixels() {
         <Navigation scrolledDown={scrolled && !scrollingUp} />
       </motion.div>
 
-      <div className="flex flex-col items-center px-[10px] pt-[15vh] pb-[15vh]">
-        <div className="flex flex-col gap-[75px] items-center w-full max-w-[886px]">
+      <div className="flex flex-col items-center px-[8vw] pt-[15vh] pb-[15vh]">
+        <div className="flex flex-col gap-[75px] items-center w-full">
 
           {/* ── Section: Overview ── */}
           <div className="flex flex-col gap-[75px] items-center w-full">
@@ -164,10 +164,10 @@ export default function CasestudyAixels() {
               {/* Card: The pushback */}
               <div className="bg-[#faf9ff] border border-[#e8e7f0] flex flex-col gap-[24px] items-start overflow-clip p-[32px] relative rounded-[4px] w-full">
                 <div className="absolute h-[312px] left-[-171px] top-[-71px] w-[609px] pointer-events-none">
-                  <img alt="" className="absolute block max-w-none size-full" src={imgGradientOverlay} />
+                  <div style={{width:"100%",height:"100%",background:blobAIX}} />
                 </div>
                 <div className="absolute h-[312px] left-[367px] top-[61px] w-[609px] pointer-events-none">
-                  <img alt="" className="absolute block max-w-none size-full" src={imgGradientOverlay} />
+                  <div style={{width:"100%",height:"100%",background:blobAIX}} />
                 </div>
                 <div className="flex flex-col gap-[16px] items-start relative w-full">
                   <p className="font-['Inter_Tight',sans-serif] leading-none text-[#908e99] text-[16px] w-full">
