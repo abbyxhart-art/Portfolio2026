@@ -118,7 +118,7 @@ export default function CasestudyGentleMonster() {
         <Navigation scrolledDown={scrolled && !scrollingUp} />
       </motion.div>
 
-      <div className="flex flex-col items-center px-[8vw] pt-[15vh] pb-[15vh]">
+      <div className="flex flex-col items-center px-[20vw] pt-[15vh] pb-[15vh]">
 
         {/* Segment 1: Hero + Overview */}
         <div className="flex flex-col gap-[9vh] items-center w-full">
@@ -205,7 +205,7 @@ export default function CasestudyGentleMonster() {
         </div>
 
         {/* ── 3. Gentle Monster Sticky Scroll — FULL WIDTH ── */}
-        <div ref={stickyRef} className="w-full mt-[9vh]" style={{ height: "4000px", position: "relative" }}>
+        <div ref={stickyRef} className="mt-[9vh]" style={{ height: "4000px", position: "relative", marginLeft: "calc(-20vw)", marginRight: "calc(-20vw)", width: "100vw" }}>
           <div
             style={{
               position: "sticky",

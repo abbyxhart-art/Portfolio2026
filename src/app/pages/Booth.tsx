@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useNavEntrance } from "../hooks/useNavEntrance";
 import ButtonFilled from "../components/ButtonFilled";
 import { motion, AnimatePresence } from "motion/react";
@@ -7,10 +7,8 @@ import HomeButton from "../components/HomeButton";
 import imgCos1 from "../../assets/project/booth/cos1_2x1.png";
 import imgCos2 from "../../assets/project/booth/cos2_2x1.png";
 import munsonVideo from "../../assets/project/booth/munson.mp4";
-import imgIrisDefault from "../../assets/project/booth/iris_default.png";
 import irisHoverVideo from "../../assets/project/booth/iris_hover.MOV";
 import imgBeyondDefault from "../../assets/project/booth/beyondfashion_default.png";
-import imgBeyondHover from "../../assets/project/booth/beyondfashion_hover.JPG";
 import imgSgOlivia from "../../assets/project/booth/sg_olivia.png";
 import imgSgGaby from "../../assets/project/booth/sg_gaby.png";
 import imgSgPole from "../../assets/project/booth/sg_pole.png";
@@ -22,16 +20,6 @@ export default function Booth() {
   const shouldAnimate = useNavEntrance();
   const [scrolled, setScrolled] = useState(false);
   const [scrollingUp, setScrollingUp] = useState(false);
-  const [hoverIris, setHoverIris] = useState(false);
-  const [hoverBeyond, setHoverBeyond] = useState(false);
-  const irisVideoRef = useRef<HTMLVideoElement>(null);
-
-  useEffect(() => {
-    if (hoverIris && irisVideoRef.current) {
-      irisVideoRef.current.play();
-    }
-  }, [hoverIris]);
-
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -111,14 +99,11 @@ export default function Booth() {
                 </p>
               </div>
 
-              {/* Beyond Fashion — crossfade between default and hover images */}
-              <div
-                className="flex flex-1 flex-col gap-[8px] items-start min-w-0"
-                onMouseEnter={() => setHoverBeyond(true)}
-              >
+              {/* Beyond Fashion */}
+              <div className="flex flex-1 flex-col gap-[8px] items-start min-w-0">
                 <div className="aspect-[1080/1920] rounded-[4px] w-full overflow-hidden bg-[#d9d9d9]">
                   <img
-                    src={hoverBeyond ? imgBeyondHover : imgBeyondDefault}
+                    src={imgBeyondDefault}
                     alt="Beyond Fashion"
                     className="w-full h-full object-cover"
                   />
@@ -128,28 +113,17 @@ export default function Booth() {
                 </p>
               </div>
 
-              {/* IRIS — image default, hover reveals preloaded video */}
-              <div
-                className="flex flex-1 flex-col gap-[8px] items-start min-w-0"
-                onMouseEnter={() => setHoverIris(true)}
-              >
-                <div className="aspect-[1080/1920] rounded-[4px] w-full overflow-hidden bg-[#d9d9d9] relative">
-                  {!hoverIris && (
-                    <img
-                      src={imgIrisDefault}
-                      alt="IRIS"
-                      className="absolute inset-0 w-full h-full object-cover"
-                    />
-                  )}
+              {/* IRIS — autoplay video */}
+              <div className="flex flex-1 flex-col gap-[8px] items-start min-w-0">
+                <div className="aspect-[1080/1920] rounded-[4px] w-full overflow-hidden bg-[#d9d9d9]">
                   <video
-                    ref={irisVideoRef}
+                    autoPlay
                     loop
                     muted
                     playsInline
                     preload="auto"
-                    className="absolute inset-0 w-full h-full object-cover"
+                    className="w-full h-full object-cover"
                     src={irisHoverVideo}
-                    style={{ display: hoverIris ? "block" : "none" }}
                   />
                 </div>
                 <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.5] text-[#908e99] text-[14px] w-full">

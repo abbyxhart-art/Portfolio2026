@@ -96,7 +96,7 @@ export default function CasestudyAixels() {
         <Navigation scrolledDown={scrolled && !scrollingUp} />
       </motion.div>
 
-      <div className="flex flex-col items-center px-[8vw] pt-[15vh] pb-[15vh]">
+      <div className="flex flex-col items-center px-[20vw] pt-[15vh] pb-[15vh]">
         <div className="flex flex-col gap-[75px] items-center w-full">
 
           {/* ── Section: Overview ── */}

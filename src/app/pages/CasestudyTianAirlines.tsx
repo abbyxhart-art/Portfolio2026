@@ -112,7 +112,7 @@ export default function CasestudyTianAirlines() {
         <Navigation scrolledDown={scrolled && !scrollingUp} />
       </motion.div>
 
-      <div className="flex flex-col items-center px-[8vw] pt-[15vh] pb-[15vh]">
+      <div className="flex flex-col items-center px-[20vw] pt-[15vh] pb-[15vh]">
         <div className="flex flex-col items-center w-full">
 
           {/* ── Hero video (scaled) ── */}
