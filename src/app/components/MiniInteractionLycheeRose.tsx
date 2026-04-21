@@ -33,19 +33,19 @@ export default function MiniInteractionLycheeRose() {
         {/* Straw */}
         <div className="absolute bg-[#302f33] h-[53px] left-[20px] top-0 w-[4px]" />
         {/* Boba dots */}
-        <div className={`absolute bg-[#fb21f3] left-[6px] size-[4px] top-[42px] ${sipCount === 4 ? "opacity-0" : ""}`} />
-        <div className={`absolute bg-[#fb21f3] left-[14px] size-[4px] top-[42px] ${sipCount === 4 ? "opacity-0" : ""}`} />
-        <div className={`absolute bg-[#fb21f3] left-[10px] size-[4px] top-[34px] ${is3Or4 ? "opacity-0" : ""}`} />
+        <div className={`absolute bg-[#9a47ff] left-[6px] size-[4px] top-[42px] ${sipCount === 4 ? "opacity-0" : ""}`} />
+        <div className={`absolute bg-[#9a47ff] left-[14px] size-[4px] top-[42px] ${sipCount === 4 ? "opacity-0" : ""}`} />
+        <div className={`absolute bg-[#9a47ff] left-[10px] size-[4px] top-[34px] ${is3Or4 ? "opacity-0" : ""}`} />
         <div className="absolute flex items-center justify-center left-[19px] size-[4.869px] top-[55px]">
           <div className="flex-none rotate-[14.41deg]">
-            <div className={`bg-[#fb21f3] size-[4px] ${sipCount === 4 ? "opacity-0" : ""}`} />
+            <div className={`bg-[#9a47ff] size-[4px] ${sipCount === 4 ? "opacity-0" : ""}`} />
           </div>
         </div>
-        <div className={`absolute bg-[#fb21f3] left-[33px] size-[4px] top-[38px] ${is3Or4 ? "opacity-0" : ""}`} />
-        <div className={`absolute bg-[#fb21f3] left-[33px] size-[4px] top-[46px] ${sipCount === 4 ? "opacity-0" : ""}`} />
-        <div className={`absolute bg-[#fb21f3] left-[27px] size-[4px] top-[42px] ${sipCount === 4 ? "opacity-0" : ""}`} />
-        <div className={`absolute bg-[#fb21f3] left-[27px] size-[4px] top-[50px] ${sipCount === 4 ? "opacity-0" : ""}`} />
-        <div className={`absolute bg-[#fb21f3] left-[10px] size-[4px] top-[50px] ${sipCount === 4 ? "opacity-0" : ""}`} />
+        <div className={`absolute bg-[#9a47ff] left-[33px] size-[4px] top-[38px] ${is3Or4 ? "opacity-0" : ""}`} />
+        <div className={`absolute bg-[#9a47ff] left-[33px] size-[4px] top-[46px] ${sipCount === 4 ? "opacity-0" : ""}`} />
+        <div className={`absolute bg-[#9a47ff] left-[27px] size-[4px] top-[42px] ${sipCount === 4 ? "opacity-0" : ""}`} />
+        <div className={`absolute bg-[#9a47ff] left-[27px] size-[4px] top-[50px] ${sipCount === 4 ? "opacity-0" : ""}`} />
+        <div className={`absolute bg-[#9a47ff] left-[10px] size-[4px] top-[50px] ${sipCount === 4 ? "opacity-0" : ""}`} />
         {/* Lychee fill — shrinks with each sip */}
         {lychee && (
           <div

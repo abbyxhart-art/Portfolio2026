@@ -22,16 +22,16 @@ export default function MiniInteractionMatchaCream() {
       <div className="h-[62px] relative shrink-0 w-[42px]">
         {/* Straw */}
         <div className="absolute bg-[#302f33] h-[53px] left-[20px] top-0 w-[4px]" />
-        {/* Matcha layers — each disappears progressively with sips */}
-        <div className={`absolute bg-[rgba(94,135,90,0.7)] h-[26px] left-[3px] rounded-bl-[24px] rounded-br-[24px] top-[36px] w-[37px] ${[3, 4].includes(sipCount) ? "opacity-0" : ""}`} />
-        <div className={`absolute bg-[rgba(94,135,90,0.7)] h-[35px] left-[3px] rounded-bl-[24px] rounded-br-[24px] top-[27px] w-[37px] ${[2, 3, 4].includes(sipCount) ? "opacity-0" : ""}`} />
-        <div className={`absolute bg-[rgba(94,135,90,0.7)] h-[44px] left-[3px] rounded-bl-[24px] rounded-br-[24px] top-[18px] w-[37px] ${[1, 2, 3, 4].includes(sipCount) ? "opacity-0" : ""}`} />
-        {/* Coconut cream */}
+        {/* Peach layers — each disappears progressively with sips */}
+        <div className={`absolute bg-[rgba(251,192,191,0.7)] h-[26px] left-[3px] rounded-bl-[24px] rounded-br-[24px] top-[36px] w-[37px] ${[3, 4].includes(sipCount) ? "opacity-0" : ""}`} />
+        <div className={`absolute bg-[rgba(251,192,191,0.7)] h-[35px] left-[3px] rounded-bl-[24px] rounded-br-[24px] top-[27px] w-[37px] ${[2, 3, 4].includes(sipCount) ? "opacity-0" : ""}`} />
+        <div className={`absolute bg-[rgba(251,192,191,0.7)] h-[44px] left-[3px] rounded-bl-[24px] rounded-br-[24px] top-[18px] w-[37px] ${[1, 2, 3, 4].includes(sipCount) ? "opacity-0" : ""}`} />
+        {/* Cream layer */}
         <div
-          className={`absolute left-[3px] rounded-bl-[24px] rounded-br-[24px] top-[45px] w-[37px] h-[17px] ${
-            sipCount === 4 ? "opacity-0 bg-[rgba(255,255,255,0.7)]" :
-            sipCount === 3 ? "bg-[rgba(255,255,255,0.9)]" :
-            "bg-[rgba(255,255,255,0.7)]"
+          className={`absolute left-[3px] rounded-bl-[24px] rounded-br-[24px] w-[37px] ${
+            sipCount === 4 ? "opacity-0 bg-[rgba(255,255,255,0.7)] h-[17px] top-[45px]" :
+            sipCount === 3 ? "bg-[rgba(255,231,231,0.7)] h-[19px] top-[43px]" :
+            "bg-[rgba(255,255,255,0.7)] h-[17px] top-[45px]"
           }`}
         />
         {/* Cup outline */}

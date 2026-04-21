@@ -1,6 +1,6 @@
 import IllustrationMangoCoconut from "../../imports/IllustrationMangoCoconut";
 
-export type DrinkType = "Mango Coconut" | "Matcha Cream" | "Lychee Rose" | "Black Sesame";
+export type DrinkType = "Mango Coconut" | "Peach Cream" | "Ube Milk" | "Black Sesame";
 export type DrinkState = "Default" | "Hover" | "Active" | "Locked";
 
 type DrinkMenuProps = {
@@ -33,34 +33,34 @@ export default function DrinkMenu({ drinkType = "Mango Coconut", state = "Defaul
           )
         )}
 
-        {drinkType === "Matcha Cream" && (
+        {drinkType === "Peach Cream" && (
           <>
             <div className="absolute bg-[var(--neutral\/10,#3f3e47)] h-[53px] left-[20px] top-0 w-[4px]" />
-            <div className={`absolute bg-[rgba(94,135,90,0.7)] h-[26px] left-[3px] rounded-bl-[24px] rounded-br-[24px] top-[36px] w-[37px] ${isLocked ? "opacity-0" : ""}`} />
-            <div className={`absolute bg-[rgba(94,135,90,0.7)] h-[35px] left-[3px] rounded-bl-[24px] rounded-br-[24px] top-[27px] w-[37px] ${isLocked ? "opacity-0" : ""}`} />
-            <div className={`absolute bg-[rgba(94,135,90,0.7)] h-[44px] left-[3px] rounded-bl-[24px] rounded-br-[24px] top-[18px] w-[37px] ${isLocked ? "opacity-0" : ""}`} />
+            <div className={`absolute bg-[rgba(251,192,191,0.7)] h-[26px] left-[3px] rounded-bl-[24px] rounded-br-[24px] top-[36px] w-[37px] ${isLocked ? "opacity-0" : ""}`} />
+            <div className={`absolute bg-[rgba(251,192,191,0.7)] h-[35px] left-[3px] rounded-bl-[24px] rounded-br-[24px] top-[27px] w-[37px] ${isLocked ? "opacity-0" : ""}`} />
+            <div className={`absolute bg-[rgba(251,192,191,0.7)] h-[44px] left-[3px] rounded-bl-[24px] rounded-br-[24px] top-[18px] w-[37px] ${isLocked ? "opacity-0" : ""}`} />
             <div className={`absolute bg-[rgba(255,255,255,0.7)] h-[17px] left-[3px] rounded-bl-[24px] rounded-br-[24px] top-[45px] w-[37px] ${isLocked ? "opacity-0" : ""}`} />
             <div className="absolute border-[0.75px] border-[var(--neutral\/10,#3f3e47)] border-solid h-[53px] left-[3px] rounded-bl-[24px] rounded-br-[24px] top-[9px] w-[37px]" />
             <div className="absolute bg-[var(--neutral\/10,#3f3e47)] h-[4px] left-0 rounded-[10px] top-[6px] w-[42px]" />
           </>
         )}
 
-        {drinkType === "Lychee Rose" && (
+        {drinkType === "Ube Milk" && (
           <>
             <div className="absolute bg-[var(--neutral\/10,#3f3e47)] h-[53px] left-[20px] top-0 w-[4px]" />
-            <div className={`absolute bg-[#fb21f3] left-[6px] size-[4px] top-[42px] ${isLocked ? "opacity-0" : ""}`} />
-            <div className={`absolute bg-[#fb21f3] left-[14px] size-[4px] top-[42px] ${isLocked ? "opacity-0" : ""}`} />
-            <div className={`absolute bg-[#fb21f3] left-[10px] size-[4px] top-[34px] ${isLocked ? "opacity-0" : ""}`} />
+            <div className={`absolute bg-[#9a47ff] left-[6px] size-[4px] top-[42px] ${isLocked ? "opacity-0" : ""}`} />
+            <div className={`absolute bg-[#9a47ff] left-[14px] size-[4px] top-[42px] ${isLocked ? "opacity-0" : ""}`} />
+            <div className={`absolute bg-[#9a47ff] left-[10px] size-[4px] top-[34px] ${isLocked ? "opacity-0" : ""}`} />
             <div className="absolute flex items-center justify-center left-[19px] size-[4.869px] top-[55px]">
               <div className="flex-none rotate-[14.41deg]">
-                <div className={`bg-[#fb21f3] size-[4px] ${isLocked ? "opacity-0" : ""}`} />
+                <div className={`bg-[#9a47ff] size-[4px] ${isLocked ? "opacity-0" : ""}`} />
               </div>
             </div>
-            <div className={`absolute bg-[#fb21f3] left-[33px] size-[4px] top-[38px] ${isLocked ? "opacity-0" : ""}`} />
-            <div className={`absolute bg-[#fb21f3] left-[33px] size-[4px] top-[46px] ${isLocked ? "opacity-0" : ""}`} />
-            <div className={`absolute bg-[#fb21f3] left-[27px] size-[4px] top-[42px] ${isLocked ? "opacity-0" : ""}`} />
-            <div className={`absolute bg-[#fb21f3] left-[27px] size-[4px] top-[50px] ${isLocked ? "opacity-0" : ""}`} />
-            <div className={`absolute bg-[#fb21f3] left-[10px] size-[4px] top-[50px] ${isLocked ? "opacity-0" : ""}`} />
+            <div className={`absolute bg-[#9a47ff] left-[33px] size-[4px] top-[38px] ${isLocked ? "opacity-0" : ""}`} />
+            <div className={`absolute bg-[#9a47ff] left-[33px] size-[4px] top-[46px] ${isLocked ? "opacity-0" : ""}`} />
+            <div className={`absolute bg-[#9a47ff] left-[27px] size-[4px] top-[42px] ${isLocked ? "opacity-0" : ""}`} />
+            <div className={`absolute bg-[#9a47ff] left-[27px] size-[4px] top-[50px] ${isLocked ? "opacity-0" : ""}`} />
+            <div className={`absolute bg-[#9a47ff] left-[10px] size-[4px] top-[50px] ${isLocked ? "opacity-0" : ""}`} />
             <div className={`absolute bg-[rgba(193,111,255,0.45)] h-[44px] left-[3px] rounded-bl-[24px] rounded-br-[24px] top-[18px] w-[37px] ${isLocked ? "opacity-0" : ""}`} />
             <div className="absolute border-[0.75px] border-[var(--neutral\/10,#3f3e47)] border-solid h-[53px] left-[3px] rounded-bl-[24px] rounded-br-[24px] top-[9px] w-[37px]" />
             <div className="absolute bg-[var(--neutral\/10,#3f3e47)] h-[4px] left-0 rounded-[10px] top-[6px] w-[42px]" />
@@ -83,10 +83,10 @@ export default function DrinkMenu({ drinkType = "Mango Coconut", state = "Defaul
             <div className={`absolute left-[27px] rounded-[10px] size-[4px] top-[42px] ${isLocked ? "bg-[var(--text\/quatrinary,#aeabb9)] opacity-0" : "bg-[var(--text\/primary,#232226)]"}`} />
             <div className={`absolute left-[27px] rounded-[10px] size-[4px] top-[50px] ${isLocked ? "bg-[var(--text\/quatrinary,#aeabb9)] opacity-0" : "bg-[var(--text\/primary,#232226)]"}`} />
             <div className={`absolute left-[10px] rounded-[10px] size-[4px] top-[50px] ${isLocked ? "bg-[var(--text\/quatrinary,#aeabb9)] opacity-0" : "bg-[var(--text\/primary,#232226)]"}`} />
-            <div className={`absolute bg-[rgba(113,108,135,0.2)] h-[20px] left-[3px] rounded-bl-[24px] rounded-br-[24px] top-[42px] w-[37px] ${isLocked ? "opacity-0" : ""}`} />
-            <div className={`absolute bg-[rgba(113,108,135,0.2)] h-[28px] left-[3px] rounded-bl-[24px] rounded-br-[24px] top-[34px] w-[37px] ${isLocked ? "opacity-0" : ""}`} />
-            <div className={`absolute bg-[rgba(113,108,135,0.2)] h-[36px] left-[3px] rounded-bl-[24px] rounded-br-[24px] top-[26px] w-[37px] ${isLocked ? "opacity-0" : ""}`} />
-            <div className={`absolute bg-[rgba(113,108,135,0.2)] h-[44px] left-[3px] rounded-bl-[24px] rounded-br-[24px] top-[18px] w-[37px] ${isLocked ? "opacity-0" : ""}`} />
+            <div className={`absolute bg-[rgba(82,69,138,0.2)] h-[20px] left-[3px] rounded-bl-[24px] rounded-br-[24px] top-[42px] w-[37px] ${isLocked ? "opacity-0" : ""}`} />
+            <div className={`absolute bg-[rgba(82,69,138,0.2)] h-[28px] left-[3px] rounded-bl-[24px] rounded-br-[24px] top-[34px] w-[37px] ${isLocked ? "opacity-0" : ""}`} />
+            <div className={`absolute bg-[rgba(82,69,138,0.2)] h-[36px] left-[3px] rounded-bl-[24px] rounded-br-[24px] top-[26px] w-[37px] ${isLocked ? "opacity-0" : ""}`} />
+            <div className={`absolute bg-[rgba(82,69,138,0.2)] h-[44px] left-[3px] rounded-bl-[24px] rounded-br-[24px] top-[18px] w-[37px] ${isLocked ? "opacity-0" : ""}`} />
             <div className="absolute border-[0.75px] border-[var(--neutral\/10,#3f3e47)] border-solid h-[53px] left-[3px] rounded-bl-[24px] rounded-br-[24px] top-[9px] w-[37px]" />
             <div className="absolute bg-[var(--neutral\/10,#3f3e47)] h-[4px] left-0 rounded-[10px] top-[6px] w-[42px]" />
           </>

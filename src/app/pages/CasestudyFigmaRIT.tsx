@@ -17,8 +17,8 @@ import badge04 from "../../assets/project/figbuild/badge04.png";
 import badge05 from "../../assets/project/figbuild/badge05.png";
 
 const badges = [badge01, badge02, badge03, badge04, badge05];
-const blobFIG_left  = "radial-gradient(ellipse at center, rgba(154,71,255,0.22) 0%, rgba(154,71,255,0) 70%)";
-const blobFIG_right = "radial-gradient(ellipse at center, rgba(154,71,255,0.2) 0%, rgba(154,71,255,0) 70%)";
+const blobFIG_left  = "radial-gradient(ellipse at center, rgba(221,251,170,0.22) 0%, rgba(221,251,170,0) 70%)";
+const blobFIG_right = "radial-gradient(ellipse at center, rgba(221,251,170,0.2) 0%, rgba(221,251,170,0) 70%)";
 
 export default function CasestudyFigmaRIT() {
   const shouldAnimate = useNavEntrance();
@@ -253,7 +253,7 @@ export default function CasestudyFigmaRIT() {
             </p>
 
             {/* Point 1 */}
-            <div className="bg-[#f8fad5] border border-[#e8e7f0] flex font-['Inter_Tight',sans-serif] gap-[16px] items-start p-[16px] rounded-[8px] w-full">
+            <div className="bg-[rgba(235,250,213,0.5)] border border-[#e8e7f0] flex font-['Inter_Tight',sans-serif] gap-[16px] items-start p-[16px] rounded-[8px] w-full">
               <p className="leading-[2.05] text-[#908e99] text-[14px] shrink-0">1</p>
               <div className="flex flex-col gap-[8px] items-start flex-1 leading-[1.65] text-[#585564] text-[18px]">
                 <p className="whitespace-nowrap">THANK YOU TK AND JOANNA!</p>
@@ -264,7 +264,7 @@ export default function CasestudyFigmaRIT() {
             </div>
 
             {/* Point 2 */}
-            <div className="bg-[#ebfad5] border border-[#e8e7f0] flex gap-[16px] items-start p-[16px] rounded-[8px] w-full">
+            <div className="bg-[rgba(235,250,213,0.5)] border border-[#e8e7f0] flex gap-[16px] items-start p-[16px] rounded-[8px] w-full">
               <p className="font-['Inter_Tight',sans-serif] leading-[2.05] text-[#908e99] text-[14px] shrink-0">2</p>
               <div className="flex flex-col gap-[8px] items-start flex-1">
                 <p className="font-['Inter_Tight',sans-serif] leading-[1.65] text-[#585564] text-[18px]">My Figma fam</p>
@@ -276,7 +276,7 @@ export default function CasestudyFigmaRIT() {
             </div>
 
             {/* Point 3 */}
-            <div className="bg-[#d5ffd6] border border-[#e8e7f0] flex gap-[16px] items-start p-[16px] rounded-[8px] w-full">
+            <div className="bg-[rgba(235,250,213,0.5)] border border-[#e8e7f0] flex gap-[16px] items-start p-[16px] rounded-[8px] w-full">
               <p className="font-['Inter_Tight',sans-serif] leading-[2.05] text-[#908e99] text-[14px] shrink-0">3</p>
               <div className="flex flex-col gap-[8px] items-start flex-1">
                 <p className="font-['Inter_Tight',sans-serif] leading-[1.65] text-[#585564] text-[18px]">Leaving RIT's impact :D</p>

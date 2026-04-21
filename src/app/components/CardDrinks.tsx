@@ -7,8 +7,8 @@ type DrinkKey = "mango" | "matcha" | "lychee" | "sesame";
 
 const drinkKeyMap: Record<string, DrinkKey> = {
   "Mango Coconut": "mango",
-  "Matcha Cream": "matcha",
-  "Lychee Rose": "lychee",
+  "Peach Cream": "matcha",
+  "Ube Milk": "lychee",
   "Black Sesame": "sesame",
 };
 
@@ -21,8 +21,8 @@ type CardDrinksProps = {
 
 const drinks = [
   { drinkType: "Mango Coconut" as const, index: 1 },
-  { drinkType: "Matcha Cream" as const, index: 2 },
-  { drinkType: "Lychee Rose" as const, index: 3 },
+  { drinkType: "Peach Cream" as const, index: 2 },
+  { drinkType: "Ube Milk" as const, index: 3 },
   { drinkType: "Black Sesame" as const, index: 4 },
 ];
 

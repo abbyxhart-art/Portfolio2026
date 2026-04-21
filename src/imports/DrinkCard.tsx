@@ -31,8 +31,8 @@ export default function DrinkCard() {
           </div>
           <p className="font-['Inter_Tight:Regular',sans-serif] font-normal leading-[1.2] min-w-full relative shrink-0 text-[#a29db6] text-[14px] tracking-[-0.28px] w-[min-content]">Mango Coconut</p>
         </div>
-        <div className="content-stretch flex flex-col gap-[14px] items-center relative shrink-0 w-[86px]" data-name="Matcha Cream">
-          <div className="h-[62px] relative shrink-0 w-[42px]" data-name="Illustration Matcha Cream">
+        <div className="content-stretch flex flex-col gap-[14px] items-center relative shrink-0 w-[86px]" data-name="Peach Cream">
+          <div className="h-[62px] relative shrink-0 w-[42px]" data-name="Illustration Peach Cream">
             <div className="absolute bg-[#302f33] h-[53px] left-[20px] top-0 w-[4px]" data-name="Straw" />
             <div className="absolute bg-[rgba(94,135,90,0.7)] h-[26px] left-[3px] rounded-bl-[24px] rounded-br-[24px] top-[36px] w-[37px]" data-name="Matcha" />
             <div className="absolute bg-[rgba(94,135,90,0.7)] h-[35px] left-[3px] rounded-bl-[24px] rounded-br-[24px] top-[27px] w-[37px]" data-name="Matcha" />
@@ -41,10 +41,10 @@ export default function DrinkCard() {
             <div className="absolute border-[#302f33] border-[0.75px] border-solid h-[53px] left-[3px] rounded-bl-[24px] rounded-br-[24px] top-[9px] w-[37px]" data-name="Cup" />
             <div className="absolute bg-[#302f33] h-[4px] left-0 rounded-[10px] top-[6px] w-[42px]" data-name="Lid" />
           </div>
-          <p className="font-['Inter_Tight:Regular',sans-serif] font-normal leading-[1.2] min-w-full relative shrink-0 text-[#a29db6] text-[14px] tracking-[-0.28px] w-[min-content]">Matcha Cream</p>
+          <p className="font-['Inter_Tight:Regular',sans-serif] font-normal leading-[1.2] min-w-full relative shrink-0 text-[#a29db6] text-[14px] tracking-[-0.28px] w-[min-content]">Peach Cream</p>
         </div>
-        <div className="content-stretch flex flex-col gap-[14px] items-center relative shrink-0 w-[74px]" data-name="Lychee Rose">
-          <div className="h-[62px] relative shrink-0 w-[42px]" data-name="Illustration Lychee Rose">
+        <div className="content-stretch flex flex-col gap-[14px] items-center relative shrink-0 w-[74px]" data-name="Ube Milk">
+          <div className="h-[62px] relative shrink-0 w-[42px]" data-name="Illustration Ube Milk">
             <div className="absolute bg-[#302f33] h-[53px] left-[20px] top-0 w-[4px]" data-name="Straw" />
             <div className="absolute bg-[#fb21f3] left-[6px] size-[4px] top-[42px]" data-name="Boba" />
             <div className="absolute bg-[#fb21f3] left-[14px] size-[4px] top-[42px]" data-name="Boba" />
@@ -61,7 +61,7 @@ export default function DrinkCard() {
             <div className="absolute border-[#302f33] border-[0.75px] border-solid h-[53px] left-[3px] rounded-bl-[24px] rounded-br-[24px] top-[9px] w-[37px]" data-name="Cup" />
             <div className="absolute bg-[#302f33] h-[4px] left-0 rounded-[10px] top-[6px] w-[42px]" data-name="Lid" />
           </div>
-          <p className="font-['Inter_Tight:Regular',sans-serif] font-normal leading-[1.2] min-w-full relative shrink-0 text-[#a29db6] text-[14px] tracking-[-0.28px] w-[min-content]">Lychee Rose</p>
+          <p className="font-['Inter_Tight:Regular',sans-serif] font-normal leading-[1.2] min-w-full relative shrink-0 text-[#a29db6] text-[14px] tracking-[-0.28px] w-[min-content]">Ube Milk</p>
         </div>
         <div className="content-stretch flex flex-col gap-[14px] items-center relative shrink-0 w-[82px]" data-name="Black Sesame">
           <div className="h-[62px] relative shrink-0 w-[42px]" data-name="Illustration Black Sesame">
