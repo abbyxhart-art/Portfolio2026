@@ -197,7 +197,8 @@ export default function Home() {
               style={{ fontFamily: "var(--text-font/default, 'Inter Tight', sans-serif)" }}
             >
               <p>I'm Abby :D</p>
-              <p>I design visual systems to direct and delight</p>
+              <p>I design visual systems</p>
+              <p>to delight and direct</p>
             </div>
             <motion.div
               initial={{ opacity: 0 }}
