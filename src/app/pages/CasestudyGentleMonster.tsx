@@ -5,6 +5,16 @@ import Navigation from "../../imports/Navigation";
 import HomeButton from "../components/HomeButton";
 import ButtonBasic from "../components/ButtonBasic";
 import UpNext from "../components/UpNext";
+import CasestudyMiniMenu from "../components/CasestudyMiniMenu";
+
+const GM_SECTIONS = [
+  { id: "cs-overview", label: "Overview" },
+  { id: "cs-flow", label: "Flow" },
+  { id: "cs-research", label: "Research" },
+  { id: "cs-heuristics", label: "Heuristics" },
+  { id: "cs-specs", label: "Specs" },
+  { id: "cs-reflection", label: "Reflections" },
+];
 import Cursor from "../components/Cursor";
 const vidGmScene = new URL("../../assets/project/gentlemonster/gmscene_2x1.mp4", import.meta.url).href;
 const vidDesignDoc = new URL("../../assets/project/gentlemonster/designdoc_16x9.mp4", import.meta.url).href;
@@ -20,6 +30,10 @@ const imgTaichi = new URL("../../assets/project/gentlemonster/taichi_2x1.png", i
 const imgHirise = new URL("../../assets/project/gentlemonster/hirise_2x1.png", import.meta.url).href;
 const imgAr = new URL("../../assets/project/gentlemonster/ar_2x1.png", import.meta.url).href;
 const imgStickyDesktop = new URL("../../assets/project/gentlemonster/sticky_desktop.png", import.meta.url).href;
+const vidFlowBestmatch = new URL("../../assets/project/gentlemonster/flow_bestmatch.mp4", import.meta.url).href;
+const vidFlowMymatch = new URL("../../assets/project/gentlemonster/flow_mymatch.mp4", import.meta.url).href;
+const vidFlowLenses = new URL("../../assets/project/gentlemonster/flow_lenses.mp4", import.meta.url).href;
+const vidFlowFourmatches = new URL("../../assets/project/gentlemonster/flow_fourmatches.mp4", import.meta.url).href;
 
 const blobGM_pink_left  = "radial-gradient(ellipse at center, rgba(185,175,255,0.5) 0%, rgba(185,175,255,0) 70%)";
 const blobGM_pink_right = "radial-gradient(ellipse at center, rgba(200,190,255,0.45) 0%, rgba(200,190,255,0) 70%)";
@@ -93,6 +107,7 @@ export default function CasestudyGentleMonster() {
   return (
     <div className="relative min-h-screen bg-[#faf9ff] overflow-x-clip">
       <HomeButton />
+      <CasestudyMiniMenu sections={GM_SECTIONS} />
       <AnimatePresence>
         {scrolled && (
           <motion.div
@@ -133,7 +148,7 @@ export default function CasestudyGentleMonster() {
           </motion.div>
 
           {/* ── 2. Overview ── */}
-          <motion.div style={{ y: heroContentY }} className="flex flex-col gap-[32px] items-start w-full">
+          <motion.div id="cs-overview" style={{ y: heroContentY }} className="flex flex-col gap-[32px] items-start w-full">
 
             {/* Tagline — negative margin cancels the 9vh gap, leaving exactly 16px below the scaled video */}
             <p className="font-['Inter_Tight',sans-serif] font-normal leading-none text-[#908e99] text-[14px] w-full text-left" style={{ marginTop: "calc(-9vh + 16px)" }}>
@@ -338,30 +353,163 @@ export default function CasestudyGentleMonster() {
         {/* Segment 2: rest of content */}
         <div className="flex flex-col gap-[9vh] items-center w-full mt-[9vh]">
 
-          {/* ── 4. Basic Flow Card ── */}
-          <div className="bg-[#faf9ff] border border-[#e8e7f0] flex flex-col gap-[16px] items-start overflow-clip p-[24px] relative rounded-[8px] w-full">
-            {/* Left blob */}
-            <div className="absolute pointer-events-none" style={{ width: "545px", height: "306px", left: "-274px", top: "calc(50% + 42px)", transform: "translateY(-50%)" }}>
-              <div style={{width:"100%",height:"100%",background:blobGM_pink_left}} />
+          {/* ── 4. Section: Flow ── */}
+          <div id="cs-flow" className="flex flex-col gap-[9vh] items-start w-full">
+
+            {/* Basic Flow Card */}
+            <div className="bg-[#faf9ff] border border-[#e8e7f0] flex flex-col gap-[16px] items-start overflow-clip p-[24px] relative rounded-[8px] w-full">
+              {/* Left blob */}
+              <div className="absolute pointer-events-none" style={{ width: "545px", height: "306px", left: "-274px", top: "calc(50% + 42px)", transform: "translateY(-50%)" }}>
+                <div style={{width:"100%",height:"100%",background:blobGM_pink_left}} />
+              </div>
+              {/* Right blob */}
+              <div className="absolute pointer-events-none" style={{ width: "528px", height: "306px", right: "-144px", top: "calc(50% - 55px)", transform: "translateY(-50%)" }}>
+                <div style={{width:"100%",height:"100%",background:blobGM_pink_right}} />
+              </div>
+              {/* Content */}
+              <p className="font-['Inter_Tight',sans-serif] leading-none text-[#908e99] text-[16px] relative z-10">
+                Basic Flow
+              </p>
+              <p className="font-['Inter_Tight',sans-serif] font-[450] leading-[1.4] text-[#585564] text-[20px] relative z-10">
+                Scan → Glasses Found → Checkout
+              </p>
+              <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#585564] text-[18px] relative z-10">
+                Sharing key clips of the main flow and summarizing design decisions
+              </p>
             </div>
-            {/* Right blob */}
-            <div className="absolute pointer-events-none" style={{ width: "528px", height: "306px", right: "-144px", top: "calc(50% - 55px)", transform: "translateY(-50%)" }}>
-              <div style={{width:"100%",height:"100%",background:blobGM_pink_right}} />
+
+            {/* Flow 1/5 */}
+            <div className="flex flex-col gap-[24px] items-start w-full">
+              <div className="flex flex-col gap-[16px] items-start w-full">
+                <p className="font-['Inter_Tight',sans-serif] leading-none text-[#908e99] text-[16px]">
+                  Flow 1/5
+                </p>
+                <p className="font-['Inter_Tight',sans-serif] font-[450] leading-[1.3] text-black text-[24px]">
+                  Showcasing the shorter main flow inside the kiosk.
+                </p>
+                <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#585564] text-[18px]">
+                  The flow displays two screens working in tandem! The ultimate goal is to help users find their best match and have a sales associate save them at the counter.
+                </p>
+              </div>
+              <div className="aspect-[2/1] bg-[#d9d9d9] rounded-[4px] w-full" />
             </div>
-            {/* Content */}
-            <p className="font-['Inter_Tight',sans-serif] leading-none text-[#908e99] text-[16px] relative z-10">
-              Basic Flow
-            </p>
-            <p className="font-['Inter_Tight',sans-serif] font-[450] leading-[1.4] text-[#585564] text-[20px] relative z-10">
-              Scan → Glasses Found → Checkout
-            </p>
-            <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#585564] text-[18px] relative z-10">
-              Sharing key clips of the main flow and summarizing design decisions
-            </p>
+
+            {/* Flow 2/5 */}
+            <div className="flex flex-col gap-[24px] items-start w-full">
+              <div className="flex flex-col gap-[16px] items-start w-full">
+                <p className="font-['Inter_Tight',sans-serif] leading-none text-[#908e99] text-[16px]">
+                  Flow 2/5
+                </p>
+                <p className="font-['Inter_Tight',sans-serif] font-[450] leading-[1.3] text-black text-[24px]">
+                  Use smaller filters as matches.
+                </p>
+                <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#585564] text-[18px]">
+                  This feature replaces filters by presenting personalized, pre-matched options instead of requiring people to sort through presets themselves (although the filter button still exists should people want to use it!).
+                </p>
+              </div>
+              <div className="aspect-[2/1] bg-[#d9d9d9] rounded-[4px] w-full overflow-hidden">
+                <video
+                  ref={(el) => {
+                    if (!el) return;
+                    const observer = new IntersectionObserver(
+                      ([entry]) => { entry.isIntersecting ? el.play() : el.pause(); },
+                      { threshold: 0.25 }
+                    );
+                    observer.observe(el);
+                  }}
+                  loop muted playsInline className="w-full h-full object-cover" src={vidFlowMymatch}
+                />
+              </div>
+            </div>
+
+            {/* Flow 3/5 */}
+            <div className="flex flex-col gap-[24px] items-start w-full">
+              <div className="flex flex-col gap-[16px] items-start w-full">
+                <p className="font-['Inter_Tight',sans-serif] leading-none text-[#908e99] text-[16px]">
+                  Flow 3/5
+                </p>
+                <p className="font-['Inter_Tight',sans-serif] font-[450] leading-[1.3] text-black text-[24px]">
+                  Don't overload people.
+                </p>
+                <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#585564] text-[18px]">
+                  Initially display four glasses to reduce decision paralysis! Users can scroll to explore lower-ranked matches, maintaining momentum without overwhelming them. Navigation is positioned at the bottom to minimize hand movement/fatigue.
+                </p>
+              </div>
+              <div className="aspect-[2/1] bg-[#d9d9d9] rounded-[4px] w-full overflow-hidden">
+                <video
+                  ref={(el) => {
+                    if (!el) return;
+                    const observer = new IntersectionObserver(
+                      ([entry]) => { entry.isIntersecting ? el.play() : el.pause(); },
+                      { threshold: 0.25 }
+                    );
+                    observer.observe(el);
+                  }}
+                  loop muted playsInline className="w-full h-full object-cover" src={vidFlowFourmatches}
+                />
+              </div>
+            </div>
+
+            {/* Flow 4/5 */}
+            <div className="flex flex-col gap-[24px] items-start w-full">
+              <div className="flex flex-col gap-[16px] items-start w-full">
+                <p className="font-['Inter_Tight',sans-serif] leading-none text-[#908e99] text-[16px]">
+                  Flow 4/5
+                </p>
+                <p className="font-['Inter_Tight',sans-serif] font-[450] leading-[1.3] text-black text-[24px]">
+                  Show people how it matches.
+                </p>
+                <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#585564] text-[18px]">
+                  Users can interpret the match percentage through four familiar criteria commonly used by lens specialists to distinguish a good fit from a poor one. Lower matches are considerate; higher matches are framed to feel confidence-boosting!
+                </p>
+              </div>
+              <div className="aspect-[2/1] bg-[#d9d9d9] rounded-[4px] w-full overflow-hidden">
+                <video
+                  ref={(el) => {
+                    if (!el) return;
+                    const observer = new IntersectionObserver(
+                      ([entry]) => { entry.isIntersecting ? el.play() : el.pause(); },
+                      { threshold: 0.25 }
+                    );
+                    observer.observe(el);
+                  }}
+                  loop muted playsInline className="w-full h-full object-cover" src={vidFlowBestmatch}
+                />
+              </div>
+            </div>
+
+            {/* Flow 5/5 */}
+            <div className="flex flex-col gap-[24px] items-start w-full">
+              <div className="flex flex-col gap-[16px] items-start w-full">
+                <p className="font-['Inter_Tight',sans-serif] leading-none text-[#908e99] text-[16px]">
+                  Flow 5/5
+                </p>
+                <p className="font-['Inter_Tight',sans-serif] font-[450] leading-[1.3] text-black text-[24px]">
+                  One decision opens up the next one.
+                </p>
+                <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#585564] text-[18px]">
+                  Each decision should feel like a natural progression, and UI should not overflow. Information is really only displayed when necessary, like this lens tints feature!
+                </p>
+              </div>
+              <div className="aspect-[2/1] bg-[#d9d9d9] rounded-[4px] w-full overflow-hidden">
+                <video
+                  ref={(el) => {
+                    if (!el) return;
+                    const observer = new IntersectionObserver(
+                      ([entry]) => { entry.isIntersecting ? el.play() : el.pause(); },
+                      { threshold: 0.25 }
+                    );
+                    observer.observe(el);
+                  }}
+                  loop muted playsInline className="w-full h-full object-cover" src={vidFlowLenses}
+                />
+              </div>
+            </div>
+
           </div>
 
           {/* ── 5. Section: Brand Research + Flow ── */}
-          <div className="flex flex-col gap-[9vh] items-start w-full">
+          <div id="cs-research" className="flex flex-col gap-[9vh] items-start w-full">
 
             {/* Opportunity */}
             <div className="flex flex-col gap-[24px] items-start w-full">
@@ -552,7 +700,7 @@ export default function CasestudyGentleMonster() {
           </div>
 
           {/* ── 6. Section: Heuristic Research ── */}
-          <div className="flex flex-col gap-[9vh] items-start w-full">
+          <div id="cs-heuristics" className="flex flex-col gap-[9vh] items-start w-full">
 
             {/* Title block */}
             <div className="flex flex-col gap-[16px] items-start w-full">
@@ -623,7 +771,7 @@ export default function CasestudyGentleMonster() {
             </div>
 
             {/* Gap cards — 3 equal columns */}
-            <div className="flex gap-[15px] items-start w-full">
+            <div className="flex gap-[15px] items-stretch w-full">
               {/* Gap 1 */}
               <div className="border border-[#d1cedc] flex flex-col gap-[8px] items-start flex-1 min-w-0 p-[24px] rounded-[4px]">
                 <p className="font-['Inter_Tight',sans-serif] leading-none text-[#aeabb9] text-[14px]">Gap 1</p>
@@ -677,14 +825,14 @@ export default function CasestudyGentleMonster() {
           </div>
 
           {/* ── 7. Section: Specs + Modelling ── */}
-          <div className="flex flex-col gap-[9vh] items-start w-full">
+          <div id="cs-specs" className="flex flex-col gap-[9vh] items-start w-full">
 
             {/* Kiosk */}
             <div className="flex flex-col gap-[24px] items-start w-full">
               {/* Title */}
               <div className="flex flex-col gap-[16px] items-start">
                 <p className="font-['Inter_Tight',sans-serif] leading-none text-[#908e99] text-[16px]">
-                  Kiosk
+                  Kiosk Specs
                 </p>
                 <p className="font-['Inter_Tight',sans-serif] font-[450] leading-[1.3] text-black text-[24px]">
                   Shaping real specs
@@ -730,7 +878,7 @@ export default function CasestudyGentleMonster() {
             {/* Glasses */}
             <div className="flex flex-col gap-[24px] items-start w-full">
               <p className="font-['Inter_Tight',sans-serif] leading-none text-[#908e99] text-[16px]">
-                Glasses
+                Glasses Specs
               </p>
               <div className="flex flex-col gap-[16px] items-start w-full">
                 <p className="font-['Inter_Tight',sans-serif] font-[450] leading-[1.3] text-[#232226] text-[24px]">
@@ -758,7 +906,7 @@ export default function CasestudyGentleMonster() {
           </div>
 
           {/* ── 8. Section: Reflection ── */}
-          <div className="flex flex-col gap-[24px] items-start w-full">
+          <div id="cs-reflection" className="flex flex-col gap-[24px] items-start w-full">
             <div className="flex flex-col gap-[16px] items-start w-full">
               <p className="font-['Inter_Tight',sans-serif] leading-none text-[#908e99] text-[16px]">
                 Thank you for shopping with us!

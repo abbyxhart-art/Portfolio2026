@@ -5,6 +5,13 @@ import Navigation from "../../imports/Navigation";
 import HomeButton from "../components/HomeButton";
 import ButtonBasic from "../components/ButtonBasic";
 import UpNext from "../components/UpNext";
+import CasestudyMiniMenu from "../components/CasestudyMiniMenu";
+
+const FIGMA_SECTIONS = [
+  { id: "cs-overview", label: "Overview" },
+  { id: "cs-design", label: "Design" },
+  { id: "cs-review", label: "Reflections" },
+];
 const figbuildMacstudioVideo = new URL("../../assets/project/figbuild/figbuild_macstudio_2x1.mp4", import.meta.url).href;
 import imgSlackInspired from "../../assets/project/figbuild/slack_inspired.png";
 import imgDocumentation from "../../assets/project/figbuild/documentation_2x1.png";
@@ -74,6 +81,7 @@ export default function CasestudyFigmaRIT() {
   return (
     <div className="relative min-h-screen bg-[#faf9ff] overflow-x-clip">
       <HomeButton />
+      <CasestudyMiniMenu sections={FIGMA_SECTIONS} />
       <AnimatePresence>
         {scrolled && (
           <motion.div
@@ -114,7 +122,7 @@ export default function CasestudyFigmaRIT() {
           {/* ── Content below hero (moves with it) ── */}
           <motion.div style={{ y: contentY }} className="flex flex-col gap-[75px] items-start w-full">
 
-            <div className="flex flex-col gap-[32px] items-start w-full">
+            <div id="cs-overview" className="flex flex-col gap-[32px] items-start w-full">
               {/* Title + subtitle */}
               <div className="border-b border-[#d1cedc] flex flex-col gap-[8px] items-start pb-[32px] w-full">
                 <p className="font-['Inter_Tight',sans-serif] font-[450] leading-[1.3] text-[#232226] text-[24px] w-full">
@@ -173,7 +181,7 @@ export default function CasestudyFigmaRIT() {
             </div>
 
           {/* ── Section: Design ── */}
-          <div className="flex flex-col gap-[75px] items-start w-full">
+          <div id="cs-design" className="flex flex-col gap-[75px] items-start w-full">
             <div className="flex flex-col gap-[32px] items-start w-full">
               <div className="flex flex-col gap-[16px] items-start w-full">
                 <p className="font-['Inter_Tight',sans-serif] leading-none text-[#908e99] text-[16px] w-full">
@@ -244,7 +252,7 @@ export default function CasestudyFigmaRIT() {
           </div>
 
           {/* ── Section: Review ── */}
-          <div className="flex flex-col gap-[16px] items-start w-full">
+          <div id="cs-review" className="flex flex-col gap-[16px] items-start w-full">
             <p className="font-['Inter_Tight',sans-serif] leading-none text-[#908e99] text-[16px]">
               Reflections
             </p>

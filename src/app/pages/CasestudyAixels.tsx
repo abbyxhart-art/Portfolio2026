@@ -4,6 +4,13 @@ import { motion, AnimatePresence, useScroll, useTransform, useMotionValue } from
 import Navigation from "../../imports/Navigation";
 import HomeButton from "../components/HomeButton";
 import UpNext from "../components/UpNext";
+import CasestudyMiniMenu from "../components/CasestudyMiniMenu";
+
+const AIXELS_SECTIONS = [
+  { id: "cs-overview", label: "Overview" },
+  { id: "cs-process", label: "Process" },
+  { id: "cs-review", label: "Reflections" },
+];
 
 import vidPass1 from "../../assets/project/aixels/pass1.mov";
 import imgPass2 from "../../assets/project/aixels/pass2.png";
@@ -71,6 +78,7 @@ export default function CasestudyAixels() {
   return (
     <div className="relative min-h-screen bg-[#faf9ff] overflow-x-clip">
       <HomeButton />
+      <CasestudyMiniMenu sections={AIXELS_SECTIONS} />
       <AnimatePresence>
         {scrolled && (
           <motion.div
@@ -100,7 +108,7 @@ export default function CasestudyAixels() {
         <div className="flex flex-col gap-[75px] items-center w-full">
 
           {/* ── Section: Overview ── */}
-          <div className="flex flex-col gap-[75px] items-center w-full">
+          <div id="cs-overview" className="flex flex-col gap-[75px] items-center w-full">
 
             {/* Hero */}
             <motion.div
@@ -201,7 +209,7 @@ export default function CasestudyAixels() {
           </div>
 
           {/* ── Section: Process Work ── */}
-          <div className="flex flex-col gap-[36px] items-start w-full">
+          <div id="cs-process" className="flex flex-col gap-[36px] items-start w-full">
             <div className="flex flex-col gap-[16px] items-start w-full">
               <p className="font-['Inter_Tight',sans-serif] leading-none text-[#908e99] text-[14px] w-full">
                 Process Work
@@ -246,7 +254,7 @@ export default function CasestudyAixels() {
           </div>
 
           {/* ── Section: Review ── */}
-          <div className="flex flex-col gap-[16px] items-start w-full">
+          <div id="cs-review" className="flex flex-col gap-[16px] items-start w-full">
             <p className="font-['Inter_Tight',sans-serif] leading-none text-[#908e99] text-[16px]">
               Replay
             </p>

@@ -1,5 +1,5 @@
-import { motion, AnimatePresence } from "motion/react";
-import { useState, useEffect } from "react";
+import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from "motion/react";
+import { useState, useEffect, useRef } from "react";
 import { useNavEntrance } from "../hooks/useNavEntrance";
 import { Link } from "react-router";
 import Navigation from "../../imports/Navigation";
@@ -65,6 +65,24 @@ export default function Home() {
   const [scrollingUp, setScrollingUp] = useState(false);
   const [unlockedCount, setUnlockedCount] = useState(1);
   const { setSelectedDrink } = useDrink();
+
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const rotateY = useSpring(useTransform(mouseX, [-350, 350], [-3, 3]), { stiffness: 80, damping: 20 });
+  const rotateX = useSpring(useTransform(mouseY, [-220, 220], [2, -2]), { stiffness: 80, damping: 20 });
+  const textRotateY = useTransform(rotateY, v => v * 0.6);
+  const textRotateX = useTransform(rotateX, v => v * 0.6);
+  const hoveringCard = useRef(false);
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      if (hoveringCard.current) return;
+      mouseX.set(e.clientX - window.innerWidth / 2);
+      mouseY.set(e.clientY - window.innerHeight / 2);
+    };
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, [mouseX, mouseY]);
 
   useEffect(() => {
     const stored = localStorage.getItem("visitCount");
@@ -146,52 +164,98 @@ export default function Home() {
           className="h-[640px] relative shrink-0 w-full"
         >
 
-          {/* Macscreen mockup */}
-          <div className="absolute left-1/2 -translate-x-1/2 top-0 w-[1217px] h-[609px]">
-
-            {/* Desktop Outer frame */}
-            <div className="absolute left-1/2 -translate-x-1/2 top-0 w-[1167px] h-[568px] bg-[var(--surface\/primary,#faf9ff)] border border-[var(--border\/default,#d1cedc)] border-solid flex flex-col items-start justify-center p-[8px] rounded-[var(--border-radius\/large,12px)] shadow-[0px_10px_20px_0px_rgba(0,0,0,0.15)] overflow-clip">
-
-              {/* Desktop Inner */}
-              <div className="flex-[1_0_0] min-h-px min-w-px w-full relative overflow-clip rounded-[var(--border-radius\/default,8px)] border border-[var(--border\/default,#d1cedc)] border-solid bg-[var(--surface\/primary,#faf9ff)] shadow-[0px_10px_20px_0px_rgba(0,0,0,0.15)]">
-
-                {/* Browser nav bar */}
+          {/* Macscreen mockup — skeuomorphic with 3D mouse tracking */}
+          <div
+            className="absolute left-1/2 -translate-x-1/2 top-0 w-[1100px] h-[620px]"
+            style={{ perspective: "1400px", perspectiveOrigin: "50% 40%" }}
+          >
+            <motion.div
+              style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
+              className="w-full h-full"
+            >
+              {/* Aluminum outer shell */}
+              <div
+                className="absolute inset-0 rounded-[20px] overflow-hidden border border-[#d1cedc]"
+                style={{
+                  background: "linear-gradient(175deg, #eeedf4 0%, #f2f1f7 18%, #e8e7f0 52%, #dddce6 78%, #d4d3dc 100%)",
+                  boxShadow: [
+                    "0 8px 24px rgba(0,0,0,0.10)",
+                    "0 2px 6px rgba(0,0,0,0.07)",
+                    "inset 0 1px 0 rgba(255,255,255,0.65)",
+                    "inset 1px 0 0 rgba(255,255,255,0.25)",
+                    "inset -1px 0 0 rgba(0,0,0,0.06)",
+                  ].join(", "),
+                }}
+              >
+                {/* Top edge highlight */}
                 <div
-                  className="absolute left-[-1px] top-[-1px] right-[-1px] flex items-center justify-between p-[16px]"
+                  className="absolute inset-x-0 top-0 h-[1px] pointer-events-none"
                   style={{
-                    background: "linear-gradient(to right, #e8e7f0 0%, #faf9ff 50%, #e8e7f0 100%)",
+                    background: "linear-gradient(to right, transparent 8%, rgba(255,255,255,0.85) 28%, rgba(255,255,255,0.95) 50%, rgba(255,255,255,0.85) 72%, transparent 92%)",
+                  }}
+                />
+
+                {/* Screen content — sits directly inside aluminum frame */}
+                <div
+                  className="absolute overflow-hidden border border-[#d1cedc]"
+                  style={{
+                    top: "8px",
+                    left: "8px",
+                    right: "8px",
+                    bottom: "8px",
+                    borderRadius: "14px",
+                    background: "#faf9ff",
+                    boxShadow: "inset 0 1px 3px rgba(0,0,0,0.10)",
                   }}
                 >
-                  {/* Traffic light dots */}
-                  <div className="flex items-center gap-[8px] h-[17px]">
-                    <div className="w-[12px] h-[12px] rounded-full bg-[var(--neutral\/50,#b8b4c5)]" />
-                    <div className="w-[12px] h-[12px] rounded-full bg-[var(--neutral\/50,#b8b4c5)]" />
-                    <div className="w-[12px] h-[12px] rounded-full bg-[var(--neutral\/50,#b8b4c5)]" />
+                  {/* Browser nav bar */}
+                  <div
+                    className="absolute left-0 top-0 right-0 flex items-center justify-between p-[16px]"
+                    style={{
+                      background: "linear-gradient(to right, #e8e7f0 0%, #faf9ff 50%, #e8e7f0 100%)",
+                    }}
+                  >
+                    {/* Traffic light dots */}
+                    <div className="flex items-center gap-[8px] h-[17px]">
+                      <div className="w-[12px] h-[12px] rounded-full bg-[var(--neutral\/50,#b8b4c5)]" />
+                      <div className="w-[12px] h-[12px] rounded-full bg-[var(--neutral\/50,#b8b4c5)]" />
+                      <div className="w-[12px] h-[12px] rounded-full bg-[var(--neutral\/50,#b8b4c5)]" />
+                    </div>
+                    {/* Plus icon */}
+                    <div className="flex items-center justify-end w-[82px]">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M12 5V19M5 12H19" stroke="#7e7c87" strokeWidth="1.5" strokeLinecap="round" />
+                      </svg>
+                    </div>
                   </div>
-                  {/* Plus icon */}
-                  <div className="flex items-center justify-end w-[82px]">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                      <path d="M12 5V19M5 12H19" stroke="#7e7c87" strokeWidth="1.5" strokeLinecap="round" />
-                    </svg>
-                  </div>
+
+                  {/* Glass glare */}
+                  <div
+                    className="absolute inset-0 pointer-events-none"
+                    style={{
+                      background: "linear-gradient(145deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.07) 35%, transparent 65%)",
+                    }}
+                  />
                 </div>
-
               </div>
-            </div>
-
+            </motion.div>
           </div>
 
           {/* Bottom fade gradient — fades macbook into page background */}
           <div
-            className="absolute left-1/2 -translate-x-1/2 w-[1217px] h-[230px] pointer-events-none"
+            className="absolute left-1/2 -translate-x-1/2 w-[1300px] h-[380px] pointer-events-none"
             style={{
-              top: "379px",
-              background: "linear-gradient(to top, #faf9ff 46.957%, rgba(250,249,255,0) 100%)",
+              top: "280px",
+              background: "linear-gradient(to top, #faf9ff 52%, rgba(250,249,255,0) 100%)",
             }}
           />
 
           {/* Hero text + drink card */}
-          <div className="absolute left-1/2 -translate-x-1/2 top-[150px] w-[658px] flex flex-col gap-[42px] items-center">
+          <div
+            className="absolute left-1/2 -translate-x-1/2 top-[150px] w-[658px]"
+            style={{ perspective: "1400px", perspectiveOrigin: "50% 40%" }}
+          >
+          <motion.div style={{ rotateX: textRotateX, rotateY: textRotateY }} className="flex flex-col gap-[42px] items-center w-full">
             <div
               className="w-full text-center text-[color:var(--text\/primary,#232226)] text-[length:var(--text-size\/largest,50px)] tracking-[-1px] font-[450] leading-[1.2]"
               style={{ fontFamily: "var(--text-font/default, 'Inter Tight', sans-serif)" }}
@@ -204,6 +268,12 @@ export default function Home() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, ease: "easeOut", delay: 0.4 }}
+              onMouseEnter={() => {
+                hoveringCard.current = true;
+                mouseX.set(0);
+                mouseY.set(0);
+              }}
+              onMouseLeave={() => { hoveringCard.current = false; }}
             >
               <CardDrinks
                 className="border border-[#b6b1c8] border-solid flex flex-col gap-[42px] items-center p-[36px] rounded-[12px] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.07)] shrink-0"
@@ -216,6 +286,7 @@ export default function Home() {
                 }}
               />
             </motion.div>
+          </motion.div>
           </div>
 
         </motion.div>

@@ -9,6 +9,14 @@ import Navigation from "../../imports/Navigation";
 import HomeButton from "../components/HomeButton";
 import UpNext from "../components/UpNext";
 import ButtonBasic from "../components/ButtonBasic";
+import CasestudyMiniMenu from "../components/CasestudyMiniMenu";
+
+const TIAN_SECTIONS = [
+  { id: "cs-overview", label: "Overview" },
+  { id: "cs-design-system", label: "Design System" },
+  { id: "cs-flight-planning", label: "Flight Planning" },
+  { id: "cs-final-designs", label: "Final Designs + Thoughts" },
+];
 const imgTokenSystem = new URL("../../assets/project/tianair/Tian_TokenSystem.png", import.meta.url).href;
 const imgComponentSystem = new URL("../../assets/project/tianair/Tian_ComponentSystem.png", import.meta.url).href;
 const imgMilitaryTime = new URL("../../assets/project/tianair/tian_militarytime.png", import.meta.url).href;
@@ -87,6 +95,7 @@ export default function CasestudyTianAirlines() {
   return (
     <div className="relative min-h-screen bg-[#faf9ff] overflow-x-clip">
       <HomeButton />
+      <CasestudyMiniMenu sections={TIAN_SECTIONS} />
       <AnimatePresence>
         {scrolled && (
           <motion.div
@@ -137,7 +146,7 @@ export default function CasestudyTianAirlines() {
           </p>
 
           {/* ── Overview ── */}
-          <div className="flex flex-col gap-[32px] items-start w-full">
+          <div id="cs-overview" className="flex flex-col gap-[32px] items-start w-full">
             <div className="border-b border-[#d1cedc] flex flex-col gap-[8px] items-start pb-[32px] w-full">
               <p className="font-['Inter_Tight',sans-serif] font-[450] leading-[1.3] text-[#232226] text-[24px] w-full">
                 Tian Airlines
@@ -188,7 +197,7 @@ export default function CasestudyTianAirlines() {
           </div>
 
           {/* ── The Design System ── */}
-          <div className="flex flex-col gap-[8vh] items-start w-full">
+          <div id="cs-design-system" className="flex flex-col gap-[8vh] items-start w-full">
             <div className="flex flex-col gap-[16px] items-start w-full">
               <p className="font-['Inter_Tight',sans-serif] leading-none text-[#908e99] text-[16px]">The Design System</p>
               <p className="font-['Inter_Tight',sans-serif] font-[450] leading-[1.3] text-[#232226] text-[24px]">
@@ -252,7 +261,7 @@ export default function CasestudyTianAirlines() {
             </div>
 
             {/* Flight Planning */}
-            <div className="flex flex-col gap-[32px] items-start w-full">
+            <div id="cs-flight-planning" className="flex flex-col gap-[32px] items-start w-full">
               <div className="flex flex-col gap-[16px] items-start w-full">
                 <p className="font-['Inter_Tight',sans-serif] leading-none text-[#908e99] text-[14px]">Flight Planning</p>
                 <p className="font-['Inter_Tight',sans-serif] font-[450] leading-[1.3] text-[#232226] text-[24px] w-full">
@@ -292,7 +301,7 @@ export default function CasestudyTianAirlines() {
           </div>
 
           {/* ── Section: Reflection ── */}
-          <div className="flex flex-col gap-[8vh] items-start w-full">
+          <div id="cs-final-designs" className="flex flex-col gap-[8vh] items-start w-full">
 
             {/* Final design clips */}
             <div className="flex flex-col gap-[16px] items-start w-full">
