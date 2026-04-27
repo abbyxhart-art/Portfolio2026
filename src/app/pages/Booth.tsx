@@ -65,15 +65,15 @@ export default function Booth() {
         <Navigation scrolledDown={scrolled} />
       </motion.div>
 
-      <div className="flex flex-col gap-[75px] items-center px-[20vw] pt-[15vh] pb-[15vh]">
+      <div className="flex flex-col gap-[75px] items-center px-[25vw] pt-[15vh] pb-[15vh]">
 
         {/* Header */}
         <div className="flex flex-col font-['Inter_Tight',sans-serif] font-normal gap-[32px] items-start w-full">
           <p className="leading-[1.25] text-[#272727] text-[24px]">
             The Booth
           </p>
-          <div className="leading-[1.65] text-[#232226] text-[18px] w-full">
-            <p className="mb-[16px]">Booth 1303 is RIT's New Media Lab.</p>
+          <div className="leading-[1.65] text-[#232226] text-[17px] w-full">
+            <p className="mb-[16px] text-[#585564]">Booth 1303 is RIT's New Media Lab.</p>
             <p>It's where I make most of my interactions, illustrations, and interfaces. Here, you can chill at booth and scroll 4 blocks of the works.</p>
           </div>
         </div>
@@ -84,7 +84,7 @@ export default function Booth() {
           {/* Interactive Experiences — 3 portrait */}
           <div className="flex flex-col gap-[32px] items-start w-full">
             <div className="flex flex-col font-['Inter_Tight',sans-serif] gap-[8px] items-start w-full">
-              <p className="leading-none text-[#232226] text-[18px]">Interactive Experiences</p>
+              <p className="leading-none text-[#232226] text-[17px]">Interactive Experiences</p>
               <p className="font-normal leading-[1.5] text-[#908e99] text-[16px]">Fashion shows to university wide events</p>
             </div>
             <div className="flex gap-[24px] items-start w-full">
@@ -137,7 +137,7 @@ export default function Booth() {
           {/* College of Science — 2 landscape */}
           <div className="flex flex-col gap-[32px] items-start w-full">
             <div className="flex flex-col font-['Inter_Tight',sans-serif] gap-[8px] items-start w-full">
-              <p className="leading-none text-[#232226] text-[18px]">College of Science</p>
+              <p className="leading-none text-[#232226] text-[17px]">College of Science</p>
               <p className="font-normal leading-[1.5] text-[#908e99] text-[16px]">Multimedia work promoting COS for students, faculty, and staff</p>
             </div>
             <div className="flex gap-[24px] items-start w-full">
@@ -156,7 +156,7 @@ export default function Booth() {
           {/* Student Government — 3 landscape 4:3 */}
           <div className="flex flex-col gap-[32px] items-start w-full">
             <div className="flex flex-col font-['Inter_Tight',sans-serif] gap-[8px] items-start w-full">
-              <p className="leading-none text-[#232226] text-[18px]">Student Government</p>
+              <p className="leading-none text-[#232226] text-[17px]">Student Government</p>
               <p className="font-normal leading-[1.5] text-[#908e99] text-[16px]">Promoting SG's free popcorn feature with merch still in production :D</p>
             </div>
             <div className="flex gap-[24px] items-start w-full">
@@ -176,7 +176,7 @@ export default function Booth() {
           {/* It doesn't stop here */}
           <div className="flex flex-col gap-[32px] items-start w-full">
             <div className="flex flex-col gap-[8px] items-start w-full max-w-[576px]">
-              <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#232226] text-[18px]">
+              <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#232226] text-[17px]">
                 It doesn't stop here!
               </p>
               <div className="flex gap-[8px] items-center">

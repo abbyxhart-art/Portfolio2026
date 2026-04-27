@@ -121,7 +121,7 @@ export default function CasestudyTianAirlines() {
         <Navigation scrolledDown={scrolled && !scrollingUp} />
       </motion.div>
 
-      <div className="flex flex-col items-center px-[20vw] pt-[15vh] pb-[15vh]">
+      <div className="flex flex-col items-center px-[25vw] pt-[15vh] pb-[15vh]">
         <div className="flex flex-col items-center w-full">
 
           {/* ── Hero video (scaled) ── */}
@@ -203,7 +203,7 @@ export default function CasestudyTianAirlines() {
               <p className="font-['Inter_Tight',sans-serif] font-[450] leading-[1.3] text-[#232226] text-[24px]">
                 Organized for anyone to use
               </p>
-              <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#585564] text-[18px] w-full">
+              <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#585564] text-[17px] w-full">
                 The design system covers typography, color, illustration styles, icon sizing, and component library of forms, buttons, and cards.
               </p>
               <ButtonBasic label="View Design System" size="Default" />
@@ -230,7 +230,7 @@ export default function CasestudyTianAirlines() {
                 <div className="flex flex-col gap-[16px] items-start w-full">
                   <p className="font-['Inter_Tight',sans-serif] leading-none text-[#908e99] text-[16px] w-full">Figma Variables</p>
                   <p className="font-['Inter_Tight',sans-serif] font-[450] leading-[1.3] text-[#232226] text-[24px] w-full">Tons of tokens and styles</p>
-                  <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#585564] text-[18px] w-full">
+                  <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#585564] text-[17px] w-full">
                     I worked with four major collections: Primitive Color, Semantic Color, Typography, and Box Model (to handle border radius and spacing).
                   </p>
                 </div>
@@ -246,7 +246,7 @@ export default function CasestudyTianAirlines() {
                 <div className="flex flex-col gap-[16px] items-start w-full">
                   <p className="font-['Inter_Tight',sans-serif] leading-none text-[#908e99] text-[16px] w-full">Components and Prototyping</p>
                   <p className="font-['Inter_Tight',sans-serif] font-[450] leading-[1.3] text-[#232226] text-[24px] w-full">Figma calculators + if/else</p>
-                  <div className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#585564] text-[18px] w-full">
+                  <div className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#585564] text-[17px] w-full">
                     <p className="mb-[16px]">{`I made components of two frames looping 10 ms to force a "listener" of sorts in Figma.`}</p>
                     <p>{`Each heavy process had its own special version set!`}</p>
                   </div>
@@ -309,7 +309,7 @@ export default function CasestudyTianAirlines() {
               <p className="font-['Inter_Tight',sans-serif] font-[450] leading-[1.3] text-black text-[24px]">
                 Where am I, where do I want to go, how do I get there?
               </p>
-              <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#585564] text-[18px] w-full">
+              <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#585564] text-[17px] w-full">
                 After testing peers, I made sure to have better cues for testing and layout for Figma to handle interactivity.
               </p>
               {/* Paginated gallery */}
@@ -372,13 +372,13 @@ export default function CasestudyTianAirlines() {
               <p className="font-['Inter_Tight',sans-serif] font-[450] leading-[1.3] text-black text-[24px]">
                 It's a methodical practice, high prototyping and logic
               </p>
-              <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#585564] text-[18px] w-full">
+              <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#585564] text-[17px] w-full">
                 {`Creating this system required a mix of code informed thinking and design. It's powered by Figma calculators and layered conditional logic. Bringing this level of complexity to life is so exciting!`}
               </p>
-              <p className="font-['Inter_Tight',sans-serif] font-[450] leading-[1.65] text-[#585564] text-[18px]">
+              <p className="font-['Inter_Tight',sans-serif] font-[450] leading-[1.65] text-[#585564] text-[17px]">
                 Applying it to "real life"
               </p>
-              <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#585564] text-[18px] w-full">
+              <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#585564] text-[17px] w-full">
                 {`While this isn't a product that will be used by an airline, I really enjoyed the practice of deep design thinking. For benchmarking, we tested amongst peers and I was able to find the gaps in the design system and make it usable.`}
               </p>
             </div>

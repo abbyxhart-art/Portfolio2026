@@ -107,7 +107,7 @@ export default function CasestudyFigmaRIT() {
         <Navigation scrolledDown={scrolled && !scrollingUp} />
       </motion.div>
 
-      <div className="flex flex-col items-center px-[20vw] pt-[15vh] pb-[15vh]">
+      <div className="flex flex-col items-center px-[25vw] pt-[15vh] pb-[15vh]">
         <div className="flex flex-col gap-[75px] items-end w-full">
 
           {/* ── Hero ── */}
@@ -139,7 +139,7 @@ export default function CasestudyFigmaRIT() {
                 <div className="flex flex-col font-['Inter_Tight',sans-serif] gap-[32px] items-start shrink-0 w-[159px]">
                   <div className="flex flex-col gap-[16px] items-start w-[90px]">
                     <p className="leading-none text-[#908e99] text-[16px] w-full">Tools</p>
-                    <div className="text-[#232226] text-[18px] w-full">
+                    <div className="text-[#232226] text-[17px] w-full">
                       <p className="leading-none mb-[12px]">Figma</p>
                       <p className="leading-none mb-[12px]">Figma MCP</p>
                       <p className="leading-none">Claude</p>
@@ -147,11 +147,11 @@ export default function CasestudyFigmaRIT() {
                   </div>
                   <div className="flex flex-col gap-[16px] items-start">
                     <p className="leading-none text-[#908e99] text-[16px] w-full">Timeline</p>
-                    <p className="leading-none text-[#232226] text-[18px] w-full">1 Week</p>
+                    <p className="leading-none text-[#232226] text-[17px] w-full">1 Week</p>
                   </div>
                   <div className="flex flex-col gap-[16px] items-start">
                     <p className="leading-none text-[#908e99] text-[16px] w-full">Role</p>
-                    <p className="leading-none text-[#232226] text-[18px] w-full">Design Lead</p>
+                    <p className="leading-none text-[#232226] text-[17px] w-full">Design Lead</p>
                   </div>
                 </div>
 
@@ -159,11 +159,11 @@ export default function CasestudyFigmaRIT() {
                 <div className="flex flex-1 flex-col gap-[32px] items-start min-w-0">
                   <div className="flex flex-col font-['Inter_Tight',sans-serif] gap-[16px] items-start w-[126px]">
                     <p className="leading-none text-[#908e99] text-[16px] w-full">Interface</p>
-                    <p className="leading-none text-[#232226] text-[18px] w-full">Desktop, Mobile</p>
+                    <p className="leading-none text-[#232226] text-[17px] w-full">Desktop, Mobile</p>
                   </div>
                   <div className="flex flex-col gap-[16px] items-start w-full">
                     <p className="font-['Inter_Tight',sans-serif] leading-none text-[#908e99] text-[16px] w-full">Notes</p>
-                    <div className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#232226] text-[18px] w-full">
+                    <div className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#232226] text-[17px] w-full">
                       <p className="mb-[16px]">
                         FigBuild is Figma's annual hackathon, bringing students together with this year's challenge of creating something with Figma Make.
                       </p>
@@ -190,7 +190,7 @@ export default function CasestudyFigmaRIT() {
                 <p className="font-['Inter_Tight',sans-serif] font-[450] leading-[1.3] text-[#232226] text-[24px] w-full">
                   Sprinting to be ready for Figbuild on Super Bowl Sunday
                 </p>
-                <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#585564] text-[18px] w-full">
+                <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#585564] text-[17px] w-full">
                   I took the basic concepts from Troy and laid out the mobile and desktop bento box design, flow chart, and design proposal within 4-6 hours, taking a break to watch Bad Bunny's Halftime performance :D
                 </p>
               </div>
@@ -208,7 +208,7 @@ export default function CasestudyFigmaRIT() {
                   Figma Make → Figma MCP + Claude
                 </p>
               </div>
-              <div className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] relative text-[#585564] text-[18px] w-full">
+              <div className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] relative text-[#585564] text-[17px] w-full">
                 <p className="mb-[16px]">
                   Once our wireframes were Figma Branding approved, we began our development journey with Figma Make, which gave us the basic template files.
                 </p>
@@ -263,7 +263,7 @@ export default function CasestudyFigmaRIT() {
             {/* Point 1 */}
             <div className="bg-[rgba(235,250,213,0.5)] border border-[#e8e7f0] flex font-['Inter_Tight',sans-serif] gap-[16px] items-start p-[16px] rounded-[8px] w-full">
               <p className="leading-[2.05] text-[#908e99] text-[14px] shrink-0">1</p>
-              <div className="flex flex-col gap-[8px] items-start flex-1 leading-[1.65] text-[#585564] text-[18px]">
+              <div className="flex flex-col gap-[8px] items-start flex-1 leading-[1.65] text-[#585564] text-[17px]">
                 <p className="whitespace-nowrap">THANK YOU TK AND JOANNA!</p>
                 <p className="w-full">
                   This opportunity was so fun and seeing kids' badges pop up was so amazing to see! Everybody had such unique badges and it set the tone for the 2nd ever FigBuild
@@ -275,8 +275,8 @@ export default function CasestudyFigmaRIT() {
             <div className="bg-[rgba(235,250,213,0.5)] border border-[#e8e7f0] flex gap-[16px] items-start p-[16px] rounded-[8px] w-full">
               <p className="font-['Inter_Tight',sans-serif] leading-[2.05] text-[#908e99] text-[14px] shrink-0">2</p>
               <div className="flex flex-col gap-[8px] items-start flex-1">
-                <p className="font-['Inter_Tight',sans-serif] leading-[1.65] text-[#585564] text-[18px]">My Figma fam</p>
-                <p className="font-['Inter_Tight',sans-serif] leading-[1.65] text-[#585564] text-[18px] w-full">
+                <p className="font-['Inter_Tight',sans-serif] leading-[1.65] text-[#585564] text-[17px]">My Figma fam</p>
+                <p className="font-['Inter_Tight',sans-serif] leading-[1.65] text-[#585564] text-[17px] w-full">
                   TY Charlotte, Troy, + Lasya, I couldn't have asked for a better group of people to start Figma at RIT with
                 </p>
                 <img src={imgFigmafam} className="aspect-[2/1] rounded-[4px] w-[255px] object-cover" alt="Figma fam" />
@@ -287,8 +287,8 @@ export default function CasestudyFigmaRIT() {
             <div className="bg-[rgba(235,250,213,0.5)] border border-[#e8e7f0] flex gap-[16px] items-start p-[16px] rounded-[8px] w-full">
               <p className="font-['Inter_Tight',sans-serif] leading-[2.05] text-[#908e99] text-[14px] shrink-0">3</p>
               <div className="flex flex-col gap-[8px] items-start flex-1">
-                <p className="font-['Inter_Tight',sans-serif] leading-[1.65] text-[#585564] text-[18px]">Leaving RIT's impact :D</p>
-                <p className="font-['Inter_Tight',sans-serif] leading-[1.65] text-[#585564] text-[18px] w-full">
+                <p className="font-['Inter_Tight',sans-serif] leading-[1.65] text-[#585564] text-[17px]">Leaving RIT's impact :D</p>
+                <p className="font-['Inter_Tight',sans-serif] leading-[1.65] text-[#585564] text-[17px] w-full">
                   I really wanted RIT's first year in the program to be great for other cohorts after us! It's so awesome seeing other schools being inspired by us and vice versa!
                 </p>
                 <img src={imgSlackInspired} className="aspect-[393/127] rounded-[4px] w-full max-w-[393px] object-cover" alt="Slack inspired" />

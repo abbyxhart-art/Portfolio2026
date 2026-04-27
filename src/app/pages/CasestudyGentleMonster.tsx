@@ -133,7 +133,7 @@ export default function CasestudyGentleMonster() {
         <Navigation scrolledDown={scrolled && !scrollingUp} />
       </motion.div>
 
-      <div className="flex flex-col items-center px-[20vw] pt-[15vh] pb-[15vh]">
+      <div className="flex flex-col items-center px-[25vw] pt-[15vh] pb-[15vh]">
 
         {/* Segment 1: Hero + Overview */}
         <div className="flex flex-col gap-[9vh] items-center w-full">
@@ -373,7 +373,7 @@ export default function CasestudyGentleMonster() {
               <p className="font-['Inter_Tight',sans-serif] font-[450] leading-[1.4] text-[#585564] text-[20px] relative z-10">
                 Scan → Glasses Found → Checkout
               </p>
-              <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#585564] text-[18px] relative z-10">
+              <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#585564] text-[17px] relative z-10">
                 Sharing key clips of the main flow and summarizing design decisions
               </p>
             </div>
@@ -387,7 +387,7 @@ export default function CasestudyGentleMonster() {
                 <p className="font-['Inter_Tight',sans-serif] font-[450] leading-[1.3] text-black text-[24px]">
                   Showcasing the shorter main flow inside the kiosk.
                 </p>
-                <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#585564] text-[18px]">
+                <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#585564] text-[17px]">
                   The flow displays two screens working in tandem! The ultimate goal is to help users find their best match and have a sales associate save them at the counter.
                 </p>
               </div>
@@ -403,7 +403,7 @@ export default function CasestudyGentleMonster() {
                 <p className="font-['Inter_Tight',sans-serif] font-[450] leading-[1.3] text-black text-[24px]">
                   Use smaller filters as matches.
                 </p>
-                <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#585564] text-[18px]">
+                <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#585564] text-[17px]">
                   This feature replaces filters by presenting personalized, pre-matched options instead of requiring people to sort through presets themselves (although the filter button still exists should people want to use it!).
                 </p>
               </div>
@@ -431,7 +431,7 @@ export default function CasestudyGentleMonster() {
                 <p className="font-['Inter_Tight',sans-serif] font-[450] leading-[1.3] text-black text-[24px]">
                   Don't overload people.
                 </p>
-                <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#585564] text-[18px]">
+                <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#585564] text-[17px]">
                   Initially display four glasses to reduce decision paralysis! Users can scroll to explore lower-ranked matches, maintaining momentum without overwhelming them. Navigation is positioned at the bottom to minimize hand movement/fatigue.
                 </p>
               </div>
@@ -459,7 +459,7 @@ export default function CasestudyGentleMonster() {
                 <p className="font-['Inter_Tight',sans-serif] font-[450] leading-[1.3] text-black text-[24px]">
                   Show people how it matches.
                 </p>
-                <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#585564] text-[18px]">
+                <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#585564] text-[17px]">
                   Users can interpret the match percentage through four familiar criteria commonly used by lens specialists to distinguish a good fit from a poor one. Lower matches are considerate; higher matches are framed to feel confidence-boosting!
                 </p>
               </div>
@@ -487,7 +487,7 @@ export default function CasestudyGentleMonster() {
                 <p className="font-['Inter_Tight',sans-serif] font-[450] leading-[1.3] text-black text-[24px]">
                   One decision opens up the next one.
                 </p>
-                <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#585564] text-[18px]">
+                <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#585564] text-[17px]">
                   Each decision should feel like a natural progression, and UI should not overflow. Information is really only displayed when necessary, like this lens tints feature!
                 </p>
               </div>
@@ -728,7 +728,7 @@ export default function CasestudyGentleMonster() {
                     Organization and Introducing new information
                   </p>
                 </div>
-                <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#908e99] text-[18px]">
+                <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#908e99] text-[17px]">
                   Studying the structure of information; great feedback and organized sections for beginners
                 </p>
               </div>
@@ -743,7 +743,7 @@ export default function CasestudyGentleMonster() {
                     Customization options
                   </p>
                 </div>
-                <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#908e99] text-[18px]">
+                <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#908e99] text-[17px]">
                   Viewing customization steps for what works and what definitely doesn't  [scrolling &gt;:(]
                 </p>
               </div>
@@ -778,7 +778,7 @@ export default function CasestudyGentleMonster() {
                 <p className="font-['Inter_Tight',sans-serif] font-[450] leading-[1.4] text-[#585564] text-[20px]">
                   Overload of Content
                 </p>
-                <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#585564] text-[18px]">
+                <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#585564] text-[17px]">
                   In complex product menus, scrolls and hidden submenus created cognitive friction.
                 </p>
               </div>
@@ -788,7 +788,7 @@ export default function CasestudyGentleMonster() {
                 <p className="font-['Inter_Tight',sans-serif] font-[450] leading-[1.4] text-[#585564] text-[20px]">
                   Menu Placement
                 </p>
-                <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#585564] text-[18px]">
+                <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#585564] text-[17px]">
                   Inconsistent menu placement popped up and often too high to be in good click zone
                 </p>
               </div>
@@ -798,7 +798,7 @@ export default function CasestudyGentleMonster() {
                 <p className="font-['Inter_Tight',sans-serif] font-[450] leading-[1.4] text-[#585564] text-[20px]">
                   Fatigue
                 </p>
-                <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#585564] text-[18px]">
+                <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#585564] text-[17px]">
                   Kiosks utilize full range of motion, causing fatigue
                 </p>
               </div>
@@ -922,7 +922,7 @@ export default function CasestudyGentleMonster() {
                 1
               </p>
               <div className="flex flex-col gap-[8px] items-start flex-1 min-w-0">
-                <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#585564] text-[18px]">
+                <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#585564] text-[17px]">
                   Balancing a lot of moving pieces
                 </p>
                 <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#585564] text-[16px] tracking-[-0.32px]">
@@ -937,7 +937,7 @@ export default function CasestudyGentleMonster() {
                 2
               </p>
               <div className="flex flex-col gap-[8px] items-start flex-1 min-w-0">
-                <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#585564] text-[18px]">
+                <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#585564] text-[17px]">
                   Time Saver + Art Installation? Say less!
                 </p>
                 <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#585564] text-[16px] tracking-[-0.32px]">

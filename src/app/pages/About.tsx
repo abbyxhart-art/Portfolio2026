@@ -173,11 +173,11 @@ export default function About() {
       </motion.div>
 
       {/* Page content */}
-      <div className="flex flex-col gap-[75px] items-start px-[20vw] pt-[15vh] pb-[15vh]">
+      <div className="flex flex-col gap-[75px] items-start px-[25vw] pt-[15vh] pb-[15vh]">
         <div className="flex flex-col gap-[75px] items-start w-full">
 
           {/* Intro */}
-          <div className="font-['Inter_Tight',sans-serif] font-normal text-black text-[18px] w-full">
+          <div className="font-['Inter_Tight',sans-serif] font-normal text-[#585564] text-[17px] w-full">
             <p className="leading-[1.65] mb-[16px]">Hi, I'm Abby :D</p>
             <p className="leading-[1.65] mb-[16px]">I design systems, products, and experiences to help people navigate and interact with tools and worlds.</p>
             <p className="leading-[1.65]">I'm an interdisciplinary designer who loves branding and shipping fast. Wearing many hats never gets boring; my roles across internships and teams have spanned interaction, motion, and documentation :D</p>
@@ -188,7 +188,7 @@ export default function About() {
             {/* Title + blurb + body */}
             <div className="flex flex-col gap-[24px] items-start w-full">
               <div className="flex flex-col gap-[24px] items-start w-full">
-                <p className="font-['Inter_Tight',sans-serif] leading-none text-[#232226] text-[18px]">
+                <p className="font-['Inter_Tight',sans-serif] leading-none text-[#232226] text-[17px]">
                   Highschool → RIT
                 </p>
                 <div className="flex gap-[3px] items-center">
@@ -204,7 +204,7 @@ export default function About() {
                   />
                 </div>
               </div>
-              <div className="font-['Inter_Tight',sans-serif] text-[#232226] text-[18px] w-full">
+              <div className="font-['Inter_Tight',sans-serif] text-[#585564] text-[17px] w-full">
                 <p className="leading-[1.65] mb-[16px]">My friend Lana and I found our calling in AP Compsci; me with mini GUI applets and her with algorithms and robotics.</p>
                 <p className="leading-[1.65]">I opened Figma for the first time to propose our towns first hackathon, leading me to RIT where I've met so many talented and inspiring friends!</p>
               </div>
@@ -269,7 +269,7 @@ export default function About() {
           {/* Offline */}
           <div className="flex flex-col gap-[42px] items-start w-full">
             <div className="flex flex-col gap-[12px] items-start">
-              <p className="font-['Inter_Tight',sans-serif] leading-none text-[#232226] text-[18px]">Offline</p>
+              <p className="font-['Inter_Tight',sans-serif] leading-none text-[#232226] text-[17px]">Offline</p>
               <p className="font-['Inter_Tight',sans-serif] leading-[1.5] text-[#908e99] text-[16px]">Refueling mind and body</p>
             </div>
             <div className="grid grid-cols-3 gap-x-[16px] gap-y-[18px] w-full">
@@ -300,7 +300,7 @@ export default function About() {
           {/* Ethos */}
           <div className="flex flex-col gap-[24px] items-start w-full">
             <div className="flex flex-col gap-[12px] items-start">
-              <p className="font-['Inter_Tight',sans-serif] leading-none text-[#232226] text-[18px]">Ethos</p>
+              <p className="font-['Inter_Tight',sans-serif] leading-none text-[#232226] text-[17px]">Ethos</p>
               <p className="font-['Inter_Tight',sans-serif] leading-[1.5] text-[#908e99] text-[16px]">Life and design philosophy</p>
             </div>
 
@@ -326,7 +326,7 @@ export default function About() {
                 >
                   {[...quotes, ...quotes].map((q, i) => (
                     <div key={i} className="flex flex-col gap-[8px] items-start">
-                      <p className="font-['Inter_Tight',sans-serif] leading-[1.3] text-black text-[16px] whitespace-pre-line">
+                      <p className="font-['Inter_Tight',sans-serif] leading-[1.3] text-[#585564] text-[16px] whitespace-pre-line">
                         {q.text}
                       </p>
                       <p className="font-['Inter_Tight',sans-serif] leading-[1.5] text-[#908e99] text-[16px]">

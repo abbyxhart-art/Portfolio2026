@@ -104,7 +104,7 @@ export default function CasestudyAixels() {
         <Navigation scrolledDown={scrolled && !scrollingUp} />
       </motion.div>
 
-      <div className="flex flex-col items-center px-[20vw] pt-[15vh] pb-[15vh]">
+      <div className="flex flex-col items-center px-[25vw] pt-[15vh] pb-[15vh]">
         <div className="flex flex-col gap-[75px] items-center w-full">
 
           {/* ── Section: Overview ── */}
@@ -138,25 +138,25 @@ export default function CasestudyAixels() {
                 <div className="flex flex-col gap-[32px] items-start shrink-0 w-[159px]">
                   <div className="flex flex-col gap-[16px] items-start">
                     <p className="leading-none text-[#aeabb9] text-[16px] w-full">Tools</p>
-                    <div className="text-[#232226] text-[18px] w-full">
+                    <div className="text-[#232226] text-[17px] w-full">
                       <p className="leading-none mb-[12px]">Figma</p>
                       <p className="leading-none">Claude</p>
                     </div>
                   </div>
                   <div className="flex flex-col gap-[16px] items-start">
                     <p className="leading-none text-[#aeabb9] text-[16px] w-full">Timeline</p>
-                    <p className="leading-none text-[#232226] text-[18px] w-full">2 Days</p>
+                    <p className="leading-none text-[#232226] text-[17px] w-full">2 Days</p>
                   </div>
                   <div className="flex flex-col gap-[16px] items-start">
                     <p className="leading-none text-[#aeabb9] text-[16px] w-full">Role</p>
-                    <p className="leading-none text-[#232226] text-[18px] w-full">Team Lead</p>
+                    <p className="leading-none text-[#232226] text-[17px] w-full">Team Lead</p>
                   </div>
                 </div>
 
                 {/* Right: Context */}
                 <div className="flex flex-1 flex-col gap-[16px] items-start min-w-0">
                   <p className="leading-none text-[#aeabb9] text-[16px] w-full">Context</p>
-                  <div className="font-normal leading-[1.65] text-[#585564] text-[18px] w-full">
+                  <div className="font-normal leading-[1.65] text-[#585564] text-[17px] w-full">
                     <p className="font-['Inter_Tight',sans-serif] font-[450] text-[#232226] mb-[16px]">Creative Collision is a 2-day sprint</p>
                     <p className="font-['Inter_Tight',sans-serif] mb-[16px]">Teams in Creative Collision have a mix of 1 - 4th years to combine skills and mentorship! Each team typically has 6+ members.</p>
                     <p className="font-['Inter_Tight',sans-serif] mb-[16px]">During the final day, College of Art and Design students, faculty, and alumni are invited to explore the projects New Media Design have been developing.</p>
@@ -185,7 +185,7 @@ export default function CasestudyAixels() {
                     Wait..a creative collision has AI??
                   </p>
                 </div>
-                <div className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] relative text-[#585564] text-[18px] w-full">
+                <div className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] relative text-[#585564] text-[17px] w-full">
                   <p className="mb-[16px]">This was the first year students were mixed in their opinion with the prompt.</p>
                   <p>While other teams had people interact with AI, we strayed away from interactions with filters, generated content, or chatbots and rather used Claude and Figma Make in our workflow to make something cool.</p>
                 </div>
@@ -201,7 +201,7 @@ export default function CasestudyAixels() {
                     AI is a mirror
                   </p>
                 </div>
-                <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#585564] text-[18px] w-full">
+                <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#585564] text-[17px] w-full">
                   Our professors believe that AI is nothing without taste. My fellow team lead, Mars, responded with AI is a mirror. We took that concept and ran with it, conceptualizing different ideas the first few hours until we landed on a grid of color and pixel art.
                 </p>
               </div>
@@ -266,7 +266,7 @@ export default function CasestudyAixels() {
             <div className="bg-[#f4fad5] border border-[#e8e7f0] flex gap-[16px] items-start p-[16px] rounded-[8px] w-full">
               <p className="font-['Inter_Tight',sans-serif] leading-[2.05] text-[#908e99] text-[14px] shrink-0">1</p>
               <div className="flex flex-col gap-[8px] items-start flex-1">
-                <p className="font-['Inter_Tight',sans-serif] leading-[1.65] text-[#585564] text-[18px]">Simplicity &gt; Complexity</p>
+                <p className="font-['Inter_Tight',sans-serif] leading-[1.65] text-[#585564] text-[17px]">Simplicity &gt; Complexity</p>
                 <p className="font-['Inter',sans-serif] font-normal leading-[1.65] text-[#585564] text-[16px] tracking-[-0.32px] w-full">
                   The response was incredible! Our work ended up being the lightest project in the showcase, with other teams having lots of touch points and long flows to work with over two days
                 </p>
@@ -277,7 +277,7 @@ export default function CasestudyAixels() {
             <div className="bg-[#ebfad5] border border-[#e8e7f0] flex gap-[16px] items-start p-[16px] rounded-[8px] w-full">
               <p className="font-['Inter_Tight',sans-serif] leading-[2.05] text-[#908e99] text-[14px] shrink-0">2</p>
               <div className="flex flex-col gap-[8px] items-start flex-1">
-                <p className="font-['Inter_Tight',sans-serif] leading-[1.65] text-[#585564] text-[18px]">Winning T-Shirts!</p>
+                <p className="font-['Inter_Tight',sans-serif] leading-[1.65] text-[#585564] text-[17px]">Winning T-Shirts!</p>
                 <p className="font-['Inter',sans-serif] font-normal leading-[1.65] text-[#585564] text-[16px] tracking-[-0.32px] w-full">
                   THANK YOU Mauvis and Grace @ Sogni.AI! I really learned a lot from Mauvis especially sharing his personal story and motivation to start Sogni.AI!
                 </p>
@@ -289,7 +289,7 @@ export default function CasestudyAixels() {
             <div className="bg-[#dbfad5] border border-[#e8e7f0] flex gap-[16px] items-start p-[16px] rounded-[8px] w-full">
               <p className="font-['Inter_Tight',sans-serif] leading-[2.05] text-[#908e99] text-[14px] shrink-0">3</p>
               <div className="flex flex-col gap-[8px] items-start flex-1">
-                <p className="font-['Inter_Tight',sans-serif] leading-[1.65] text-[#585564] text-[18px]">Side questing music beats with Strudel</p>
+                <p className="font-['Inter_Tight',sans-serif] leading-[1.65] text-[#585564] text-[17px]">Side questing music beats with Strudel</p>
                 <p className="font-['Inter',sans-serif] font-normal leading-[1.65] text-[#585564] text-[16px] tracking-[-0.32px] w-full">
                   I also made a custom beat for our experience! It was so fun being able to experiment, though music producer will never be in my future LOL
                 </p>
