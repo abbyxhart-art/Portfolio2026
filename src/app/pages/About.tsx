@@ -164,17 +164,17 @@ export default function About() {
 
       <motion.div
         initial={shouldAnimate ? { opacity: 0, y: -20 } : false}
-        animate={{ opacity: 1, y: 0, top: scrolled && !scrollingUp ? "0px" : "12px" }}
+        animate={{ opacity: 1, y: 0, top: scrolled ? "8px" : "16px" }}
         transition={{ duration: 0.4, ease: "easeOut" }}
-        className="fixed left-[24px] right-[24px] z-50"
-        style={{ top: "12px" }}
+        className="fixed left-[20px] right-[20px] z-50"
+        style={{ top: "16px" }}
       >
-        <Navigation scrolledDown={scrolled && !scrollingUp} />
+        <Navigation scrolledDown={scrolled} />
       </motion.div>
 
       {/* Page content */}
-      <div className="flex justify-center px-[10px] pt-[calc(15vh+60px)] pb-[15vh]">
-        <div className="flex flex-col gap-[75px] items-start w-full max-w-[728px]">
+      <div className="flex flex-col gap-[75px] items-start px-[20vw] pt-[15vh] pb-[15vh]">
+        <div className="flex flex-col gap-[75px] items-start w-full">
 
           {/* Intro */}
           <div className="font-['Inter_Tight',sans-serif] font-normal text-black text-[18px] w-full">

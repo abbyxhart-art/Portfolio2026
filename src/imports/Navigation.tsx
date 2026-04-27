@@ -13,7 +13,7 @@ export default function Navigation({ scrolledDown = false }: { scrolledDown?: bo
   return (
     <>
       <div
-        className={`flex h-[72px] justify-center w-full font-['Inter_Tight',sans-serif] text-[16px] font-normal leading-none tracking-[0] ${scrolledDown ? "items-start py-[16px]" : "items-end"}`}
+        className={`flex h-[36px] justify-center w-full font-['Inter_Tight',sans-serif] text-[16px] font-normal leading-none tracking-[0] ${scrolledDown ? "items-start py-[8px]" : "items-center"}`}
         style={{
           gap: scrolledDown ? "16px" : "24px",
           transition: "gap 0.4s cubic-bezier(0.4,0,0.2,1)"

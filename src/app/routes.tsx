@@ -7,20 +7,15 @@ import CasestudyTianAirlines from "./pages/CasestudyTianAirlines";
 import CasestudyGentleMonster from "./pages/CasestudyGentleMonster";
 import Booth from "./pages/Booth";
 import About from "./pages/About";
-import { useDrink } from "./context/DrinkContext";
 import DrinkFloater from "./components/DrinkFloater";
-import ContactLink from "./components/ContactLink";
 import Footer from "./components/Footer";
 
 function RootLayout() {
-  const { selectedDrink } = useDrink();
-
   return (
     <>
       <Outlet />
       <Footer />
-      <ContactLink />
-      {selectedDrink && <DrinkFloater drinkType={selectedDrink} />}
+      <DrinkFloater drinkType="lychee" />
     </>
   );
 }

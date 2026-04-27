@@ -57,18 +57,18 @@ export default function Booth() {
 
       <motion.div
         initial={shouldAnimate ? { opacity: 0, y: -20 } : false}
-        animate={{ opacity: 1, y: 0, top: scrolled && !scrollingUp ? "0px" : "12px" }}
+        animate={{ opacity: 1, y: 0, top: scrolled ? "8px" : "16px" }}
         transition={{ duration: 0.4, ease: "easeOut" }}
-        className="fixed left-[24px] right-[24px] z-50"
-        style={{ top: "12px" }}
+        className="fixed left-[20px] right-[20px] z-50"
+        style={{ top: "16px" }}
       >
-        <Navigation scrolledDown={scrolled && !scrollingUp} />
+        <Navigation scrolledDown={scrolled} />
       </motion.div>
 
-      <div className="flex flex-col gap-[75px] items-center pt-[calc(15vh+60px)] pb-[15vh]">
+      <div className="flex flex-col gap-[75px] items-center px-[20vw] pt-[15vh] pb-[15vh]">
 
         {/* Header */}
-        <div className="flex flex-col font-['Inter_Tight',sans-serif] font-normal gap-[32px] items-start w-full max-w-[728px] px-[10px]">
+        <div className="flex flex-col font-['Inter_Tight',sans-serif] font-normal gap-[32px] items-start w-full">
           <p className="leading-[1.25] text-[#272727] text-[24px]">
             The Booth
           </p>
@@ -79,7 +79,7 @@ export default function Booth() {
         </div>
 
         {/* Content */}
-        <div className="flex flex-col gap-[75px] items-start w-full max-w-[728px] px-[10px]">
+        <div className="flex flex-col gap-[75px] items-start w-full">
 
           {/* Interactive Experiences — 3 portrait */}
           <div className="flex flex-col gap-[32px] items-start w-full">

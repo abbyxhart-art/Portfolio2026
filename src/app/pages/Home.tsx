@@ -1,12 +1,12 @@
 import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from "motion/react";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useNavEntrance } from "../hooks/useNavEntrance";
 import { Link } from "react-router";
 import Navigation from "../../imports/Navigation";
-import CardDrinks, { CardDrinksProperty } from "../components/CardDrinks";
 import CardCasestudy, { AccentType } from "../components/CardCasestudy";
-import { useDrink } from "../context/DrinkContext";
 import aixelsMeImg from "../../assets/project/aixels/me.JPG";
+import sprayCanCursor from "../../assets/spray-can-cursor.svg";
+import undoArrow from "../../assets/undo-arrow.svg";
 const figbuildMacstudioVideo = new URL("../../assets/project/figbuild/figbuild_macstudio_2x1.mp4", import.meta.url).href;
 import gmTeaserVideo from "../../assets/project/gentlemonster/GM_Teaser_2x1.mp4";
 const tianHeroVideo = new URL("../../assets/project/tianair/tian_fullflow_macstudio_2x1.mp4", import.meta.url).href;
@@ -42,7 +42,7 @@ const caseStudies: {
   {
     accentType: "3",
     title: "Tian Airways",
-    description: "Bringing a digital playground to students with Figma for Edu",
+    description: "Defining a design language for air travel",
     date: "Fall 2025",
     tag1Label: "Agentic Design",
     tag2Label: "Designathon",
@@ -63,8 +63,44 @@ export default function Home() {
   const shouldAnimate = useNavEntrance();
   const [scrolled, setScrolled] = useState(false);
   const [scrollingUp, setScrollingUp] = useState(false);
-  const [unlockedCount, setUnlockedCount] = useState(1);
-  const { setSelectedDrink } = useDrink();
+  const [sprayPos, setSprayPos] = useState<{ x: number; y: number } | null>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const isDrawingRef = useRef(false);
+  const lastPosRef = useRef<{ x: number; y: number } | null>(null);
+  const selectedColorRef = useRef<string>('#9A47FF');
+
+  const clearCanvas = useCallback(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (ctx) ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }, []);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    canvas.width = canvas.offsetWidth * window.devicePixelRatio;
+    canvas.height = canvas.offsetHeight * window.devicePixelRatio;
+    const ctx = canvas.getContext('2d');
+    if (ctx) ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+  }, []);
+
+  useEffect(() => {
+    const handleMouseUp = () => {
+      isDrawingRef.current = false;
+      lastPosRef.current = null;
+    };
+    window.addEventListener('mouseup', handleMouseUp);
+    return () => window.removeEventListener('mouseup', handleMouseUp);
+  }, []);
+
+  useEffect(() => {
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.shiftKey && e.key.toLowerCase() === 'x') clearCanvas();
+    };
+    window.addEventListener('keydown', handleKey);
+    return () => window.removeEventListener('keydown', handleKey);
+  }, [clearCanvas]);
 
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
@@ -72,33 +108,67 @@ export default function Home() {
   const rotateX = useSpring(useTransform(mouseY, [-220, 220], [2, -2]), { stiffness: 80, damping: 20 });
   const textRotateY = useTransform(rotateY, v => v * 0.6);
   const textRotateX = useTransform(rotateX, v => v * 0.6);
-  const hoveringCard = useRef(false);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
-      if (hoveringCard.current) return;
+      if (isDrawingRef.current) {
+        const canvas = canvasRef.current;
+        if (canvas && lastPosRef.current && selectedColorRef.current) {
+          const ctx = canvas.getContext('2d');
+          if (ctx) {
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const radius = 28;
+            const dist = Math.hypot(x - lastPosRef.current.x, y - lastPosRef.current.y);
+            const steps = Math.max(1, Math.floor(dist / 6));
+            for (let i = 0; i <= steps; i++) {
+              const t = i / steps;
+              const px = lastPosRef.current.x + (x - lastPosRef.current.x) * t;
+              const py = lastPosRef.current.y + (y - lastPosRef.current.y) * t;
+              // Soft base cloud
+              const grad = ctx.createRadialGradient(px, py, 0, px, py, radius);
+              grad.addColorStop(0,   'rgba(154,71,255,0.18)');
+              grad.addColorStop(0.5, 'rgba(154,71,255,0.06)');
+              grad.addColorStop(1,   'rgba(154,71,255,0)');
+              ctx.fillStyle = grad;
+              ctx.beginPath();
+              ctx.arc(px, py, radius, 0, Math.PI * 2);
+              ctx.fill();
+              // Scattered flecks — denser toward center
+              const numDots = 18;
+              for (let d = 0; d < numDots; d++) {
+                const angle = Math.random() * Math.PI * 2;
+                const r = radius * Math.sqrt(Math.random()); // sqrt biases toward center
+                const dx = Math.cos(angle) * r;
+                const dy = Math.sin(angle) * r;
+                const distRatio = Math.hypot(dx, dy) / radius;
+                const dotOpacity = (1 - distRatio) * 0.6 + 0.1;
+                const dotRadius = Math.random() * 1.2 + 0.4;
+                ctx.fillStyle = `rgba(154,71,255,${dotOpacity.toFixed(2)})`;
+                ctx.beginPath();
+                ctx.arc(px + dx, py + dy, dotRadius, 0, Math.PI * 2);
+                ctx.fill();
+              }
+            }
+            lastPosRef.current = { x, y };
+            setSprayPos({ x: e.clientX, y: e.clientY });
+          }
+        }
+        return;
+      }
       mouseX.set(e.clientX - window.innerWidth / 2);
       mouseY.set(e.clientY - window.innerHeight / 2);
+      const canvas = canvasRef.current;
+      if (canvas) {
+        const rect = canvas.getBoundingClientRect();
+        const inside = e.clientX >= rect.left && e.clientX <= rect.right && e.clientY >= rect.top && e.clientY <= rect.bottom;
+        setSprayPos(inside ? { x: e.clientX, y: e.clientY } : null);
+      }
     };
     window.addEventListener("mousemove", handleMouseMove);
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, [mouseX, mouseY]);
-
-  useEffect(() => {
-    const stored = localStorage.getItem("visitCount");
-    if (!stored) {
-      localStorage.setItem("visitCount", "1");
-      sessionStorage.setItem("visitedThisSession", "true");
-    }
-    const alreadyVisited = sessionStorage.getItem("visitedThisSession");
-    let count = parseInt(localStorage.getItem("visitCount") || "1", 10);
-    if (!alreadyVisited) {
-      count = Math.min(count + 1, 4);
-      localStorage.setItem("visitCount", String(count));
-      sessionStorage.setItem("visitedThisSession", "true");
-    }
-    setUnlockedCount(count);
-  }, []);
 
   useEffect(() => {
     let lastScrollY = window.scrollY;
@@ -145,97 +215,79 @@ export default function Home() {
       {/* Navigation */}
       <motion.div
         initial={shouldAnimate ? { opacity: 0, y: -20 } : false}
-        animate={{ opacity: 1, y: 0, top: scrolled && !scrollingUp ? "0px" : "12px" }}
+        animate={{ opacity: 1, y: 0, top: scrolled ? "8px" : "16px" }}
         transition={{ duration: 0.4, ease: "easeOut" }}
-        className="fixed left-[24px] right-[24px] z-50"
-        style={{ top: "12px" }}
+        className="fixed left-[20px] right-[20px] z-50"
+        style={{ top: "16px" }}
       >
-        <Navigation scrolledDown={scrolled && !scrollingUp} />
+        <Navigation scrolledDown={scrolled} />
       </motion.div>
 
       {/* Main body */}
-      <div className="flex flex-col gap-[50px] items-start pt-[150px] pb-[10vh] px-[8vw] relative w-full">
+      <div className="flex flex-col gap-[120px] items-start pt-[80px] pb-[10vh] px-[8vw] relative w-full">
 
         {/* Landing Page Section */}
         <motion.div
           initial={{ opacity: 0, y: -24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: "easeOut", delay: 0.2 }}
-          className="h-[640px] relative shrink-0 w-full"
+          className="h-[400px] relative shrink-0 w-full"
         >
 
           {/* Macscreen mockup — skeuomorphic with 3D mouse tracking */}
           <div
-            className="absolute left-1/2 -translate-x-1/2 top-0 w-[1100px] h-[620px]"
+            className="absolute left-1/2 -translate-x-1/2 top-0 w-[1400px] h-[380px]"
             style={{ perspective: "1400px", perspectiveOrigin: "50% 40%" }}
           >
             <motion.div
               style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
               className="w-full h-full"
             >
-              {/* Aluminum outer shell */}
+              {/* Outer frame */}
               <div
-                className="absolute inset-0 rounded-[20px] overflow-hidden border border-[#d1cedc]"
-                style={{
-                  background: "linear-gradient(175deg, #eeedf4 0%, #f2f1f7 18%, #e8e7f0 52%, #dddce6 78%, #d4d3dc 100%)",
-                  boxShadow: [
-                    "0 8px 24px rgba(0,0,0,0.10)",
-                    "0 2px 6px rgba(0,0,0,0.07)",
-                    "inset 0 1px 0 rgba(255,255,255,0.65)",
-                    "inset 1px 0 0 rgba(255,255,255,0.25)",
-                    "inset -1px 0 0 rgba(0,0,0,0.06)",
-                  ].join(", "),
-                }}
+                className="absolute inset-0 bg-[#faf9ff] border border-[#d1cedc] rounded-[12px] overflow-hidden p-[8px]"
+                style={{ boxShadow: "0px 10px 20px 0px rgba(0,0,0,0.15)" }}
               >
-                {/* Top edge highlight */}
+                {/* Inner frame */}
                 <div
-                  className="absolute inset-x-0 top-0 h-[1px] pointer-events-none"
-                  style={{
-                    background: "linear-gradient(to right, transparent 8%, rgba(255,255,255,0.85) 28%, rgba(255,255,255,0.95) 50%, rgba(255,255,255,0.85) 72%, transparent 92%)",
-                  }}
-                />
-
-                {/* Screen content — sits directly inside aluminum frame */}
-                <div
-                  className="absolute overflow-hidden border border-[#d1cedc]"
-                  style={{
-                    top: "8px",
-                    left: "8px",
-                    right: "8px",
-                    bottom: "8px",
-                    borderRadius: "14px",
-                    background: "#faf9ff",
-                    boxShadow: "inset 0 1px 3px rgba(0,0,0,0.10)",
-                  }}
+                  className="w-full h-full bg-[#faf9ff] border border-[#d1cedc] rounded-[8px] relative overflow-hidden"
+                  style={{ boxShadow: "0px 10px 20px 0px rgba(0,0,0,0.15)" }}
                 >
-                  {/* Browser nav bar */}
-                  <div
-                    className="absolute left-0 top-0 right-0 flex items-center justify-between p-[16px]"
-                    style={{
-                      background: "linear-gradient(to right, #e8e7f0 0%, #faf9ff 50%, #e8e7f0 100%)",
-                    }}
-                  >
-                    {/* Traffic light dots */}
-                    <div className="flex items-center gap-[8px] h-[17px]">
-                      <div className="w-[12px] h-[12px] rounded-full bg-[var(--neutral\/50,#b8b4c5)]" />
-                      <div className="w-[12px] h-[12px] rounded-full bg-[var(--neutral\/50,#b8b4c5)]" />
-                      <div className="w-[12px] h-[12px] rounded-full bg-[var(--neutral\/50,#b8b4c5)]" />
-                    </div>
-                    {/* Plus icon */}
-                    <div className="flex items-center justify-end w-[82px]">
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                        <path d="M12 5V19M5 12H19" stroke="#7e7c87" strokeWidth="1.5" strokeLinecap="round" />
-                      </svg>
-                    </div>
-                  </div>
-
-                  {/* Glass glare */}
-                  <div
-                    className="absolute inset-0 pointer-events-none"
-                    style={{
-                      background: "linear-gradient(145deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.07) 35%, transparent 65%)",
+                  <canvas
+                    ref={canvasRef}
+                    className="absolute inset-0 w-full h-full"
+                    style={{ cursor: 'none' }}
+                    onMouseDown={(e) => {
+                      isDrawingRef.current = true;
+                      const rect = canvasRef.current!.getBoundingClientRect();
+                      lastPosRef.current = { x: e.clientX - rect.left, y: e.clientY - rect.top };
                     }}
                   />
+                  <motion.div
+                        initial={{ opacity: 0, y: -4 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.4, ease: "easeOut", delay: 1.2 }}
+                        className="absolute top-[12px] right-[12px] z-10"
+                      >
+                        <button
+                          onClick={clearCanvas}
+                          className="bg-[#faf9ff] border border-[#d1cedc] flex items-center gap-[9px] pl-[12px] pr-[16px] py-[8px] rounded-[24px]"
+                          style={{ borderWidth: '0.75px' }}
+                        >
+                          <div className="relative shrink-0 size-[24px] overflow-clip">
+                            <div className="absolute inset-[20.83%_12.5%]">
+                              <img alt="" src={undoArrow} className="block w-full h-full" style={{ inset: '-4.07% -3.17%', position: 'absolute', maxWidth: 'none' }} />
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-[2px]">
+                            {["shift", "X"].map(k => (
+                              <div key={k} className={`bg-[#e8e7f0] h-[24px] rounded-[4px] flex items-center justify-center ${k === "shift" ? "px-[8px]" : "w-[24px]"}`}>
+                                <span className="font-['Inter_Tight',sans-serif] text-[12px] text-[#585564]">{k}</span>
+                              </div>
+                            ))}
+                          </div>
+                        </button>
+                      </motion.div>
                 </div>
               </div>
             </motion.div>
@@ -243,49 +295,38 @@ export default function Home() {
 
           {/* Bottom fade gradient — fades macbook into page background */}
           <div
-            className="absolute left-1/2 -translate-x-1/2 w-[1300px] h-[380px] pointer-events-none"
+            className="absolute left-1/2 -translate-x-1/2 w-[1600px] h-[240px] pointer-events-none"
             style={{
-              top: "280px",
+              top: "180px",
               background: "linear-gradient(to top, #faf9ff 52%, rgba(250,249,255,0) 100%)",
             }}
           />
 
+
           {/* Hero text + drink card */}
           <div
-            className="absolute left-1/2 -translate-x-1/2 top-[150px] w-[658px]"
+            className="absolute left-1/2 -translate-x-1/2 top-[110px] w-[658px]"
             style={{ perspective: "1400px", perspectiveOrigin: "50% 40%" }}
           >
-          <motion.div style={{ rotateX: textRotateX, rotateY: textRotateY }} className="flex flex-col gap-[42px] items-center w-full">
+          <motion.div style={{ rotateX: textRotateX, rotateY: textRotateY }} className="flex flex-col items-center w-full gap-[16px]">
             <div
-              className="w-full text-center text-[color:var(--text\/primary,#232226)] text-[length:var(--text-size\/largest,50px)] tracking-[-1px] font-[450] leading-[1.2]"
+              className="w-full text-center text-[color:var(--text\/primary,#232226)] text-[length:var(--text-size\/largest,50px)] tracking-[-1px] font-[450] leading-[1]"
               style={{ fontFamily: "var(--text-font/default, 'Inter Tight', sans-serif)" }}
             >
               <p>I'm Abby :D</p>
               <p>I design visual systems</p>
               <p>to delight and direct</p>
             </div>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5, ease: "easeOut", delay: 0.4 }}
-              onMouseEnter={() => {
-                hoveringCard.current = true;
-                mouseX.set(0);
-                mouseY.set(0);
-              }}
-              onMouseLeave={() => { hoveringCard.current = false; }}
-            >
-              <CardDrinks
-                className="border border-[#b6b1c8] border-solid flex flex-col gap-[42px] items-center p-[36px] rounded-[12px] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.07)] shrink-0"
-                property1={`Drink ${unlockedCount} Unlocked` as CardDrinksProperty}
-                onDrinkClick={(drink) => setSelectedDrink(drink)}
-                onReset={() => {
-                  localStorage.setItem("visitCount", "1");
-                  sessionStorage.removeItem("visitedThisSession");
-                  setUnlockedCount(1);
-                }}
-              />
-            </motion.div>
+            <motion.p
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, ease: "easeOut", delay: 1.2 }}
+                className="text-center text-[16px] text-[#908E99] font-[400] leading-[1.5] tracking-[0]"
+                style={{ fontFamily: "'Inter Tight', sans-serif" }}
+              >
+                Microsoft Paint started it all<br />
+                Feel free to relax and paint something cool
+              </motion.p>
           </motion.div>
           </div>
 
@@ -296,13 +337,13 @@ export default function Home() {
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: "easeOut", delay: 0.9 }}
-          className="flex flex-wrap gap-[32px] sm:gap-[64px] items-start w-full"
+          className="flex flex-wrap gap-[32px] sm:gap-[60px] items-start w-full"
         >
           {caseStudies.map((cs, i) => {
             const card = (
               <CardCasestudy
                 key={i}
-                className="content-stretch flex flex-col gap-[18.994px] items-start p-[14.246px] relative rounded-[8.31px] w-full"
+                className="content-stretch flex flex-col gap-[18.990px] items-start p-[14.246px] relative rounded-[8.31px] w-full"
                 accentType={cs.accentType}
                 title={cs.title}
                 description={cs.description}
@@ -346,6 +387,24 @@ export default function Home() {
         </motion.div>
 
       </div>
+
+      {/* Spray can cursor — follows mouse over canvas */}
+      {sprayPos && (
+        <img
+          src={sprayCanCursor}
+          alt=""
+          style={{
+            position: 'fixed',
+            left: sprayPos.x,
+            top: sprayPos.y,
+            width: 21,
+            height: 45,
+            transform: 'translate(-10px, -1px)',
+            pointerEvents: 'none',
+            zIndex: 9999,
+          }}
+        />
+      )}
     </div>
   );
 }

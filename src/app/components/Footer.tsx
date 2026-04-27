@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Link } from "react-router";
 import iconArrow from "../../assets/icon-arrow.svg";
+import undoArrow from "../../assets/undo-arrow.svg";
 import { useCursor } from "../context/CursorContext";
 import LSystemGarden, { LSystemGardenHandle } from "./LSystemGarden";
 
@@ -8,7 +9,7 @@ import LSystemGarden, { LSystemGardenHandle } from "./LSystemGarden";
 const connectLinks = [
   { label: "LinkedIn",  href: "https://www.linkedin.com/in/abbyxhart/" },
   { label: "Instagram", href: "https://instagram.com/abbyxhart.art" },
-  { label: "Email",     href: "mailto:abbyxhart@gmail.com" },
+  { label: "Email",     href: "mailto:abbyxhart@gmail.com?subject=Love%20your%20work%2C%20let%27s%20chat" },
 ];
 
 const navLinks = [
@@ -161,16 +162,13 @@ export default function Footer() {
         >
           <div className="relative shrink-0 size-[24px] overflow-clip">
             <div className="absolute inset-[20.83%_12.5%]">
-              <svg className="block size-full" viewBox="0 0 24 24" fill="none">
-                <path d="M3 7H14C17.3 7 20 9.7 20 13C20 16.3 17.3 19 14 19H7" stroke="#585564" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                <path d="M6 4L3 7L6 10" stroke="#585564" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
+              <img alt="" src={undoArrow} className="block" style={{ position: 'absolute', inset: '-4.07% -3.17%', maxWidth: 'none', width: '100%', height: '100%' }} />
             </div>
           </div>
           <div className="flex gap-[2px] items-center">
             {["shift", "X"].map((key) => (
-              <div key={key} className="bg-[color:var(--border\/light,#e8e7f0)] flex items-center justify-center p-[10px] rounded-[4px] size-[24px]">
-                <span className="font-[family-name:var(--text-font\/default,'Inter_Tight:Regular',sans-serif)] text-[12px] text-[color:var(--text\/secondary,#585564)]">{key}</span>
+              <div key={key} className={`bg-[#e8e7f0] h-[24px] rounded-[4px] flex items-center justify-center ${key === "shift" ? "px-[8px]" : "w-[24px]"}`}>
+                <span className="font-['Inter_Tight',sans-serif] text-[12px] text-[#585564]">{key}</span>
               </div>
             ))}
           </div>

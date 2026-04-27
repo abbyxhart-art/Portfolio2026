@@ -2,6 +2,7 @@ import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "re
 
 interface LSystemGardenProps {
     onHasFlowers?: (hasFlowers: boolean) => void
+    minX?: number
 }
 
 export interface LSystemGardenHandle {
@@ -9,7 +10,7 @@ export interface LSystemGardenHandle {
 }
 
 const LSystemGarden = forwardRef<LSystemGardenHandle, LSystemGardenProps>(
-function LSystemGarden({ onHasFlowers }, ref) {
+function LSystemGarden({ onHasFlowers, minX = 420 }, ref) {
     const canvasRef = useRef(null)
     const [mouseX, setMouseX] = useState(0)
     const [mouseY, setMouseY] = useState(0)
@@ -353,7 +354,7 @@ function LSystemGarden({ onHasFlowers }, ref) {
             const growthLevel = plantGrowthLevels[index] || 0
 
             if (growthLevel < 0.1) return
-            if (x < 420) return // left text area: RIT block ends at ~400px
+            if (x < minX) return
 
             const targetIteration = Math.max(1, growthLevel)
             const currentIter = Math.floor(targetIteration)
