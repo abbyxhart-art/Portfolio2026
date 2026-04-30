@@ -288,6 +288,27 @@ export default function Home() {
                           </div>
                         </button>
                       </motion.div>
+                  {/* Hero text */}
+                  <div className="absolute top-[24px] left-[40px] z-10 pointer-events-none flex flex-col gap-[16px]">
+                    <div
+                      className="text-left text-[color:var(--text\/primary,#232226)] text-[40px] tracking-[-1px] font-[400] leading-[1]"
+                      style={{ fontFamily: "var(--text-font/default, 'Inter Tight', sans-serif)" }}
+                    >
+                      <p>I'm Abby :D</p>
+                      <p>I design visual systems</p>
+                      <p>to delight and direct</p>
+                    </div>
+                    <motion.p
+                      initial={{ opacity: 0, y: 6 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.3, ease: "easeOut", delay: 0.5 }}
+                      className="text-left text-[16px] text-[#908E99] font-[400] leading-[1.5] tracking-[0]"
+                      style={{ fontFamily: "'Inter Tight', sans-serif" }}
+                    >
+                      Microsoft Paint started it all<br />
+                      Feel free to relax and paint something cool
+                    </motion.p>
+                  </div>
                 </div>
               </div>
             </motion.div>
@@ -303,32 +324,6 @@ export default function Home() {
           />
 
 
-          {/* Hero text + drink card */}
-          <div
-            className="absolute left-1/2 -translate-x-1/2 top-[110px] w-[658px]"
-            style={{ perspective: "1400px", perspectiveOrigin: "50% 40%" }}
-          >
-          <motion.div style={{ rotateX: textRotateX, rotateY: textRotateY }} className="flex flex-col items-center w-full gap-[16px]">
-            <div
-              className="w-full text-center text-[color:var(--text\/primary,#232226)] text-[length:var(--text-size\/largest,50px)] tracking-[-1px] font-[450] leading-[1]"
-              style={{ fontFamily: "var(--text-font/default, 'Inter Tight', sans-serif)" }}
-            >
-              <p>I'm Abby :D</p>
-              <p>I design visual systems</p>
-              <p>to delight and direct</p>
-            </div>
-            <motion.p
-                initial={{ opacity: 0, y: 6 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, ease: "easeOut", delay: 1.2 }}
-                className="text-center text-[16px] text-[#908E99] font-[400] leading-[1.5] tracking-[0]"
-                style={{ fontFamily: "'Inter Tight', sans-serif" }}
-              >
-                Microsoft Paint started it all<br />
-                Feel free to relax and paint something cool
-              </motion.p>
-          </motion.div>
-          </div>
 
         </motion.div>
 
