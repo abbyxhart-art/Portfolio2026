@@ -45,8 +45,8 @@ const caseStudies: {
     title: "Tian Airways",
     description: "Defining a design language for air travel",
     date: "Fall 2025",
-    tag1Label: "Agentic Design",
-    tag2Label: "Designathon",
+    tag1Label: "Design Systems",
+    tag2Label: "UI Prototype",
     video: tianHeroVideo,
   },
   {
