@@ -87,23 +87,17 @@ export default function DrinkFloater({ drinkType }: DrinkFloaterProps) {
   };
 
   return (
-    <div
-      className="fixed bottom-[16px] h-[129px] left-[16px] w-[85px] z-50 animate-[fadeIn_0.4s_ease-out]"
-    >
-      <div className="relative size-full">
-        <div className="absolute top-0 left-0">
-          {drinkType === 'mango' && <MiniInteractionMangoCoconut />}
-          {drinkType === 'matcha' && <MiniInteractionMatchaCream />}
-          {drinkType === 'lychee' && <MiniInteractionLycheeRose />}
-          {drinkType === 'sesame' && <MiniInteractionBlackSesame />}
-        </div>
-        <p
-          className="absolute font-['Inter_Tight:Regular',sans-serif] font-normal leading-[1.2] left-0 text-[14px] top-[101px] tracking-[-0.28px] whitespace-nowrap cursor-pointer"
-          style={{ color: isContactHovered ? "var(--text-primary)" : "var(--text-tertiary)", transition: "color 150ms ease-out" }}
-          onMouseEnter={() => setIsContactHovered(true)}
-          onMouseLeave={() => setIsContactHovered(false)}
-        >Contact</p>
-      </div>
+    <div className="fixed bottom-[16px] left-[16px] z-50 flex flex-col items-start gap-[8px] animate-[fadeIn_0.4s_ease-out]">
+      {drinkType === 'mango' && <MiniInteractionMangoCoconut />}
+      {drinkType === 'matcha' && <MiniInteractionMatchaCream />}
+      {drinkType === 'lychee' && <MiniInteractionLycheeRose />}
+      {drinkType === 'sesame' && <MiniInteractionBlackSesame />}
+      <p
+        className="font-['Inter_Tight',sans-serif] font-normal leading-[1.2] text-[14px] tracking-[-0.28px] whitespace-nowrap cursor-pointer"
+        style={{ color: isContactHovered ? "var(--text-primary)" : "var(--text-tertiary)", transition: "color 150ms ease-out" }}
+        onMouseEnter={() => setIsContactHovered(true)}
+        onMouseLeave={() => setIsContactHovered(false)}
+      >Contact</p>
     </div>
   );
 }

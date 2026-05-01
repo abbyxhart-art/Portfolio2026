@@ -36,6 +36,7 @@ const vidFlowMymatch = new URL("../../assets/project/gentlemonster/flow_mymatch.
 const vidFlowLenses = new URL("../../assets/project/gentlemonster/flow_lenses.mp4", import.meta.url).href;
 const vidFlowFourmatches = new URL("../../assets/project/gentlemonster/flow_fourmatches.mp4", import.meta.url).href;
 const vidFlowGlasses = new URL("../../assets/project/gentlemonster/flow_glasses.mp4", import.meta.url).href;
+const imgModellingGlasses = new URL("../../assets/project/gentlemonster/modellingglasses.JPG", import.meta.url).href;
 
 const blobGM_pink_left  = "radial-gradient(ellipse at center, rgba(185,175,255,0.5) 0%, rgba(185,175,255,0) 70%)";
 const blobGM_pink_right = "radial-gradient(ellipse at center, rgba(200,190,255,0.45) 0%, rgba(200,190,255,0) 70%)";
@@ -887,29 +888,57 @@ export default function CasestudyGentleMonster() {
 
             {/* Glasses */}
             <div className="flex flex-col gap-[24px] items-start w-full">
-              <p className="font-['Inter_Tight',sans-serif] leading-none text-[#908e99] text-[16px]">
-                Glasses Specs
-              </p>
               <div className="flex flex-col gap-[16px] items-start w-full">
-                <p className="font-['Inter_Tight',sans-serif] font-[450] leading-[1.3] text-[#232226] text-[24px]">
-                  Modelling a pair in C4d
+                <p className="font-['Inter_Tight',sans-serif] leading-none text-[#908e99] text-[16px]">
+                  Glasses and Scene Specs
                 </p>
-                <p className="font-['Inter_Tight',sans-serif]font-normal leading-[1.65] text-[#585564] text-[16px] tracking-[-0.32px]">
-                  Luckily, Gentle Monster has beautiful side and front shots of each and every product so I was able to replicate everything within C4D pretty accurately!
+                <p className="font-['Inter_Tight',sans-serif] font-[450] leading-[1.3] text-black text-[24px]">
+                  Modelling in C4D
                 </p>
+                <div className="font-['Inter'] font-normal leading-[0] text-[#585564] text-[16px] tracking-[-0.32px] w-full">
+                  <p className="leading-[1.65] mb-[16px]">I learned a lot about C4D for this project (like camera movement) and really relied on reaching out for help (shout out Kevin Valete!) to help me when the going got rough.</p>
+                  <p className="leading-[1.65]">Luckily, GM has beautiful side / front shots of all their products so I was able to replicate everything pretty accurately!</p>
+                </div>
               </div>
-              <div className="aspect-video bg-[#d9d9d9] w-full rounded-[4px] overflow-hidden">
-                <video
-                  ref={(el) => {
-                    if (!el) return;
-                    const observer = new IntersectionObserver(
-                      ([entry]) => { entry.isIntersecting ? el.play() : el.pause(); },
-                      { threshold: 0.25 }
-                    );
-                    observer.observe(el);
-                  }}
-                  loop muted playsInline className="w-full h-full object-contain" src={vidOjo01}
-                />
+              <div className="flex gap-[24px] items-start w-full">
+                {/* Left: glasses video */}
+                <div className="flex flex-col gap-[10px] items-start flex-1 min-w-0">
+                  <div className="aspect-[2/1] w-full rounded-[4px] overflow-hidden bg-[#d9d9d9]">
+                    <video
+                      ref={(el) => {
+                        if (!el) return;
+                        const observer = new IntersectionObserver(
+                          ([entry]) => { entry.isIntersecting ? el.play() : el.pause(); },
+                          { threshold: 0.25 }
+                        );
+                        observer.observe(el);
+                      }}
+                      loop muted playsInline className="w-full h-full object-cover" src={vidOjo01}
+                    />
+                  </div>
+                  <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.5] text-[#908e99] text-[14px]">
+                    Ojo 01 Glasses (Black Acetate)
+                  </p>
+                </div>
+                {/* Right: GM scene */}
+                <div className="flex flex-col gap-[10px] items-start flex-1 min-w-0">
+                  <div className="aspect-[2/1] w-full rounded-[4px] overflow-hidden bg-[#d9d9d9]">
+                    <video
+                      ref={(el) => {
+                        if (!el) return;
+                        const observer = new IntersectionObserver(
+                          ([entry]) => { entry.isIntersecting ? el.play() : el.pause(); },
+                          { threshold: 0.25 }
+                        );
+                        observer.observe(el);
+                      }}
+                      loop muted playsInline className="w-full h-full object-cover" src={vidGmScene}
+                    />
+                  </div>
+                  <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.5] text-[#908e99] text-[14px]">
+                    GM Scene and Kiosks
+                  </p>
+                </div>
               </div>
             </div>
 
@@ -953,6 +982,24 @@ export default function CasestudyGentleMonster() {
                 <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#585564] text-[16px] tracking-[-0.32px]">
                   Exploring heuristics and problem solving to then blend it with a luxury experience/art installation was super exciting!
                 </p>
+              </div>
+            </div>
+
+            {/* Card 3 */}
+            <div className="flex gap-[16px] items-start p-[16px] rounded-[8px] border border-[#d1cedc] w-full" style={{ background: "rgba(219,189,254,0.2)" }}>
+              <p className="font-['Inter_Tight',sans-serif] font-normal leading-[2.05] text-[#908e99] text-[14px] shrink-0">
+                3
+              </p>
+              <div className="flex flex-col gap-[8px] items-start flex-1 min-w-0">
+                <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#585564] text-[17px]">
+                  Motion, the start of something new
+                </p>
+                <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#585564] text-[16px] tracking-[-0.32px]">
+                  It was so fun to learn, I'd love to build a more fully realized concept next and dive deeper into what C4D can do. Definitely a new hobby, and so rewarding staying up into the AM's figuring things out!
+                </p>
+                <div className="w-[119px] h-[119px] rounded-[4px] overflow-hidden shrink-0">
+                  <img src={imgModellingGlasses} alt="Modelling glasses" className="w-full h-full object-cover" />
+                </div>
               </div>
             </div>
           </div>

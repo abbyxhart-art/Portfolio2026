@@ -294,7 +294,7 @@ export default function Home() {
               className="text-left text-[color:var(--text\/primary,#232226)] text-[40px] tracking-[-1px] font-[400] leading-[1]"
               style={{ fontFamily: "var(--text-font/default, 'Inter Tight', sans-serif)" }}
             >
-              <p className="flex items-center gap-[8px] mb-0">I'm Abby <img src={meImg} alt="" className="inline-block size-[37px] shrink-0 object-cover object-top" /> :D</p>
+              <p className="mb-0">I'm Abby :D</p>
               <p className="mb-0">I design visual systems</p>
               <p className="mb-0">to delight and direct</p>
             </div>

@@ -28,7 +28,8 @@ export default function CasestudyMiniMenu({ sections }: { sections: MiniMenuSect
   useEffect(() => {
     const onScroll = () => {
       const scrollY = window.scrollY;
-      setVisible(scrollY > 200);
+      const nearBottom = scrollY + window.innerHeight >= document.documentElement.scrollHeight - 120;
+      setVisible(scrollY > 200 && !nearBottom);
 
       for (let i = sections.length - 1; i >= 0; i--) {
         const el = document.getElementById(sections[i].id);
