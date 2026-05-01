@@ -126,7 +126,6 @@ export default function Home() {
               const t = i / steps;
               const px = lastPosRef.current.x + (x - lastPosRef.current.x) * t;
               const py = lastPosRef.current.y + (y - lastPosRef.current.y) * t;
-              // Soft base cloud
               const grad = ctx.createRadialGradient(px, py, 0, px, py, radius);
               grad.addColorStop(0,   'rgba(154,71,255,0.18)');
               grad.addColorStop(0.5, 'rgba(154,71,255,0.06)');
@@ -135,11 +134,10 @@ export default function Home() {
               ctx.beginPath();
               ctx.arc(px, py, radius, 0, Math.PI * 2);
               ctx.fill();
-              // Scattered flecks — denser toward center
               const numDots = 18;
               for (let d = 0; d < numDots; d++) {
                 const angle = Math.random() * Math.PI * 2;
-                const r = radius * Math.sqrt(Math.random()); // sqrt biases toward center
+                const r = radius * Math.sqrt(Math.random());
                 const dx = Math.cos(angle) * r;
                 const dy = Math.sin(angle) * r;
                 const distRatio = Math.hypot(dx, dy) / radius;
@@ -224,19 +222,19 @@ export default function Home() {
       </motion.div>
 
       {/* Main body */}
-      <div className="flex flex-col gap-[120px] items-start pt-[80px] pb-[10vh] px-[8vw] relative w-full">
+      <div className="flex flex-col gap-[0px] items-start pt-[80px] pb-[10vh] px-[8vw] relative w-full">
 
         {/* Landing Page Section */}
         <motion.div
           initial={{ opacity: 0, y: -24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: "easeOut", delay: 0.2 }}
-          className="h-[400px] relative shrink-0 w-full"
+          className="h-[340px] relative shrink-0 w-full"
         >
 
           {/* Macscreen mockup — skeuomorphic with 3D mouse tracking */}
           <div
-            className="absolute left-1/2 -translate-x-1/2 top-0 w-[1400px] h-[380px]"
+            className="absolute left-1/2 -translate-x-1/2 top-0 w-[1400px] h-[320px]"
             style={{ perspective: "1400px", perspectiveOrigin: "50% 40%" }}
           >
             <motion.div
@@ -288,27 +286,6 @@ export default function Home() {
                           </div>
                         </button>
                       </motion.div>
-                  {/* Hero text */}
-                  <div className="absolute top-[24px] left-[40px] z-10 pointer-events-none flex flex-col gap-[16px]">
-                    <div
-                      className="text-left text-[color:var(--text\/primary,#232226)] text-[40px] tracking-[-1px] font-[400] leading-[1]"
-                      style={{ fontFamily: "var(--text-font/default, 'Inter Tight', sans-serif)" }}
-                    >
-                      <p>I'm Abby :D</p>
-                      <p>I design visual systems</p>
-                      <p>to delight and direct</p>
-                    </div>
-                    <motion.p
-                      initial={{ opacity: 0, y: 6 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.3, ease: "easeOut", delay: 0.5 }}
-                      className="text-left text-[16px] text-[#908E99] font-[400] leading-[1.5] tracking-[0]"
-                      style={{ fontFamily: "'Inter Tight', sans-serif" }}
-                    >
-                      Microsoft Paint started it all<br />
-                      Feel free to relax and paint something cool
-                    </motion.p>
-                  </div>
                 </div>
               </div>
             </motion.div>
@@ -322,6 +299,29 @@ export default function Home() {
               background: "linear-gradient(to top, #faf9ff 52%, rgba(250,249,255,0) 100%)",
             }}
           />
+
+          {/* Hero text — lives outside the macbook stacking context so it renders above the gradient */}
+          <div className="absolute top-[32px] left-[calc(50%-652px)] z-[10] pointer-events-none flex flex-col gap-[36px]">
+            <div
+              className="text-left text-[color:var(--text\/primary,#232226)] text-[40px] tracking-[-1px] font-[400] leading-[1]"
+              style={{ fontFamily: "var(--text-font/default, 'Inter Tight', sans-serif)" }}
+            >
+              <p className="flex items-center gap-[8px] mb-0">I'm Abby :D <span className="inline-block bg-[#d9d9d9] size-[37px] shrink-0" /></p>
+              <p className="mb-0">I design visual systems</p>
+              <p className="mb-0">to delight and direct</p>
+            </div>
+            <motion.div
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, ease: "easeOut", delay: 0.5 }}
+              className="flex flex-col gap-[8px] text-left font-[400] tracking-[0]"
+              style={{ fontFamily: "'Inter Tight', sans-serif" }}
+            >
+              <p className="text-[18px] text-[#3f3e47] leading-none mb-0">Building communities with Figma Campus</p>
+              <p className="text-[18px] text-[#3f3e47] leading-none mb-0">Previously refreshed Capitol Aluminum's design system</p>
+              <p className="text-[14px] text-[#3f3e47] opacity-50 leading-[1.5] mb-0">+ Wrapping up my New Media Design BFA @ RIT</p>
+            </motion.div>
+          </div>
 
 
 
