@@ -1,10 +1,11 @@
-import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from "motion/react";
+import { motion, AnimatePresence } from "motion/react";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useNavEntrance } from "../hooks/useNavEntrance";
 import { Link } from "react-router";
 import Navigation from "../../imports/Navigation";
 import CardCasestudy, { AccentType } from "../components/CardCasestudy";
 import aixelsMeImg from "../../assets/project/aixels/me.JPG";
+import meImg from "../../assets/project/about/me.png";
 import sprayCanCursor from "../../assets/spray-can-cursor.svg";
 import undoArrow from "../../assets/undo-arrow.svg";
 const figbuildMacstudioVideo = new URL("../../assets/project/figbuild/figbuild_macstudio_2x1.mp4", import.meta.url).href;
@@ -102,13 +103,6 @@ export default function Home() {
     return () => window.removeEventListener('keydown', handleKey);
   }, [clearCanvas]);
 
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-  const rotateY = useSpring(useTransform(mouseX, [-350, 350], [-3, 3]), { stiffness: 80, damping: 20 });
-  const rotateX = useSpring(useTransform(mouseY, [-220, 220], [2, -2]), { stiffness: 80, damping: 20 });
-  const textRotateY = useTransform(rotateY, v => v * 0.6);
-  const textRotateX = useTransform(rotateX, v => v * 0.6);
-
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       if (isDrawingRef.current) {
@@ -155,8 +149,6 @@ export default function Home() {
         }
         return;
       }
-      mouseX.set(e.clientX - window.innerWidth / 2);
-      mouseY.set(e.clientY - window.innerHeight / 2);
       const canvas = canvasRef.current;
       if (canvas) {
         const rect = canvas.getBoundingClientRect();
@@ -166,7 +158,7 @@ export default function Home() {
     };
     window.addEventListener("mousemove", handleMouseMove);
     return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, [mouseX, mouseY]);
+  }, []);
 
   useEffect(() => {
     let lastScrollY = window.scrollY;
@@ -235,12 +227,8 @@ export default function Home() {
           {/* Macscreen mockup — skeuomorphic with 3D mouse tracking */}
           <div
             className="absolute left-1/2 -translate-x-1/2 top-0 w-[1400px] h-[320px]"
-            style={{ perspective: "1400px", perspectiveOrigin: "50% 40%" }}
           >
-            <motion.div
-              style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
-              className="w-full h-full"
-            >
+            <div className="w-full h-full">
               {/* Outer frame */}
               <div
                 className="absolute inset-0 bg-[#faf9ff] border border-[#d1cedc] rounded-[12px] overflow-hidden p-[8px]"
@@ -288,7 +276,7 @@ export default function Home() {
                       </motion.div>
                 </div>
               </div>
-            </motion.div>
+            </div>
           </div>
 
           {/* Bottom fade gradient — fades macbook into page background */}
@@ -306,7 +294,7 @@ export default function Home() {
               className="text-left text-[color:var(--text\/primary,#232226)] text-[40px] tracking-[-1px] font-[400] leading-[1]"
               style={{ fontFamily: "var(--text-font/default, 'Inter Tight', sans-serif)" }}
             >
-              <p className="flex items-center gap-[8px] mb-0">I'm Abby :D <span className="inline-block bg-[#d9d9d9] size-[37px] shrink-0" /></p>
+              <p className="flex items-center gap-[8px] mb-0">I'm Abby <img src={meImg} alt="" className="inline-block size-[37px] shrink-0 object-cover object-top" /> :D</p>
               <p className="mb-0">I design visual systems</p>
               <p className="mb-0">to delight and direct</p>
             </div>
