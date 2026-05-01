@@ -17,6 +17,7 @@ const GM_SECTIONS = [
 ];
 import Cursor from "../components/Cursor";
 const vidGmScene = new URL("../../assets/project/gentlemonster/gmscene_2x1.mp4", import.meta.url).href;
+const vidGmFullflow = new URL("../../assets/project/gentlemonster/gm_fullflow_1920x906_30fps.mp4", import.meta.url).href;
 const vidDesignDoc = new URL("../../assets/project/gentlemonster/designdoc_16x9.mp4", import.meta.url).href;
 const vidOjo01 = new URL("../../assets/project/gentlemonster/ojo01_16x9.mp4", import.meta.url).href;
 const imgKioskFlowFull = new URL("../../assets/project/gentlemonster/kioskflow_full_2x1.png", import.meta.url).href;
@@ -34,6 +35,7 @@ const vidFlowBestmatch = new URL("../../assets/project/gentlemonster/flow_bestma
 const vidFlowMymatch = new URL("../../assets/project/gentlemonster/flow_mymatch.mp4", import.meta.url).href;
 const vidFlowLenses = new URL("../../assets/project/gentlemonster/flow_lenses.mp4", import.meta.url).href;
 const vidFlowFourmatches = new URL("../../assets/project/gentlemonster/flow_fourmatches.mp4", import.meta.url).href;
+const vidFlowGlasses = new URL("../../assets/project/gentlemonster/flow_glasses.mp4", import.meta.url).href;
 
 const blobGM_pink_left  = "radial-gradient(ellipse at center, rgba(185,175,255,0.5) 0%, rgba(185,175,255,0) 70%)";
 const blobGM_pink_right = "radial-gradient(ellipse at center, rgba(200,190,255,0.45) 0%, rgba(200,190,255,0) 70%)";
@@ -144,7 +146,7 @@ export default function CasestudyGentleMonster() {
             className="aspect-[2/1] bg-[#505050] w-full overflow-hidden"
             style={{ scale: heroScale, borderRadius: heroBorderRadius, transformOrigin: "top center" }}
           >
-            <video autoPlay loop muted playsInline className="w-full h-full object-cover" src={vidGmScene} />
+            <video autoPlay loop muted playsInline className="w-full h-full object-cover" src={vidGmFullflow} />
           </motion.div>
 
           {/* ── 2. Overview ── */}
@@ -169,49 +171,45 @@ export default function CasestudyGentleMonster() {
               {/* Left column */}
               <div className="flex flex-col gap-[32px] items-start shrink-0">
                 {/* Tools */}
-                <div className="flex flex-col gap-[4px] items-start">
+                <div className="flex flex-col gap-[12px] items-start">
                   <p className="font-normal leading-none text-[#aeabb9] text-[14px]">Tools</p>
-                  <p className="font-normal leading-[1.65] text-[#232226] text-[16px] w-[84px]">
-                    Figma / Adobe Suite / C4D
-                  </p>
+                  <div className="text-[#232226] text-[16px]">
+                    <p className="leading-[1.5] mb-0">Figma</p>
+                    <p className="leading-[1.5] mb-0">Adobe Suite</p>
+                    <p className="leading-[1.5]">C4D</p>
+                  </div>
                 </div>
-                {/* Role */}
-                <div className="flex flex-col gap-[4px] items-start">
-                  <p className="font-normal leading-none text-[#aeabb9] text-[14px]">Role</p>
-                  <p className="font-normal leading-[1.65] text-[#232226] text-[16px] w-[151px]">
-                    Research / User Journey / Flow / Hi-fi Prototype / 3D Modelling / Motion
-                  </p>
+                {/* Skills */}
+                <div className="flex flex-col gap-[12px] items-start">
+                  <p className="font-normal leading-none text-[#aeabb9] text-[14px]">Skills</p>
+                  <div className="text-[#232226] text-[16px]">
+                    <p className="leading-[1.5] mb-0">Research</p>
+                    <p className="leading-[1.5] mb-0">User Journey / Flow</p>
+                    <p className="leading-[1.5] mb-0">Hi-fi Prototype</p>
+                    <p className="leading-[1.5]">3D Modelling / Motion</p>
+                  </div>
                 </div>
                 {/* Timeline */}
-                <div className="flex flex-col gap-[4px] items-start">
+                <div className="flex flex-col gap-[12px] items-start">
                   <p className="font-normal leading-none text-[#aeabb9] text-[14px]">Timeline</p>
-                  <p className="font-normal leading-[1.65] text-[#232226] text-[16px] w-[66px]">
-                    10 Weeks
-                  </p>
+                  <p className="font-normal leading-[1.65] text-[#232226] text-[16px]">10 Weeks</p>
                 </div>
               </div>
 
               {/* Right column */}
               <div className="flex flex-col gap-[32px] items-start flex-1 min-w-0">
                 {/* Interface */}
-                <div className="flex flex-col gap-[4px] items-start">
+                <div className="flex flex-col gap-[12px] items-start">
                   <p className="font-normal leading-none text-[#aeabb9] text-[14px]">Interface</p>
-                  <p className="font-normal leading-[1.65] text-[#232226] text-[16px] w-[148px]">
-                    22 x 11" and 44 x 22"
-                  </p>
+                  <p className="font-normal leading-[1.65] text-[#232226] text-[16px]">22 x 11" and 44 x 22"</p>
                 </div>
-                {/* The Mistake */}
-                <div className="flex flex-col gap-[8px] items-start">
-                  <p className="font-normal leading-none text-[#aeabb9] text-[14px]">The Mistake</p>
-                  <p className="font-normal leading-[1.65] text-[#232226] text-[16px] mb-[16px]">
-                    Even the best brands have bad kiosks.
-                  </p>
-                  <p className="font-normal leading-[1.65] text-[#232226] text-[16px] mb-[16px]">
-                    There's not a day where shoppers don't interact with a kiosk and experience a confusing integration of a brand.
-                  </p>
-                  <p className="font-normal leading-[1.65] text-[#232226] text-[16px]">
-                    The project overall asks how can a kiosk create clear choices, avoid fatigue, and best represent the brand's design system.
-                  </p>
+                {/* What is this project? */}
+                <div className="flex flex-col gap-[12px] items-start">
+                  <p className="font-normal leading-none text-[#aeabb9] text-[14px]">What is this project?</p>
+                  <div className="text-[#232226] text-[16px]">
+                    <p className="leading-[1.65] mb-[16px]">This exploration spans UI, research, and blending it with 3D and motion to create a more realistic proof of concept than just wireframes.</p>
+                    <p className="leading-[1.65]">The project overall asks how can a kiosk create clear choices, avoid fatigue, and best represent the brand's design system.</p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -385,13 +383,25 @@ export default function CasestudyGentleMonster() {
                   Flow 1/5
                 </p>
                 <p className="font-['Inter_Tight',sans-serif] font-[450] leading-[1.3] text-black text-[24px]">
-                  Showcasing the shorter main flow inside the kiosk.
+                  Use 3D face tracking to find a perfect match.
                 </p>
                 <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#585564] text-[17px]">
-                  The flow displays two screens working in tandem! The ultimate goal is to help users find their best match and have a sales associate save them at the counter.
+                  The ultimate goal is to find matches and save items with a sales associate at the counter. The filters are a fun bonus!
                 </p>
               </div>
-              <div className="aspect-[2/1] bg-[#d9d9d9] rounded-[4px] w-full" />
+              <div className="aspect-[2/1] bg-[#d9d9d9] rounded-[4px] w-full overflow-hidden">
+                <video
+                  ref={(el) => {
+                    if (!el) return;
+                    const observer = new IntersectionObserver(
+                      ([entry]) => { entry.isIntersecting ? el.play() : el.pause(); },
+                      { threshold: 0.25 }
+                    );
+                    observer.observe(el);
+                  }}
+                  loop muted playsInline className="w-full h-full object-cover" src={vidFlowGlasses}
+                />
+              </div>
             </div>
 
             {/* Flow 2/5 */}
