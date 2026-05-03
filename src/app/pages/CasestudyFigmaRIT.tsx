@@ -175,7 +175,8 @@ export default function CasestudyFigmaRIT() {
                       </p>
                     </div>
                   </div>
-                  <ButtonBasic label="Build your FigBuild Badge" size="Default" />
+                  <ButtonBasic label="Build your FigBuild Badge" size="Default" 
+                  onClick={() => window.open(`https://axh2451.github.io/figbuildbadgegh/`)} />
                 </div>
               </div>
             </div>
@@ -234,7 +235,9 @@ export default function CasestudyFigmaRIT() {
                 Students across the world getting excited for FigBuild
               </p>
             </div>
-            <ButtonBasic label="Follow the hashtag on LinkedIn" size="Default" />
+            <ButtonBasic label="Follow the hashtag on LinkedIn" size="Default"
+            onClick={() => window.open(`https://www.linkedin.com/search/results/all/?keywords=%23figbuild2026&origin=GLOBAL_SEARCH_HEADER`)}
+             />
             <div className="overflow-hidden rounded-b-[8px] w-full">
               <style>{`
                 @keyframes marquee {

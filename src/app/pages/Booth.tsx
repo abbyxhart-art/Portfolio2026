@@ -183,7 +183,9 @@ export default function Booth() {
                 <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#908e99] text-[16px] whitespace-nowrap">
                   I post all of my creativity on
                 </p>
-                <ButtonFilled label="Instagram" type="Purple" size="Default" />
+                <ButtonFilled label="Instagram" type="Purple" size="Default"                    
+                 onClick={() => window.open(`https://www.instagram.com/abbyxhart.art`)}
+ />
               </div>
             </div>
             {/* 3 IG blocks — ig_2 takes double width */}

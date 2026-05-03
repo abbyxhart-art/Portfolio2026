@@ -595,7 +595,9 @@ export default function CasestudyGentleMonster() {
                 <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#585564] text-[16px] tracking-[-0.32px]">
                   This was all to really understand Gentle Monster's design system and how people buy glasses. The biggest goal was to make the kiosk feel like it really was part of GM.
                 </p>
-                <ButtonBasic label="Want to read? Reach out!" size="Default" />
+                <ButtonBasic label="Want to read? Reach out!" size="Default" 
+                                 onClick={() => window.open(`mailto:abbyxhart@gmail.com?subject=${encodeURIComponent("Loved Gentle Monster, let's chat!")}`)}
+/>
               </div>
               {/* Bottom video flush */}
               <div className="aspect-video bg-[#747474] rounded-bl-[8px] rounded-br-[8px] w-full relative z-10 overflow-hidden">
