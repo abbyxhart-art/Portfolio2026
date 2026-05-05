@@ -3,6 +3,7 @@ import { useNavEntrance } from "../hooks/useNavEntrance";
 import { motion, AnimatePresence, useScroll, useTransform, useMotionValue } from "motion/react";
 import Navigation from "../../imports/Navigation";
 import HomeButton from "../components/HomeButton";
+import CasestudyNavigation from "../components/CasestudyNavigation";
 import ButtonBasic from "../components/ButtonBasic";
 import UpNext from "../components/UpNext";
 import CasestudyMiniMenu from "../components/CasestudyMiniMenu";
@@ -81,6 +82,7 @@ export default function CasestudyFigmaRIT() {
   return (
     <div className="relative min-h-screen bg-[#faf9ff] overflow-x-clip">
       <HomeButton />
+      <CasestudyNavigation title="FigBuild Badges 2026" />
       <CasestudyMiniMenu sections={FIGMA_SECTIONS} />
       <AnimatePresence>
         {scrolled && (
@@ -126,7 +128,7 @@ export default function CasestudyFigmaRIT() {
               {/* Title + subtitle */}
               <div className="border-b border-[#d1cedc] flex flex-col gap-[8px] items-start pb-[32px] w-full">
                 <p className="font-['Inter_Tight',sans-serif] font-[450] leading-[1.3] text-[#232226] text-[24px] w-full">
-                  FigBuild 2026
+                  FigBuild 2026 Badges
                 </p>
                 <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.25] text-[#908e99] text-[20px] w-full">
                   I got to build a brand activation for students across the world

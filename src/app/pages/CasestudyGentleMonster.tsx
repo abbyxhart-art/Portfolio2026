@@ -3,6 +3,7 @@ import { useNavEntrance } from "../hooks/useNavEntrance";
 import { motion, AnimatePresence, useScroll, useTransform, useMotionValue } from "motion/react";
 import Navigation from "../../imports/Navigation";
 import HomeButton from "../components/HomeButton";
+import CasestudyNavigation from "../components/CasestudyNavigation";
 import ButtonBasic from "../components/ButtonBasic";
 import UpNext from "../components/UpNext";
 import CasestudyMiniMenu from "../components/CasestudyMiniMenu";
@@ -110,6 +111,7 @@ export default function CasestudyGentleMonster() {
   return (
     <div className="relative min-h-screen bg-[#faf9ff] overflow-x-clip">
       <HomeButton />
+      <CasestudyNavigation title="Gentle Monster" />
       <CasestudyMiniMenu sections={GM_SECTIONS} />
       <AnimatePresence>
         {scrolled && (

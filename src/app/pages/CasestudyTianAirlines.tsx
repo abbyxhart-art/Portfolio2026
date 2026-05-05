@@ -7,6 +7,7 @@ import type { Swiper as SwiperType } from "swiper";
 import "swiper/css";
 import Navigation from "../../imports/Navigation";
 import HomeButton from "../components/HomeButton";
+import CasestudyNavigation from "../components/CasestudyNavigation";
 import UpNext from "../components/UpNext";
 import ButtonBasic from "../components/ButtonBasic";
 import CasestudyMiniMenu from "../components/CasestudyMiniMenu";
@@ -95,6 +96,7 @@ export default function CasestudyTianAirlines() {
   return (
     <div className="relative min-h-screen bg-[#faf9ff] overflow-x-clip">
       <HomeButton />
+      <CasestudyNavigation title="Tian Airways" />
       <CasestudyMiniMenu sections={TIAN_SECTIONS} />
       <AnimatePresence>
         {scrolled && (

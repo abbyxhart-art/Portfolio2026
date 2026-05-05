@@ -3,6 +3,7 @@ import { useNavEntrance } from "../hooks/useNavEntrance";
 import { motion, AnimatePresence, useScroll, useTransform, useMotionValue } from "motion/react";
 import Navigation from "../../imports/Navigation";
 import HomeButton from "../components/HomeButton";
+import CasestudyNavigation from "../components/CasestudyNavigation";
 import UpNext from "../components/UpNext";
 import CasestudyMiniMenu from "../components/CasestudyMiniMenu";
 
@@ -78,6 +79,7 @@ export default function CasestudyAixels() {
   return (
     <div className="relative min-h-screen bg-[#faf9ff] overflow-x-clip">
       <HomeButton />
+      <CasestudyNavigation title="AIXELS" />
       <CasestudyMiniMenu sections={AIXELS_SECTIONS} />
       <AnimatePresence>
         {scrolled && (

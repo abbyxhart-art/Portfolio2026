@@ -21,7 +21,7 @@ const caseStudies: {
 }[] = [
   {
     accentType: "2",
-    title: "Figma at RIT",
+    title: "FigBuild 2026 Badges",
     description: "Bringing a digital playground to students with Figma for Edu",
     date: "Spring 2026",
     tag1Label: "Agentic Design",
@@ -116,13 +116,13 @@ export default function Home() {
           initial={{ opacity: 0, y: -24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: "easeOut", delay: 0.2 }}
-          className="flex flex-col gap-[36px] pt-[60px] pb-[48px] w-full"
+          className="flex flex-col gap-[24px] pt-[32px] pb-[32px] pl-[14.246px]"
         >
           <div
-            className="text-left text-[color:var(--text\/primary,#232226)] text-[40px] tracking-[-1px] font-[400] leading-[1]"
-            style={{ fontFamily: "var(--text-font/default, 'Inter Tight', sans-serif)" }}
+            className="text-left text-[color:var(--text\/primary,#37363c)] text-[32px] leading-[1.1] w-[328px]"
+            style={{ fontFamily: "var(--text-font/default, 'Inter Tight', sans-serif)", fontWeight: 420 }}
           >
-            <p className="mb-0">I'm Abby :D</p>
+            <p className="mb-0">I'm Abby</p>
             <p className="mb-0">I design visual systems</p>
             <p className="mb-0">to delight and direct</p>
           </div>
@@ -130,12 +130,12 @@ export default function Home() {
             initial={{ opacity: 0, y: 6 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, ease: "easeOut", delay: 0.5 }}
-            className="flex flex-col gap-[8px] text-left font-[400] tracking-[0]"
-            style={{ fontFamily: "'Inter Tight', sans-serif" }}
+            className="flex flex-col gap-[8px] text-left font-[400]"
+            style={{ fontFamily: "var(--text-font/default, 'Inter Tight', sans-serif)", color: "var(--text/secondary, #585564)" }}
           >
-            <p className="text-[18px] text-[#3f3e47] leading-none mb-0">Building communities with Figma Campus</p>
-            <p className="text-[18px] text-[#3f3e47] leading-none mb-0">Previously refreshed Capitol Aluminum's design system</p>
-            <p className="text-[14px] text-[#3f3e47] opacity-50 leading-[1.5] mb-0">+ Wrapping up my New Media Design BFA @ RIT</p>
+            <p className="text-[18px] leading-none mb-0 text-[color:var(--text\/secondary,#585564)]">Building communities with Figma Campus</p>
+            <p className="text-[18px] leading-none mb-0 text-[color:var(--text\/secondary,#585564)]">Spent a summer refreshing Capitol's design system</p>
+            <p className="text-[14px] opacity-50 leading-[1.5] mb-0">+ Wrapping up my New Media Design BFA @ RIT</p>
           </motion.div>
         </motion.div>
 
@@ -144,7 +144,7 @@ export default function Home() {
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: "easeOut", delay: 0.9 }}
-          className="flex flex-wrap gap-[32px] sm:gap-[60px] items-start w-full"
+          className="flex flex-wrap gap-[16px] sm:gap-[24px] items-start w-full"
         >
           {caseStudies.map((cs, i) => {
             const card = (
@@ -163,33 +163,33 @@ export default function Home() {
             );
             if (i === 0) {
               return (
-                <Link key={i} to="/casestudy/figma-rit" className="w-full sm:w-[calc(50%-32px)] no-underline">
+                <Link key={i} to="/casestudy/figma-rit" className="w-full sm:w-[calc(50%-12px)] no-underline">
                   {card}
                 </Link>
               );
             }
             if (i === 1) {
               return (
-                <Link key={i} to="/casestudy/gentle-monster" className="w-full sm:w-[calc(50%-32px)] no-underline">
+                <Link key={i} to="/casestudy/gentle-monster" className="w-full sm:w-[calc(50%-12px)] no-underline">
                   {card}
                 </Link>
               );
             }
             if (i === 2) {
               return (
-                <Link key={i} to="/casestudy/tian-airlines" className="w-full sm:w-[calc(50%-32px)] no-underline">
+                <Link key={i} to="/casestudy/tian-airlines" className="w-full sm:w-[calc(50%-12px)] no-underline">
                   {card}
                 </Link>
               );
             }
             if (i === 3) {
               return (
-                <Link key={i} to="/casestudy/aixels" className="w-full sm:w-[calc(50%-32px)] no-underline">
+                <Link key={i} to="/casestudy/aixels" className="w-full sm:w-[calc(50%-12px)] no-underline">
                   {card}
                 </Link>
               );
             }
-            return <div key={i} className="w-full sm:w-[calc(50%-32px)]">{card}</div>;
+            return <div key={i} className="w-full sm:w-[calc(50%-12px)]">{card}</div>;
           })}
         </motion.div>
 
