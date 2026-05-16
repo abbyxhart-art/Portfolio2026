@@ -381,7 +381,7 @@ function LSystemGarden({ onHasFlowers, minX = 420 }, ref) {
             }
             const baseLength = (100 / Math.pow(2, currentIter - 1)) * heightMultiplier
 
-            const stemColor = "#1D1C20"
+            const stemColor = "#faf9ff"
             const growthProgress = growthLevel / pattern.n
 
             const plantOpacity = plantOpacities[index] || 0

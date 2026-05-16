@@ -3,10 +3,7 @@ import MiniInteractionMatchaCream from "./MiniInteractionMatchaCream";
 import MiniInteractionLycheeRose from "./MiniInteractionLycheeRose";
 import MiniInteractionBlackSesame from "./MiniInteractionBlackSesame";
 import { useState } from "react";
-
-interface DrinkFloaterProps {
-  drinkType: 'mango' | 'matcha' | 'lychee' | 'sesame';
-}
+import { useDrink } from "../context/DrinkContext";
 
 function Wrapper({ children }: React.PropsWithChildren<{}>) {
   return (
@@ -16,7 +13,9 @@ function Wrapper({ children }: React.PropsWithChildren<{}>) {
   );
 }
 
-export default function DrinkFloater({ drinkType }: DrinkFloaterProps) {
+export default function DrinkFloater() {
+  const { selectedDrink } = useDrink();
+  const drinkType = selectedDrink ?? 'lychee';
   const [isSipHovered, setIsSipHovered] = useState(false);
   const [isContactHovered, setIsContactHovered] = useState(false);
   

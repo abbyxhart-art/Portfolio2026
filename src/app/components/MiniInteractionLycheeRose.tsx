@@ -30,38 +30,35 @@ export default function MiniInteractionLycheeRose() {
       onClick={handleClick}
     >
       <div className="h-[62px] relative shrink-0 w-[42px]">
-        {/* Straw */}
-        <div className="absolute bg-[#302f33] h-[53px] left-[20px] top-0 w-[4px]" />
-        {/* Boba dots */}
-        <div className={`absolute bg-[#9a47ff] left-[6px] size-[4px] top-[42px] ${sipCount === 4 ? "opacity-0" : ""}`} />
-        <div className={`absolute bg-[#9a47ff] left-[14px] size-[4px] top-[42px] ${sipCount === 4 ? "opacity-0" : ""}`} />
-        <div className={`absolute bg-[#9a47ff] left-[10px] size-[4px] top-[34px] ${is3Or4 ? "opacity-0" : ""}`} />
+        <div className="absolute bg-[#7e7c87] h-[53px] left-[20px] top-0 w-[4px]" />
+        {/* White boba dots */}
+        <div className={`absolute bg-white left-[6px] size-[4px] top-[42px] ${sipCount === 4 ? "opacity-0" : ""}`} />
+        <div className={`absolute bg-white left-[14px] size-[4px] top-[42px] ${sipCount === 4 ? "opacity-0" : ""}`} />
+        <div className={`absolute bg-white left-[10px] size-[4px] top-[34px] ${is3Or4 ? "opacity-0" : ""}`} />
         <div className="absolute flex items-center justify-center left-[19px] size-[4.869px] top-[55px]">
           <div className="flex-none rotate-[14.41deg]">
-            <div className={`bg-[#9a47ff] size-[4px] ${sipCount === 4 ? "opacity-0" : ""}`} />
+            <div className={`bg-white size-[4px] ${sipCount === 4 ? "opacity-0" : ""}`} />
           </div>
         </div>
-        <div className={`absolute bg-[#9a47ff] left-[33px] size-[4px] top-[38px] ${is3Or4 ? "opacity-0" : ""}`} />
-        <div className={`absolute bg-[#9a47ff] left-[33px] size-[4px] top-[46px] ${sipCount === 4 ? "opacity-0" : ""}`} />
-        <div className={`absolute bg-[#9a47ff] left-[27px] size-[4px] top-[42px] ${sipCount === 4 ? "opacity-0" : ""}`} />
-        <div className={`absolute bg-[#9a47ff] left-[27px] size-[4px] top-[50px] ${sipCount === 4 ? "opacity-0" : ""}`} />
-        <div className={`absolute bg-[#9a47ff] left-[10px] size-[4px] top-[50px] ${sipCount === 4 ? "opacity-0" : ""}`} />
-        {/* Lychee fill — shrinks with each sip */}
+        <div className={`absolute bg-white left-[33px] size-[4px] top-[38px] ${is3Or4 ? "opacity-0" : ""}`} />
+        <div className={`absolute bg-white left-[33px] size-[4px] top-[46px] ${sipCount === 4 ? "opacity-0" : ""}`} />
+        <div className={`absolute bg-white left-[27px] size-[4px] top-[42px] ${sipCount === 4 ? "opacity-0" : ""}`} />
+        <div className={`absolute bg-white left-[27px] size-[4px] top-[50px] ${sipCount === 4 ? "opacity-0" : ""}`} />
+        <div className={`absolute bg-white left-[10px] size-[4px] top-[50px] ${sipCount === 4 ? "opacity-0" : ""}`} />
+        {/* Purple fill — shrinks with each sip */}
         {lychee && (
           <div
-            className="absolute bg-[rgba(193,111,255,0.45)] left-[3px] rounded-bl-[24px] rounded-br-[24px] w-[37px]"
+            className="absolute bg-[rgba(193,112,255,0.63)] left-[3px] rounded-bl-[24px] rounded-br-[24px] w-[37px]"
             style={{ height: lychee.height, top: lychee.top }}
           />
         )}
-        {/* Cup outline */}
-        <div className="absolute border-[#302f33] border-[0.75px] border-solid h-[53px] left-[3px] rounded-bl-[24px] rounded-br-[24px] top-[9px] w-[37px]" />
-        {/* Lid */}
-        <div className="absolute bg-[#302f33] h-[4px] left-0 rounded-[10px] top-[6px] w-[42px]" />
+        <div className="absolute border-[0.75px] border-[#7e7c87] border-solid h-[53px] left-[3px] rounded-bl-[24px] rounded-br-[24px] top-[9px] w-[37px]" />
+        <div className="absolute bg-[#7e7c87] h-[4px] left-0 rounded-[10px] top-[6px] w-[42px]" />
       </div>
 
       <p
         className="font-['Inter_Tight',sans-serif] leading-[1.2] not-italic text-[14px] text-center tracking-[-0.28px] w-[42px]"
-        style={{ color: hovered ? "var(--text-primary, #232226)" : "var(--text-tertiary, #7e7c87)", transition: "color 150ms ease-out" }}
+        style={{ color: hovered ? "#faf9ff" : "#585564", transition: "color 150ms ease-out" }}
       >
         {isEmpty ? "Refill" : "Sip"}
       </p>

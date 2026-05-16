@@ -2,7 +2,71 @@ import { motion, AnimatePresence } from "motion/react";
 import { useState, useEffect } from "react";
 import { useNavEntrance } from "../hooks/useNavEntrance";
 import { Link } from "react-router";
+import linkedInIcon from "../../assets/linkedin.svg";
 import Navigation from "../../imports/Navigation";
+
+function LinkedInButton() {
+  useEffect(() => {
+    let lastKey = "";
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key.toLowerCase() === "c") {
+        lastKey = "c";
+      } else if (e.key.toLowerCase() === "v" && lastKey === "c") {
+        window.open("https://linkedin.com/in/abbyxhart", "_blank", "noopener,noreferrer");
+        lastKey = "";
+      } else {
+        lastKey = "";
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
+  const setHover = (el: HTMLButtonElement) => { el.style.backgroundColor = "#28262b"; };
+  const setDefault = (el: HTMLButtonElement) => { el.style.backgroundColor = "#1f1e21"; };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.4, ease: "easeOut", delay: 0.2 }}
+      className="fixed top-[16px] right-[16px] z-50 p-[4px]"
+    >
+      <button
+        onClick={() => window.open("https://linkedin.com/in/abbyxhart", "_blank", "noopener,noreferrer")}
+        onMouseEnter={e => setHover(e.currentTarget)}
+        onMouseLeave={e => setDefault(e.currentTarget)}
+        onMouseDown={e => setHover(e.currentTarget)}
+        onMouseUp={e => setHover(e.currentTarget)}
+        className="flex items-center gap-[9px] pl-[12px] pr-[16px] py-[8px] rounded-[24px] cursor-pointer select-none"
+        style={{
+          border: "1px solid #302f34",
+          backgroundColor: "#1f1e21",
+          transition: "background-color 0.15s ease",
+          fontFamily: "'Inter Tight', sans-serif",
+          outline: "none",
+        }}
+      >
+        <div className="flex items-center gap-[9px]" style={{ pointerEvents: "none" }}>
+          <div className="relative shrink-0 size-[24px]">
+            <div className="absolute inset-[6.25%]">
+              <img alt="" className="absolute block inset-0 max-w-none size-full" src={linkedInIcon} />
+            </div>
+          </div>
+          <div className="flex gap-[2px] items-center">
+            {["C", "V"].map(key => (
+              <div key={key} className="content-stretch flex flex-col items-center justify-center p-[10px] relative rounded-[4px] shrink-0 size-[24px]" style={{ backgroundColor: "rgba(144,142,153,0.2)" }}>
+                <div className="flex flex-col justify-center leading-[0] relative shrink-0 text-[12px] text-center whitespace-nowrap" style={{ color: "#b8b4c5" }}>
+                  <p className="leading-[normal]">{key}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </button>
+    </motion.div>
+  );
+}
 import CardCasestudy, { AccentType } from "../components/CardCasestudy";
 import aixelsMeImg from "../../assets/project/aixels/me.JPG";
 const figbuildMacstudioVideo = new URL("../../assets/project/figbuild/figbuild_macstudio_2x1.mp4", import.meta.url).href;
@@ -76,8 +140,8 @@ export default function Home() {
       <div
         className="absolute inset-x-0 z-0 h-[800px] pointer-events-none"
         style={{
-          top: "-500px",
-          background: "radial-gradient(ellipse 80% 600px at 50% 50%, rgba(190,170,255,0.35) 0%, rgba(220,210,255,0.15) 50%, rgba(250,249,255,0) 100%)",
+          top: "-620px",
+          background: "radial-gradient(ellipse 80% 500px at 50% 50%, rgba(154,71,255,0.3) 0%, rgba(154,71,255,0) 80%)",
         }}
       />
 
@@ -91,11 +155,25 @@ export default function Home() {
             transition={{ duration: 0.4, ease: "easeOut" }}
             className="fixed inset-x-0 top-0 z-40 h-[10vh] pointer-events-none"
             style={{
-              background: "linear-gradient(to bottom, rgba(232, 231, 240, 0.95) 0%, rgba(232, 231, 240, 0) 100%)",
+              background: "linear-gradient(to bottom, rgba(23, 23, 23, 0.98) 0%, rgba(23, 23, 23, 0.85) 25%, rgba(23, 23, 23, 0.35) 55%, rgba(23, 23, 23, 0.05) 80%, rgba(23, 23, 23, 0) 100%)",
             }}
           />
         )}
       </AnimatePresence>
+
+      <LinkedInButton />
+
+      {/* Name plate */}
+      <motion.div
+        initial={shouldAnimate ? { opacity: 0 } : false}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.4, ease: "easeOut", delay: 0.2 }}
+        className="fixed top-[16px] left-[16px] z-50 flex flex-col items-start leading-[1.5] pointer-events-none"
+        style={{ fontFamily: "var(--text-font/default, 'Inter Tight', sans-serif)", color: "#b8b4c5" }}
+      >
+        <p className="mb-0 text-[17px]" style={{ fontWeight: 350 }}>Abby Hart</p>
+        <p className="mb-0 text-[12px] leading-[1.5]" style={{ color: "#7e7c87" }}>UX, Product</p>
+      </motion.div>
 
       {/* Navigation */}
       <motion.div
@@ -109,33 +187,42 @@ export default function Home() {
       </motion.div>
 
       {/* Main body */}
-      <div className="flex flex-col gap-[0px] items-start pt-[80px] pb-[10vh] px-[8vw] relative w-full">
+      <div className="flex flex-col gap-[0px] items-center pt-[160px] pb-[14vh] px-[5vw] relative w-full">
 
         {/* Hero text */}
         <motion.div
           initial={{ opacity: 0, y: -24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: "easeOut", delay: 0.2 }}
-          className="flex flex-col gap-[24px] pt-[32px] pb-[32px] pl-[14.246px]"
+          className="flex flex-col items-center text-center gap-[16px] pb-[96px] w-auto"
+          style={{ fontFamily: "var(--text-font/default, 'Inter Tight', sans-serif)" }}
         >
           <div
-            className="text-left text-[color:var(--text\/primary,#37363c)] text-[32px] leading-[1.1] w-[328px]"
-            style={{ fontFamily: "var(--text-font/default, 'Inter Tight', sans-serif)", fontWeight: 420 }}
+            className="text-[color:var(--text\/primary,#eeedf5)] leading-[1.1] whitespace-nowrap"
+            style={{ fontSize: "82px", fontWeight: 350 }}
           >
-            <p className="mb-0">I'm Abby</p>
-            <p className="mb-0">I design visual systems</p>
-            <p className="mb-0">to delight and direct</p>
+            <p className="mb-0">{`I'm a creative technologist`}</p>
+            {/* <p className="mb-0">i'm a creative echnologist.</p> */}
           </div>
           <motion.div
             initial={{ opacity: 0, y: 6 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, ease: "easeOut", delay: 0.5 }}
-            className="flex flex-col gap-[8px] text-left font-[400]"
-            style={{ fontFamily: "var(--text-font/default, 'Inter Tight', sans-serif)", color: "var(--text/secondary, #585564)" }}
+            className="flex flex-col items-center gap-[8px] w-auto"
           >
-            <p className="text-[18px] leading-none mb-0 text-[color:var(--text\/secondary,#585564)]">Building communities with Figma Campus</p>
-            <p className="text-[18px] leading-none mb-0 text-[color:var(--text\/secondary,#585564)]">Spent a summer refreshing Capitol's design system</p>
-            <p className="text-[14px] opacity-50 leading-[1.5] mb-0">+ Wrapping up my New Media Design BFA @ RIT</p>
+            <div className="flex flex-col text-[color:var(--text\/secondary,#908e99)] text-[20px] leading-[1.65] whitespace-nowrap">
+              <p className="mb-0" style={{ fontWeight: 300 }}>designing visual systems to delight and direct + building communities with Figma Campus</p>
+            </div>
+            <p className="text-[14px] leading-[1.5] mb-0 font-[300] text-[color:var(--text\/tertiary,#7e7c87)]">
+              {`+ Wrapping up my `}
+              <span
+                className="decoration-dotted underline-offset-[4px] transition-colors duration-150 cursor-default"
+                style={{ textDecoration: "underline dotted", textUnderlineOffset: "4px", color: "inherit" }}
+                onMouseEnter={e => (e.currentTarget.style.color = "#faf9ff")}
+                onMouseLeave={e => (e.currentTarget.style.color = "inherit")}
+              >New Media Design</span>
+              {` BFA @ RIT`}
+            </p>
           </motion.div>
         </motion.div>
 
@@ -144,7 +231,7 @@ export default function Home() {
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: "easeOut", delay: 0.9 }}
-          className="flex flex-wrap gap-[16px] sm:gap-[24px] items-start w-full"
+          className="flex flex-wrap gap-x-[4px] gap-y-[42px] items-start w-full px-[4vw]"
         >
           {caseStudies.map((cs, i) => {
             const card = (
@@ -163,33 +250,33 @@ export default function Home() {
             );
             if (i === 0) {
               return (
-                <Link key={i} to="/casestudy/figma-rit" className="w-full sm:w-[calc(50%-12px)] no-underline">
+                <Link key={i} to="/casestudy/figma-rit" className="w-full sm:w-[calc(50%-2px)] no-underline">
                   {card}
                 </Link>
               );
             }
             if (i === 1) {
               return (
-                <Link key={i} to="/casestudy/gentle-monster" className="w-full sm:w-[calc(50%-12px)] no-underline">
+                <Link key={i} to="/casestudy/gentle-monster" className="w-full sm:w-[calc(50%-2px)] no-underline">
                   {card}
                 </Link>
               );
             }
             if (i === 2) {
               return (
-                <Link key={i} to="/casestudy/tian-airlines" className="w-full sm:w-[calc(50%-12px)] no-underline">
+                <Link key={i} to="/casestudy/tian-airlines" className="w-full sm:w-[calc(50%-2px)] no-underline">
                   {card}
                 </Link>
               );
             }
             if (i === 3) {
               return (
-                <Link key={i} to="/casestudy/aixels" className="w-full sm:w-[calc(50%-12px)] no-underline">
+                <Link key={i} to="/casestudy/aixels" className="w-full sm:w-[calc(50%-2px)] no-underline">
                   {card}
                 </Link>
               );
             }
-            return <div key={i} className="w-full sm:w-[calc(50%-12px)]">{card}</div>;
+            return <div key={i} className="w-full sm:w-[calc(50%-2px)]">{card}</div>;
           })}
         </motion.div>
 

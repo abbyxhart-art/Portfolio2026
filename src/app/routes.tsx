@@ -15,7 +15,7 @@ function RootLayout() {
     <>
       <Outlet />
       <Footer />
-      <DrinkFloater drinkType="lychee" />
+      <DrinkFloater />
     </>
   );
 }

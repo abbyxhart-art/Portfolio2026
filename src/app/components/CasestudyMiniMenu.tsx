@@ -5,13 +5,17 @@ export type MiniMenuSection = { id: string; label: string };
 
 const CIRCUMFERENCE = 2 * Math.PI * 13;
 
-function PinIcon({ visible }: { visible: boolean }) {
+function PinIcon({ visible, hovered }: { visible: boolean; hovered: boolean }) {
   return (
     <img
       src={pinIcon}
       width={18} height={18}
       alt=""
-      style={{ opacity: visible ? 1 : 0, transition: "opacity 150ms ease", flexShrink: 0 }}
+      style={{
+        opacity: visible ? (hovered ? 0.7 : 0.35) : 0,
+        transition: "opacity 150ms ease",
+        flexShrink: 0,
+      }}
     />
   );
 }
@@ -80,8 +84,10 @@ export default function CasestudyMiniMenu({ sections }: { sections: MiniMenuSect
 
       {/* Expanded panel */}
       <div
-        className="bg-[#faf9ff] border border-[#d1cedc] border-solid rounded-[12px] shadow-[0px_2px_4px_0px_rgba(0,0,0,0.05)] overflow-hidden"
+        className="border border-solid rounded-[12px] shadow-[0px_2px_4px_0px_rgba(0,0,0,0.05)] overflow-hidden"
         style={{
+          background: "#171717",
+          borderColor: "#302f34",
           width: 235,
           maxHeight: isOpen ? 400 : 0,
           opacity: isOpen ? 1 : 0,
@@ -93,7 +99,8 @@ export default function CasestudyMiniMenu({ sections }: { sections: MiniMenuSect
         {/* Back to top */}
         <button
           onClick={scrollToTop}
-          className="font-['Inter_Tight',sans-serif] font-normal text-[12px] text-[#aeabb9] leading-none w-full text-left mb-6 hover:text-[#908e99] transition-colors bg-transparent border-none cursor-pointer p-0"
+          className="font-['Inter_Tight',sans-serif] font-normal text-[12px] leading-none w-full text-left mb-6 bg-transparent border-none cursor-pointer p-0 transition-colors"
+          style={{ color: "#aeabb9" }}
         >
           Back To Top
         </button>
@@ -111,15 +118,15 @@ export default function CasestudyMiniMenu({ sections }: { sections: MiniMenuSect
                 onMouseLeave={() => setHoveredRow(null)}
                 className="flex items-center justify-between py-[6px] w-full bg-transparent border-none cursor-pointer p-0 text-left"
               >
-                <div className="flex gap-4 items-center font-['Inter_Tight',sans-serif] font-normal text-[14px] leading-none whitespace-nowrap">
-                  <span style={{ color: isHov ? "#908e99" : "#aeabb9", transition: "color 150ms ease" }}>
+                <div className="flex gap-[16px] items-center font-['Inter_Tight',sans-serif] font-normal text-[14px] leading-none whitespace-nowrap">
+                  <span style={{ color: isHov ? "#908e99" : "#7e7c87", transition: "color 150ms ease" }}>
                     {i + 1}
                   </span>
-                  <span style={{ color: isHov ? "#232226" : "#908e99", transition: "color 150ms ease" }}>
+                  <span style={{ color: isHov ? "#faf9ff" : "#908e99", transition: "color 150ms ease" }}>
                     {s.label}
                   </span>
                 </div>
-                <PinIcon visible={isCurrent} />
+                <PinIcon visible={isCurrent} hovered={isHov} />
               </button>
             );
           })}
@@ -128,7 +135,8 @@ export default function CasestudyMiniMenu({ sections }: { sections: MiniMenuSect
 
       {/* Pill */}
       <div
-        className="bg-[#faf9ff] border border-[#d1cedc] border-solid flex gap-3 items-center px-3 py-2 rounded-[50px] shadow-[0px_2px_4px_0px_rgba(0,0,0,0.05)] w-[235px] cursor-pointer select-none"
+        className="border border-solid flex gap-3 items-center px-3 py-2 rounded-[50px] shadow-[0px_2px_4px_0px_rgba(0,0,0,0.05)] w-[235px] cursor-pointer select-none"
+        style={{ background: "#171717", borderColor: "#302f34" }}
         onClick={() => setIsOpen(!isOpen)}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
@@ -136,26 +144,25 @@ export default function CasestudyMiniMenu({ sections }: { sections: MiniMenuSect
         {/* Progress ring + number */}
         <div className="relative shrink-0 size-8 flex items-center justify-center">
           <svg width="30" height="30" className="absolute" style={{ transform: "rotate(-90deg)" }}>
-            <circle cx="15" cy="15" r="13" fill="none" stroke="#e8e7f0" strokeWidth="1.5" />
+            <circle cx="15" cy="15" r="13" fill="none" stroke="#302f34" strokeWidth="1.5" />
             <circle
               key={activeIndex}
               cx="15" cy="15" r="13"
               fill="none"
-              stroke="#232226"
               strokeWidth="1.5"
               strokeLinecap="round"
               strokeDasharray={CIRCUMFERENCE}
               strokeDashoffset={CIRCUMFERENCE * (1 - progress)}
-              style={{ transition: "stroke-dashoffset 80ms linear" }}
+              style={{ stroke: "#faf9ff", transition: "stroke-dashoffset 80ms linear" }}
             />
           </svg>
-          <span className="relative font-['Inter_Tight',sans-serif] text-[14px] text-[#232226] leading-none select-none">
+          <span className="relative font-['Inter_Tight',sans-serif] text-[14px] leading-none select-none text-[color:var(--text\/primary,#faf9ff)]">
             {activeIndex + 1}
           </span>
         </div>
 
         {/* Section label */}
-        <p className="font-['Inter_Tight',sans-serif] font-normal text-[14px] text-[#232226] leading-normal flex-1 truncate">
+        <p className="font-['Inter_Tight',sans-serif] font-normal text-[14px] leading-normal flex-1 truncate text-[color:var(--text\/primary,#faf9ff)]">
           {sections[activeIndex]?.label}
         </p>
 
@@ -166,8 +173,8 @@ export default function CasestudyMiniMenu({ sections }: { sections: MiniMenuSect
           style={{ opacity: hovered || isOpen ? 1 : 0, transition: "opacity 300ms ease" }}
         >
           {isOpen
-            ? <path d="M4 6l4 4 4-4" stroke="#908e99" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-            : <path d="M4 10l4-4 4 4" stroke="#908e99" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            ? <path d="M4 6l4 4 4-4" stroke="var(--text\/secondary, #908e99)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            : <path d="M4 10l4-4 4 4" stroke="var(--text\/secondary, #908e99)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
           }
         </svg>
       </div>

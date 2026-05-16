@@ -4,22 +4,23 @@
   --font-size: 16px;
 
   /* Figma Portfolio Design Tokens */
-  --surface/primary: #faf9ff;
+  --surface/primary: var(--neutral/00);
   --border/default: #d1cedc;
   --border-radius/large: 12px;
   --border-radius/default: 8px;
   --border-sroke/default: 1px;
-  --neutral/00: #37363c;
+  --neutral/00: #171717;
   --neutral/10: #3f3e47;
   --neutral/30: #7e7c87;
   --neutral/50: #b8b4c5;
   --neutral/80: #e8e7f0;
+  --neutral/90: #EEEDF5;
   --neutral/100: #faf9ff;
-  --text/primary: #37363c;
-  --text/secondary: #585564;
+  --text/primary: var(--neutral/100);
+  --text/secondary: #908e99;
   --text/tertiary: #7e7c87;
   --text/quatrinary: #aeabb9;
-  --text-primary: #37363c;
+  --text-primary: var(--neutral/100);
   --text-secondary: #585564;
   --text-tertiary: #7e7c87;
   --text-quatrinary: #aeabb9;
@@ -61,7 +62,7 @@
   --input-background: #f3f3f5;
   --switch-background: #cbced4;
   --font-weight-medium: 500;
-  --font-weight-normal: 400;
+  --font-weight-normal: 350;
   --ring: oklch(0.708 0 0);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
@@ -100,7 +101,7 @@
   --input: oklch(0.269 0 0);
   --ring: oklch(0.439 0 0);
   --font-weight-medium: 500;
-  --font-weight-normal: 400;
+  --font-weight-normal: 350;
   --chart-1: oklch(0.488 0.243 264.376);
   --chart-2: oklch(0.696 0.17 162.48);
   --chart-3: oklch(0.769 0.188 70.08);
@@ -158,12 +159,29 @@
 }
 
 @layer base {
+  :root {
+    --neutral\/00: #171717;
+    --neutral\/10: #3f3e47;
+    --neutral\/30: #7e7c87;
+    --neutral\/50: #b8b4c5;
+    --neutral\/80: #e8e7f0;
+    --neutral\/90: #EEEDF5;
+    --neutral\/100: #faf9ff;
+    --surface\/primary: var(--neutral\/00);
+    --surface\/secondary: #eeedf5;
+    --text\/primary: var(--neutral\/100);
+    --text\/secondary: #908e99;
+    --text\/tertiary: #7e7c87;
+    --text\/quatrinary: #aeabb9;
+    --background: var(--neutral\/00);
+  }
+
   * {
     @apply border-border outline-ring/50;
   }
 
   html, body {
-    background-color: #faf9ff;
+    background-color: var(--surface\/primary);
   }
 
   body {

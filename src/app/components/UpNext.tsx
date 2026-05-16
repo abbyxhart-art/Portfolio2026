@@ -65,13 +65,13 @@ export default function UpNext({ currentId }: { currentId: string }) {
           {/* Title */}
           <p
             className="font-['Inter_Tight',sans-serif] font-normal leading-[1.25] text-[20px] whitespace-nowrap transition-colors duration-300 ease-out"
-            style={{ color: isHover ? "#000000" : "#585564" }}
+            style={{ color: isHover ? "var(--text\\/primary, #faf9ff)" : "#585564" }}
           >
             {next.title}
           </p>
 
           {/* Image */}
-          <div className="aspect-[2/1] rounded-b-[8px] w-full overflow-hidden bg-[#d9d9d9]">
+          <div className="aspect-[2/1] rounded-[8px] w-full overflow-hidden bg-[#d9d9d9]">
             {next.mediaType === "video" && next.mediaSrc && (
               <video autoPlay loop muted playsInline className="w-full h-full object-cover" src={next.mediaSrc} />
             )}

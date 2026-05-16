@@ -5,7 +5,6 @@ import undoArrow from "../../assets/undo-arrow.svg";
 import { useCursor } from "../context/CursorContext";
 import LSystemGarden, { LSystemGardenHandle } from "./LSystemGarden";
 
-
 const connectLinks = [
   { label: "LinkedIn",  href: "https://www.linkedin.com/in/abbyxhart/" },
   { label: "Instagram", href: "https://instagram.com/abbyxhart.art" },
@@ -13,9 +12,8 @@ const connectLinks = [
 ];
 
 const navLinks = [
-  { label: "Home",  to: "/" },
+  { label: "Work",  to: "/" },
   { label: "About", to: "/about" },
-  { label: "Booth", to: "/booth" },
 ];
 
 function AnimatedLink({ label, href }: { label: string; href: string }) {
@@ -27,8 +25,8 @@ function AnimatedLink({ label, href }: { label: string; href: string }) {
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="relative shrink-0 w-full no-underline"
-      style={{ color: isHovered ? "#9a47ff" : "#232226", transition: "color 100ms ease" }}
+      className="relative shrink-0 w-full no-underline font-['Inter_Tight',sans-serif] font-[300] text-[14px] leading-none"
+      style={{ color: isHovered ? "#9a47ff" : "#faf9ff", transition: "color 100ms ease" }}
       onMouseEnter={() => { setIsHovered(true); setIsPurple(true); }}
       onMouseLeave={() => { setIsHovered(false); setIsPurple(false); }}
     >
@@ -44,8 +42,8 @@ function AnimatedNavLink({ label, to }: { label: string; to: string }) {
   return (
     <Link
       to={to}
-      className="relative shrink-0 w-full no-underline"
-      style={{ color: isHovered ? "#9a47ff" : "#232226", transition: "color 100ms ease" }}
+      className="relative shrink-0 w-full no-underline font-['Inter_Tight',sans-serif] font-[300] text-[14px] leading-none"
+      style={{ color: isHovered ? "#9a47ff" : "#faf9ff", transition: "color 100ms ease" }}
       onMouseEnter={() => { setIsHovered(true); setIsPurple(true); }}
       onMouseLeave={() => { setIsHovered(false); setIsPurple(false); }}
     >
@@ -71,7 +69,7 @@ export default function Footer() {
   }, [clearGarden]);
 
   return (
-    <footer className="border-t border-[var(--border\/default,#d1cedc)] border-solid content-stretch flex flex-col h-[402px] items-start justify-between overflow-clip pb-[16px] pt-[100px] relative w-full">
+    <footer className="bg-[#171717] border-t border-[#585564] flex flex-col h-[402px] items-start justify-between overflow-clip pb-[16px] pt-[100px] relative w-full">
       {/* Garden background */}
       <div className="absolute inset-0">
         <LSystemGarden ref={gardenRef} onHasFlowers={setHasFlowers} />
@@ -86,47 +84,47 @@ export default function Footer() {
       />
 
       {/* Navigation Row */}
-      <div className="content-stretch flex h-[118px] items-start justify-between px-[100px] relative shrink-0 w-full">
-        {/* Copyright + Design info */}
-        <div className="content-stretch flex flex-col h-full items-start justify-between relative shrink-0">
-          <div className="content-stretch flex flex-col gap-[4px] items-start relative shrink-0 w-[235px]">
-            <p className="font-[family-name:var(--text-font\/default,'Inter_Tight:Regular',sans-serif)] leading-none not-italic relative shrink-0 text-[length:var(--text-size\/default,18px)] text-[color:var(--text\/primary,#232226)] w-full">
+      <div className="flex h-[118px] items-start justify-between px-[100px] relative shrink-0 w-full">
+        {/* Left: tagline + design info */}
+        <div className="flex flex-col h-full items-start justify-between relative shrink-0">
+          <div className="flex flex-col gap-[4px] items-start shrink-0 w-[235px]">
+            <p className="font-['Inter_Tight',sans-serif] leading-none text-black text-[17px] w-full">
               I design for connection.
             </p>
-            <div className="content-stretch flex gap-[4px] items-center relative shrink-0 w-full">
+            <div className="flex gap-[4px] items-center shrink-0 w-full">
               <img src={iconArrow} alt="" className="shrink-0 size-[18px]" />
-              <p className="font-[family-name:var(--text-font\/default,'Inter_Tight:Regular',sans-serif)] leading-none not-italic relative shrink-0 text-[color:var(--text\/primary,#232226)] text-[length:var(--text-size\/default,18px)] whitespace-nowrap">
+              <p className="font-['Inter_Tight',sans-serif] leading-none text-[#faf9ff] text-[17px] whitespace-nowrap">
                 It was nice to meet you!
               </p>
             </div>
           </div>
-          <div className="content-stretch flex flex-col font-[family-name:var(--text-font\/default,'Inter_Tight:Regular',sans-serif)] gap-[8px] items-start leading-none not-italic relative shrink-0 text-[length:var(--text-size\/extra-small,14px)] whitespace-nowrap">
-            <div className="content-stretch flex gap-[3px] items-center relative shrink-0">
-              <p className="relative shrink-0 text-[color:var(--text\/primary,#232226)]">Typeset</p>
-              <p className="relative shrink-0 text-[color:var(--text\/tertiary,#7e7c87)]">Inter Tight</p>
+          <div className="flex flex-col font-['Inter_Tight',sans-serif] font-[300] gap-[8px] items-start leading-none shrink-0 text-[14px] whitespace-nowrap">
+            <div className="flex gap-[3px] items-center shrink-0">
+              <p className="text-[#faf9ff]">Typeset</p>
+              <p className="text-[#908e99]">Inter Tight</p>
             </div>
-            <div className="content-stretch flex gap-[3px] items-center relative shrink-0">
-              <p className="relative shrink-0 text-[color:var(--text\/primary,#232226)]">Made with</p>
-              <p className="relative shrink-0 text-[color:var(--text\/tertiary,#7e7c87)]">Figma + Claude → Github + Vercel</p>
+            <div className="flex gap-[3px] items-center shrink-0">
+              <p className="text-[#faf9ff]">Made with</p>
+              <p className="text-[#908e99]">Figma + Claude → Github + Vercel</p>
             </div>
           </div>
         </div>
 
         {/* Links */}
-        <div className="content-stretch flex font-[family-name:var(--text-font\/default,'Inter_Tight:Regular',sans-serif)] gap-[24px] items-start leading-none not-italic relative shrink-0">
+        <div className="flex gap-[24px] items-start leading-none shrink-0">
           {/* Connect */}
-          <div className="content-stretch flex flex-col gap-[32px] items-start relative shrink-0 w-[61px]">
-            <p className="relative shrink-0 text-[length:var(--text-size\/smallest,12px)] text-[color:var(--text\/primary,#232226)] w-full">Connect</p>
-            <div className="content-stretch flex flex-col gap-[16px] items-start relative shrink-0 text-[length:var(--text-size\/extra-small,14px)] w-full">
+          <div className="flex flex-col gap-[32px] items-start shrink-0 w-[61px]">
+            <p className="font-['Inter_Tight',sans-serif] text-[#908e99] text-[12px] leading-none w-full">Connect</p>
+            <div className="flex flex-col gap-[16px] items-start shrink-0 w-full">
               {connectLinks.map(({ label, href }) => (
                 <AnimatedLink key={label} label={label} href={href} />
               ))}
             </div>
           </div>
           {/* Navigation */}
-          <div className="content-stretch flex flex-col gap-[32px] items-start relative shrink-0 w-[61px]">
-            <p className="relative shrink-0 text-[length:var(--text-size\/smallest,12px)] text-[color:var(--text\/primary,#232226)] w-full">Navigation</p>
-            <div className="content-stretch flex flex-col gap-[16px] items-start relative shrink-0 text-[length:var(--text-size\/extra-small,14px)] w-full">
+          <div className="flex flex-col gap-[32px] items-start shrink-0 w-[61px]">
+            <p className="font-['Inter_Tight',sans-serif] text-[#908e99] text-[12px] leading-none w-full">Navigation</p>
+            <div className="flex flex-col gap-[16px] items-start shrink-0 w-full">
               {navLinks.map(({ label, to }) => (
                 <AnimatedNavLink key={label} label={label} to={to} />
               ))}
@@ -136,28 +134,28 @@ export default function Footer() {
       </div>
 
       {/* Hover Directions */}
-      <div className="content-stretch flex flex-col font-[family-name:var(--text-font\/default,'Inter_Tight:Regular',sans-serif)] gap-[5px] items-center leading-none not-italic relative shrink-0 text-[color:var(--text\/secondary,#585564)] text-[length:var(--text-size\/extra-small,14px)] w-full whitespace-nowrap">
-        <p className="relative shrink-0">Play around. You never know what may grow!</p>
-        <p className="relative shrink-0">Hover based on the book: the algorithmic beauty of plants</p>
+      <div className="flex flex-col font-['Inter_Tight',sans-serif] font-[300] gap-[5px] items-center leading-none shrink-0 text-[#b8b4c5] text-[14px] w-full whitespace-nowrap">
+        <p className="shrink-0">Play around. You never know what may grow!</p>
+        <p className="shrink-0">Hover based on the book: the algorithmic beauty of plants</p>
       </div>
 
       {/* RIT Info */}
-      <div className="absolute bottom-[15px] content-stretch flex flex-col font-[family-name:var(--text-font\/default,'Inter_Tight:Regular',sans-serif)] gap-[8px] items-start leading-none left-[99px] not-italic text-[length:var(--text-size\/extra-small,14px)] w-[301px] whitespace-nowrap">
-        <p className="relative shrink-0 text-[color:var(--text\/primary,#232226)]">Rochester Institute of Technology</p>
-        <div className="content-stretch flex gap-[3px] items-center relative shrink-0">
-          <p className="relative shrink-0 text-[color:var(--text\/primary,#232226)]">BFA</p>
-          <p className="relative shrink-0 text-[color:var(--text\/tertiary,#7e7c87)]">New Media Design</p>
+      <div className="absolute bottom-[15px] flex flex-col font-['Inter_Tight',sans-serif] font-[300] gap-[8px] items-start leading-none left-[99px] text-[14px] whitespace-nowrap">
+        <p className="text-[#faf9ff]">Rochester Institute of Technology</p>
+        <div className="flex gap-[3px] items-center shrink-0">
+          <p className="text-[#faf9ff]">BFA</p>
+          <p className="text-[#908e99]">New Media Design</p>
         </div>
-        <div className="content-stretch flex gap-[3px] items-center relative shrink-0 w-full">
-          <p className="relative shrink-0 text-[color:var(--text\/primary,#232226)]">Minors</p>
-          <p className="relative shrink-0 text-[color:var(--text\/tertiary,#7e7c87)]">Mobile Design and Development, Fine Arts</p>
+        <div className="flex gap-[3px] items-center shrink-0 w-full">
+          <p className="text-[#faf9ff]">Minors</p>
+          <p className="text-[#908e99]">Mobile Design and Development, Fine Arts</p>
         </div>
       </div>
 
       {hasFlowers && (
         <button
           onClick={clearGarden}
-          className="absolute border border-[color:var(--border\/default,#d1cedc)] border-solid flex gap-[9px] items-center pl-[12px] pr-[16px] py-[8px] rounded-[24px] bg-[color:var(--surface\/primary,#f7f6fb)] cursor-pointer bottom-[16px] right-[16px]"
+          className="absolute border border-[#302f34] flex gap-[9px] items-center pl-[12px] pr-[16px] py-[8px] rounded-[24px] bg-[#171717] cursor-pointer bottom-[16px] right-[16px]"
           style={{ borderWidth: "0.75px" }}
         >
           <div className="relative shrink-0 size-[24px] overflow-clip">
@@ -167,8 +165,8 @@ export default function Footer() {
           </div>
           <div className="flex gap-[2px] items-center">
             {["shift", "X"].map((key) => (
-              <div key={key} className={`bg-[#e8e7f0] h-[24px] rounded-[4px] flex items-center justify-center ${key === "shift" ? "px-[8px]" : "w-[24px]"}`}>
-                <span className="font-['Inter_Tight',sans-serif] text-[12px] text-[#585564]">{key}</span>
+              <div key={key} className={`h-[24px] rounded-[4px] flex items-center justify-center ${key === "shift" ? "px-[8px]" : "w-[24px]"}`} style={{ background: "rgba(144,142,153,0.2)" }}>
+                <span className="font-['Inter_Tight',sans-serif] text-[12px] text-[#908e99]">{key}</span>
               </div>
             ))}
           </div>

@@ -20,12 +20,11 @@ export default function MiniInteractionMatchaCream() {
       onClick={handleClick}
     >
       <div className="h-[62px] relative shrink-0 w-[42px]">
-        {/* Straw */}
-        <div className="absolute bg-[#302f33] h-[53px] left-[20px] top-0 w-[4px]" />
-        {/* Peach layers — each disappears progressively with sips */}
-        <div className={`absolute bg-[rgba(251,192,191,0.7)] h-[26px] left-[3px] rounded-bl-[24px] rounded-br-[24px] top-[36px] w-[37px] ${[3, 4].includes(sipCount) ? "opacity-0" : ""}`} />
-        <div className={`absolute bg-[rgba(251,192,191,0.7)] h-[35px] left-[3px] rounded-bl-[24px] rounded-br-[24px] top-[27px] w-[37px] ${[2, 3, 4].includes(sipCount) ? "opacity-0" : ""}`} />
-        <div className={`absolute bg-[rgba(251,192,191,0.7)] h-[44px] left-[3px] rounded-bl-[24px] rounded-br-[24px] top-[18px] w-[37px] ${[1, 2, 3, 4].includes(sipCount) ? "opacity-0" : ""}`} />
+        <div className="absolute bg-[#7e7c87] h-[53px] left-[20px] top-0 w-[4px]" />
+        {/* Peach layers — disappear progressively with sips */}
+        <div className={`absolute bg-[rgba(255,173,172,0.8)] h-[26px] left-[3px] rounded-bl-[24px] rounded-br-[24px] top-[36px] w-[37px] ${[3, 4].includes(sipCount) ? "opacity-0" : ""}`} />
+        <div className={`absolute bg-[rgba(255,173,172,0.8)] h-[35px] left-[3px] rounded-bl-[24px] rounded-br-[24px] top-[27px] w-[37px] ${[2, 3, 4].includes(sipCount) ? "opacity-0" : ""}`} />
+        <div className={`absolute bg-[rgba(255,173,172,0.8)] h-[44px] left-[3px] rounded-bl-[24px] rounded-br-[24px] top-[18px] w-[37px] ${[1, 2, 3, 4].includes(sipCount) ? "opacity-0" : ""}`} />
         {/* Cream layer */}
         <div
           className={`absolute left-[3px] rounded-bl-[24px] rounded-br-[24px] w-[37px] ${
@@ -34,15 +33,13 @@ export default function MiniInteractionMatchaCream() {
             "bg-[rgba(255,255,255,0.7)] h-[17px] top-[45px]"
           }`}
         />
-        {/* Cup outline */}
-        <div className="absolute border-[#302f33] border-[0.75px] border-solid h-[53px] left-[3px] rounded-bl-[24px] rounded-br-[24px] top-[9px] w-[37px]" />
-        {/* Lid */}
-        <div className="absolute bg-[#302f33] h-[4px] left-0 rounded-[10px] top-[6px] w-[42px]" />
+        <div className="absolute border-[0.75px] border-[#7e7c87] border-solid h-[53px] left-[3px] rounded-bl-[24px] rounded-br-[24px] top-[9px] w-[37px]" />
+        <div className="absolute bg-[#7e7c87] h-[4px] left-0 rounded-[10px] top-[6px] w-[42px]" />
       </div>
 
       <p
         className="font-['Inter_Tight',sans-serif] leading-[1.2] not-italic text-[14px] text-center tracking-[-0.28px] w-[42px]"
-        style={{ color: hovered ? "var(--text-primary, #232226)" : "var(--text-tertiary, #7e7c87)", transition: "color 150ms ease-out" }}
+        style={{ color: hovered ? "#faf9ff" : "#585564", transition: "color 150ms ease-out" }}
       >
         {isEmpty ? "Refill" : "Sip"}
       </p>
