@@ -62,24 +62,24 @@ export default function DrinkFloater() {
       case 'sesame':
         return (
           <div className="h-[62px] relative w-[42px]">
-            <div className="absolute bg-[#302f33] h-[53px] left-[20px] top-0 w-[4px]" data-name="Straw" />
-            <div className="absolute bg-black left-[6px] rounded-[10px] size-[4px] top-[42px]" data-name="Boba" />
-            <div className="absolute bg-black left-[14px] rounded-[10px] size-[4px] top-[42px]" data-name="Boba" />
-            <div className="absolute bg-black left-[10px] rounded-[10px] size-[4px] top-[34px]" data-name="Boba" />
+            <div className="absolute bg-[#7e7c87] h-[53px] left-[20px] top-0 w-[4px]" data-name="Straw" />
+            <div className="absolute bg-[#161617] left-[6px] rounded-[10px] size-[4px] top-[42px]" data-name="Boba" />
+            <div className="absolute bg-[#161617] left-[14px] rounded-[10px] size-[4px] top-[42px]" data-name="Boba" />
+            <div className="absolute bg-[#161617] left-[10px] rounded-[10px] size-[4px] top-[34px]" data-name="Boba" />
             <Wrapper>
-              <div className="bg-black rounded-[10px] size-[4px]" data-name="Boba" />
+              <div className="bg-[#161617] rounded-[10px] size-[4px]" data-name="Boba" />
             </Wrapper>
-            <div className="absolute bg-black left-[33px] rounded-[10px] size-[4px] top-[38px]" data-name="Boba" />
-            <div className="absolute bg-black left-[33px] rounded-[10px] size-[4px] top-[46px]" data-name="Boba" />
-            <div className="absolute bg-black left-[27px] rounded-[10px] size-[4px] top-[42px]" data-name="Boba" />
-            <div className="absolute bg-black left-[27px] rounded-[10px] size-[4px] top-[50px]" data-name="Boba" />
-            <div className="absolute bg-black left-[10px] rounded-[10px] size-[4px] top-[50px]" data-name="Boba" />
-            <div className="absolute bg-[rgba(82,69,138,0.2)] h-[20px] left-[3px] rounded-bl-[24px] rounded-br-[24px] top-[42px] w-[37px]" data-name="Black Sesame" />
-            <div className="absolute bg-[rgba(82,69,138,0.2)] h-[28px] left-[3px] rounded-bl-[24px] rounded-br-[24px] top-[34px] w-[37px]" data-name="Black Sesame" />
-            <div className="absolute bg-[rgba(82,69,138,0.2)] h-[36px] left-[3px] rounded-bl-[24px] rounded-br-[24px] top-[26px] w-[37px]" data-name="Black Sesame" />
-            <div className="absolute bg-[rgba(82,69,138,0.2)] h-[44px] left-[3px] rounded-bl-[24px] rounded-br-[24px] top-[18px] w-[37px]" data-name="Black Sesame" />
-            <div className="absolute border-[#302f33] border-[0.75px] border-solid h-[53px] left-[3px] rounded-bl-[24px] rounded-br-[24px] top-[9px] w-[37px]" data-name="Cup" />
-            <div className="absolute bg-[#302f33] h-[4px] left-0 rounded-[10px] top-[6px] w-[42px]" data-name="Lid" />
+            <div className="absolute bg-[#161617] left-[33px] rounded-[10px] size-[4px] top-[38px]" data-name="Boba" />
+            <div className="absolute bg-[#161617] left-[33px] rounded-[10px] size-[4px] top-[46px]" data-name="Boba" />
+            <div className="absolute bg-[#161617] left-[27px] rounded-[10px] size-[4px] top-[42px]" data-name="Boba" />
+            <div className="absolute bg-[#161617] left-[27px] rounded-[10px] size-[4px] top-[50px]" data-name="Boba" />
+            <div className="absolute bg-[#161617] left-[10px] rounded-[10px] size-[4px] top-[50px]" data-name="Boba" />
+            <div className="absolute bg-[rgba(224,110,69,0.5)] h-[20px] left-[3px] rounded-bl-[24px] rounded-br-[24px] top-[42px] w-[37px]" data-name="Thai Tea" />
+            <div className="absolute bg-[rgba(224,110,69,0.5)] h-[28px] left-[3px] rounded-bl-[24px] rounded-br-[24px] top-[34px] w-[37px]" data-name="Thai Tea" />
+            <div className="absolute bg-[rgba(224,110,69,0.5)] h-[36px] left-[3px] rounded-bl-[24px] rounded-br-[24px] top-[26px] w-[37px]" data-name="Thai Tea" />
+            <div className="absolute bg-[rgba(224,110,69,0.5)] h-[44px] left-[3px] rounded-bl-[24px] rounded-br-[24px] top-[18px] w-[37px]" data-name="Thai Tea" />
+            <div className="absolute border-[#7e7c87] border-[0.75px] border-solid h-[53px] left-[3px] rounded-bl-[24px] rounded-br-[24px] top-[9px] w-[37px]" data-name="Cup" />
+            <div className="absolute bg-[#7e7c87] h-[4px] left-0 rounded-[10px] top-[6px] w-[42px]" data-name="Lid" />
           </div>
         );
     }
@@ -93,7 +93,7 @@ export default function DrinkFloater() {
       {drinkType === 'sesame' && <MiniInteractionBlackSesame />}
       <p
         className="font-['Inter_Tight',sans-serif] font-normal leading-[1.2] text-[14px] tracking-[-0.28px] whitespace-nowrap cursor-pointer"
-        style={{ color: isContactHovered ? "var(--text-primary)" : "var(--text-tertiary)", transition: "color 150ms ease-out" }}
+        style={{ color: isContactHovered ? "var(--text-primary)" : "var(--text-secondary)", transition: "color 150ms ease-out" }}
         onMouseEnter={() => setIsContactHovered(true)}
         onMouseLeave={() => setIsContactHovered(false)}
       >Contact</p>

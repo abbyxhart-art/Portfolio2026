@@ -92,16 +92,15 @@ function ThaiTeaCup() {
 type SlotDef = {
   cup: React.ReactNode;
   label: string;
-  unlocked: boolean;
   leftPct: string;
   topPct: string;
 };
 
 const SLOTS: SlotDef[] = [
-  { cup: <TaroMilkCup />,  label: "Taro Milk",     unlocked: true, leftPct: "15.1%", topPct: "25.5%" },
-  { cup: <PeachCreamCup />, label: "Peach Cream",   unlocked: true, leftPct: "53.2%", topPct: "25.5%" },
-  { cup: <MangoCocoCup />,  label: "Mango Coconut", unlocked: true, leftPct: "15.1%", topPct: "61.5%" },
-  { cup: <ThaiTeaCup />,    label: "Thai Tea",      unlocked: true, leftPct: "53.2%", topPct: "61.5%" },
+  { cup: <TaroMilkCup />,  label: "Taro Milk",     leftPct: "15.1%", topPct: "25.5%" },
+  { cup: <PeachCreamCup />, label: "Peach Cream",   leftPct: "53.2%", topPct: "25.5%" },
+  { cup: <MangoCocoCup />,  label: "Mango Coconut", leftPct: "15.1%", topPct: "61.5%" },
+  { cup: <ThaiTeaCup />,    label: "Thai Tea",      leftPct: "53.2%", topPct: "61.5%" },
 ];
 
 const FLOATER_TO_LABEL: Record<string, string> = Object.fromEntries(
@@ -110,8 +109,16 @@ const FLOATER_TO_LABEL: Record<string, string> = Object.fromEntries(
 
 export default function DrinkCard() {
   const [hoveredLabel, setHoveredLabel] = useState<string | null>(null);
+  const [resetHovered, setResetHovered] = useState(false);
+  const [unlockedCount, setUnlockedCount] = useState(4);
   const { selectedDrink, setSelectedDrink } = useDrink();
   const selectedLabel = selectedDrink ? FLOATER_TO_LABEL[selectedDrink] : null;
+  const allUnlocked = unlockedCount >= 4;
+
+  const handleReset = () => {
+    setUnlockedCount(1);
+    if (selectedDrink && selectedDrink !== "lychee") setSelectedDrink(null);
+  };
 
   return (
     <div
@@ -123,33 +130,48 @@ export default function DrinkCard() {
         <p className="font-['Inter_Tight',sans-serif] font-normal text-[#faf9ff] text-[14px] leading-none whitespace-nowrap">
           Want to sip while you scroll?
         </p>
-        <p className="font-['Inter_Tight',sans-serif] font-normal text-[#908e99] text-[14px] leading-none whitespace-nowrap">
-          Visit again to unlock more flavors!
-        </p>
+        {allUnlocked ? (
+          <p
+            className="font-['Inter_Tight',sans-serif] font-normal text-[14px] leading-none whitespace-nowrap underline cursor-pointer"
+            style={{ color: resetHovered ? "var(--text-primary, #faf9ff)" : "var(--text-secondary, #908e99)", transition: "color 150ms ease-out" }}
+            onMouseEnter={() => setResetHovered(true)}
+            onMouseLeave={() => setResetHovered(false)}
+            onClick={handleReset}
+          >
+            Reset drink menu
+          </p>
+        ) : (
+          <p className="font-['Inter_Tight',sans-serif] font-normal text-[#908e99] text-[14px] leading-none whitespace-nowrap">
+            Come back to unlock more flavors
+          </p>
+        )}
       </div>
 
       {/* Drink slots */}
-      {SLOTS.map(({ cup, label, unlocked, leftPct, topPct }) => (
-        <div
-          key={label}
-          className={`absolute flex flex-col items-center gap-[14px] w-[30.8%] ${unlocked ? "cursor-pointer" : "cursor-default"}`}
-          style={{ left: leftPct, top: topPct }}
-          onMouseEnter={() => unlocked && setHoveredLabel(label)}
-          onMouseLeave={() => setHoveredLabel(null)}
-          onClick={() => unlocked && setSelectedDrink(LABEL_TO_FLOATER[label])}
-        >
-          {unlocked ? cup : <EmptyCup />}
-          <p
-            className="font-['Inter_Tight',sans-serif] font-[300] text-[14px] leading-[1.2] tracking-[-0.02em] whitespace-nowrap text-center"
-            style={{
-              color: unlocked && (hoveredLabel === label || selectedLabel === label) ? "#faf9ff" : "#585564",
-              transition: "color 0.15s ease",
-            }}
+      {SLOTS.map(({ cup, label, leftPct, topPct }, index) => {
+        const unlocked = index < unlockedCount;
+        return (
+          <div
+            key={label}
+            className={`absolute flex flex-col items-center gap-[14px] w-[30.8%] ${unlocked ? "cursor-pointer" : "cursor-default"}`}
+            style={{ left: leftPct, top: topPct }}
+            onMouseEnter={() => unlocked && setHoveredLabel(label)}
+            onMouseLeave={() => setHoveredLabel(null)}
+            onClick={() => unlocked && setSelectedDrink(LABEL_TO_FLOATER[label])}
           >
-            {unlocked ? label : "?"}
-          </p>
-        </div>
-      ))}
+            {unlocked ? cup : <EmptyCup />}
+            <p
+              className="font-['Inter_Tight',sans-serif] font-[300] text-[14px] leading-[1.2] tracking-[-0.02em] whitespace-nowrap text-center"
+              style={{
+                color: unlocked && (hoveredLabel === label || selectedLabel === label) ? "#faf9ff" : "#585564",
+                transition: "color 0.15s ease",
+              }}
+            >
+              {unlocked ? label : "?"}
+            </p>
+          </div>
+        );
+      })}
     </div>
   );
 }
