@@ -166,10 +166,10 @@ export default function About() {
       <div className="px-[8vw] pt-[100px] pb-[14vh] flex flex-col gap-[75px]">
 
         {/* Bento grid */}
-        <div className="grid grid-cols-2 gap-[16px] items-start">
+        <div className="grid grid-cols-2 gap-[16px] items-stretch">
 
           {/* Left: Backstory box */}
-          <div className="border border-[#302f34] rounded-[12px] p-[32px] flex flex-col gap-[36px]">
+          <div className="border border-[#302f34] rounded-[12px] p-[32px] flex flex-col gap-[36px] h-full">
 
             <p
               className="font-['Inter_Tight',sans-serif] leading-[1.1] text-white font-normal"
@@ -257,7 +257,7 @@ export default function About() {
           </div>
 
           {/* Right column */}
-          <div className="flex flex-col gap-[16px]">
+          <div className="flex flex-col gap-[16px] h-full">
 
             {/* Top squares */}
             <div className="flex gap-[16px]">
@@ -326,8 +326,8 @@ export default function About() {
 
             {/* Drink Card */}
             <div
-              className="border border-[#302f34] rounded-[12px]"
-              style={{ height: "249px", background: "rgba(88,85,100,0.2)" }}
+              className="border border-[#302f34] rounded-[12px] flex-1"
+              style={{ background: "rgba(88,85,100,0.2)" }}
             />
           </div>
         </div>
