@@ -224,7 +224,7 @@ export default function Home() {
       </motion.div>
 
       {/* Main body */}
-      <div className="flex flex-col gap-[0px] items-center pt-[80px] pb-[14vh] px-[5vw] relative w-full">
+      <div className="flex flex-col gap-[0px] items-center pt-[140px] pb-[14vh] px-[5vw] relative w-full">
 
         {/* Hero text */}
         <motion.div
@@ -285,7 +285,7 @@ export default function Home() {
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: "easeOut", delay: 0.9 }}
-          className="flex flex-wrap gap-x-[48px] gap-y-[56px] items-start w-full px-[4vw]"
+          className="flex flex-wrap gap-[16px] items-start w-full px-[4vw]"
         >
           {caseStudies.map((cs, i) => {
             const card = (
@@ -305,33 +305,33 @@ export default function Home() {
             );
             if (i === 0) {
               return (
-                <Link key={i} to="/casestudy/figma-rit" className="w-full sm:w-[calc(50%-24px)] no-underline">
+                <Link key={i} to="/casestudy/figma-rit" className="w-full sm:w-[calc(50%-8px)] no-underline">
                   {card}
                 </Link>
               );
             }
             if (i === 1) {
               return (
-                <Link key={i} to="/casestudy/gentle-monster" className="w-full sm:w-[calc(50%-24px)] no-underline">
+                <Link key={i} to="/casestudy/gentle-monster" className="w-full sm:w-[calc(50%-8px)] no-underline">
                   {card}
                 </Link>
               );
             }
             if (i === 2) {
               return (
-                <Link key={i} to="/casestudy/tian-airlines" className="w-full sm:w-[calc(50%-24px)] no-underline">
+                <Link key={i} to="/casestudy/tian-airlines" className="w-full sm:w-[calc(50%-8px)] no-underline">
                   {card}
                 </Link>
               );
             }
             if (i === 3) {
               return (
-                <Link key={i} to="/casestudy/aixels" className="w-full sm:w-[calc(50%-24px)] no-underline">
+                <Link key={i} to="/casestudy/aixels" className="w-full sm:w-[calc(50%-8px)] no-underline">
                   {card}
                 </Link>
               );
             }
-            return <div key={i} className="w-full sm:w-[calc(50%-24px)]">{card}</div>;
+            return <div key={i} className="w-full sm:w-[calc(50%-8px)]">{card}</div>;
           })}
         </motion.div>
 

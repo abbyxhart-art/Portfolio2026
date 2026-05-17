@@ -93,7 +93,7 @@ export default function DrinkFloater() {
       {drinkType === 'sesame' && <MiniInteractionBlackSesame />}
       <p
         className="font-['Inter_Tight',sans-serif] font-normal leading-none text-[14px] tracking-[-0.28px] whitespace-nowrap cursor-pointer"
-        style={{ color: isContactHovered ? "var(--text-primary)" : "var(--text-secondary)", transition: "color 150ms ease-out" }}
+        style={{ color: isContactHovered ? "#faf9ff" : "#908e99", transition: "color 150ms ease-out" }}
         onMouseEnter={() => setIsContactHovered(true)}
         onMouseLeave={() => setIsContactHovered(false)}
       >Contact</p>

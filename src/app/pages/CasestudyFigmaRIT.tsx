@@ -123,7 +123,7 @@ export default function CasestudyFigmaRIT() {
 
             <div id="cs-overview" className="flex flex-col gap-[32px] items-start w-full">
               {/* Title + subtitle */}
-              <div className="border-b border-[#d1cedc] flex flex-col gap-[8px] items-start pb-[32px] w-full">
+              <div className="border-b border-[#302f34] flex flex-col gap-[8px] items-start pb-[32px] w-full">
                 <p className="font-['Inter_Tight',sans-serif] font-[450] leading-[1.3] text-[color:var(--text\/primary,#eeedf5)] text-[24px] w-full">
                   FigBuild 2026 Badges
                 </p>

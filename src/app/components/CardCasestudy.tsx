@@ -88,7 +88,7 @@ export default function CardCasestudy({
       />
 
       {/* Case study image */}
-      <div className="aspect-[400/165] relative shrink-0 w-full overflow-hidden bg-[#1c1b1f] rounded-[8px]">
+      <div className="aspect-[2/1] relative shrink-0 w-full overflow-hidden bg-[#1c1b1f] rounded-[8px]">
         {video ? (
           <video
             autoPlay loop muted playsInline preload="auto"

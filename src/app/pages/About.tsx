@@ -160,7 +160,7 @@ export default function About() {
       </motion.div>
 
       {/* Page content */}
-      <div className="px-[8vw] pt-[100px] pb-[14vh] flex flex-col gap-[75px]">
+      <div className="px-[8vw] pt-[160px] pb-[14vh] flex flex-col gap-[75px]">
 
         {/* Bento grid */}
         <div className="grid grid-cols-2 gap-[16px] items-stretch">
