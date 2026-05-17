@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavEntrance } from "../hooks/useNavEntrance";
-import ButtonFilled from "../components/ButtonFilled";
 import { motion, AnimatePresence } from "motion/react";
 import Navigation from "../../imports/Navigation";
 import HomeButton from "../components/HomeButton";
@@ -24,6 +23,20 @@ export default function Booth() {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+    const handleWheel = (e: WheelEvent) => {
+      if (window.innerWidth < 768) return;
+      if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+        e.preventDefault();
+        container.scrollLeft += e.deltaY;
+      }
+    };
+    container.addEventListener("wheel", handleWheel, { passive: false });
+    return () => container.removeEventListener("wheel", handleWheel);
   }, []);
 
   useEffect(() => {
@@ -71,7 +84,7 @@ export default function Booth() {
 
         {/* Header */}
         <motion.div
-          className="flex flex-col gap-[32px] items-start w-full px-[25vw] pb-[75px]"
+          className="flex flex-col gap-[32px] items-start w-full px-[16px] md:px-[25vw] pb-[75px]"
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: "easeOut", delay: 0.1 }}
@@ -85,13 +98,13 @@ export default function Booth() {
         </motion.div>
 
         {/* Horizontal scroll content */}
-        <div ref={scrollContainerRef} className="w-full overflow-x-auto pb-[15vh] no-scrollbar" style={{ scrollSnapType: 'x mandatory', scrollPaddingLeft: '25vw', scrollbarWidth: 'none' }}>
-          <div className="flex gap-[160px]">
-            <div className="shrink-0 w-[25vw]" />
+        <div ref={scrollContainerRef} className="w-full md:overflow-x-auto pb-[15vh] no-scrollbar md:snap-x md:snap-mandatory md:scroll-pl-[25vw]" style={{ scrollbarWidth: 'none' }}>
+          <div className="flex flex-col gap-[64px] md:flex-row md:gap-[160px]">
+            <div className="hidden md:block shrink-0 md:w-[25vw]" />
 
           {/* Interactive Experiences — 3 portrait */}
           <motion.div
-            className="shrink-0 w-[50vw] flex flex-col gap-[32px] items-start" style={{ scrollSnapAlign: 'start' }}
+            className="w-full md:shrink-0 md:w-[50vw] flex flex-col gap-[32px] items-start px-[16px] md:px-0 md:snap-start"
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, ease: "easeOut", delay: 0.25 }}
@@ -149,7 +162,7 @@ export default function Booth() {
 
           {/* College of Science — 2 landscape */}
           <motion.div
-            className="shrink-0 w-[50vw] flex flex-col gap-[32px] items-start" style={{ scrollSnapAlign: 'start' }}
+            className="w-full md:shrink-0 md:w-[50vw] flex flex-col gap-[32px] items-start px-[16px] md:px-0 md:snap-start"
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, ease: "easeOut", delay: 0.4 }}
@@ -173,7 +186,7 @@ export default function Booth() {
 
           {/* Student Government — 3 landscape 4:3 */}
           <motion.div
-            className="shrink-0 w-[50vw] flex flex-col gap-[32px] items-start" style={{ scrollSnapAlign: 'start' }}
+            className="w-full md:shrink-0 md:w-[50vw] flex flex-col gap-[32px] items-start px-[16px] md:px-0 md:snap-start"
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, ease: "easeOut", delay: 0.55 }}
@@ -198,7 +211,7 @@ export default function Booth() {
 
           {/* It doesn't stop here */}
           <motion.div
-            className="shrink-0 w-[50vw] flex flex-col gap-[32px] items-start" style={{ scrollSnapAlign: 'start' }}
+            className="w-full md:shrink-0 md:w-[50vw] flex flex-col gap-[32px] items-start px-[16px] md:px-0 md:snap-start"
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, ease: "easeOut", delay: 0.7 }}
@@ -211,9 +224,12 @@ export default function Booth() {
                 <p className="font-['Inter_Tight',sans-serif] font-light leading-[1.65] text-[#908e99] text-[16px] whitespace-nowrap">
                   I post all of my creativity on
                 </p>
-                <ButtonFilled label="Instagram" type="Purple" size="Default"                    
-                 onClick={() => window.open(`https://www.instagram.com/abbyxhart.art`)}
- />
+                <a
+                  href="https://www.instagram.com/abbyxhart.art"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-['Inter_Tight',sans-serif] font-light leading-[1.65] text-[#908e99] text-[16px] underline decoration-dotted underline-offset-4 hover:text-white transition-colors duration-200"
+                >Instagram</a>
               </div>
             </div>
             {/* 3 IG blocks — ig_2 takes double width */}
@@ -230,13 +246,13 @@ export default function Booth() {
             </div>
           </motion.div>
 
-            <div className="shrink-0 w-[75vw]" />
+            <div className="hidden md:block shrink-0 md:w-[75vw]" />
           </div>
         </div>
       </div>
 
       {/* Dial */}
-      <div className="fixed bottom-[-80px] left-1/2 -translate-x-1/2 z-50">
+      <div className="hidden md:block fixed bottom-[-80px] left-1/2 -translate-x-1/2 z-50">
         <BoothDial scrollRef={scrollContainerRef} />
       </div>
     </div>

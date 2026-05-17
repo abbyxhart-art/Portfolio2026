@@ -49,13 +49,18 @@ export const router = createBrowserRouter([
         Component: CasestudyGentleMonster,
       },
       {
-        path: "/booth",
-        Component: Booth,
-      },
-      {
         path: "/about",
         Component: About,
       },
     ],
+  },
+  {
+    path: "/booth",
+    element: (
+      <>
+        <Booth />
+        <DrinkFloater />
+      </>
+    ),
   },
 ]);
