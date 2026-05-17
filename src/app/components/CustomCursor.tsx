@@ -7,7 +7,7 @@ import { useCursor } from '../context/CursorContext';
 export default function CustomCursor() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isVisible, setIsVisible] = useState(false);
-  const { hoveredProject, isPurple } = useCursor();
+  const { hoveredProject, isPurple, isInHero } = useCursor();
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -65,7 +65,7 @@ export default function CustomCursor() {
         animate={{
           left: mousePosition.x,
           top: mousePosition.y,
-          opacity: isVisible ? 1 : 0
+          opacity: isVisible && !(isInHero && !isProjectHovered && !isPurple) ? 1 : 0
         }}
         transition={{ 
           opacity: { duration: 0.2 },

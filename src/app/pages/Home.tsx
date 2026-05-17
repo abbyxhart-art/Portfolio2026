@@ -1,7 +1,8 @@
 import { motion, AnimatePresence } from "motion/react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavEntrance } from "../hooks/useNavEntrance";
 import { Link } from "react-router";
+import { useCursor } from "../context/CursorContext";
 import linkedInIcon from "../../assets/linkedin.svg";
 import Navigation from "../../imports/Navigation";
 
@@ -80,6 +81,7 @@ const caseStudies: {
   date: string;
   tag1Label: string;
   tag2Label: string;
+  readTime: string;
   image?: string;
   video?: string;
 }[] = [
@@ -90,6 +92,7 @@ const caseStudies: {
     date: "Spring 2026",
     tag1Label: "Agentic Design",
     tag2Label: "Brand Activation",
+    readTime: "2 min read",
     video: figbuildMacstudioVideo,
   },
   {
@@ -99,6 +102,7 @@ const caseStudies: {
     date: "Spring 2025",
     tag1Label: "Research",
     tag2Label: "Design Systems",
+    readTime: "6 min read",
     video: gmTeaserVideo,
   },
   {
@@ -108,6 +112,7 @@ const caseStudies: {
     date: "Fall 2025",
     tag1Label: "Design Systems",
     tag2Label: "UI Prototype",
+    readTime: "3 min read",
     video: tianHeroVideo,
   },
   {
@@ -117,22 +122,54 @@ const caseStudies: {
     date: "Fall 2025",
     tag1Label: "Agentic Design",
     tag2Label: "Designathon",
+    readTime: "2 min read",
     image: aixelsMeImg,
   },
 ];
 
+type TrailDot = { id: number; x: number; y: number; createdAt: number };
+
+const GRID = 15;
+const FADE_MS = 700;
+
 export default function Home() {
   const shouldAnimate = useNavEntrance();
   const [scrolled, setScrolled] = useState(false);
+  const { setIsInHero } = useCursor();
+  const [trail, setTrail] = useState<TrailDot[]>([]);
+  const trailIdRef = useRef(0);
+  const rafRef = useRef(0);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 10);
+    const animate = () => {
+      const now = Date.now();
+      setTrail(prev => {
+        if (prev.length === 0) return prev;
+        return prev.filter(t => now - t.createdAt < FADE_MS);
+      });
+      rafRef.current = requestAnimationFrame(animate);
     };
+    rafRef.current = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(rafRef.current);
+  }, []);
 
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 10);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const handleHeroMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = Math.floor((e.clientX - rect.left) / GRID) * GRID;
+    const y = Math.floor((e.clientY - rect.top)  / GRID) * GRID;
+    const now = Date.now();
+    setTrail(prev => {
+      const last = prev[prev.length - 1];
+      if (last && last.x === x && last.y === y) return prev;
+      return [...prev, { id: trailIdRef.current++, x, y, createdAt: now }];
+    });
+  };
 
   return (
     <div className="relative min-h-screen bg-background overflow-x-clip">
@@ -187,16 +224,32 @@ export default function Home() {
       </motion.div>
 
       {/* Main body */}
-      <div className="flex flex-col gap-[0px] items-center pt-[160px] pb-[14vh] px-[5vw] relative w-full">
+      <div className="flex flex-col gap-[0px] items-center pt-[80px] pb-[14vh] px-[5vw] relative w-full">
 
         {/* Hero text */}
         <motion.div
           initial={{ opacity: 0, y: -24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: "easeOut", delay: 0.2 }}
-          className="flex flex-col items-center text-center gap-[16px] pb-[96px] w-auto"
+          className="flex flex-col items-center text-center gap-[6px] pt-[8px] pb-[96px] w-full relative"
           style={{ fontFamily: "var(--text-font/default, 'Inter Tight', sans-serif)" }}
+          onMouseMove={handleHeroMouseMove}
+          onMouseEnter={() => setIsInHero(true)}
+          onMouseLeave={() => setIsInHero(false)}
         >
+          {(() => {
+            const now = Date.now();
+            return trail.map(t => {
+              const opacity = Math.max(0, 1 - (now - t.createdAt) / FADE_MS);
+              return (
+                <div
+                  key={t.id}
+                  className="absolute pointer-events-none"
+                  style={{ left: t.x, top: t.y, width: GRID, height: GRID, background: "#9a47ff", opacity }}
+                />
+              );
+            });
+          })()}
           <div
             className="text-[color:var(--text\/primary,#eeedf5)] leading-[1.1] whitespace-nowrap"
             style={{ fontSize: "82px", fontWeight: 350 }}
@@ -215,12 +268,13 @@ export default function Home() {
             </div>
             <p className="text-[14px] leading-[1.5] mb-0 font-[300] text-[color:var(--text\/tertiary,#7e7c87)]">
               {`+ Wrapping up my `}
-              <span
-                className="decoration-dotted underline-offset-[4px] transition-colors duration-150 cursor-default"
+              <Link
+                to="/booth"
+                className="decoration-dotted underline-offset-[4px] transition-colors duration-150"
                 style={{ textDecoration: "underline dotted", textUnderlineOffset: "4px", color: "inherit" }}
                 onMouseEnter={e => (e.currentTarget.style.color = "#faf9ff")}
                 onMouseLeave={e => (e.currentTarget.style.color = "inherit")}
-              >New Media Design</span>
+              >New Media Design</Link>
               {` BFA @ RIT`}
             </p>
           </motion.div>
@@ -231,52 +285,53 @@ export default function Home() {
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: "easeOut", delay: 0.9 }}
-          className="flex flex-wrap gap-x-[4px] gap-y-[42px] items-start w-full px-[4vw]"
+          className="flex flex-wrap gap-x-[48px] gap-y-[56px] items-start w-full px-[4vw]"
         >
           {caseStudies.map((cs, i) => {
             const card = (
               <CardCasestudy
                 key={i}
-                className="content-stretch flex flex-col gap-[18.990px] items-start p-[14.246px] relative rounded-[8.31px] w-full"
+                className="content-stretch flex flex-col gap-[10px] items-start p-[8px] relative rounded-[8.31px] w-full"
                 accentType={cs.accentType}
                 title={cs.title}
                 description={cs.description}
                 date={cs.date}
                 tag1Label={cs.tag1Label}
                 tag2Label={cs.tag2Label}
+                readTime={cs.readTime}
                 image={cs.image}
                 video={cs.video}
               />
             );
             if (i === 0) {
               return (
-                <Link key={i} to="/casestudy/figma-rit" className="w-full sm:w-[calc(50%-2px)] no-underline">
+                <Link key={i} to="/casestudy/figma-rit" className="w-full sm:w-[calc(50%-24px)] no-underline">
                   {card}
                 </Link>
               );
             }
             if (i === 1) {
               return (
-                <Link key={i} to="/casestudy/gentle-monster" className="w-full sm:w-[calc(50%-2px)] no-underline">
+                <Link key={i} to="/casestudy/gentle-monster" className="w-full sm:w-[calc(50%-24px)] no-underline">
                   {card}
                 </Link>
               );
             }
             if (i === 2) {
               return (
-                <Link key={i} to="/casestudy/tian-airlines" className="w-full sm:w-[calc(50%-2px)] no-underline">
+                <Link key={i} to="/casestudy/tian-airlines" className="w-full sm:w-[calc(50%-24px)] no-underline">
                   {card}
                 </Link>
               );
             }
             if (i === 3) {
               return (
-                <Link key={i} to="/casestudy/aixels" className="w-full sm:w-[calc(50%-2px)] no-underline">
+                <Link key={i} to="/casestudy/aixels" className="w-full sm:w-[calc(50%-24px)] no-underline">
                   {card}
                 </Link>
               );
             }
-            return <div key={i} className="w-full sm:w-[calc(50%-2px)]">{card}</div>;
+            return <div key={i} className="w-full sm:w-[calc(50%-24px)]">{card}</div>;
           })}
         </motion.div>
 

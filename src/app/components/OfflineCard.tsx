@@ -40,7 +40,7 @@ const BUTTONS: { id: Category; icon: string }[] = [
 ];
 
 const STAR_IMAGES  = [star1, star2, star3];
-const STAR_TITLES  = ["I graduated!", "I ran a marathon!", "I stood on a 10 ft frozen wave!"];
+const STAR_TITLES  = ["I graduated!", "I ran a marathon!", "I stood on a frozen wave!"];
 
 const HEART_IMAGES = [heart1, heart2, heart3];
 const HEART_TITLES = ["Picnic with professors", "Figma at RIT", "New Media Club Formal"];

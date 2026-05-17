@@ -79,7 +79,7 @@ export default function Footer() {
       <div
         className="absolute inset-x-0 bottom-0 h-[600px] pointer-events-none"
         style={{
-          background: "radial-gradient(ellipse 80% 600px at 50% 100%, rgba(190,170,255,0.35) 0%, rgba(220,210,255,0.15) 50%, rgba(250,249,255,0) 100%)",
+          background: "radial-gradient(ellipse 80% 600px at 50% 100%, rgba(190,170,255,0.08) 0%, rgba(220,210,255,0.04) 50%, rgba(250,249,255,0) 100%)",
         }}
       />
 
@@ -88,23 +88,23 @@ export default function Footer() {
         {/* Left: tagline + design info */}
         <div className="flex flex-col h-full items-start justify-between relative shrink-0">
           <div className="flex flex-col gap-[4px] items-start shrink-0 w-[235px]">
-            <p className="font-['Inter_Tight',sans-serif] leading-none text-black text-[17px] w-full">
+            <p className="font-['Inter_Tight',sans-serif] font-[350] leading-none text-[color:var(--text\/primary,#eeedf5)] text-[17px] w-full">
               I design for connection.
             </p>
             <div className="flex gap-[4px] items-center shrink-0 w-full">
               <img src={iconArrow} alt="" className="shrink-0 size-[18px]" />
-              <p className="font-['Inter_Tight',sans-serif] leading-none text-[#faf9ff] text-[17px] whitespace-nowrap">
+              <p className="font-['Inter_Tight',sans-serif] font-[350] leading-none text-[#faf9ff] text-[17px] whitespace-nowrap">
                 It was nice to meet you!
               </p>
             </div>
           </div>
           <div className="flex flex-col font-['Inter_Tight',sans-serif] font-[300] gap-[8px] items-start leading-none shrink-0 text-[14px] whitespace-nowrap">
             <div className="flex gap-[3px] items-center shrink-0">
-              <p className="text-[#faf9ff]">Typeset</p>
+              <p className="text-[#908e99]">Typeset</p>
               <p className="text-[#908e99]">Inter Tight</p>
             </div>
             <div className="flex gap-[3px] items-center shrink-0">
-              <p className="text-[#faf9ff]">Made with</p>
+              <p className="text-[#908e99]">Made with</p>
               <p className="text-[#908e99]">Figma + Claude → Github + Vercel</p>
             </div>
           </div>
@@ -143,20 +143,20 @@ export default function Footer() {
       <div className="absolute bottom-[15px] flex flex-col font-['Inter_Tight',sans-serif] font-[300] gap-[8px] items-start leading-none left-[99px] text-[14px] whitespace-nowrap">
         <p className="text-[#faf9ff]">Rochester Institute of Technology</p>
         <div className="flex gap-[3px] items-center shrink-0">
-          <p className="text-[#faf9ff]">BFA</p>
-          <p className="text-[#908e99]">New Media Design</p>
+          <p className="text-[#908e99]">BFA</p>
+          <p className="text-[#faf9ff]">New Media Design</p>
         </div>
         <div className="flex gap-[3px] items-center shrink-0 w-full">
-          <p className="text-[#faf9ff]">Minors</p>
-          <p className="text-[#908e99]">Mobile Design and Development, Fine Arts</p>
+          <p className="text-[#908e99]">Minors</p>
+          <p className="text-[#faf9ff]">Mobile Design and Development, Fine Arts</p>
         </div>
       </div>
 
       {hasFlowers && (
         <button
           onClick={clearGarden}
-          className="absolute border border-[#302f34] flex gap-[9px] items-center pl-[12px] pr-[16px] py-[8px] rounded-[24px] bg-[#171717] cursor-pointer bottom-[16px] right-[16px]"
-          style={{ borderWidth: "0.75px" }}
+          className="absolute bottom-[16px] right-[16px] flex gap-[9px] items-center pl-[12px] pr-[16px] py-[8px] rounded-[24px] cursor-pointer backdrop-blur-md bg-[rgba(23,23,23,0.3)] hover:bg-[rgba(88,85,100,0.2)] transition-colors duration-150"
+          style={{ border: "0.75px solid #302f34" }}
         >
           <div className="relative shrink-0 size-[24px] overflow-clip">
             <div className="absolute inset-[20.83%_12.5%]">
@@ -165,8 +165,8 @@ export default function Footer() {
           </div>
           <div className="flex gap-[2px] items-center">
             {["shift", "X"].map((key) => (
-              <div key={key} className={`h-[24px] rounded-[4px] flex items-center justify-center ${key === "shift" ? "px-[8px]" : "w-[24px]"}`} style={{ background: "rgba(144,142,153,0.2)" }}>
-                <span className="font-['Inter_Tight',sans-serif] text-[12px] text-[#908e99]">{key}</span>
+              <div key={key} className={`h-[24px] rounded-[4px] flex items-center justify-center ${key === "shift" ? "px-[8px]" : "w-[24px]"}`} style={{ background: "rgba(144,142,153,0.15)" }}>
+                <span className="font-['Inter_Tight',sans-serif] text-[12px] text-[#b8b4c5]">{key}</span>
               </div>
             ))}
           </div>

@@ -7,6 +7,7 @@ import type { Swiper as SwiperType } from "swiper";
 import "swiper/css";
 import Navigation from "../../imports/Navigation";
 import HomeButton from "../components/HomeButton";
+import FriendsCard from "../components/FriendsCard";
 import OfflineCard from "../components/OfflineCard";
 import DrinkCard from "../components/DrinkCard";
 import about1 from "../../assets/project/about/about_1.jpg";
@@ -30,16 +31,12 @@ const quotes = [
     text: "Think about what you owe people in the design (direction? context?)\nThen think about how to make it work.",
     attribution: "Hye Jin Nae, RIT Professor",
   },
-  {
-    text: "Make everything super easy.",
-    attribution: "Troy Ramiscal, teammate",
-  },
 ];
 
 const photos = [
   { caption: "Me + Lana @ CC Meet, we won!", img: about1 },
   { caption: "Charlotte, Miggi, Me, Troy, Lasya @ New Media Club", img: about3 },
-  { caption: "Angie, Me, Ivo, TJ, Leah @ NYC", img: about4 },
+  { caption: "Angie, Me, Ivo, TJ, @ NYC", img: about4 },
 ];
 
 
@@ -169,11 +166,16 @@ export default function About() {
         <div className="grid grid-cols-2 gap-[16px] items-stretch">
 
           {/* Left: Backstory box */}
-          <div className="border border-[#302f34] rounded-[12px] p-[32px] flex flex-col gap-[36px] h-full">
+          <motion.div
+            className="border border-[#302f34] rounded-[12px] p-[32px] flex flex-col gap-[36px] h-full"
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: "easeOut", delay: 0.1 }}
+          >
 
             <p
               className="font-['Inter_Tight',sans-serif] leading-[1.1] text-white font-normal"
-              style={{ fontSize: "46px" }}
+              style={{ fontSize: "52px" }}
             >
               I design to help people navigate and interact with tools and worlds
             </p>
@@ -254,20 +256,28 @@ export default function About() {
                 ))}
               </div>
             </div>
-          </div>
+          </motion.div>
 
           {/* Right column */}
           <div className="flex flex-col gap-[16px] h-full">
 
             {/* Top squares */}
-            <div className="flex gap-[16px]">
+            <motion.div
+              className="flex gap-[16px]"
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, ease: "easeOut", delay: 0.2 }}
+            >
               <div className="flex-1"><OfflineCard /></div>
               <div className="flex-1"><DrinkCard /></div>
-            </div>
+            </motion.div>
 
             {/* Quote / Ethos box */}
-            <div
+            <motion.div
               className="border border-[#302f34] rounded-[12px] overflow-clip relative"
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, ease: "easeOut", delay: 0.35 }}
               style={{ height: "402px" }}
             >
               {/* Top gradient */}
@@ -322,13 +332,17 @@ export default function About() {
                   ))}
                 </div>
               </div>
-            </div>
+            </motion.div>
 
-            {/* Drink Card */}
-            <div
-              className="border border-[#302f34] rounded-[12px] flex-1"
-              style={{ background: "rgba(88,85,100,0.2)" }}
-            />
+            {/* Friends Card */}
+            <motion.div
+              className="border border-[#302f34] rounded-[12px] flex-1 overflow-hidden"
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, ease: "easeOut", delay: 0.5 }}
+            >
+              <FriendsCard />
+            </motion.div>
           </div>
         </div>
 

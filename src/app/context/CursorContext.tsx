@@ -5,6 +5,8 @@ type CursorContextType = {
   setHoveredProject: (project: number | null) => void;
   isPurple: boolean;
   setIsPurple: (value: boolean) => void;
+  isInHero: boolean;
+  setIsInHero: (value: boolean) => void;
 };
 
 const CursorContext = createContext<CursorContextType | undefined>(undefined);
@@ -12,9 +14,10 @@ const CursorContext = createContext<CursorContextType | undefined>(undefined);
 export function CursorProvider({ children }: { children: ReactNode }) {
   const [hoveredProject, setHoveredProject] = useState<number | null>(null);
   const [isPurple, setIsPurple] = useState(false);
+  const [isInHero, setIsInHero] = useState(false);
 
   return (
-    <CursorContext.Provider value={{ hoveredProject, setHoveredProject, isPurple, setIsPurple }}>
+    <CursorContext.Provider value={{ hoveredProject, setHoveredProject, isPurple, setIsPurple, isInHero, setIsInHero }}>
       {children}
     </CursorContext.Provider>
   );
