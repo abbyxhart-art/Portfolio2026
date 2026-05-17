@@ -285,13 +285,13 @@ export default function Home() {
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: "easeOut", delay: 0.9 }}
-          className="flex flex-wrap gap-[16px] items-start w-full px-[4vw]"
+          className="flex flex-wrap gap-x-[24px] gap-y-[42px] items-start w-full px-[4vw]"
         >
           {caseStudies.map((cs, i) => {
             const card = (
               <CardCasestudy
                 key={i}
-                className="content-stretch flex flex-col gap-[10px] items-start p-[8px] relative rounded-[8.31px] w-full"
+                className="content-stretch flex flex-col gap-[20px] items-start p-[20px] relative rounded-[8.31px] w-full"
                 accentType={cs.accentType}
                 title={cs.title}
                 description={cs.description}
@@ -305,35 +305,36 @@ export default function Home() {
             );
             if (i === 0) {
               return (
-                <Link key={i} to="/casestudy/figma-rit" className="w-full sm:w-[calc(50%-8px)] no-underline">
+                <Link key={i} to="/casestudy/figma-rit" className="w-full sm:w-[calc(50%-12px)] no-underline">
                   {card}
                 </Link>
               );
             }
             if (i === 1) {
               return (
-                <Link key={i} to="/casestudy/gentle-monster" className="w-full sm:w-[calc(50%-8px)] no-underline">
+                <Link key={i} to="/casestudy/gentle-monster" className="w-full sm:w-[calc(50%-12px)] no-underline">
                   {card}
                 </Link>
               );
             }
             if (i === 2) {
               return (
-                <Link key={i} to="/casestudy/tian-airlines" className="w-full sm:w-[calc(50%-8px)] no-underline">
+                <Link key={i} to="/casestudy/tian-airlines" className="w-full sm:w-[calc(50%-12px)] no-underline">
                   {card}
                 </Link>
               );
             }
             if (i === 3) {
               return (
-                <Link key={i} to="/casestudy/aixels" className="w-full sm:w-[calc(50%-8px)] no-underline">
+                <Link key={i} to="/casestudy/aixels" className="w-full sm:w-[calc(50%-12px)] no-underline">
                   {card}
                 </Link>
               );
             }
-            return <div key={i} className="w-full sm:w-[calc(50%-8px)]">{card}</div>;
+            return <div key={i} className="w-full sm:w-[calc(50%-12px)]">{card}</div>;
           })}
         </motion.div>
+
 
       </div>
 

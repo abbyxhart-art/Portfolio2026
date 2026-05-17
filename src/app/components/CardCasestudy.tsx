@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export type AccentType = "1" | "2" | "3" | "4";
+export type AccentType = "1" | "2" | "3" | "4" | "5" | "6" | "7";
 
 type CardCasestudyProps = {
   className?: string;
@@ -20,6 +20,9 @@ const defaultBorderColor: Record<AccentType, string> = {
   "2": "var(--brand\/pink\/20, #ffc9fd)",
   "3": "#c6d6ff",
   "4": "var(--brand\/red\/20, #fbc0bf)",
+  "5": "rgba(255,198,43,0.2)",
+  "6": "rgba(251,77,33,0.2)",
+  "7": "rgba(65,218,169,0.2)",
 };
 
 const hoverBorderColor: Record<AccentType, string> = {
@@ -27,6 +30,9 @@ const hoverBorderColor: Record<AccentType, string> = {
   "2": "rgba(205,255,43,0.1)",
   "3": "rgba(43,81,255,0.2)",
   "4": "rgba(251,33,243,0.15)",
+  "5": "rgba(255,198,43,0.1)",
+  "6": "rgba(251,77,33,0.1)",
+  "7": "rgba(65,218,169,0.1)",
 };
 
 const hoverBgColor: Record<AccentType, string> = {
@@ -34,6 +40,9 @@ const hoverBgColor: Record<AccentType, string> = {
   "2": "rgba(205,255,43,0.02)",
   "3": "rgba(43,81,255,0.07)",
   "4": "rgba(251,33,243,0.05)",
+  "5": "rgba(255,198,43,0.05)",
+  "6": "rgba(251,77,33,0.05)",
+  "7": "rgba(65,218,169,0.05)",
 };
 
 const hoverAccentColor: Record<AccentType, string> = {
@@ -41,6 +50,9 @@ const hoverAccentColor: Record<AccentType, string> = {
   "2": "rgba(194,255,91,0.8)",
   "3": "#45d0ff",
   "4": "rgba(255,192,246,0.8)",
+  "5": "rgba(255,198,43,0.9)",
+  "6": "rgba(251,77,33,0.9)",
+  "7": "rgba(65,218,169,0.9)",
 };
 
 const defaultDescColor: Record<AccentType, { color: string }> = {
@@ -48,6 +60,9 @@ const defaultDescColor: Record<AccentType, { color: string }> = {
   "2": { color: "#908E99" },
   "3": { color: "#908E99" },
   "4": { color: "#908E99" },
+  "5": { color: "#908E99" },
+  "6": { color: "#908E99" },
+  "7": { color: "#908E99" },
 };
 
 export default function CardCasestudy({
@@ -101,7 +116,7 @@ export default function CardCasestudy({
       </div>
 
       {/* Text container */}
-      <div className="flex flex-col gap-[12px] items-start relative w-full">
+      <div className="flex flex-col gap-[16px] items-start relative w-full">
 
         {/* Specs row */}
         <div className="flex gap-[8px] items-center">
