@@ -31,7 +31,7 @@ function LinkedInButton() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.4, ease: "easeOut", delay: 0.2 }}
-      className="fixed top-[16px] right-[16px] z-50 p-[4px]"
+      className="fixed top-[16px] right-[calc(4.5vw)] z-50 p-[4px]"
     >
       <button
         onClick={() => window.open("https://linkedin.com/in/abbyxhart", "_blank", "noopener,noreferrer")}
@@ -70,9 +70,12 @@ function LinkedInButton() {
 }
 import CardCasestudy, { AccentType } from "../components/CardCasestudy";
 import aixelsMeImg from "../../assets/project/aixels/me.JPG";
+import kpopCover1 from "../../assets/project/kpop/kpop_cover1.jpg";
+import breadcrumbCover1 from "../../assets/project/breadcrumb/cover_1.png";
 const figbuildMacstudioVideo = new URL("../../assets/project/figbuild/figbuild_macstudio_2x1.mp4", import.meta.url).href;
 import gmTeaserVideo from "../../assets/project/gentlemonster/GM_Teaser_2x1.mp4";
-const tianHeroVideo = new URL("../../assets/project/tianair/tian_fullflow_macstudio_2x1.mp4", import.meta.url).href;
+import tianCover1 from "../../assets/project/tianair/tian_cover1.png";
+const texasIdVideo = new URL("../../assets/project/texasid/FullPrototype_1200x600_30fps.mp4", import.meta.url).href;
 
 const caseStudies: {
   accentType: AccentType;
@@ -86,14 +89,14 @@ const caseStudies: {
   video?: string;
 }[] = [
   {
-    accentType: "2",
-    title: "FigBuild 2026 Badges",
-    description: "Bringing a digital playground to students with Figma for Edu",
-    date: "Spring 2026",
-    tag1Label: "Agentic Design",
-    tag2Label: "Brand Activation",
-    readTime: "2 min read",
-    video: figbuildMacstudioVideo,
+    accentType: "3",
+    title: "Tian Airways",
+    description: "Defining a design language for air travel",
+    date: "Fall 2025",
+    tag1Label: "Design Systems",
+    tag2Label: "UI Prototype",
+    readTime: "3 min read",
+    image: tianCover1,
   },
   {
     accentType: "1",
@@ -106,14 +109,14 @@ const caseStudies: {
     video: gmTeaserVideo,
   },
   {
-    accentType: "3",
-    title: "Tian Airways",
-    description: "Defining a design language for air travel",
-    date: "Fall 2025",
-    tag1Label: "Design Systems",
-    tag2Label: "UI Prototype",
-    readTime: "3 min read",
-    video: tianHeroVideo,
+    accentType: "2",
+    title: "FigBuild 2026 Badges",
+    description: "Bringing a digital playground to students with Figma for Edu",
+    date: "Spring 2026",
+    tag1Label: "Agentic Design",
+    tag2Label: "Brand Activation",
+    readTime: "2 min read",
+    video: figbuildMacstudioVideo,
   },
   {
     accentType: "4",
@@ -124,6 +127,26 @@ const caseStudies: {
     tag2Label: "Designathon",
     readTime: "2 min read",
     image: aixelsMeImg,
+  },
+  {
+    accentType: "6",
+    title: "Texas Mobile",
+    description: "Creating a dynamic, safe alternative to traditional physical IDs",
+    date: "Spring 2024",
+    tag1Label: "Mobile",
+    tag2Label: "UX Design",
+    readTime: "4 min read",
+    video: texasIdVideo,
+  },
+  {
+    accentType: "7",
+    title: "Breadcrumb",
+    description: "A unified volunteer platform for global impact",
+    date: "Spring 2026",
+    tag1Label: "Desktop",
+    tag2Label: "Information Architecture",
+    readTime: "Coming soon",
+    image: breadcrumbCover1,
   },
 ];
 
@@ -163,6 +186,7 @@ export default function Home() {
     const rect = e.currentTarget.getBoundingClientRect();
     const x = Math.floor((e.clientX - rect.left) / GRID) * GRID;
     const y = Math.floor((e.clientY - rect.top)  / GRID) * GRID;
+    if (y > rect.height - 16) return;
     const now = Date.now();
     setTrail(prev => {
       const last = prev[prev.length - 1];
@@ -205,7 +229,7 @@ export default function Home() {
         initial={shouldAnimate ? { opacity: 0 } : false}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.4, ease: "easeOut", delay: 0.2 }}
-        className="fixed top-[16px] left-[16px] z-50 flex flex-col items-start leading-[1.5] pointer-events-none"
+        className="fixed top-[16px] left-[calc(4.5vw+16px)] z-50 flex flex-col items-start leading-[1.5] pointer-events-none"
         style={{ fontFamily: "var(--text-font/default, 'Inter Tight', sans-serif)", color: "#b8b4c5" }}
       >
         <p className="mb-0 text-[17px]" style={{ fontWeight: 350 }}>Abby Hart</p>
@@ -224,14 +248,14 @@ export default function Home() {
       </motion.div>
 
       {/* Main body */}
-      <div className="flex flex-col gap-[0px] items-center pt-[140px] pb-[14vh] px-[5vw] relative w-full">
+      <div className="flex flex-col gap-[0px] items-center pt-[140px] pb-[14vh] px-[0.5vw] relative w-full">
 
         {/* Hero text */}
         <motion.div
           initial={{ opacity: 0, y: -24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: "easeOut", delay: 0.2 }}
-          className="flex flex-col items-center text-center gap-[6px] pt-[8px] pb-[96px] w-full relative"
+          className="flex flex-col items-start gap-[31px] pt-[8px] pb-[72px] w-full pl-[calc(4vw+16px)] pr-[4vw] relative"
           style={{ fontFamily: "var(--text-font/default, 'Inter Tight', sans-serif)" }}
           onMouseMove={handleHeroMouseMove}
           onMouseEnter={() => setIsInHero(true)}
@@ -250,42 +274,53 @@ export default function Home() {
               );
             });
           })()}
-          <div
-            className="text-[color:var(--text\/primary,#eeedf5)] leading-[1.1] whitespace-nowrap"
-            style={{ fontSize: "82px", fontWeight: 350 }}
-          >
-            <p className="mb-0">{`I'm a creative technologist`}</p>
-            {/* <p className="mb-0">i'm a creative echnologist.</p> */}
+          <div className="flex flex-col gap-[13px] items-start w-full">
+            <div
+              className="text-[color:var(--text\/primary,#eeedf5)] leading-[1.2]"
+              style={{ fontSize: "50px", fontWeight: 350 }}
+            >
+              <p className="mb-0">{`I'm a creative technologist,`}</p>
+              <p className="mb-0">{`product designer, & Figma aficionado`}</p>
+            </div>
+            <p className="mb-0 text-[color:var(--text\/secondary,#908e99)] text-[16px] leading-[1.5]" style={{ fontWeight: 300 }}>
+              TLDR: I design visual systems to delight and direct users
+            </p>
           </div>
           <motion.div
             initial={{ opacity: 0, y: 6 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, ease: "easeOut", delay: 0.5 }}
-            className="flex flex-col items-center gap-[8px] w-auto"
+            className="flex flex-col gap-[5px] items-start"
           >
-            <div className="flex flex-col text-[color:var(--text\/secondary,#908e99)] text-[20px] leading-[1.65] whitespace-nowrap">
-              <p className="mb-0" style={{ fontWeight: 300 }}>designing visual systems to delight and direct + building communities with Figma Campus</p>
-            </div>
-            <p className="text-[14px] leading-[1.5] mb-0 font-[300] text-[color:var(--text\/tertiary,#7e7c87)]">
-              {`+ Wrapping up my `}
+            <p className="mb-0 text-[14px] leading-[1.5] text-[color:var(--text\/tertiary,#585564)]">Currently...</p>
+            <p className="mb-0 text-[17px] leading-[1.5] text-[color:var(--text\/secondary,#908e99)]" style={{ fontWeight: 300 }}>
+              Building communities with Figma Campus
+            </p>
+            <p className="mb-0 text-[17px] leading-[1.5] text-[color:var(--text\/secondary,#908e99)]" style={{ fontWeight: 300 }}>
+              {"Graduated "}
               <Link
-                to="/booth"
+                to="/about"
                 className="decoration-dotted underline-offset-[4px] transition-colors duration-150"
                 style={{ textDecoration: "underline dotted", textUnderlineOffset: "4px", color: "inherit" }}
                 onMouseEnter={e => (e.currentTarget.style.color = "#faf9ff")}
                 onMouseLeave={e => (e.currentTarget.style.color = "inherit")}
               >New Media Design</Link>
-              {` BFA @ RIT`}
+              {" @ Rochester Institute of Tech"}
             </p>
           </motion.div>
         </motion.div>
+
+        {/* Divider */}
+        <div className="w-full px-[4vw] mb-[72px]">
+          <div style={{ borderTop: "1px solid #302f34" }} />
+        </div>
 
         {/* Case study cards */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: "easeOut", delay: 0.9 }}
-          className="flex flex-wrap gap-x-[24px] gap-y-[42px] items-start w-full px-[4vw]"
+          className="flex flex-wrap gap-x-[12px] gap-y-[42px] items-start w-full px-[4vw]"
         >
           {caseStudies.map((cs, i) => {
             const card = (
@@ -305,36 +340,93 @@ export default function Home() {
             );
             if (i === 0) {
               return (
-                <Link key={i} to="/casestudy/figma-rit" className="w-full sm:w-[calc(50%-12px)] no-underline">
+                <Link key={i} to="/casestudy/tian-airlines" className="w-full sm:w-[calc(50%-6px)] no-underline">
                   {card}
                 </Link>
               );
             }
             if (i === 1) {
               return (
-                <Link key={i} to="/casestudy/gentle-monster" className="w-full sm:w-[calc(50%-12px)] no-underline">
+                <Link key={i} to="/casestudy/gentle-monster" className="w-full sm:w-[calc(50%-6px)] no-underline">
                   {card}
                 </Link>
               );
             }
             if (i === 2) {
               return (
-                <Link key={i} to="/casestudy/tian-airlines" className="w-full sm:w-[calc(50%-12px)] no-underline">
+                <Link key={i} to="/casestudy/figma-rit" className="w-full sm:w-[calc(50%-6px)] no-underline">
                   {card}
                 </Link>
               );
             }
             if (i === 3) {
               return (
-                <Link key={i} to="/casestudy/aixels" className="w-full sm:w-[calc(50%-12px)] no-underline">
+                <Link key={i} to="/casestudy/aixels" className="w-full sm:w-[calc(50%-6px)] no-underline">
                   {card}
                 </Link>
               );
             }
-            return <div key={i} className="w-full sm:w-[calc(50%-12px)]">{card}</div>;
+            if (i === 4) {
+              return (
+                <Link key={i} to="/casestudy/texas-mobile" className="w-full sm:w-[calc(50%-6px)] no-underline">
+                  {card}
+                </Link>
+              );
+            }
+            if (i === 5) {
+              return (
+                <div key={i} className="w-full sm:w-[calc(50%-6px)]">{card}</div>
+              );
+            }
+            return <div key={i} className="w-full sm:w-[calc(50%-6px)]">{card}</div>;
           })}
         </motion.div>
 
+        {/* Section heading */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: "easeOut", delay: 1.0 }}
+          className="flex flex-col gap-[6px] items-start w-full pr-[4vw] pl-[calc(4vw+16px)] mt-[100px]"
+        >
+          <p className="font-['Inter_Tight',sans-serif] font-[350] leading-[1.3] text-white text-[24px]">Focused projects</p>
+          <p className="font-['Inter_Tight',sans-serif] font-[350] leading-[1.3] text-[#908e99] text-[24px]">Ideas, Problems, Solutions</p>
+        </motion.div>
+
+        {/* Secondary case study cards — 3 column */}
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: "easeOut", delay: 1.05 }}
+          className="flex flex-wrap gap-x-[24px] gap-y-[42px] items-start w-full px-[4vw] mt-[40px]"
+        >
+          {[
+            { accentType: "4" as const, title: "Figma K-Pop", description: "Breaking Figma into a new space", tag1Label: "Branding", tag2Label: "Workshop", date: "Fall 2025", readTime: "2 min read", path: "/casestudy/figma-kpop", image: kpopCover1 },
+            { accentType: "5" as const, title: "Fragrantica", description: "Redesigning a site loved by many", tag1Label: "Mobile", tag2Label: "UI Systems", date: "Fall 2024", readTime: "3 min read", path: "/casestudy/fragrantica" },
+          ].map((cs, i) => {
+            const card = (
+              <CardCasestudy
+                key={i}
+                className="content-stretch flex flex-col gap-[20px] items-start p-[20px] relative rounded-[8.31px] w-full"
+                accentType={cs.accentType}
+                title={cs.title}
+                description={cs.description}
+                date={cs.date}
+                tag1Label={cs.tag1Label}
+                tag2Label={cs.tag2Label}
+                readTime={cs.readTime}
+                image={"image" in cs ? cs.image : undefined}
+              />
+            );
+            return cs.path ? (
+              <Link key={i} to={cs.path} className="w-full sm:w-[calc(33.333%-16px)] no-underline">
+                {card}
+              </Link>
+            ) : (
+              <div key={i} className="w-full sm:w-[calc(33.333%-16px)]">{card}</div>
+            );
+          })}
+        </motion.div>
 
       </div>
 

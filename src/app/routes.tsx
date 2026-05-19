@@ -5,6 +5,9 @@ import CasestudyFigmaRIT from "./pages/CasestudyFigmaRIT";
 import CasestudyAixels from "./pages/CasestudyAixels";
 import CasestudyTianAirlines from "./pages/CasestudyTianAirlines";
 import CasestudyGentleMonster from "./pages/CasestudyGentleMonster";
+import CasestudyFigmaKPop from "./pages/CasestudyFigmaKPop";
+import CasestudyFragrantica from "./pages/CasestudyFragrantica";
+import CasestudyTexasMobile from "./pages/CasestudyTexasMobile";
 import Booth from "./pages/Booth";
 import About from "./pages/About";
 import DrinkFloater from "./components/DrinkFloater";
@@ -47,6 +50,18 @@ export const router = createBrowserRouter([
       {
         path: "/casestudy/gentle-monster",
         Component: CasestudyGentleMonster,
+      },
+      {
+        path: "/casestudy/fragrantica",
+        Component: CasestudyFragrantica,
+      },
+      {
+        path: "/casestudy/figma-kpop",
+        Component: CasestudyFigmaKPop,
+      },
+      {
+        path: "/casestudy/texas-mobile",
+        Component: CasestudyTexasMobile,
       },
       {
         path: "/about",
