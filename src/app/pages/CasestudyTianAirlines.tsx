@@ -106,7 +106,7 @@ export default function CasestudyTianAirlines() {
         <Navigation scrolledDown={scrolled} />
       </motion.div>
 
-      <div className="flex flex-col items-center px-[20vw] pt-[15vh] pb-[15vh]">
+      <div className="flex flex-col items-center px-[16px] md:px-[20vw] pt-[15vh] pb-[15vh]">
         <div className="flex flex-col items-center w-full">
 
           {/* ── Hero video (scaled) ── */}
@@ -197,7 +197,7 @@ export default function CasestudyTianAirlines() {
                   <p className="font-['Inter_Tight',sans-serif] font-[450] leading-[1.3] text-[color:var(--text\/primary,#eeedf5)] text-[24px]">
                     Organized for anyone to use
                   </p>
-                  <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[color:var(--text\/tertiary,#7e7c87)] text-[17px] w-full">
+                  <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[color:var(--text\/tertiary,#7e7c87)] text-[15px] md:text-[17px] w-full">
                     The design system covers typography, color, illustration styles, icon sizing, and component library of forms, buttons, and cards.
                   </p>
                   <button
@@ -233,7 +233,7 @@ export default function CasestudyTianAirlines() {
                   <div className="flex flex-col gap-[16px] items-start w-full">
                     <p className="font-['Inter_Tight',sans-serif] leading-none text-[#908e99] text-[16px] w-full">Figma Variables</p>
                     <p className="font-['Inter_Tight',sans-serif] font-[450] leading-[1.3] text-[color:var(--text\/primary,#eeedf5)] text-[24px] w-full">Tons of tokens and styles</p>
-                    <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[color:var(--text\/tertiary,#7e7c87)] text-[17px] w-full">
+                    <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[color:var(--text\/tertiary,#7e7c87)] text-[15px] md:text-[17px] w-full">
                       I worked with four major collections: Primitive Color, Semantic Color, Typography, and Box Model (to handle border radius and spacing).
                     </p>
                   </div>
@@ -249,7 +249,7 @@ export default function CasestudyTianAirlines() {
                   <div className="flex flex-col gap-[16px] items-start w-full">
                     <p className="font-['Inter_Tight',sans-serif] leading-none text-[#908e99] text-[16px] w-full">Components and Prototyping</p>
                     <p className="font-['Inter_Tight',sans-serif] font-[450] leading-[1.3] text-[color:var(--text\/primary,#eeedf5)] text-[24px] w-full">Figma calculators + if/else</p>
-                    <div className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[color:var(--text\/tertiary,#7e7c87)] text-[17px] w-full">
+                    <div className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[color:var(--text\/tertiary,#7e7c87)] text-[15px] md:text-[17px] w-full">
                       <p className="mb-[16px]">{`I made components of two frames looping 10 ms to force a "listener" of sorts in Figma.`}</p>
                       <p>{`Each heavy process had its own special version set!`}</p>
                     </div>
@@ -334,7 +334,7 @@ export default function CasestudyTianAirlines() {
                   <p className="font-['Inter_Tight',sans-serif] leading-[1.3] text-[#faf9ff] text-[24px] w-full">
                     Where am I, where do I want to go, how do I get there?
                   </p>
-                  <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.65] text-[#908e99] text-[17px] w-full">
+                  <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.65] text-[#908e99] text-[15px] md:text-[17px] w-full">
                     After testing peers, I made sure to have better cues for interactivity
                   </p>
                 </div>
@@ -355,7 +355,7 @@ export default function CasestudyTianAirlines() {
                   <div className="flex flex-col gap-[16px] items-start w-full">
                     <p className="font-['Inter_Tight',sans-serif] font-[300] leading-none text-[#908e99] text-[16px]">Flow 2/5</p>
                     <p className="font-['Inter_Tight',sans-serif] leading-[1.3] text-[#faf9ff] text-[24px]">Calendar + booking process</p>
-                    <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.65] text-[#908e99] text-[17px] w-full">
+                    <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.65] text-[#908e99] text-[15px] md:text-[17px] w-full">
                       Using lots of if/else switches, I also studied top booking sites peers enjoyed (we all love AirBnB)
                     </p>
                   </div>
@@ -419,7 +419,7 @@ export default function CasestudyTianAirlines() {
                 <div className="border border-[#302f34] flex gap-[16px] items-start p-[16px] rounded-[8px] w-full" style={{ background: "rgba(219,189,254,0.05)" }}>
                   <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[2.05] text-[#908e99] text-[14px] shrink-0">1</p>
                   <div className="flex flex-1 flex-col gap-[8px] items-start leading-[1.65] min-w-0">
-                    <p className="font-['Inter_Tight',sans-serif] text-[#faf9ff] text-[17px] whitespace-nowrap">If/Else calculators</p>
+                    <p className="font-['Inter_Tight',sans-serif] text-[#faf9ff] text-[15px] md:text-[17px] whitespace-nowrap">If/Else calculators</p>
                     <p className="font-['Inter_Tight',sans-serif] font-[300] text-[#b8b4c5] text-[16px] tracking-[-0.32px] w-full">{`Creating this system required a mix of code informed thinking and design. It's powered by Figma calculators and layered conditional logic. Bringing this level of complexity to life is so exciting!`}</p>
                   </div>
                 </div>
@@ -428,7 +428,7 @@ export default function CasestudyTianAirlines() {
                 <div className="border border-[#302f34] flex gap-[16px] items-start p-[16px] rounded-[8px] w-full" style={{ background: "rgba(219,189,254,0.05)" }}>
                   <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[2.05] text-[#908e99] text-[14px] shrink-0">2</p>
                   <div className="flex flex-1 flex-col gap-[8px] items-start leading-[1.65] min-w-0">
-                    <p className="font-['Inter_Tight',sans-serif] text-[#faf9ff] text-[17px] whitespace-nowrap">Benchmarking with peers</p>
+                    <p className="font-['Inter_Tight',sans-serif] text-[#faf9ff] text-[15px] md:text-[17px] whitespace-nowrap">Benchmarking with peers</p>
                     <p className="font-['Inter_Tight',sans-serif] font-[300] text-[#b8b4c5] text-[16px] tracking-[-0.32px] w-full">{`While this isn't a product that will be used by an airline, I really enjoyed the practice of deep design thinking. For benchmarking, we tested amongst peers and I was able to find the gaps in the design system.`}</p>
                   </div>
                 </div>
@@ -437,7 +437,7 @@ export default function CasestudyTianAirlines() {
                 <div className="border border-[#302f34] flex gap-[16px] items-start p-[16px] rounded-[8px] w-full" style={{ background: "rgba(219,189,254,0.05)" }}>
                   <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[2.05] text-[#908e99] text-[14px] shrink-0">3</p>
                   <div className="flex flex-1 flex-col gap-[8px] items-start leading-[1.65] min-w-0">
-                    <p className="font-['Inter_Tight',sans-serif] text-[#faf9ff] text-[17px] whitespace-nowrap">Brad Frost..</p>
+                    <p className="font-['Inter_Tight',sans-serif] text-[#faf9ff] text-[15px] md:text-[17px] whitespace-nowrap">Brad Frost..</p>
                     <p className="font-['Inter_Tight',sans-serif] font-[300] text-[#b8b4c5] text-[16px] tracking-[-0.32px] w-full">Atomic Design is a powerful mental model, and something we learn at RIT to better create scalable systems.</p>
                     <img src={imgBradFrostTweet} alt="Brad Frost tweet" className="w-1/2 rounded-[8px] mt-[8px]" />
                     <button

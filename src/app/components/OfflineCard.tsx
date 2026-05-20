@@ -18,18 +18,18 @@ import eye3 from "../../assets/project/about/eye_3.png";
 
 type Category = "star" | "heart" | "art" | "eye";
 
-const PILL_LEFT: Record<Category, number> = {
-  star:  8,
-  heart: 84,
-  art:   158,
-  eye:   235,
+const PILL_LEFT: Record<Category, string> = {
+  star:  "8%",
+  heart: "29.3%",
+  art:   "50.7%",
+  eye:   "72%",
 };
 
-const INDICATOR_LEFT: Record<Category, number> = {
-  star:  28,
-  heart: 103,
-  art:   178,
-  eye:   254,
+const INDICATOR_LEFT: Record<Category, string> = {
+  star:  "13.95%",
+  heart: "35.25%",
+  art:   "56.65%",
+  eye:   "77.95%",
 };
 
 const BUTTONS: { id: Category; icon: string }[] = [
@@ -173,26 +173,27 @@ export default function OfflineCard() {
         </p>
       </div>
 
-      {/* Button menu */}
+      {/* Button menu — always visible, scales to card width */}
       <div
-        className="absolute h-[48px] w-[307px] rounded-[100px] p-[8px]"
+        className="absolute rounded-[100px] p-[8px]"
         style={{
-          bottom: "16px",
-          left: "50%",
+          bottom: "8px",
+          left: "8px",
+          right: "8px",
+          height: "48px",
           background: "rgba(144,142,153,0.38)",
           backdropFilter: "blur(12px)",
-          opacity: hovered ? 1 : 0,
-          transform: hovered ? "translateX(-50%)" : "translateX(-50%) translateY(8px)",
-          transition: "opacity 0.2s ease, transform 0.2s ease",
         }}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Sliding pill */}
         <div
-          className="absolute top-1/2 h-[36px] w-[64px] rounded-[24px]"
+          className="absolute top-1/2 rounded-[24px]"
           style={{
             background: "rgba(209,206,220,0.3)",
-            left: `${PILL_LEFT[selected]}px`,
+            left: PILL_LEFT[selected],
+            width: "20.8%",
+            height: "36px",
             transform: "translateY(-50%)",
             transition: "left 0.2s ease",
           }}
@@ -200,29 +201,31 @@ export default function OfflineCard() {
 
         {/* Indicator bar */}
         <div
-          className="absolute h-[2px] w-[25px] rounded-b-[4px]"
+          className="absolute h-[2px] rounded-b-[4px]"
           style={{
             background: "#d9d9d9",
+            width: "8.1%",
             bottom: "-2px",
-            left: `${INDICATOR_LEFT[selected]}px`,
+            left: INDICATOR_LEFT[selected],
             transition: "left 0.2s ease",
           }}
         />
 
         {/* Border + buttons */}
         <div
-          className="absolute inset-0 rounded-[100px] flex items-center justify-between px-[24px]"
+          className="absolute inset-0 rounded-[100px] flex items-center justify-between px-[8%]"
           style={{ border: "1px solid #908e99" }}
         >
           {BUTTONS.map(({ id, icon }) => (
             <button
               key={id}
               onClick={() => setSelected(id)}
-              className="relative flex items-center justify-center size-[32px] rounded-[24px] cursor-pointer border-0 bg-transparent p-0"
+              className="relative flex items-center justify-center rounded-[24px] cursor-pointer border-0 bg-transparent p-0"
+              style={{ width: "20%", aspectRatio: "1/1" }}
               onMouseEnter={() => setHoveredBtn(id)}
               onMouseLeave={() => setHoveredBtn(null)}
             >
-              <div className="relative size-[28px] overflow-hidden">
+              <div className="relative w-[90%] h-[90%] overflow-hidden">
                 <img
                   alt={id}
                   src={icon}

@@ -98,7 +98,7 @@ export default function CasestudyFragrantica() {
         <Navigation scrolledDown={scrolled} />
       </motion.div>
 
-      <div className="flex flex-col items-center px-[20vw] pt-[15vh] pb-[15vh]">
+      <div className="flex flex-col items-center px-[16px] md:px-[20vw] pt-[15vh] pb-[15vh]">
         <div className="flex flex-col gap-[110px] items-center w-full">
 
           {/* ── Overview ── */}
@@ -313,7 +313,7 @@ We laughed and I wondered how the experience could feel more curated, expressive
               <div className="bg-[rgba(219,189,254,0.05)] border border-[#302f34] flex gap-[16px] items-start p-[16px] rounded-[8px] w-full">
                 <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[2.05] text-[color:var(--text\/secondary,#908e99)] text-[14px] shrink-0">1</p>
                 <div className="flex flex-col gap-[8px] items-start flex-1">
-                  <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.65] text-[color:var(--text\/primary,#faf9ff)] text-[17px]">Take notes</p>
+                  <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.65] text-[color:var(--text\/primary,#faf9ff)] text-[15px] md:text-[17px]">Take notes</p>
                   <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.65] text-[color:var(--text\/secondary,#b8b4c5)] text-[16px] tracking-[-0.32px] w-full">
                     I asked my peers what they liked/disliked, what they thought was confusing! Super helpful and reinforced my design path and decisions as the right ones!
                   </p>

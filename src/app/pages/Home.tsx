@@ -70,7 +70,6 @@ function LinkedInButton() {
 }
 import CardCasestudy, { AccentType } from "../components/CardCasestudy";
 import aixelsMeImg from "../../assets/project/aixels/me.JPG";
-import kpopCover1 from "../../assets/project/kpop/kpop_cover1.jpg";
 import breadcrumbCover1 from "../../assets/project/breadcrumb/cover_1.png";
 const figbuildMacstudioVideo = new URL("../../assets/project/figbuild/figbuild_macstudio_2x1.mp4", import.meta.url).href;
 import gmTeaserVideo from "../../assets/project/gentlemonster/GM_Teaser_2x1.mp4";
@@ -119,16 +118,6 @@ const caseStudies: {
     video: figbuildMacstudioVideo,
   },
   {
-    accentType: "4",
-    title: "AIXELS",
-    description: "Winning Creative Collision with a pixel mirror made of AI logos",
-    date: "Fall 2025",
-    tag1Label: "Agentic Design",
-    tag2Label: "Designathon",
-    readTime: "2 min read",
-    image: aixelsMeImg,
-  },
-  {
     accentType: "6",
     title: "Texas Mobile",
     description: "Creating a dynamic, safe alternative to traditional physical IDs",
@@ -137,6 +126,16 @@ const caseStudies: {
     tag2Label: "UX Design",
     readTime: "4 min read",
     video: texasIdVideo,
+  },
+  {
+    accentType: "4",
+    title: "AIXELS",
+    description: "Winning Creative Collision with a pixel mirror made of AI logos",
+    date: "Fall 2025",
+    tag1Label: "Agentic Design",
+    tag2Label: "Designathon",
+    readTime: "2 min read",
+    image: aixelsMeImg,
   },
   {
     accentType: "7",
@@ -232,7 +231,7 @@ export default function Home() {
         className="fixed top-[16px] left-[calc(4.5vw+16px)] z-50 flex flex-col items-start leading-[1.5] pointer-events-none"
         style={{ fontFamily: "var(--text-font/default, 'Inter Tight', sans-serif)", color: "#b8b4c5" }}
       >
-        <p className="mb-0 text-[17px]" style={{ fontWeight: 350 }}>Abby Hart</p>
+        <p className="mb-0 text-[15px] md:text-[17px]" style={{ fontWeight: 350 }}>Abby Hart</p>
         <p className="mb-0 text-[12px] leading-[1.5]" style={{ color: "#7e7c87" }}>UX, Product</p>
       </motion.div>
 
@@ -241,7 +240,7 @@ export default function Home() {
         initial={shouldAnimate ? { opacity: 0, y: -20 } : false}
         animate={{ opacity: 1, y: 0, top: scrolled ? "8px" : "16px" }}
         transition={{ duration: 0.4, ease: "easeOut" }}
-        className="fixed left-[20px] right-[20px] z-50"
+        className="hidden md:block fixed left-[20px] right-[20px] z-50"
         style={{ top: "16px" }}
       >
         <Navigation scrolledDown={scrolled} />
@@ -255,7 +254,7 @@ export default function Home() {
           initial={{ opacity: 0, y: -24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: "easeOut", delay: 0.2 }}
-          className="flex flex-col items-start gap-[31px] pt-[8px] pb-[72px] w-full pl-[calc(4vw+16px)] pr-[4vw] relative"
+          className="flex flex-col items-start gap-[31px] pt-[8px] pb-[72px] w-full pl-[16px] pr-[16px] md:pl-[calc(4vw+16px)] md:pr-[4vw] relative"
           style={{ fontFamily: "var(--text-font/default, 'Inter Tight', sans-serif)" }}
           onMouseMove={handleHeroMouseMove}
           onMouseEnter={() => setIsInHero(true)}
@@ -293,10 +292,10 @@ export default function Home() {
             className="flex flex-col gap-[5px] items-start"
           >
             <p className="mb-0 text-[14px] leading-[1.5] text-[color:var(--text\/tertiary,#585564)]">Currently...</p>
-            <p className="mb-0 text-[17px] leading-[1.5] text-[color:var(--text\/secondary,#908e99)]" style={{ fontWeight: 300 }}>
+            <p className="mb-0 text-[15px] md:text-[17px] leading-[1.5] text-[color:var(--text\/secondary,#908e99)]" style={{ fontWeight: 300 }}>
               Building communities with Figma Campus
             </p>
-            <p className="mb-0 text-[17px] leading-[1.5] text-[color:var(--text\/secondary,#908e99)]" style={{ fontWeight: 300 }}>
+            <p className="mb-0 text-[15px] md:text-[17px] leading-[1.5] text-[color:var(--text\/secondary,#908e99)]" style={{ fontWeight: 300 }}>
               {"Graduated "}
               <Link
                 to="/about"
@@ -311,7 +310,7 @@ export default function Home() {
         </motion.div>
 
         {/* Divider */}
-        <div className="w-full px-[4vw] mb-[72px]">
+        <div className="w-full px-[16px] md:px-[4vw] mb-[72px]">
           <div style={{ borderTop: "1px solid #302f34" }} />
         </div>
 
@@ -320,7 +319,7 @@ export default function Home() {
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: "easeOut", delay: 0.9 }}
-          className="flex flex-wrap gap-x-[12px] gap-y-[42px] items-start w-full px-[4vw]"
+          className="flex flex-wrap gap-x-[12px] gap-y-[42px] items-start w-full px-[16px] md:px-[4vw]"
         >
           {caseStudies.map((cs, i) => {
             const card = (
@@ -361,14 +360,14 @@ export default function Home() {
             }
             if (i === 3) {
               return (
-                <Link key={i} to="/casestudy/aixels" className="w-full sm:w-[calc(50%-6px)] no-underline">
+                <Link key={i} to="/casestudy/texas-mobile" className="w-full sm:w-[calc(50%-6px)] no-underline">
                   {card}
                 </Link>
               );
             }
             if (i === 4) {
               return (
-                <Link key={i} to="/casestudy/texas-mobile" className="w-full sm:w-[calc(50%-6px)] no-underline">
+                <Link key={i} to="/casestudy/aixels" className="w-full sm:w-[calc(50%-6px)] no-underline">
                   {card}
                 </Link>
               );
@@ -382,51 +381,6 @@ export default function Home() {
           })}
         </motion.div>
 
-        {/* Section heading */}
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, ease: "easeOut", delay: 1.0 }}
-          className="flex flex-col gap-[6px] items-start w-full pr-[4vw] pl-[calc(4vw+16px)] mt-[100px]"
-        >
-          <p className="font-['Inter_Tight',sans-serif] font-[350] leading-[1.3] text-white text-[24px]">Focused projects</p>
-          <p className="font-['Inter_Tight',sans-serif] font-[350] leading-[1.3] text-[#908e99] text-[24px]">Ideas, Problems, Solutions</p>
-        </motion.div>
-
-        {/* Secondary case study cards — 3 column */}
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, ease: "easeOut", delay: 1.05 }}
-          className="flex flex-wrap gap-x-[24px] gap-y-[42px] items-start w-full px-[4vw] mt-[40px]"
-        >
-          {[
-            { accentType: "4" as const, title: "Figma K-Pop", description: "Breaking Figma into a new space", tag1Label: "Branding", tag2Label: "Workshop", date: "Fall 2025", readTime: "2 min read", path: "/casestudy/figma-kpop", image: kpopCover1 },
-            { accentType: "5" as const, title: "Fragrantica", description: "Redesigning a site loved by many", tag1Label: "Mobile", tag2Label: "UI Systems", date: "Fall 2024", readTime: "3 min read", path: "/casestudy/fragrantica" },
-          ].map((cs, i) => {
-            const card = (
-              <CardCasestudy
-                key={i}
-                className="content-stretch flex flex-col gap-[20px] items-start p-[20px] relative rounded-[8.31px] w-full"
-                accentType={cs.accentType}
-                title={cs.title}
-                description={cs.description}
-                date={cs.date}
-                tag1Label={cs.tag1Label}
-                tag2Label={cs.tag2Label}
-                readTime={cs.readTime}
-                image={"image" in cs ? cs.image : undefined}
-              />
-            );
-            return cs.path ? (
-              <Link key={i} to={cs.path} className="w-full sm:w-[calc(33.333%-16px)] no-underline">
-                {card}
-              </Link>
-            ) : (
-              <div key={i} className="w-full sm:w-[calc(33.333%-16px)]">{card}</div>
-            );
-          })}
-        </motion.div>
 
       </div>
 

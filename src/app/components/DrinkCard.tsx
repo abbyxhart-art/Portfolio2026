@@ -159,7 +159,9 @@ export default function DrinkCard() {
             onMouseLeave={() => setHoveredLabel(null)}
             onClick={() => unlocked && setSelectedDrink(LABEL_TO_FLOATER[label])}
           >
-            {unlocked ? cup : <EmptyCup />}
+            <div style={{ transform: "scale(0.7)", transformOrigin: "top center" }}>
+              {unlocked ? cup : <EmptyCup />}
+            </div>
             <p
               className="font-['Inter_Tight',sans-serif] font-[300] text-[14px] leading-[1.2] tracking-[-0.02em] whitespace-nowrap text-center"
               style={{

@@ -31,7 +31,7 @@ export default function FriendsCard() {
       </div>
 
       {/* Friends grid */}
-      <div className="grid grid-cols-4 gap-x-[16px] gap-y-[32px] mt-[51px]">
+      <div className="grid grid-cols-2 gap-x-[16px] gap-y-[32px] mt-[51px]">
         {friends.map(({ name, role, link, href }) => (
           <div key={name} className="flex flex-col gap-[8px] font-['Inter_Tight',sans-serif] font-light text-[14px] leading-none">
             <p className="text-[#faf9ff]">{name}</p>

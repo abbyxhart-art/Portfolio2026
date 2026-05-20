@@ -129,7 +129,7 @@ export default function CasestudyGentleMonster() {
         <Navigation scrolledDown={scrolled} />
       </motion.div>
 
-      <div className="flex flex-col items-center px-[20vw] pt-[15vh] pb-[15vh]">
+      <div className="flex flex-col items-center px-[16px] md:px-[20vw] pt-[15vh] pb-[15vh]">
 
         {/* Segment 1: Hero + Overview */}
         <div className="flex flex-col gap-[9vh] items-center w-full">
@@ -586,7 +586,7 @@ export default function CasestudyGentleMonster() {
                 <p className="font-['Inter_Tight',sans-serif] leading-[1.3] text-[#faf9ff] text-[24px]">
                   I created a comprehensive flow for product view, checkout, create account, prescription, and a few others.
                 </p>
-                <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#b8b4c5] text-[17px]">
+                <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#b8b4c5] text-[15px] md:text-[17px]">
                   I designed the full flow with first-time users in mind, limiting choices and content to keep it manageable.
                 </p>
               </div>
@@ -736,14 +736,14 @@ export default function CasestudyGentleMonster() {
               <div className="flex flex-col gap-[16px] items-start flex-1 min-w-0">
                 <img src={imgHirise} alt="Hi-Rise Dispensary" className="aspect-[2/1] w-full object-cover rounded-[8px]" />
                 <div className="flex flex-col gap-[4px] items-start w-full">
-                  <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.5] text-[#faf9ff] text-[17px]">
+                  <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.5] text-[#faf9ff] text-[15px] md:text-[17px]">
                     Hi-Rise Dispensary
                   </p>
-                  <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#b8b4c5] text-[17px]">
+                  <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#b8b4c5] text-[15px] md:text-[17px]">
                     Organization and Introducing new information
                   </p>
                 </div>
-                <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.65] text-[#908e99] text-[17px]">
+                <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.65] text-[#908e99] text-[15px] md:text-[17px]">
                   Studying the structure of information; great feedback and organized sections for beginners
                 </p>
               </div>
@@ -751,14 +751,14 @@ export default function CasestudyGentleMonster() {
               <div className="flex flex-col gap-[16px] items-start flex-1 min-w-0">
                 <img src={imgTaichi} alt="Taichi Tea" className="aspect-[2/1] w-full object-cover rounded-[8px]" />
                 <div className="flex flex-col gap-[4px] items-start w-full">
-                  <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.5] text-[#faf9ff] text-[17px]">
+                  <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.5] text-[#faf9ff] text-[15px] md:text-[17px]">
                     Taichi Tea
                   </p>
-                  <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#b8b4c5] text-[17px]">
+                  <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#b8b4c5] text-[15px] md:text-[17px]">
                     Customization options
                   </p>
                 </div>
-                <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.65] text-[#908e99] text-[17px]">
+                <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.65] text-[#908e99] text-[15px] md:text-[17px]">
                   Viewing customization steps for what works and what definitely doesn't  [scrolling &gt;:(]
                 </p>
               </div>
@@ -787,7 +787,7 @@ export default function CasestudyGentleMonster() {
               <div className="flex items-start p-[24px] relative rounded-[4px] w-full border border-[#302f34]" style={{ background: "rgba(88,85,100,0.15)" }}>
                 <div className="flex flex-col gap-[16px]">
                   <p className="font-['Inter_Tight',sans-serif] leading-none text-[#908e99] text-[16px]">Gap 1</p>
-                  <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#faf9ff] text-[17px]">
+                  <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#faf9ff] text-[15px] md:text-[17px]">
                     Large product categories = scrolls and decision confusion. Present only a few options!
                   </p>
                 </div>
@@ -797,7 +797,7 @@ export default function CasestudyGentleMonster() {
               <div className="flex items-start p-[24px] relative rounded-[4px] w-full border border-[#302f34]" style={{ background: "rgba(88,85,100,0.15)" }}>
                 <div className="flex flex-col gap-[16px]">
                   <p className="font-['Inter_Tight',sans-serif] leading-none text-[#908e99] text-[16px]">Gap 2</p>
-                  <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#faf9ff] text-[17px]">
+                  <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#faf9ff] text-[15px] md:text-[17px]">
                     Inconsistent menu placement popped up and often too high to be in good click zone
                   </p>
                 </div>
@@ -807,7 +807,7 @@ export default function CasestudyGentleMonster() {
               <div className="flex items-start p-[24px] relative rounded-[4px] w-full border border-[#302f34]" style={{ background: "rgba(88,85,100,0.15)" }}>
                 <div className="flex flex-col gap-[16px]">
                   <p className="font-['Inter_Tight',sans-serif] leading-none text-[#908e99] text-[16px]">Gap 3</p>
-                  <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#faf9ff] text-[17px]">
+                  <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#faf9ff] text-[15px] md:text-[17px]">
                     Large kiosks utilize full width and height, ignoring fatigue from full range of motion
                   </p>
                 </div>
@@ -872,7 +872,7 @@ export default function CasestudyGentleMonster() {
                     Testing button sizes in the real world and creating rules for kiosk build.
                   </p>
                 </div>
-                <div className="font-['Inter_Tight',sans-serif] font-normal leading-[0] text-[#908e99] text-[17px] w-full">
+                <div className="font-['Inter_Tight',sans-serif] font-normal leading-[0] text-[#908e99] text-[15px] md:text-[17px] w-full">
                   <p className="leading-[1.65] mb-[16px]">I created 3 different heights for the kiosks based on mirror height recommendations for short, middle, and tall people! The kiosk width is 22 x 11 inches, and aspect ratio is 1920x1080 for the kiosk.</p>
                   <p className="leading-[1.65] mb-[16px]">I wanted the kiosk to be shaped like lenses, round and soft, and be inspired by the 2024 jewelry collection, which uses pearls and purple gems.</p>
                   <p className="leading-[1.65]">I also tested buttons, important interactive cards, and text in the real world!</p>
@@ -983,7 +983,7 @@ export default function CasestudyGentleMonster() {
                 1
               </p>
               <div className="flex flex-col gap-[8px] items-start flex-1 min-w-0">
-                <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#faf9ff] text-[17px]">
+                <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#faf9ff] text-[15px] md:text-[17px]">
                   Balancing a lot of moving pieces
                 </p>
                 <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#b8b4c5] text-[16px] tracking-[-0.32px]">
@@ -998,7 +998,7 @@ export default function CasestudyGentleMonster() {
                 2
               </p>
               <div className="flex flex-col gap-[8px] items-start flex-1 min-w-0">
-                <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#faf9ff] text-[17px]">
+                <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#faf9ff] text-[15px] md:text-[17px]">
                   Time Saver + Art Installation? Say less!
                 </p>
                 <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#b8b4c5] text-[16px] tracking-[-0.32px]">
@@ -1013,7 +1013,7 @@ export default function CasestudyGentleMonster() {
                 3
               </p>
               <div className="flex flex-col gap-[8px] items-start flex-1 min-w-0">
-                <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#faf9ff] text-[17px]">
+                <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#faf9ff] text-[15px] md:text-[17px]">
                   Motion, the start of something new
                 </p>
                 <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#b8b4c5] text-[16px] tracking-[-0.32px]">

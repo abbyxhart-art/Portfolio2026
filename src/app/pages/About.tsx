@@ -153,26 +153,25 @@ export default function About() {
         initial={shouldAnimate ? { opacity: 0, y: -20 } : false}
         animate={{ opacity: 1, y: 0, top: scrolled ? "8px" : "16px" }}
         transition={{ duration: 0.4, ease: "easeOut" }}
-        className="fixed left-[20px] right-[20px] z-50"
+        className="hidden md:block fixed left-[20px] right-[20px] z-50"
         style={{ top: "16px" }}
       >
         <Navigation scrolledDown={scrolled} />
       </motion.div>
 
       {/* Page content */}
-      <div className="px-[8vw] pt-[160px] pb-[14vh] flex flex-col gap-[75px]">
+      <div className="px-[16px] md:px-[8vw] pt-[160px] pb-[14vh] flex flex-col gap-[75px]">
 
-        {/* Bento grid */}
-        <div className="grid grid-cols-2 gap-[16px] items-stretch">
+        {/* Single column layout */}
+        <div className="flex flex-col gap-[16px]">
 
-          {/* Left: Backstory box */}
+          {/* Backstory box */}
           <motion.div
-            className="border border-[#302f34] rounded-[12px] p-[32px] flex flex-col gap-[36px] h-full"
+            className="border border-[#302f34] rounded-[12px] p-[32px] flex flex-col gap-[36px]"
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, ease: "easeOut", delay: 0.1 }}
           >
-
             <p
               className="font-['Inter_Tight',sans-serif] leading-[1.1] text-white font-normal"
               style={{ fontSize: "52px" }}
@@ -183,7 +182,7 @@ export default function About() {
             {/* My skills */}
             <div className="flex flex-col gap-[16px]">
               <p className="font-['Inter_Tight',sans-serif] text-[#908e99] text-[14px] leading-[1.5]">My skills</p>
-              <div className="font-['Inter_Tight',sans-serif] text-[#faf9ff] text-[17px] font-light">
+              <div className="font-['Inter_Tight',sans-serif] text-[#faf9ff] text-[15px] md:text-[17px] font-light">
                 <p className="leading-[1.65] mb-[16px]">I'm Abby, interdisciplinary designer</p>
                 <p className="leading-[1.65]">
                   I love branding and shipping fast. Wearing many hats never gets boring; my roles across internships
@@ -196,7 +195,7 @@ export default function About() {
             {/* How I got started */}
             <div className="flex flex-col gap-[24px]">
               <p className="font-['Inter_Tight',sans-serif] text-[#908e99] text-[14px] leading-[1.5]">How I got started</p>
-              <p className="font-['Inter_Tight',sans-serif] text-[#faf9ff] text-[17px] font-light leading-[1.65]">
+              <p className="font-['Inter_Tight',sans-serif] text-[#faf9ff] text-[15px] md:text-[17px] font-light leading-[1.65]">
                 My friend Lana and I found our thing in AP CompSci: me with mini GUI applets, her with algorithms.
                 I opened Figma to pitch our local hackathon for kids, and that journey eventually led me to RIT and
                 some incredibly inspiring friends.
@@ -204,8 +203,8 @@ export default function About() {
             </div>
 
             {/* Photo gallery */}
-            <div className="flex flex-col gap-[24px]">
-              <div className="w-full overflow-x-clip">
+            <div className="flex flex-col gap-[8px]">
+              <div className="relative w-full overflow-x-clip">
                 <Swiper
                   modules={[Mousewheel]}
                   mousewheel={{ forceToAxis: true, thresholdDelta: 20 }}
@@ -231,119 +230,114 @@ export default function About() {
                 >
                   {photos.map(({ caption, img }, i) => (
                     <SwiperSlide key={i} style={{ width: "calc(100% - 80px)" }}>
-                      <div className="flex flex-col gap-[24px]">
-                        <img
-                          src={img}
-                          alt={caption}
-                          className="aspect-[2/1] rounded-[8px] w-full object-cover"
-                        />
-                        <p className="font-['Inter_Tight',sans-serif] font-normal leading-none text-[#908e99] text-[14px] text-center w-full">
-                          {caption}
-                        </p>
-                      </div>
+                      <img
+                        src={img}
+                        alt={caption}
+                        className="aspect-[2/1] rounded-[8px] w-full object-cover"
+                      />
                     </SwiperSlide>
                   ))}
                 </Swiper>
+                {/* Dot nav — always visible, 16px from bottom of image */}
+                <div className="absolute bottom-[16px] left-0 right-0 z-10 flex gap-[8px] items-center justify-center pointer-events-none">
+                  {photos.map((_, i) => (
+                    <button
+                      key={i}
+                      onClick={() => swiperRef.current?.slideTo(i)}
+                      className="w-[6px] h-[6px] rounded-[1px] cursor-pointer border-0 p-0 transition-colors duration-150 pointer-events-auto"
+                      style={{ background: i === activePhoto ? "#9a47ff" : "rgba(250,249,255,0.4)" }}
+                    />
+                  ))}
+                </div>
               </div>
-              <div className="flex gap-[8px] items-center justify-center">
-                {photos.map((_, i) => (
-                  <button
-                    key={i}
-                    onClick={() => swiperRef.current?.slideTo(i)}
-                    className="w-[6px] h-[6px] rounded-[1px] cursor-pointer border-0 p-0 transition-colors duration-150"
-                    style={{ background: i === activePhoto ? "#9a47ff" : "#585564" }}
-                  />
+              <p className="font-['Inter_Tight',sans-serif] font-normal leading-none text-[#908e99] text-[14px] text-center w-full">
+                {photos[activePhoto].caption}
+              </p>
+            </div>
+          </motion.div>
+
+          {/* Offline + Drink cards side by side */}
+          <motion.div
+            className="flex gap-[16px]"
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: "easeOut", delay: 0.2 }}
+          >
+            <div className="flex-1"><OfflineCard /></div>
+            <div className="flex-1"><DrinkCard /></div>
+          </motion.div>
+
+          {/* Quote / Ethos box */}
+          <motion.div
+            className="border border-[#302f34] rounded-[12px] overflow-clip relative"
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: "easeOut", delay: 0.35 }}
+            style={{ height: "402px" }}
+          >
+            {/* Top gradient */}
+            <div
+              className="absolute inset-x-0 top-0 h-[200px] z-10 pointer-events-none"
+              style={{ background: "linear-gradient(to bottom, #161617 45%, rgba(22,22,23,0))" }}
+            />
+            {/* Bottom gradient */}
+            <div
+              className="absolute inset-x-0 bottom-0 h-[76px] z-10 pointer-events-none"
+              style={{ background: "linear-gradient(to top, #161617, rgba(22,22,23,0))" }}
+            />
+
+            {/* Header */}
+            <div className="absolute top-[24px] left-[16px] z-20 flex flex-col gap-[6px]">
+              <p className="font-['Inter_Tight',sans-serif] text-[#faf9ff] text-[14px] font-[300] leading-none">Ethos</p>
+              <p className="font-['Inter_Tight',sans-serif] text-[14px] leading-none" style={{ color: "rgba(144,142,153,0.5)" }}>
+                Design + Life philosophy
+              </p>
+            </div>
+
+            {/* Separator */}
+            <div
+              className="absolute inset-x-[16px] z-20"
+              style={{ top: "72px", height: "1px", background: "#302f34" }}
+            />
+
+            {/* Quote counter */}
+            <p
+              className="absolute left-[16px] z-20 font-['Inter_Tight',sans-serif] text-[14px] leading-none"
+              style={{ top: "84px", color: "rgba(144,142,153,0.5)" }}
+            >
+              Quote {activeQuote + 1}/{quotes.length}
+            </p>
+
+            {/* Scrolling quotes */}
+            <div ref={quotesOuterRef} className="h-full overflow-hidden">
+              <div
+                ref={quotesInnerRef}
+                className="flex flex-col gap-[50px] px-[16px]"
+                style={{ paddingTop: "145px", paddingBottom: "25px" }}
+              >
+                {[...quotes, ...quotes].map((q, i) => (
+                  <div key={i} className="flex flex-col gap-[8px]">
+                    <p className="font-['Inter_Tight',sans-serif] leading-[1.3] text-[#faf9ff] text-[20px] whitespace-pre-line">
+                      {q.text}
+                    </p>
+                    <p className="font-['Inter_Tight',sans-serif] leading-[1.5] text-[#908e99] text-[16px]">
+                      {q.attribution}
+                    </p>
+                  </div>
                 ))}
               </div>
             </div>
           </motion.div>
 
-          {/* Right column */}
-          <div className="flex flex-col gap-[16px] h-full">
-
-            {/* Top squares */}
-            <motion.div
-              className="flex gap-[16px]"
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, ease: "easeOut", delay: 0.2 }}
-            >
-              <div className="flex-1"><OfflineCard /></div>
-              <div className="flex-1"><DrinkCard /></div>
-            </motion.div>
-
-            {/* Quote / Ethos box */}
-            <motion.div
-              className="border border-[#302f34] rounded-[12px] overflow-clip relative"
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, ease: "easeOut", delay: 0.35 }}
-              style={{ height: "402px" }}
-            >
-              {/* Top gradient */}
-              <div
-                className="absolute inset-x-0 top-0 h-[200px] z-10 pointer-events-none"
-                style={{ background: "linear-gradient(to bottom, #161617 45%, rgba(22,22,23,0))" }}
-              />
-              {/* Bottom gradient */}
-              <div
-                className="absolute inset-x-0 bottom-0 h-[76px] z-10 pointer-events-none"
-                style={{ background: "linear-gradient(to top, #161617, rgba(22,22,23,0))" }}
-              />
-
-              {/* Header */}
-              <div className="absolute top-[24px] left-[16px] z-20 flex flex-col gap-[6px]">
-                <p className="font-['Inter_Tight',sans-serif] text-[#faf9ff] text-[14px] font-[300] leading-none">Ethos</p>
-                <p className="font-['Inter_Tight',sans-serif] text-[14px] leading-none" style={{ color: "rgba(144,142,153,0.5)" }}>
-                  Design + Life philosophy
-                </p>
-              </div>
-
-              {/* Separator */}
-              <div
-                className="absolute inset-x-[16px] z-20"
-                style={{ top: "72px", height: "1px", background: "#302f34" }}
-              />
-
-              {/* Quote counter */}
-              <p
-                className="absolute left-[16px] z-20 font-['Inter_Tight',sans-serif] text-[14px] leading-none"
-                style={{ top: "84px", color: "rgba(144,142,153,0.5)" }}
-              >
-                Quote {activeQuote + 1}/{quotes.length}
-              </p>
-
-              {/* Scrolling quotes */}
-              <div ref={quotesOuterRef} className="h-full overflow-hidden">
-                <div
-                  ref={quotesInnerRef}
-                  className="flex flex-col gap-[50px] px-[16px]"
-                  style={{ paddingTop: "145px", paddingBottom: "25px" }}
-                >
-                  {[...quotes, ...quotes].map((q, i) => (
-                    <div key={i} className="flex flex-col gap-[8px]">
-                      <p className="font-['Inter_Tight',sans-serif] leading-[1.3] text-[#faf9ff] text-[20px] whitespace-pre-line">
-                        {q.text}
-                      </p>
-                      <p className="font-['Inter_Tight',sans-serif] leading-[1.5] text-[#908e99] text-[16px]">
-                        {q.attribution}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Friends Card */}
-            <motion.div
-              className="border border-[#302f34] rounded-[12px] flex-1 overflow-hidden"
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, ease: "easeOut", delay: 0.5 }}
-            >
-              <FriendsCard />
-            </motion.div>
-          </div>
+          {/* Friends Card */}
+          <motion.div
+            className="border border-[#302f34] rounded-[12px] overflow-hidden"
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: "easeOut", delay: 0.5 }}
+          >
+            <FriendsCard />
+          </motion.div>
         </div>
 
       </div>

@@ -1,17 +1,8 @@
-import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router";
+import { useState } from "react";
+import { Link } from "react-router";
 
 export default function HomeButton() {
-  const navigate = useNavigate();
   const [hovered, setHovered] = useState(false);
-
-  useEffect(() => {
-    const handleKey = (e: KeyboardEvent) => {
-      if (e.shiftKey && e.key === "A") navigate("/");
-    };
-    window.addEventListener("keydown", handleKey);
-    return () => window.removeEventListener("keydown", handleKey);
-  }, [navigate]);
 
   return (
     <Link
@@ -24,7 +15,6 @@ export default function HomeButton() {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      {/* Home icon */}
       <svg width="24" height="24" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path
           d="M4.5 10.75L12.5 4L20.5 10.75V21C20.5 21.2761 20.2761 21.5 20 21.5H16V16H9V21.5H5C4.72386 21.5 4.5 21.2761 4.5 21V10.75Z"
@@ -34,21 +24,6 @@ export default function HomeButton() {
           strokeLinejoin="round"
         />
       </svg>
-      {/* Keyboard shortcut badges */}
-      <div className="flex gap-[2px] items-center">
-        <div
-          className="flex items-center justify-center h-[24px] px-[6px] rounded-[4px]"
-          style={{ background: "rgba(144,142,153,0.2)" }}
-        >
-          <span className="font-['Inter_Tight',sans-serif] font-normal text-[12px] leading-none" style={{ color: "#908e99" }}>shift</span>
-        </div>
-        <div
-          className="flex items-center justify-center size-[24px] rounded-[4px]"
-          style={{ background: "rgba(144,142,153,0.2)" }}
-        >
-          <span className="font-['Inter_Tight',sans-serif] font-normal text-[12px] leading-none" style={{ color: "#908e99" }}>A</span>
-        </div>
-      </div>
     </Link>
   );
 }

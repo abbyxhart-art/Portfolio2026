@@ -74,7 +74,7 @@ export default function Booth() {
         initial={shouldAnimate ? { opacity: 0, y: -20 } : false}
         animate={{ opacity: 1, y: 0, top: scrolled ? "8px" : "16px" }}
         transition={{ duration: 0.4, ease: "easeOut" }}
-        className="fixed left-[20px] right-[20px] z-50"
+        className="hidden md:block fixed left-[20px] right-[20px] z-50"
         style={{ top: "16px" }}
       >
         <Navigation scrolledDown={scrolled} />
@@ -92,7 +92,7 @@ export default function Booth() {
           <p className="font-['Inter_Tight',sans-serif] font-light leading-[1.1] text-white text-[32px]">
             Booth 1303 is RIT's New Media Lab.
           </p>
-          <p className="font-['Inter_Tight',sans-serif] font-light leading-[1.65] text-[#faf9ff] text-[17px]">
+          <p className="font-['Inter_Tight',sans-serif] font-light leading-[1.65] text-[#faf9ff] text-[15px] md:text-[17px]">
             It's where I make most of my interactions, illustrations, and interfaces. Here, you can chill through 3 blocks of work.
           </p>
         </motion.div>
@@ -110,7 +110,7 @@ export default function Booth() {
             transition={{ duration: 0.5, ease: "easeOut", delay: 0.25 }}
           >
             <div className="flex flex-col font-['Inter_Tight',sans-serif] gap-[8px] items-start w-full">
-              <p className="font-light leading-none text-[color:var(--text\/primary,#eeedf5)] text-[17px]">Interactive Experiences</p>
+              <p className="font-light leading-none text-[color:var(--text\/primary,#eeedf5)] text-[15px] md:text-[17px]">Interactive Experiences</p>
               <p className="font-light leading-[1.5] text-[#908e99] text-[16px]">Fashion shows to university wide events</p>
             </div>
             <div className="flex gap-[24px] items-start w-full">
@@ -168,7 +168,7 @@ export default function Booth() {
             transition={{ duration: 0.5, ease: "easeOut", delay: 0.4 }}
           >
             <div className="flex flex-col font-['Inter_Tight',sans-serif] gap-[8px] items-start w-full">
-              <p className="font-light leading-none text-[color:var(--text\/primary,#eeedf5)] text-[17px]">College of Science</p>
+              <p className="font-light leading-none text-[color:var(--text\/primary,#eeedf5)] text-[15px] md:text-[17px]">College of Science</p>
               <p className="font-light leading-[1.5] text-[#908e99] text-[16px]">Multimedia work promoting COS for students, faculty, and staff</p>
             </div>
             <div className="flex gap-[24px] items-start w-full">
@@ -192,7 +192,7 @@ export default function Booth() {
             transition={{ duration: 0.5, ease: "easeOut", delay: 0.55 }}
           >
             <div className="flex flex-col font-['Inter_Tight',sans-serif] gap-[8px] items-start w-full">
-              <p className="font-light leading-none text-[color:var(--text\/primary,#eeedf5)] text-[17px]">Student Government</p>
+              <p className="font-light leading-none text-[color:var(--text\/primary,#eeedf5)] text-[15px] md:text-[17px]">Student Government</p>
               <p className="font-light leading-[1.5] text-[#908e99] text-[16px]">Promoting SG's free popcorn feature with merch still in production :D</p>
             </div>
             <div className="flex gap-[24px] items-start w-full">
@@ -217,7 +217,7 @@ export default function Booth() {
             transition={{ duration: 0.5, ease: "easeOut", delay: 0.7 }}
           >
             <div className="flex flex-col gap-[8px] items-start w-full max-w-[576px]">
-              <p className="font-['Inter_Tight',sans-serif] font-light leading-[1.65] text-[color:var(--text\/primary,#eeedf5)] text-[17px]">
+              <p className="font-['Inter_Tight',sans-serif] font-light leading-[1.65] text-[color:var(--text\/primary,#eeedf5)] text-[15px] md:text-[17px]">
                 It doesn't stop here!
               </p>
               <div className="flex gap-[8px] items-center">

@@ -88,12 +88,12 @@ export default function Footer() {
         {/* Left: tagline + design info */}
         <div className="flex flex-col h-full items-start justify-between relative shrink-0">
           <div className="flex flex-col gap-[4px] items-start shrink-0 w-[235px]">
-            <p className="font-['Inter_Tight',sans-serif] font-[350] leading-none text-[color:var(--text\/primary,#eeedf5)] text-[17px] w-full">
+            <p className="font-['Inter_Tight',sans-serif] font-[350] leading-none text-[color:var(--text\/primary,#eeedf5)] text-[15px] md:text-[17px] w-full">
               I design for connection.
             </p>
             <div className="flex gap-[4px] items-center shrink-0 w-full">
               <img src={iconArrow} alt="" className="shrink-0 size-[18px]" />
-              <p className="font-['Inter_Tight',sans-serif] font-[350] leading-none text-[#faf9ff] text-[17px] whitespace-nowrap">
+              <p className="font-['Inter_Tight',sans-serif] font-[350] leading-none text-[#faf9ff] text-[15px] md:text-[17px] whitespace-nowrap">
                 It was nice to meet you!
               </p>
             </div>
