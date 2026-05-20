@@ -56,8 +56,11 @@ export default function CasestudyGentleMonster() {
   }, []);
 
   useEffect(() => {
+    let lastScrollY = window.scrollY;
     const handleScroll = () => {
-      setScrolled(window.scrollY > 10);
+      const y = window.scrollY;
+      setScrolled(y > 10 && y > lastScrollY);
+      lastScrollY = y;
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
@@ -129,7 +132,12 @@ export default function CasestudyGentleMonster() {
         <Navigation scrolledDown={scrolled} />
       </motion.div>
 
-      <div className="flex flex-col items-center px-[16px] md:px-[20vw] pt-[15vh] pb-[15vh]">
+      <motion.div
+        initial={shouldAnimate ? { opacity: 0, y: 24 } : false}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
+        className="flex flex-col items-center px-[16px] md:px-[20vw] pt-[15vh] pb-[15vh]"
+      >
 
         {/* Segment 1: Hero + Overview */}
         <div className="flex flex-col gap-[9vh] items-center w-full">
@@ -1029,7 +1037,7 @@ export default function CasestudyGentleMonster() {
           <UpNext currentId="gentle-monster" />
 
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }

@@ -69,8 +69,11 @@ export default function CasestudyTianAirlines() {
   }, [heroExtraHeight]);
 
   useEffect(() => {
+    let lastScrollY = window.scrollY;
     const handleScroll = () => {
-      setScrolled(window.scrollY > 10);
+      const y = window.scrollY;
+      setScrolled(y > 10 && y > lastScrollY);
+      lastScrollY = y;
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
@@ -106,7 +109,12 @@ export default function CasestudyTianAirlines() {
         <Navigation scrolledDown={scrolled} />
       </motion.div>
 
-      <div className="flex flex-col items-center px-[16px] md:px-[20vw] pt-[15vh] pb-[15vh]">
+      <motion.div
+        initial={shouldAnimate ? { opacity: 0, y: 24 } : false}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
+        className="flex flex-col items-center px-[16px] md:px-[20vw] pt-[15vh] pb-[15vh]"
+      >
         <div className="flex flex-col items-center w-full">
 
           {/* ── Hero video (scaled) ── */}
@@ -459,7 +467,7 @@ export default function CasestudyTianAirlines() {
           </motion.div>{/* end content wrapper */}
 
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }

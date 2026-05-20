@@ -13,7 +13,6 @@ import DrinkCard from "../components/DrinkCard";
 import about1 from "../../assets/project/about/about_1.jpg";
 import about3 from "../../assets/project/about/about_3.png";
 import about4 from "../../assets/project/about/about_4.png";
-
 const quotes = [
   {
     text: "What is this doing here? Do you need it? Get rid of it!",
@@ -61,9 +60,9 @@ export default function About() {
   useEffect(() => {
     let lastScrollY = window.scrollY;
     const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      setScrolled(currentScrollY > 10);
-      lastScrollY = currentScrollY;
+      const y = window.scrollY;
+      setScrolled(y > 10 && y > lastScrollY);
+      lastScrollY = y;
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
@@ -162,12 +161,12 @@ export default function About() {
       {/* Page content */}
       <div className="px-[16px] md:px-[8vw] pt-[160px] pb-[14vh] flex flex-col gap-[75px]">
 
-        {/* Single column layout */}
-        <div className="flex flex-col gap-[16px]">
+        {/* Single column on mobile, bento grid on desktop */}
+        <div className="flex flex-col md:grid md:grid-cols-2 gap-[16px] md:items-stretch">
 
-          {/* Backstory box */}
+          {/* Left / Backstory box */}
           <motion.div
-            className="border border-[#302f34] rounded-[12px] p-[32px] flex flex-col gap-[36px]"
+            className="border border-[#302f34] rounded-[12px] p-[32px] flex flex-col gap-[36px] md:h-full"
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, ease: "easeOut", delay: 0.1 }}
@@ -203,8 +202,8 @@ export default function About() {
             </div>
 
             {/* Photo gallery */}
-            <div className="flex flex-col gap-[8px]">
-              <div className="relative w-full overflow-x-clip">
+            <div className="flex flex-col gap-[12px]">
+              <div className="w-full overflow-x-clip">
                 <Swiper
                   modules={[Mousewheel]}
                   mousewheel={{ forceToAxis: true, thresholdDelta: 20 }}
@@ -238,17 +237,16 @@ export default function About() {
                     </SwiperSlide>
                   ))}
                 </Swiper>
-                {/* Dot nav — always visible, 16px from bottom of image */}
-                <div className="absolute bottom-[16px] left-0 right-0 z-10 flex gap-[8px] items-center justify-center pointer-events-none">
-                  {photos.map((_, i) => (
-                    <button
-                      key={i}
-                      onClick={() => swiperRef.current?.slideTo(i)}
-                      className="w-[6px] h-[6px] rounded-[1px] cursor-pointer border-0 p-0 transition-colors duration-150 pointer-events-auto"
-                      style={{ background: i === activePhoto ? "#9a47ff" : "rgba(250,249,255,0.4)" }}
-                    />
-                  ))}
-                </div>
+              </div>
+              <div className="flex gap-[8px] items-center justify-center">
+                {photos.map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => swiperRef.current?.slideTo(i)}
+                    className="w-[6px] h-[6px] rounded-[1px] cursor-pointer border-0 p-0 transition-colors duration-150"
+                    style={{ background: i === activePhoto ? "#9a47ff" : "rgba(250,249,255,0.4)" }}
+                  />
+                ))}
               </div>
               <p className="font-['Inter_Tight',sans-serif] font-normal leading-none text-[#908e99] text-[14px] text-center w-full">
                 {photos[activePhoto].caption}
@@ -256,88 +254,91 @@ export default function About() {
             </div>
           </motion.div>
 
-          {/* Offline + Drink cards side by side */}
-          <motion.div
-            className="flex gap-[16px]"
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, ease: "easeOut", delay: 0.2 }}
-          >
-            <div className="flex-1"><OfflineCard /></div>
-            <div className="flex-1"><DrinkCard /></div>
-          </motion.div>
+          {/* Right column */}
+          <div className="flex flex-col gap-[16px] md:h-full">
 
-          {/* Quote / Ethos box */}
-          <motion.div
-            className="border border-[#302f34] rounded-[12px] overflow-clip relative"
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, ease: "easeOut", delay: 0.35 }}
-            style={{ height: "402px" }}
-          >
-            {/* Top gradient */}
-            <div
-              className="absolute inset-x-0 top-0 h-[200px] z-10 pointer-events-none"
-              style={{ background: "linear-gradient(to bottom, #161617 45%, rgba(22,22,23,0))" }}
-            />
-            {/* Bottom gradient */}
-            <div
-              className="absolute inset-x-0 bottom-0 h-[76px] z-10 pointer-events-none"
-              style={{ background: "linear-gradient(to top, #161617, rgba(22,22,23,0))" }}
-            />
-
-            {/* Header */}
-            <div className="absolute top-[24px] left-[16px] z-20 flex flex-col gap-[6px]">
-              <p className="font-['Inter_Tight',sans-serif] text-[#faf9ff] text-[14px] font-[300] leading-none">Ethos</p>
-              <p className="font-['Inter_Tight',sans-serif] text-[14px] leading-none" style={{ color: "rgba(144,142,153,0.5)" }}>
-                Design + Life philosophy
-              </p>
-            </div>
-
-            {/* Separator */}
-            <div
-              className="absolute inset-x-[16px] z-20"
-              style={{ top: "72px", height: "1px", background: "#302f34" }}
-            />
-
-            {/* Quote counter */}
-            <p
-              className="absolute left-[16px] z-20 font-['Inter_Tight',sans-serif] text-[14px] leading-none"
-              style={{ top: "84px", color: "rgba(144,142,153,0.5)" }}
+            {/* Offline + Drink cards */}
+            <motion.div
+              className="flex gap-[16px]"
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, ease: "easeOut", delay: 0.2 }}
             >
-              Quote {activeQuote + 1}/{quotes.length}
-            </p>
+              <div className="flex-1"><OfflineCard /></div>
+              <div className="flex-1"><DrinkCard /></div>
+            </motion.div>
 
-            {/* Scrolling quotes */}
-            <div ref={quotesOuterRef} className="h-full overflow-hidden">
+            {/* Quote / Ethos box */}
+            <motion.div
+              className="border border-[#302f34] rounded-[12px] overflow-clip relative h-[402px] md:h-[340px]"
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, ease: "easeOut", delay: 0.35 }}
+            >
+              {/* Top gradient */}
               <div
-                ref={quotesInnerRef}
-                className="flex flex-col gap-[50px] px-[16px]"
-                style={{ paddingTop: "145px", paddingBottom: "25px" }}
-              >
-                {[...quotes, ...quotes].map((q, i) => (
-                  <div key={i} className="flex flex-col gap-[8px]">
-                    <p className="font-['Inter_Tight',sans-serif] leading-[1.3] text-[#faf9ff] text-[20px] whitespace-pre-line">
-                      {q.text}
-                    </p>
-                    <p className="font-['Inter_Tight',sans-serif] leading-[1.5] text-[#908e99] text-[16px]">
-                      {q.attribution}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </motion.div>
+                className="absolute inset-x-0 top-0 h-[200px] z-10 pointer-events-none"
+                style={{ background: "linear-gradient(to bottom, #161617 45%, rgba(22,22,23,0))" }}
+              />
+              {/* Bottom gradient */}
+              <div
+                className="absolute inset-x-0 bottom-0 h-[76px] z-10 pointer-events-none"
+                style={{ background: "linear-gradient(to top, #161617, rgba(22,22,23,0))" }}
+              />
 
-          {/* Friends Card */}
-          <motion.div
-            className="border border-[#302f34] rounded-[12px] overflow-hidden"
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, ease: "easeOut", delay: 0.5 }}
-          >
-            <FriendsCard />
-          </motion.div>
+              {/* Header */}
+              <div className="absolute top-[24px] left-[16px] z-20 flex flex-col gap-[6px]">
+                <p className="font-['Inter_Tight',sans-serif] text-[#faf9ff] text-[14px] font-[300] leading-none">Ethos</p>
+                <p className="font-['Inter_Tight',sans-serif] text-[14px] leading-none" style={{ color: "rgba(144,142,153,0.5)" }}>
+                  Design + Life philosophy
+                </p>
+              </div>
+
+              {/* Separator */}
+              <div
+                className="absolute inset-x-[16px] z-20"
+                style={{ top: "72px", height: "1px", background: "#302f34" }}
+              />
+
+              {/* Quote counter */}
+              <p
+                className="absolute left-[16px] z-20 font-['Inter_Tight',sans-serif] text-[14px] leading-none"
+                style={{ top: "84px", color: "rgba(144,142,153,0.5)" }}
+              >
+                Quote {activeQuote + 1}/{quotes.length}
+              </p>
+
+              {/* Scrolling quotes */}
+              <div ref={quotesOuterRef} className="h-full overflow-hidden">
+                <div
+                  ref={quotesInnerRef}
+                  className="flex flex-col gap-[50px] px-[16px]"
+                  style={{ paddingTop: "145px", paddingBottom: "25px" }}
+                >
+                  {[...quotes, ...quotes].map((q, i) => (
+                    <div key={i} className="flex flex-col gap-[8px]">
+                      <p className="font-['Inter_Tight',sans-serif] leading-[1.3] text-[#faf9ff] text-[20px] whitespace-pre-line">
+                        {q.text}
+                      </p>
+                      <p className="font-['Inter_Tight',sans-serif] leading-[1.5] text-[#908e99] text-[16px]">
+                        {q.attribution}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Friends Card */}
+            <motion.div
+              className="border border-[#302f34] rounded-[12px] flex-1 overflow-hidden"
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, ease: "easeOut", delay: 0.5 }}
+            >
+              <FriendsCard />
+            </motion.div>
+          </div>
         </div>
 
       </div>

@@ -108,7 +108,12 @@ export default function CasestudyTexasMobile() {
   }, [heroExtraHeight]);
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 10);
+    let lastScrollY = window.scrollY;
+    const handleScroll = () => {
+      const y = window.scrollY;
+      setScrolled(y > 10 && y > lastScrollY);
+      lastScrollY = y;
+    };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -144,7 +149,12 @@ export default function CasestudyTexasMobile() {
         <Navigation scrolledDown={scrolled} />
       </motion.div>
 
-      <div className="flex flex-col items-center px-[16px] md:px-[20vw] pt-[15vh] pb-[15vh]">
+      <motion.div
+        initial={shouldAnimate ? { opacity: 0, y: 24 } : false}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
+        className="flex flex-col items-center px-[16px] md:px-[20vw] pt-[15vh] pb-[15vh]"
+      >
         <div className="flex flex-col gap-[110px] items-center w-full">
 
           {/* ── Overview ── */}
@@ -558,7 +568,7 @@ export default function CasestudyTexasMobile() {
           <UpNext currentId="texas-mobile" />
 
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }

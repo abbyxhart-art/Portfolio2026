@@ -18,18 +18,32 @@ import eye3 from "../../assets/project/about/eye_3.png";
 
 type Category = "star" | "heart" | "art" | "eye";
 
+// Mobile: percentage-based (stretches to fill card width)
 const PILL_LEFT: Record<Category, string> = {
   star:  "8%",
   heart: "29.3%",
   art:   "50.7%",
   eye:   "72%",
 };
-
 const INDICATOR_LEFT: Record<Category, string> = {
   star:  "13.95%",
   heart: "35.25%",
   art:   "56.65%",
   eye:   "77.95%",
+};
+
+// Desktop: fixed pixel positions for a 307px-wide bar
+const PILL_LEFT_PX: Record<Category, number> = {
+  star:  8,
+  heart: 84,
+  art:   158,
+  eye:   235,
+};
+const INDICATOR_LEFT_PX: Record<Category, number> = {
+  star:  28,
+  heart: 103,
+  art:   178,
+  eye:   254,
 };
 
 const BUTTONS: { id: Category; icon: string }[] = [
@@ -52,20 +66,19 @@ const EYE_IMAGES   = [eye1, eye2, eye3];
 const EYE_TITLES   = ["Looking for my next concert", "Reading books + zines", null];
 
 export default function OfflineCard() {
-  const [hovered, setHovered]       = useState(false);
-  const [selected, setSelected]     = useState<Category>("star");
-  const [hoveredBtn, setHoveredBtn] = useState<Category | null>(null);
-  const [starIndex, setStarIndex]   = useState(0);
-  const [heartIndex, setHeartIndex] = useState(0);
-  const [artIndex, setArtIndex]     = useState(0);
-  const [eyeIndex, setEyeIndex]     = useState(0);
+  const [hovered, setHovered]         = useState(false);
+  const [selected, setSelected]       = useState<Category>("star");
+  const [hoveredBtn, setHoveredBtn]   = useState<Category | null>(null);
+  const [starIndex, setStarIndex]     = useState(0);
+  const [heartIndex, setHeartIndex]   = useState(0);
+  const [artIndex, setArtIndex]       = useState(0);
+  const [eyeIndex, setEyeIndex]       = useState(0);
   const [beliHovered, setBeliHovered] = useState(false);
 
   const isStar  = selected === "star";
   const isHeart = selected === "heart";
   const isArt   = selected === "art";
   const isEye   = selected === "eye";
-  const isClickable = isStar || isHeart || isArt || isEye;
 
   function handleCardClick() {
     if (isStar)  setStarIndex((i)  => (i + 1) % STAR_IMAGES.length);
@@ -74,49 +87,65 @@ export default function OfflineCard() {
     if (isEye)   setEyeIndex((i)   => (i + 1) % EYE_IMAGES.length);
   }
 
+  // Mobile: single-line caption, changes on hover
   function renderCaption() {
     if (!hovered) return "Offline";
     if (isStar)  return STAR_TITLES[starIndex];
     if (isHeart) return HEART_TITLES[heartIndex];
     if (isArt)   return ART_TITLES[artIndex];
     if (isEye) {
-      if (eyeIndex === 2) {
-        return (
-          <>
-            Eating!{" "}
-            <a
-              href="https://share.google/Ora4lc2zrK4vUEhaS"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                textDecorationLine: "underline",
-                textDecorationStyle: "dotted",
-                textDecorationColor: "#faf9ff",
-                color: "#faf9ff",
-                fontWeight: beliHovered ? 500 : 300,
-                transition: "font-weight 0.15s ease",
-              }}
-              onMouseEnter={(e) => { e.stopPropagation(); setBeliHovered(true); }}
-              onMouseLeave={() => setBeliHovered(false)}
-              onClick={(e) => e.stopPropagation()}
-            >
-              Cafe W in Queens
-            </a>
-          </>
-        );
-      }
+      if (eyeIndex === 2) return renderCafeLink();
       return EYE_TITLES[eyeIndex];
     }
     return "Offline";
   }
 
+  // Desktop: two-line caption — subtitle changes on hover
+  function renderDesktopSubtitle() {
+    if (!hovered) return "Refueling mind and body";
+    if (isStar)  return STAR_TITLES[starIndex];
+    if (isHeart) return HEART_TITLES[heartIndex];
+    if (isArt)   return ART_TITLES[artIndex];
+    if (isEye) {
+      if (eyeIndex === 2) return renderCafeLink();
+      return EYE_TITLES[eyeIndex];
+    }
+    return "Refueling mind and body";
+  }
+
+  function renderCafeLink() {
+    return (
+      <>
+        Eating!{" "}
+        <a
+          href="https://share.google/Ora4lc2zrK4vUEhaS"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            textDecorationLine: "underline",
+            textDecorationStyle: "dotted",
+            textDecorationColor: "#faf9ff",
+            color: "#faf9ff",
+            fontWeight: beliHovered ? 500 : 300,
+            transition: "font-weight 0.15s ease",
+          }}
+          onMouseEnter={(e) => { e.stopPropagation(); setBeliHovered(true); }}
+          onMouseLeave={() => setBeliHovered(false)}
+          onClick={(e) => e.stopPropagation()}
+        >
+          Cafe W in Queens
+        </a>
+      </>
+    );
+  }
+
   return (
     <div
-      className="relative w-full rounded-[8px] overflow-hidden"
-      style={{ aspectRatio: "1 / 1", background: "#2c2c2c", cursor: isClickable ? "pointer" : "default" }}
+      className="relative w-full rounded-[8px] overflow-hidden cursor-pointer"
+      style={{ aspectRatio: "1 / 1", background: "#2c2c2c" }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      onClick={isClickable ? handleCardClick : undefined}
+      onClick={handleCardClick}
     >
       {/* Star images */}
       {STAR_IMAGES.map((src, i) => (
@@ -166,16 +195,26 @@ export default function OfflineCard() {
         style={{ background: "linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0) 100%)" }}
       />
 
-      {/* Caption */}
-      <div className="absolute top-[16px] left-[16px]">
+      {/* Caption — mobile: single dynamic line */}
+      <div className="md:hidden absolute top-[16px] left-[16px]">
         <p className="font-['Inter_Tight',sans-serif] font-[300] text-[#faf9ff] text-[14px] leading-none">
           {renderCaption()}
         </p>
       </div>
 
-      {/* Button menu — always visible, scales to card width */}
+      {/* Caption — desktop: two lines per Figma */}
+      <div className="hidden md:flex absolute top-[16px] left-[16px] flex-col gap-[6px]">
+        <p className="font-['Inter_Tight',sans-serif] font-normal text-[#faf9ff] text-[14px] leading-none">
+          Offline
+        </p>
+        <p className="font-['Inter_Tight',sans-serif] font-normal text-[14px] leading-none" style={{ color: "rgba(144,142,153,0.5)" }}>
+          {renderDesktopSubtitle()}
+        </p>
+      </div>
+
+      {/* Button menu — mobile: stretches to fill card */}
       <div
-        className="absolute rounded-[100px] p-[8px]"
+        className="md:hidden absolute rounded-[100px] p-[8px]"
         style={{
           bottom: "8px",
           left: "8px",
@@ -186,7 +225,6 @@ export default function OfflineCard() {
         }}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Sliding pill */}
         <div
           className="absolute top-1/2 rounded-[24px]"
           style={{
@@ -198,8 +236,6 @@ export default function OfflineCard() {
             transition: "left 0.2s ease",
           }}
         />
-
-        {/* Indicator bar */}
         <div
           className="absolute h-[2px] rounded-b-[4px]"
           style={{
@@ -210,8 +246,6 @@ export default function OfflineCard() {
             transition: "left 0.2s ease",
           }}
         />
-
-        {/* Border + buttons */}
         <div
           className="absolute inset-0 rounded-[100px] flex items-center justify-between px-[8%]"
           style={{ border: "1px solid #908e99" }}
@@ -226,6 +260,74 @@ export default function OfflineCard() {
               onMouseLeave={() => setHoveredBtn(null)}
             >
               <div className="relative w-[90%] h-[90%] overflow-hidden">
+                <img
+                  alt={id}
+                  src={icon}
+                  className="block w-full h-full object-contain"
+                  style={{
+                    filter: selected === id || hoveredBtn === id ? "brightness(1)" : "brightness(0.2)",
+                    transition: "filter 0.15s ease",
+                  }}
+                />
+              </div>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Button menu — desktop: fixed 307px per Figma */}
+      <div
+        className="hidden md:block absolute rounded-[100px] p-[8px]"
+        style={{
+          bottom: "16px",
+          left: "50%",
+          transform: "translateX(-50%)",
+          width: "307px",
+          height: "48px",
+          background: "rgba(144,142,153,0.2)",
+          backdropFilter: "blur(12px)",
+        }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Sliding pill */}
+        <div
+          className="absolute top-1/2 rounded-[24px]"
+          style={{
+            background: "rgba(209,206,220,0.3)",
+            left: `${PILL_LEFT_PX[selected]}px`,
+            width: "64px",
+            height: "36px",
+            transform: "translateY(-50%)",
+            transition: "left 0.2s ease",
+          }}
+        />
+
+        {/* Indicator bar */}
+        <div
+          className="absolute h-[2px] rounded-b-[4px]"
+          style={{
+            background: "#d9d9d9",
+            width: "25px",
+            bottom: "-2px",
+            left: `${INDICATOR_LEFT_PX[selected]}px`,
+            transition: "left 0.2s ease",
+          }}
+        />
+
+        {/* Border + buttons */}
+        <div
+          className="absolute inset-0 rounded-[100px] flex items-center justify-between px-[24px]"
+          style={{ border: "1px solid #908e99" }}
+        >
+          {BUTTONS.map(({ id, icon }) => (
+            <button
+              key={id}
+              onClick={() => setSelected(id)}
+              className="relative flex items-center justify-center size-[32px] rounded-[24px] cursor-pointer border-0 bg-transparent p-0"
+              onMouseEnter={() => setHoveredBtn(id)}
+              onMouseLeave={() => setHoveredBtn(null)}
+            >
+              <div className="relative size-[28px] overflow-hidden">
                 <img
                   alt={id}
                   src={icon}
