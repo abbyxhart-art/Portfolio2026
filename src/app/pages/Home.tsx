@@ -70,7 +70,7 @@ function LinkedInButton() {
 }
 import CardCasestudy, { AccentType } from "../components/CardCasestudy";
 import aixelsMeImg from "../../assets/project/aixels/me.JPG";
-import breadcrumbCover1 from "../../assets/project/breadcrumb/cover_1.png";
+import fragranticaHome1 from "../../assets/project/fragrantica/home_1.png";
 const figbuildMacstudioVideo = new URL("../../assets/project/figbuild/figbuild_macstudio_2x1.mp4", import.meta.url).href;
 import gmTeaserVideo from "../../assets/project/gentlemonster/GM_Teaser_2x1.mp4";
 import tianCover1 from "../../assets/project/tianair/tian_cover1.png";
@@ -139,13 +139,13 @@ const caseStudies: {
   },
   {
     accentType: "7",
-    title: "Breadcrumb",
-    description: "A unified volunteer platform for global impact",
-    date: "Spring 2026",
-    tag1Label: "Desktop",
-    tag2Label: "Information Architecture",
-    readTime: "Coming soon",
-    image: breadcrumbCover1,
+    title: "Fragrantica",
+    description: "Refreshing a site with 22 million users",
+    date: "Spring 2025",
+    tag1Label: "Visual Design",
+    tag2Label: "Redesign",
+    readTime: "3 min read",
+    image: fragranticaHome1,
   },
 ];
 
@@ -379,7 +379,7 @@ export default function Home() {
             }
             if (i === 5) {
               return (
-                <div key={i} className="w-full sm:w-[calc(50%-6px)]">{card}</div>
+                <Link key={i} to="/casestudy/fragrantica" className="w-full sm:w-[calc(50%-6px)] no-underline">{card}</Link>
               );
             }
             return <div key={i} className="w-full sm:w-[calc(50%-6px)]">{card}</div>;
