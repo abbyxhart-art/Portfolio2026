@@ -31,7 +31,7 @@ function LinkedInButton() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.4, ease: "easeOut", delay: 0.2 }}
-      className="fixed top-[16px] right-[calc(4.5vw)] z-50 p-[4px]"
+      className="fixed top-[16px] right-[calc(4.5vw+16px)] z-50 p-[4px]"
     >
       <button
         onClick={() => window.open("https://linkedin.com/in/abbyxhart", "_blank", "noopener,noreferrer")}
@@ -92,8 +92,8 @@ const caseStudies: {
     title: "Tian Airways",
     description: "Defining a design language for air travel",
     date: "Fall 2025",
-    tag1Label: "Design Systems",
-    tag2Label: "UI Prototype",
+    tag1Label: "Design System",
+    tag2Label: "Token and Variablees",
     readTime: "3 min read",
     image: tianCover1,
   },
@@ -102,8 +102,8 @@ const caseStudies: {
     title: "Gentle Monster Kiosk",
     description: "Incepting a luxury kiosk with research and design systems",
     date: "Spring 2025",
-    tag1Label: "Research",
-    tag2Label: "Design Systems",
+    tag1Label: "UX Research",
+    tag2Label: "PRD and Execution",
     readTime: "6 min read",
     video: gmTeaserVideo,
   },
@@ -122,9 +122,9 @@ const caseStudies: {
     title: "Texas Mobile",
     description: "Creating a dynamic, safe alternative to traditional physical IDs",
     date: "Spring 2024",
-    tag1Label: "Mobile",
-    tag2Label: "UX Design",
-    readTime: "4 min read",
+    tag1Label: "Information Architecture",
+    tag2Label: "Playtesting",
+    readTime: "5 min read",
     video: texasIdVideo,
   },
   {
@@ -140,9 +140,9 @@ const caseStudies: {
   {
     accentType: "7",
     title: "Breadcrumb",
-    description: "A unified volunteer platform for global impact",
+    description: "A unified volunteer mobile dashboard for global impact",
     date: "Spring 2026",
-    tag1Label: "Desktop",
+    tag1Label: "Mobile",
     tag2Label: "Information Architecture",
     readTime: "Coming soon",
     image: breadcrumbCover1,
