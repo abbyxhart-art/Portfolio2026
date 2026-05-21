@@ -287,7 +287,7 @@ export default function Home() {
               <p className="mb-0">{`product designer, & Figma aficionado`}</p>
             </div>
             <p className="mb-0 text-[color:var(--text\/secondary,#908e99)] text-[16px] leading-[1.5]" style={{ fontWeight: 300 }}>
-              TLDR: I design visual systems to delight and direct users
+              I design visual systems to delight and direct users
             </p>
           </div>
           <motion.div
