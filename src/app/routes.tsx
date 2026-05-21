@@ -12,13 +12,17 @@ import Booth from "./pages/Booth";
 import About from "./pages/About";
 import DrinkFloater from "./components/DrinkFloater";
 import Footer from "./components/Footer";
+import MobileBottomNav from "./components/MobileBottomNav";
 
 function RootLayout() {
   return (
     <>
-      <Outlet />
-      <Footer />
+      <div className="pb-[110px] md:pb-0">
+        <Outlet />
+        <Footer />
+      </div>
       <DrinkFloater />
+      <MobileBottomNav />
     </>
   );
 }

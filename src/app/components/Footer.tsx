@@ -69,7 +69,7 @@ export default function Footer() {
   }, [clearGarden]);
 
   return (
-    <footer className="bg-[#171717] border-t border-[#585564] flex flex-col h-[402px] items-start justify-between overflow-clip pb-[16px] pt-[100px] relative w-full">
+    <footer className="bg-[#171717] border-t border-[#585564] flex flex-col h-auto md:h-[402px] items-start justify-between overflow-clip pb-[16px] pt-[48px] md:pt-[100px] relative w-full gap-[32px] md:gap-0">
       {/* Garden background */}
       <div className="absolute inset-0">
         <LSystemGarden ref={gardenRef} onHasFlowers={setHasFlowers} />
@@ -84,16 +84,16 @@ export default function Footer() {
       />
 
       {/* Navigation Row */}
-      <div className="flex h-[118px] items-start justify-between px-[100px] relative shrink-0 w-full">
+      <div className="flex flex-col md:flex-row h-auto md:h-[118px] items-start justify-between px-[16px] md:px-[100px] relative shrink-0 w-full gap-[32px] md:gap-0">
         {/* Left: tagline + design info */}
-        <div className="flex flex-col h-full items-start justify-between relative shrink-0">
+        <div className="flex flex-col h-full items-start justify-between relative shrink-0 gap-[16px] md:gap-0">
           <div className="flex flex-col gap-[4px] items-start shrink-0 w-[235px]">
-            <p className="font-['Inter_Tight',sans-serif] font-[350] leading-none text-[color:var(--text\/primary,#eeedf5)] text-[15px] md:text-[17px] w-full">
+            <p className="font-['Inter_Tight',sans-serif] font-[350] leading-none text-[color:var(--text\/primary,#eeedf5)] text-[14px] md:text-[17px] w-full">
               I design for connection.
             </p>
             <div className="flex gap-[4px] items-center shrink-0 w-full">
               <img src={iconArrow} alt="" className="shrink-0 size-[18px]" />
-              <p className="font-['Inter_Tight',sans-serif] font-[350] leading-none text-[#faf9ff] text-[15px] md:text-[17px] whitespace-nowrap">
+              <p className="font-['Inter_Tight',sans-serif] font-[350] leading-none text-[#faf9ff] text-[14px] md:text-[17px] whitespace-nowrap">
                 It was nice to meet you!
               </p>
             </div>
@@ -104,8 +104,7 @@ export default function Footer() {
               <p className="text-[#908e99]">Inter Tight</p>
             </div>
             <div className="flex gap-[3px] items-center shrink-0">
-              <p className="text-[#908e99]">Made with</p>
-              <p className="text-[#908e99]">Figma + Claude → Github + Vercel</p>
+              <p className="text-[#908e99]">Last edit: May 2026</p>
             </div>
           </div>
         </div>
@@ -134,13 +133,13 @@ export default function Footer() {
       </div>
 
       {/* Hover Directions */}
-      <div className="flex flex-col font-['Inter_Tight',sans-serif] font-[300] gap-[5px] items-center leading-none shrink-0 text-[#b8b4c5] text-[14px] w-full whitespace-nowrap">
+      <div className="flex flex-col font-['Inter_Tight',sans-serif] font-[300] gap-[5px] items-start md:items-center leading-none shrink-0 text-[#b8b4c5] text-[14px] w-full whitespace-nowrap px-[16px] md:px-0">
         <p className="shrink-0">Play around. You never know what may grow!</p>
         <p className="shrink-0">Hover based on the book: the algorithmic beauty of plants</p>
       </div>
 
       {/* RIT Info */}
-      <div className="absolute bottom-[15px] flex flex-col font-['Inter_Tight',sans-serif] font-[300] gap-[8px] items-start leading-none left-[99px] text-[14px] whitespace-nowrap">
+      <div className="md:absolute md:bottom-[15px] md:left-[99px] flex flex-col font-['Inter_Tight',sans-serif] font-[300] gap-[8px] items-start leading-none px-[16px] md:px-0 text-[14px] whitespace-nowrap">
         <p className="text-[#faf9ff]">Rochester Institute of Technology</p>
         <div className="flex gap-[3px] items-center shrink-0">
           <p className="text-[#908e99]">BFA</p>

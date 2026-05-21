@@ -43,6 +43,7 @@ export default function About() {
   const shouldAnimate = useNavEntrance();
   const [scrolled, setScrolled] = useState(false);
   const [activePhoto, setActivePhoto] = useState(0);
+  const [galleryHovered, setGalleryHovered] = useState(false);
   const swiperRef = useRef<SwiperType | null>(null);
   const quotesOuterRef = useRef<HTMLDivElement>(null);
   const quotesInnerRef = useRef<HTMLDivElement>(null);
@@ -202,7 +203,7 @@ export default function About() {
             </div>
 
             {/* Photo gallery */}
-            <div className="flex flex-col gap-[12px]">
+            <div className="flex flex-col gap-[12px]" onMouseEnter={() => setGalleryHovered(true)} onMouseLeave={() => setGalleryHovered(false)}>
               <div className="w-full overflow-x-clip">
                 <Swiper
                   modules={[Mousewheel]}
@@ -248,8 +249,8 @@ export default function About() {
                   />
                 ))}
               </div>
-              <p className="font-['Inter_Tight',sans-serif] font-normal leading-none text-[#908e99] text-[14px] text-center w-full">
-                {photos[activePhoto].caption}
+              <p className="font-['Inter_Tight',sans-serif] font-normal leading-none text-[#908e99] text-[14px] text-center w-full transition-all duration-200">
+                {galleryHovered ? photos[activePhoto].caption : "Offline"}
               </p>
             </div>
           </motion.div>

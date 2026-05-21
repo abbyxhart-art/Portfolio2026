@@ -10,7 +10,7 @@ const LABEL_TO_FLOATER: Record<string, DrinkFloaterType> = {
   "Thai Tea":      "sesame",
 };
 
-function EmptyCup() {
+export function EmptyCup() {
   return (
     <div className="h-[62px] relative w-[42px]">
       <div className="absolute bg-[#7e7c87] h-[53px] left-[20px] top-0 w-[4px]" />
@@ -20,7 +20,7 @@ function EmptyCup() {
   );
 }
 
-function TaroMilkCup() {
+export function TaroMilkCup() {
   return (
     <div className="h-[62px] relative w-[42px]">
       <div className="absolute bg-[#7e7c87] h-[53px] left-[20px] top-0 w-[4px]" />
@@ -40,7 +40,7 @@ function TaroMilkCup() {
   );
 }
 
-function PeachCreamCup() {
+export function PeachCreamCup() {
   return (
     <div className="h-[62px] relative w-[42px]">
       <div className="absolute bg-[#7e7c87] h-[53px] left-[20px] top-0 w-[4px]" />
@@ -54,7 +54,7 @@ function PeachCreamCup() {
   );
 }
 
-function MangoCocoCup() {
+export function MangoCocoCup() {
   return (
     <div className="h-[62px] relative w-[42px]">
       <div className="absolute bg-[#7e7c87] h-[53px] left-[20px] top-0 w-[4px]" />
@@ -66,7 +66,7 @@ function MangoCocoCup() {
   );
 }
 
-function ThaiTeaCup() {
+export function ThaiTeaCup() {
   return (
     <div className="h-[62px] relative w-[42px]">
       <div className="absolute bg-[#7e7c87] h-[53px] left-[20px] top-0 w-[4px]" />

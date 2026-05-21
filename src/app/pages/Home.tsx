@@ -233,7 +233,7 @@ export default function Home() {
         initial={shouldAnimate ? { opacity: 0 } : false}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.4, ease: "easeOut", delay: 0.2 }}
-        className="fixed top-[16px] left-[calc(4.5vw+16px)] z-50 flex flex-col items-start leading-[1.5] pointer-events-none"
+        className="fixed top-[16px] left-[16px] md:left-[calc(4.5vw+16px)] z-50 flex flex-col items-start leading-[1.5] pointer-events-none"
         style={{ fontFamily: "var(--text-font/default, 'Inter Tight', sans-serif)", color: "#b8b4c5" }}
       >
         <p className="mb-0 text-[15px] md:text-[17px]" style={{ fontWeight: 350 }}>Abby Hart</p>

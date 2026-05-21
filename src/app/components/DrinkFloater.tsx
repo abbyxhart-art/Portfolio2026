@@ -86,7 +86,7 @@ export default function DrinkFloater() {
   };
 
   return (
-    <div className="fixed bottom-[16px] left-[16px] z-50 flex flex-col items-start gap-[8px] animate-[fadeIn_0.4s_ease-out]">
+    <div className="hidden md:flex fixed bottom-[16px] left-[16px] z-50 flex-col items-start gap-[8px] animate-[fadeIn_0.4s_ease-out]">
       {drinkType === 'mango' && <MiniInteractionMangoCoconut />}
       {drinkType === 'matcha' && <MiniInteractionMatchaCream />}
       {drinkType === 'lychee' && <MiniInteractionLycheeRose />}
