@@ -37,7 +37,7 @@ export default function CasestudyNavigation({ title }: CasestudyNavigationProps)
   }, []);
 
   return (
-    <div ref={ref} className="fixed top-[16px] left-[16px] z-50">
+    <div ref={ref} className="hidden md:block fixed top-[16px] left-[16px] z-50">
       {/* Trigger */}
       <button
         className="flex gap-[8px] items-center bg-transparent border-none p-0 cursor-pointer"

@@ -127,10 +127,10 @@ export default function CasestudyAixels() {
             <motion.div style={{ y: contentY }} className="flex flex-col gap-[32px] items-start w-full">
               {/* Title */}
               <div className="border-b border-[#302f34] flex flex-col gap-[8px] items-start pb-[32px] w-full">
-                <p className="font-['Inter_Tight',sans-serif] font-[400] leading-[1.3] text-[color:var(--text\/primary,#faf9ff)] text-[24px] w-full">
+                <p className="font-['Inter_Tight',sans-serif] font-[400] leading-[1.3] text-[color:var(--text\/primary,#faf9ff)] text-[18px] md:text-[24px] w-full">
                   AIXELS
                 </p>
-                <div className="font-['Inter_Tight',sans-serif] font-normal leading-[1.25] text-[color:var(--text\/secondary,#908e99)] text-[20px] w-full">
+                <div className="font-['Inter_Tight',sans-serif] font-normal leading-[1.25] text-[color:var(--text\/secondary,#908e99)] text-[16px] md:text-[20px] w-full">
                   <p className="mb-0">Designathon winner — Poke the bear: Explore with AI</p>
                 </div>
               </div>
@@ -140,22 +140,22 @@ export default function CasestudyAixels() {
                 {/* Left: Tools + Timeline + Role */}
                 <div className="flex flex-col gap-[32px] items-start shrink-0 w-[159px]">
                   <div className="flex flex-col gap-[16px] items-start">
-                    <p className="leading-none text-[color:var(--text\/secondary,#908e99)] text-[16px] w-full">Tools</p>
-                    <div className="text-[color:var(--text\/primary,#faf9ff)] text-[15px] md:text-[17px] w-full">
+                    <p className="leading-none text-[color:var(--text\/secondary,#908e99)] text-[14px] md:text-[16px] w-full">Tools</p>
+                    <div className="text-[color:var(--text\/primary,#faf9ff)] text-[14px] md:text-[17px] w-full">
                       <p className="leading-none mb-[12px]">Figma</p>
                       <p className="leading-none">Claude</p>
                     </div>
                   </div>
                   <div className="flex flex-col gap-[16px] items-start">
-                    <p className="leading-none text-[color:var(--text\/secondary,#908e99)] text-[16px] w-full">Role</p>
-                    <p className="leading-none text-[color:var(--text\/primary,#faf9ff)] text-[15px] md:text-[17px] w-full">Team Lead</p>
+                    <p className="leading-none text-[color:var(--text\/secondary,#908e99)] text-[14px] md:text-[16px] w-full">Role</p>
+                    <p className="leading-none text-[color:var(--text\/primary,#faf9ff)] text-[14px] md:text-[17px] w-full">Team Lead</p>
                   </div>
                 </div>
 
                 {/* Right: Context */}
                 <div className="flex flex-1 flex-col gap-[16px] items-start min-w-0">
-                  <p className="leading-none text-[color:var(--text\/secondary,#908e99)] text-[16px] w-full">Context</p>
-                  <div className="font-normal leading-[1.65] text-[color:var(--text\/secondary,#908e99)] text-[15px] md:text-[17px] w-full">
+                  <p className="leading-none text-[color:var(--text\/secondary,#908e99)] text-[14px] md:text-[16px] w-full">Context</p>
+                  <div className="font-normal leading-[1.65] text-[color:var(--text\/secondary,#908e99)] text-[14px] md:text-[17px] w-full">
                     <p className="font-['Inter_Tight',sans-serif] font-[400] text-[color:var(--text\/primary,#eeedf5)] mb-[16px]">Creative Collision is a 2-day sprint</p>
                     <p className="font-['Inter_Tight',sans-serif] mb-[16px]">Teams in Creative Collision have a mix of 1 - 4th years to combine skills and mentorship! Each team typically has 6+ members. During the final day, College of Art and Design students, faculty, and alumni are invited to explore the projects New Media Design have been developing.</p>
                     <p className="font-['Inter_Tight',sans-serif] mb-[16px]"> Our designathon this year was sponsored by Sogni.AI, a startup designed to democratize AI, made by Mavis Ledford, an RIT alum based in Singapore! </p>
@@ -175,14 +175,14 @@ export default function CasestudyAixels() {
                   <div style={{ width: "100%", height: "100%", background: blobAIX }} />
                 </div>
                 <div className="flex flex-col gap-[16px] items-start relative w-full">
-                  <p className="font-['Inter_Tight',sans-serif] leading-none text-[color:var(--text\/secondary,#908e99)] text-[16px] w-full">
+                  <p className="font-['Inter_Tight',sans-serif] leading-none text-[color:var(--text\/secondary,#908e99)] text-[14px] md:text-[16px] w-full">
                     The pushback
                   </p>
-                  <p className="font-['Inter_Tight',sans-serif] font-[350] leading-[1.3] text-[color:var(--text\/primary,#faf9ff)] text-[24px] w-full">
+                  <p className="font-['Inter_Tight',sans-serif] font-[350] leading-[1.3] text-[color:var(--text\/primary,#faf9ff)] text-[18px] md:text-[24px] w-full">
                     Wait..a creative collision has AI??
                   </p>
                 </div>
-                <div className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] relative text-[color:var(--text\/secondary,#908e99)] text-[15px] md:text-[17px] w-full">
+                <div className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] relative text-[color:var(--text\/secondary,#908e99)] text-[14px] md:text-[17px] w-full">
                   <p className="mb-[16px]">This was the first year students were mixed in their opinion with the prompt.</p>
                   <p>While other teams had people interact with AI, we strayed away from interactions with filters, generated content, or chatbots and rather used Claude and Figma Make in our workflow to make something cool.</p>
                 </div>
@@ -191,14 +191,14 @@ export default function CasestudyAixels() {
               {/* The response */}
               <div className="flex flex-col gap-[16px] items-start w-full">
                 <div className="flex flex-col gap-[16px] items-start w-full">
-                  <p className="font-['Inter_Tight',sans-serif] leading-none text-[color:var(--text\/secondary,#908e99)] text-[16px] w-full">
+                  <p className="font-['Inter_Tight',sans-serif] leading-none text-[color:var(--text\/secondary,#908e99)] text-[14px] md:text-[16px] w-full">
                     The response
                   </p>
-                  <p className="font-['Inter_Tight',sans-serif] font-[400] leading-[1.3] text-[color:var(--text\/primary,#eeedf5)] text-[24px] w-full">
+                  <p className="font-['Inter_Tight',sans-serif] font-[400] leading-[1.3] text-[color:var(--text\/primary,#eeedf5)] text-[18px] md:text-[24px] w-full">
                     AI is a mirror
                   </p>
                 </div>
-                <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[color:var(--text\/secondary,#908e99)] text-[15px] md:text-[17px] w-full">
+                <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[color:var(--text\/secondary,#908e99)] text-[14px] md:text-[17px] w-full">
                   Our professors believe that AI is nothing without taste. My fellow team lead, Mars, responded with AI is a mirror. We took that concept and ran with it, conceptualizing different ideas the first few hours until we landed on a grid of color and pixel art.
                 </p>
               </div>
@@ -208,10 +208,10 @@ export default function CasestudyAixels() {
           {/* ── Section: Process Work ── */}
           <div id="cs-process" className="flex flex-col gap-[36px] items-start w-full">
             <div className="flex flex-col gap-[16px] items-start w-full">
-              <p className="font-['Inter_Tight',sans-serif] leading-none text-[color:var(--text\/secondary,#908e99)] text-[16px] w-full">
+              <p className="font-['Inter_Tight',sans-serif] leading-none text-[color:var(--text\/secondary,#908e99)] text-[14px] md:text-[16px] w-full">
                 Process Work
               </p>
-              <p className="font-['Inter_Tight',sans-serif] font-[400] leading-[1.3] text-[color:var(--text\/primary,#eeedf5)] text-[24px] w-full">
+              <p className="font-['Inter_Tight',sans-serif] font-[400] leading-[1.3] text-[color:var(--text\/primary,#eeedf5)] text-[18px] md:text-[24px] w-full">
                 Testing the grid
               </p>
             </div>
@@ -242,7 +242,7 @@ export default function CasestudyAixels() {
                   ) : (
                     <div className="aspect-[485.5/242.75] bg-black rounded-[4px] w-full" />
                   )}
-                  <p className="font-['Inter_Tight',sans-serif] leading-none text-[color:var(--text\/secondary,#908e99)] text-[14px] w-full">
+                  <p className="font-['Inter_Tight',sans-serif] leading-none text-[color:var(--text\/secondary,#908e99)] text-[12px] md:text-[14px] w-full">
                     {caption}
                   </p>
                 </div>
@@ -252,19 +252,19 @@ export default function CasestudyAixels() {
 
           {/* ── Section: Review ── */}
           <div id="cs-review" className="flex flex-col gap-[16px] items-start w-full">
-            <p className="font-['Inter_Tight',sans-serif] leading-none text-[color:var(--text\/secondary,#908e99)] text-[16px]">
+            <p className="font-['Inter_Tight',sans-serif] leading-none text-[color:var(--text\/secondary,#908e99)] text-[14px] md:text-[16px]">
               Replay
             </p>
-            <p className="font-['Inter_Tight',sans-serif] font-[400] leading-[1.3] text-[color:var(--text\/primary,#faf9ff)] text-[24px]">
+            <p className="font-['Inter_Tight',sans-serif] font-[400] leading-[1.3] text-[color:var(--text\/primary,#faf9ff)] text-[18px] md:text-[24px]">
               First time using Claude!
             </p>
 
             {/* Point 1 */}
             <div className="bg-[rgba(235,250,213,0.03)] border border-[#302f34] flex gap-[16px] items-start p-[16px] rounded-[8px] w-full">
-              <p className="font-['Inter_Tight',sans-serif] leading-[2.05] text-[color:var(--text\/secondary,#908e99)] text-[14px] shrink-0">1</p>
+              <p className="font-['Inter_Tight',sans-serif] leading-[2.05] text-[color:var(--text\/secondary,#908e99)] text-[12px] md:text-[14px] shrink-0">1</p>
               <div className="flex flex-col gap-[8px] items-start flex-1">
-                <p className="font-['Inter_Tight',sans-serif] leading-[1.65] text-[color:var(--text\/primary,#faf9ff)] text-[15px] md:text-[17px]">Simplicity &gt; Complexity</p>
-                <p className="font-['Inter',sans-serif] font-normal leading-[1.65] text-[color:var(--text\/secondary,#908e99)] text-[16px] tracking-[-0.32px] w-full">
+                <p className="font-['Inter_Tight',sans-serif] leading-[1.65] text-[color:var(--text\/primary,#faf9ff)] text-[14px] md:text-[17px]">Simplicity &gt; Complexity</p>
+                <p className="font-['Inter',sans-serif] font-normal leading-[1.65] text-[color:var(--text\/secondary,#908e99)] text-[14px] md:text-[16px] tracking-[-0.32px] w-full">
                   The response was incredible! Our work ended up being the lightest project in the showcase, with other teams having lots of touch points and long flows to work with over two days
                 </p>
               </div>
@@ -272,10 +272,10 @@ export default function CasestudyAixels() {
 
             {/* Point 2 */}
             <div className="bg-[rgba(235,250,213,0.03)] border border-[#302f34] flex gap-[16px] items-start p-[16px] rounded-[8px] w-full">
-              <p className="font-['Inter_Tight',sans-serif] leading-[2.05] text-[color:var(--text\/secondary,#908e99)] text-[14px] shrink-0">2</p>
+              <p className="font-['Inter_Tight',sans-serif] leading-[2.05] text-[color:var(--text\/secondary,#908e99)] text-[12px] md:text-[14px] shrink-0">2</p>
               <div className="flex flex-col gap-[8px] items-start flex-1">
-                <p className="font-['Inter_Tight',sans-serif] leading-[1.65] text-[color:var(--text\/primary,#faf9ff)] text-[15px] md:text-[17px]">Winning T-Shirts!</p>
-                <p className="font-['Inter',sans-serif] font-normal leading-[1.65] text-[color:var(--text\/secondary,#908e99)] text-[16px] tracking-[-0.32px] w-full">
+                <p className="font-['Inter_Tight',sans-serif] leading-[1.65] text-[color:var(--text\/primary,#faf9ff)] text-[14px] md:text-[17px]">Winning T-Shirts!</p>
+                <p className="font-['Inter',sans-serif] font-normal leading-[1.65] text-[color:var(--text\/secondary,#908e99)] text-[14px] md:text-[16px] tracking-[-0.32px] w-full">
                   THANK YOU Mauvis and Grace @ Sogni.AI! I really learned a lot from Mauvis especially sharing his personal story and motivation to start Sogni.AI!
                 </p>
                 <img src={imgSogniai} className="aspect-[2/1] rounded-[4px] object-cover w-[255px]" alt="Sogni.AI" />
@@ -284,10 +284,10 @@ export default function CasestudyAixels() {
 
             {/* Point 3 */}
             <div className="bg-[rgba(235,250,213,0.03)] border border-[#302f34] flex gap-[16px] items-start p-[16px] rounded-[8px] w-full">
-              <p className="font-['Inter_Tight',sans-serif] leading-[2.05] text-[color:var(--text\/secondary,#908e99)] text-[14px] shrink-0">3</p>
+              <p className="font-['Inter_Tight',sans-serif] leading-[2.05] text-[color:var(--text\/secondary,#908e99)] text-[12px] md:text-[14px] shrink-0">3</p>
               <div className="flex flex-col gap-[8px] items-start flex-1">
-                <p className="font-['Inter_Tight',sans-serif] leading-[1.65] text-[color:var(--text\/primary,#faf9ff)] text-[15px] md:text-[17px]">Side questing music beats with Strudel</p>
-                <p className="font-['Inter',sans-serif] font-normal leading-[1.65] text-[color:var(--text\/secondary,#908e99)] text-[16px] tracking-[-0.32px] w-full">
+                <p className="font-['Inter_Tight',sans-serif] leading-[1.65] text-[color:var(--text\/primary,#faf9ff)] text-[14px] md:text-[17px]">Side questing music beats with Strudel</p>
+                <p className="font-['Inter',sans-serif] font-normal leading-[1.65] text-[color:var(--text\/secondary,#908e99)] text-[14px] md:text-[16px] tracking-[-0.32px] w-full">
                   I also made a custom beat for our experience! It was so fun being able to experiment, though music producer will never be in my future LOL
                 </p>
               </div>

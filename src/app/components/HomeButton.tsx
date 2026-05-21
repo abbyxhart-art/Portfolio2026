@@ -16,7 +16,7 @@ export default function HomeButton() {
   return (
     <Link
       to="/"
-      className="fixed top-[16px] right-[16px] z-50 no-underline flex gap-[9px] items-center pl-[12px] pr-[16px] py-[8px] rounded-[24px] transition-colors duration-150"
+      className="hidden md:flex fixed top-[16px] right-[16px] z-50 no-underline gap-[9px] items-center pl-[12px] pr-[16px] py-[8px] rounded-[24px] transition-colors duration-150"
       style={{
         border: "0.75px solid #302f34",
         background: hovered ? "rgba(88,85,100,0.2)" : "#161617",

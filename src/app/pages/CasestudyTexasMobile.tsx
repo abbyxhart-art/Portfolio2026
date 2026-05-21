@@ -19,10 +19,10 @@ function BeforeAfterToggle({ active, onChange }: { active: "after" | "before"; o
       </div>
       <div className="absolute left-[-1px] top-[-1px] flex gap-[10px] p-[8px]">
         <button onClick={() => onChange("after")} className="flex h-[32px] w-[64px] items-center justify-center rounded-[24px]">
-          <span className={`font-['Inter_Tight',sans-serif] font-[300] leading-none text-[14px] transition-colors ${active === "after" ? "text-[#faf9ff]" : "text-[#908e99]"}`}>After</span>
+          <span className={`font-['Inter_Tight',sans-serif] font-[300] leading-none text-[12px] md:text-[14px] transition-colors ${active === "after" ? "text-[#faf9ff]" : "text-[#908e99]"}`}>After</span>
         </button>
         <button onClick={() => onChange("before")} className="flex h-[32px] w-[64px] items-center justify-center rounded-[24px]">
-          <span className={`font-['Inter_Tight',sans-serif] font-[300] leading-none text-[14px] transition-colors ${active === "before" ? "text-[#faf9ff]" : "text-[#908e99]"}`}>Before</span>
+          <span className={`font-['Inter_Tight',sans-serif] font-[300] leading-none text-[12px] md:text-[14px] transition-colors ${active === "before" ? "text-[#faf9ff]" : "text-[#908e99]"}`}>Before</span>
         </button>
       </div>
     </div>
@@ -169,7 +169,7 @@ export default function CasestudyTexasMobile() {
               >
                 <video autoPlay loop muted playsInline className="w-full h-full object-cover" src={texasIdVideo} />
               </motion.div>
-              <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.2] text-[color:var(--text\/secondary,#908e99)] text-[14px]">
+              <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.2] text-[color:var(--text\/secondary,#908e99)] text-[12px] md:text-[14px]">
                 Prototype Interaction
               </p>
             </div>
@@ -177,10 +177,10 @@ export default function CasestudyTexasMobile() {
             {/* Title + metadata */}
             <motion.div style={{ y: contentY }} className="flex flex-col gap-[32px] items-start w-full">
               <div className="border-b border-[#585564] flex flex-col gap-[8px] items-start pb-[32px] w-full">
-                <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.3] text-[color:var(--text\/primary,#faf9ff)] text-[24px] w-full">
+                <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.3] text-[color:var(--text\/primary,#faf9ff)] text-[18px] md:text-[24px] w-full">
                   Texas ID
                 </p>
-                <p className="font-['Inter_Tight',sans-serif] font-[400] leading-[1.25] text-[color:var(--text\/secondary,#908e99)] text-[20px] w-full">
+                <p className="font-['Inter_Tight',sans-serif] font-[400] leading-[1.25] text-[color:var(--text\/secondary,#908e99)] text-[16px] md:text-[20px] w-full">
                   Creating a dynamic, safe alternative to traditional physical IDs
                 </p>
               </div>
@@ -189,12 +189,12 @@ export default function CasestudyTexasMobile() {
                 {/* Left: Tools + Timeline */}
                 <div className="flex flex-col gap-[32px] items-start shrink-0 w-[93px]">
                   <div className="flex flex-col gap-[16px] items-start">
-                    <p className="leading-none text-[color:var(--text\/secondary,#908e99)] text-[16px]">Tools</p>
-                    <p className="leading-none text-[color:var(--text\/primary,#faf9ff)] text-[15px] md:text-[17px]">Figma</p>
+                    <p className="leading-none text-[color:var(--text\/secondary,#908e99)] text-[14px] md:text-[16px]">Tools</p>
+                    <p className="leading-none text-[color:var(--text\/primary,#faf9ff)] text-[14px] md:text-[17px]">Figma</p>
                   </div>
                   <div className="flex flex-col gap-[16px] items-start">
-                    <p className="leading-none text-[color:var(--text\/secondary,#908e99)] text-[16px]">Timeline</p>
-                    <div className="text-[color:var(--text\/primary,#faf9ff)] text-[15px] md:text-[17px]">
+                    <p className="leading-none text-[color:var(--text\/secondary,#908e99)] text-[14px] md:text-[16px]">Timeline</p>
+                    <div className="text-[color:var(--text\/primary,#faf9ff)] text-[14px] md:text-[17px]">
                       <p className="leading-none mb-[12px]">4 weeks,</p>
                       <p className="leading-none">Spring 2024</p>
                     </div>
@@ -203,8 +203,8 @@ export default function CasestudyTexasMobile() {
 
                 {/* Right: Problem */}
                 <div className="flex flex-1 flex-col gap-[16px] items-start min-w-0">
-                  <p className="leading-none text-[color:var(--text\/secondary,#908e99)] text-[16px]">Problem</p>
-                  <div className="font-[300] leading-[1.65] text-[color:var(--text\/secondary,#908e99)] text-[15px] md:text-[17px] w-full">
+                  <p className="leading-none text-[color:var(--text\/secondary,#908e99)] text-[14px] md:text-[16px]">Problem</p>
+                  <div className="font-[300] leading-[1.65] text-[color:var(--text\/secondary,#908e99)] text-[14px] md:text-[17px] w-full">
                     <p className="font-['Inter_Tight',sans-serif] mb-[16px] text-[color:var(--text\/primary,#faf9ff)]">
                       Physical IDs are static, despite being used across many different contexts with varying informational needs.
                     </p>
@@ -227,7 +227,7 @@ export default function CasestudyTexasMobile() {
             <div className="flex gap-[16px] items-center w-full relative">
               <div className="absolute left-0 top-1/2 -translate-y-1/2 h-[78px] w-[228px] bg-[#d9d9d9] blur-[50px] opacity-10 pointer-events-none" />
               <img src={imgGlassCheckpoint} alt="" className="relative shrink-0 size-[36px]" />
-              <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.1] text-white text-[32px] relative">
+              <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.1] text-white text-[24px] md:text-[32px] relative">
                Highlights
               </p>
             </div>
@@ -235,8 +235,8 @@ export default function CasestudyTexasMobile() {
             {/* Row 1: text left, phone right */}
             <div className="flex gap-[50px] items-center justify-center w-full">
               <div className="flex flex-col gap-[25px] items-start w-[380px] shrink-0">
-                <p className="font-['Inter_Tight',sans-serif] font-[400] leading-[1.25] text-[color:var(--text\/primary,#faf9ff)] text-[24px] w-full">Full age view for the law</p>
-                <div className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.65] text-[15px] md:text-[17px] text-[color:var(--text\/secondary,#908e99)] w-full">
+                <p className="font-['Inter_Tight',sans-serif] font-[400] leading-[1.25] text-[color:var(--text\/primary,#faf9ff)] text-[18px] md:text-[24px] w-full">Full age view for the law</p>
+                <div className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.65] text-[14px] md:text-[17px] text-[color:var(--text\/secondary,#908e99)] w-full">
                   <p className="mb-[16px]">This design prioritizes the user's name, ID number, and age, which are <span style={{ textShadow: "0px 0px 20px white", color: "#faf9ff" }}>key details identified as the primary focus for law enforcement.</span> It's also best for users who need all their information at their fingertips.</p>
                   <p>Information is structured into four categories: User, Address, Vehicle, and Anatomy, ensuring clarity and accessibility.</p>
                 </div>
@@ -248,8 +248,8 @@ export default function CasestudyTexasMobile() {
             <div className="flex gap-[50px] items-center justify-center w-full">
               <PhoneVideo src={ageIdVideo} />
               <div className="flex flex-col gap-[25px] items-start w-[380px] shrink-0">
-                <p className="font-['Inter_Tight',sans-serif] font-[400] leading-[1.25] text-[color:var(--text\/primary,#faf9ff)] text-[24px] w-full">Age only for small checks</p>
-                <div className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.65] text-[15px] md:text-[17px] text-[color:var(--text\/secondary,#908e99)] w-full">
+                <p className="font-['Inter_Tight',sans-serif] font-[400] leading-[1.25] text-[color:var(--text\/primary,#faf9ff)] text-[18px] md:text-[24px] w-full">Age only for small checks</p>
+                <div className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.65] text-[14px] md:text-[17px] text-[color:var(--text\/secondary,#908e99)] w-full">
                   <p className="mb-[16px]">Tons of people cover their ID information when just getting age checked; this enables users to prioritize age, hiding any private information that's not necessary.</p>
                   <p>A verifier would be able to tap back to see more information if they needed it.</p>
                 </div>
@@ -259,8 +259,8 @@ export default function CasestudyTexasMobile() {
             {/* Row 3: text left, phone right */}
             <div className="flex gap-[50px] items-center justify-center w-full">
               <div className="flex flex-col gap-[25px] items-start w-[380px] shrink-0">
-                <p className="font-['Inter_Tight',sans-serif] font-[400] leading-[1.25] text-[color:var(--text\/primary,#faf9ff)] text-[24px] w-full">Instant access and verification</p>
-                <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.65] text-[15px] md:text-[17px] text-[color:var(--text\/secondary,#908e99)] w-full">
+                <p className="font-['Inter_Tight',sans-serif] font-[400] leading-[1.25] text-[color:var(--text\/primary,#faf9ff)] text-[18px] md:text-[24px] w-full">Instant access and verification</p>
+                <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.65] text-[14px] md:text-[17px] text-[color:var(--text\/secondary,#908e99)] w-full">
                   I integrated a QR code scan option, easily accessible from the navigation. The information that will be shared is shown on the ticket.
                 </p>
               </div>
@@ -270,13 +270,13 @@ export default function CasestudyTexasMobile() {
             {/* Texas by Texas */}
             <div className="flex flex-col gap-[31px] items-start w-full">
               <img src={imgTxt} alt="Texas by Texas" className="shrink-0 size-[82px] rounded-[4px] object-cover" />
-              <div className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.65] text-[color:var(--text\/secondary,#908e99)] text-[15px] md:text-[17px] w-full">
+              <div className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.65] text-[color:var(--text\/secondary,#908e99)] text-[14px] md:text-[17px] w-full">
                 <p className="mb-[16px]">Texas has a mobile app called Texas by Texas (or TxT).</p>
                 <p>TxT can renew licenses, as well as order a lost or stolen card, but TxT does not replace physical identification. The goal became to <span style={{ color: "#faf9ff", textShadow: "0px 0px 20px white" }}>create a newer, solid brand that builds off the old TxT.</span></p>
               </div>
               <div className="flex flex-col gap-[16px] items-start w-full">
-                <p className="font-['Inter_Tight',sans-serif] font-[300] leading-none text-[color:var(--text\/secondary,#908e99)] text-[16px]">An opportunity</p>
-                <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.3] text-[color:var(--text\/primary,#faf9ff)] text-[24px] w-full">
+                <p className="font-['Inter_Tight',sans-serif] font-[300] leading-none text-[color:var(--text\/secondary,#908e99)] text-[14px] md:text-[16px]">An opportunity</p>
+                <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.3] text-[color:var(--text\/primary,#faf9ff)] text-[18px] md:text-[24px] w-full">
                   Why stop at driver's licenses? The app could become a central hub for all gov issued IDs, cards, renewals, DMV locations... all in one place.
                 </p>
               </div>
@@ -288,7 +288,7 @@ export default function CasestudyTexasMobile() {
           <div id="cs-explorations" className="flex gap-[16px] items-center w-full relative">
             <div className="absolute left-0 top-1/2 -translate-y-1/2 h-[78px] w-[228px] bg-[#d9d9d9] blur-[50px] opacity-10 pointer-events-none" />
             <img src={imgGlassCheckpoint} alt="" className="relative shrink-0 size-[36px]" />
-            <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.1] text-white text-[32px] relative">
+            <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.1] text-white text-[24px] md:text-[32px] relative">
               Explorations and Decisions
             </p>
           </div>
@@ -298,22 +298,22 @@ export default function CasestudyTexasMobile() {
             {/* Before Peer Eval image */}
             <div className="flex flex-col items-start w-full">
               <div className="flex flex-col gap-[16px] items-start pb-[42px] w-full">
-                <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.3] text-[color:var(--text\/primary,#faf9ff)] text-[24px] w-full">
+                <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.3] text-[color:var(--text\/primary,#faf9ff)] text-[18px] md:text-[24px] w-full">
                   Creating additional pages to better TexID
                 </p>
-                <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.65] text-[color:var(--text\/secondary,#908e99)] text-[15px] md:text-[17px] w-full">
+                <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.65] text-[color:var(--text\/secondary,#908e99)] text-[14px] md:text-[17px] w-full">
                   For peer evaluations, I created a working prototype.
                 </p>
               </div>
               <div className="flex flex-col gap-[24px] items-start w-full">
                 <img src={imgPeer1} alt="" className="w-full rounded-[8px] object-cover border border-[#302f34]" />
-                <p className="font-['Inter_Tight',sans-serif] font-[300] leading-none text-[color:var(--text\/secondary,#908e99)] text-[14px]">
+                <p className="font-['Inter_Tight',sans-serif] font-[300] leading-none text-[color:var(--text\/secondary,#908e99)] text-[12px] md:text-[14px]">
                   Iteration #4 was submitted for review and testing
                 </p>
               </div>
             </div>
 
-            <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.65] text-[color:var(--text\/secondary,#908e99)] text-[14px]">
+            <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.65] text-[color:var(--text\/secondary,#908e99)] text-[12px] md:text-[14px]">
               Comments from 4/14
             </p>
             <div className="flex flex-col gap-[28px] w-full">
@@ -324,7 +324,7 @@ export default function CasestudyTexasMobile() {
                 animate={{ x: [0, 9, -5, 14, -3, 7, -11, 4, 0], y: [0, -7, 11, 3, -10, 8, 2, -5, 0] }}
                 transition={{ duration: 16, repeat: Infinity, ease: "easeInOut", delay: 0, times: [0, 0.12, 0.25, 0.37, 0.5, 0.62, 0.75, 0.87, 1] }}
               >
-                <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.65] text-[color:var(--text\/secondary,#908e99)] text-[14px]">
+                <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.65] text-[color:var(--text\/secondary,#908e99)] text-[12px] md:text-[14px]">
                   The microanimations make it much more engaging — the transitions feel polished and intentional. Including other ID types, health info, and office locations on the home page is a great touch.
                 </p>
                 <div className="absolute left-[-18px] top-[-20px] size-[24px] pointer-events-none">
@@ -338,7 +338,7 @@ export default function CasestudyTexasMobile() {
                 animate={{ x: [0, -8, 12, -4, 10, -6, 3, -11, 0], y: [0, 9, -4, 13, -2, 7, -9, 3, 0] }}
                 transition={{ duration: 18, repeat: Infinity, ease: "easeInOut", delay: 4, times: [0, 0.12, 0.25, 0.37, 0.5, 0.62, 0.75, 0.87, 1] }}
               >
-                <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.65] text-[color:var(--text\/secondary,#908e99)] text-[14px]">
+                <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.65] text-[color:var(--text\/secondary,#908e99)] text-[12px] md:text-[14px]">
                   Very well made and professional. The separation of content is clear and the visual hierarchy guides the eye naturally. Excellent overall flow.
                 </p>
                 <div className="absolute left-[-18px] top-[-20px] size-[24px] pointer-events-none">
@@ -352,7 +352,7 @@ export default function CasestudyTexasMobile() {
                 animate={{ x: [0, 11, -7, 5, -13, 8, -3, 10, 0], y: [0, -9, 6, -14, 4, -7, 11, -2, 0] }}
                 transition={{ duration: 20, repeat: Infinity, ease: "easeInOut", delay: 8, times: [0, 0.12, 0.25, 0.37, 0.5, 0.62, 0.75, 0.87, 1] }}
               >
-                <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.65] text-[color:var(--text\/secondary,#908e99)] text-[14px]">
+                <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.65] text-[color:var(--text\/secondary,#908e99)] text-[12px] md:text-[14px]">
                   <span style={{ color: "#faf9ff", textShadow: "0px 0px 20px white" }}>I was confused why details like eye color were still visible on the age-only screen.</span>{" "}
                   It might be cleaner to either show everything or nothing beyond the core age confirmation.
                 </p>
@@ -367,7 +367,7 @@ export default function CasestudyTexasMobile() {
                 animate={{ x: [0, -6, 13, -9, 5, -12, 7, -3, 0], y: [0, 8, -11, 4, -7, 12, -5, 9, 0] }}
                 transition={{ duration: 14, repeat: Infinity, ease: "easeInOut", delay: 12, times: [0, 0.12, 0.25, 0.37, 0.5, 0.62, 0.75, 0.87, 1] }}
               >
-                <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.65] text-[color:var(--text\/secondary,#908e99)] text-[14px]">
+                <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.65] text-[color:var(--text\/secondary,#908e99)] text-[12px] md:text-[14px]">
                   I really enjoyed the dynamic color switching by age group — clever design choice. However,{" "}
                   <span style={{ color: "#faf9ff", textShadow: "0px 0px 20px white" }}>how to switch between age-only and full view wasn't immediately obvious.</span>
                 </p>
@@ -385,7 +385,7 @@ export default function CasestudyTexasMobile() {
           <div id="cs-component" className="flex gap-[16px] items-center w-full relative">
             <div className="absolute left-0 top-1/2 -translate-y-1/2 h-[78px] w-[228px] bg-[#d9d9d9] blur-[50px] opacity-10 pointer-events-none" />
             <img src={imgGlassCheckpoint} alt="" className="relative shrink-0 size-[36px]" />
-            <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.1] text-white text-[32px] relative">
+            <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.1] text-white text-[24px] md:text-[32px] relative">
               Component Redesign
             </p>
           </div>
@@ -395,7 +395,7 @@ export default function CasestudyTexasMobile() {
             <div className="bg-gradient-to-b from-[rgba(88,85,100,0.15)] to-[rgba(22,22,23,0.1)] border border-[#302f34] flex flex-col gap-[75px] items-start p-[24px] rounded-[8px] w-full">
 
               <div className="flex flex-col items-start pb-[42px] w-full">
-                <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.3] text-[color:var(--text\/primary,#faf9ff)] text-[24px] w-full">
+                <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.3] text-[color:var(--text\/primary,#faf9ff)] text-[18px] md:text-[24px] w-full">
                   Color, illustration, and dynamic components
                 </p>
               </div>
@@ -404,13 +404,13 @@ export default function CasestudyTexasMobile() {
               <div className="flex gap-[24px] items-start w-full">
                 <div className="flex flex-1 flex-col gap-[4px] items-start min-w-0">
                   <img src={imgComponent1} alt="" className="aspect-square rounded-[8px] w-full object-cover border border-[#302f34]" />
-                  <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.5] text-[color:var(--text\/secondary,#908e99)] text-[14px]">
+                  <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.5] text-[color:var(--text\/secondary,#908e99)] text-[12px] md:text-[14px]">
                     Illustrations for the home page
                   </p>
                 </div>
                 <div className="flex flex-1 flex-col gap-[4px] items-start min-w-0">
                   <img src={imgComponent2} alt="" className="aspect-square rounded-[8px] w-full object-cover border border-[#302f34]" />
-                  <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.5] text-[color:var(--text\/secondary,#908e99)] text-[14px]">
+                  <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.5] text-[color:var(--text\/secondary,#908e99)] text-[12px] md:text-[14px]">
                     A dynamic navigation to only show buttons when necessary
                   </p>
                 </div>
@@ -429,7 +429,7 @@ export default function CasestudyTexasMobile() {
               {/* Full-width image */}
               <div className="flex flex-col gap-[4px] items-start w-full">
                 <img src={imgComponent3} alt="" className="aspect-[2/1] rounded-[8px] w-full object-cover" />
-                <p className="font-['Inter_Tight',sans-serif] font-[300] leading-none text-[color:var(--text\/secondary,#908e99)] text-[14px]">
+                <p className="font-['Inter_Tight',sans-serif] font-[300] leading-none text-[color:var(--text\/secondary,#908e99)] text-[12px] md:text-[14px]">
                   Color System (updated from TxT)
                 </p>
               </div>
@@ -441,10 +441,10 @@ export default function CasestudyTexasMobile() {
           <div className="flex flex-col gap-[40px] w-full">
             <div className="bg-gradient-to-b from-[rgba(88,85,100,0.15)] to-[rgba(22,22,23,0.1)] border border-[#302f34] flex flex-col gap-[75px] items-start p-[24px] rounded-[8px] w-full">
               <div className="flex flex-col gap-[16px] items-start pb-[42px] w-full">
-                <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.3] text-[color:var(--text\/primary,#faf9ff)] text-[24px] w-full">
+                <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.3] text-[color:var(--text\/primary,#faf9ff)] text-[18px] md:text-[24px] w-full">
                   Card — An age reactive design
                 </p>
-                <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.65] text-[color:var(--text\/secondary,#908e99)] text-[15px] md:text-[17px] w-full">
+                <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.65] text-[color:var(--text\/secondary,#908e99)] text-[14px] md:text-[17px] w-full">
                   I explored color and texture as a way to instantly verify age, instead of the friction of searching for a birthday.
                 </p>
               </div>
@@ -452,9 +452,9 @@ export default function CasestudyTexasMobile() {
               {/* Full ID vs Age ID */}
               <div className="flex flex-col gap-[24px] items-start w-full">
                 <div className="flex flex-col gap-[16px] items-start w-full">
-                  <p className="font-['Inter_Tight',sans-serif] font-[300] leading-none text-[color:var(--text\/secondary,#908e99)] text-[16px]">What's the difference?</p>
-                  <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.3] text-[color:var(--text\/primary,#faf9ff)] text-[24px]">Full ID vs Age ID</p>
-                  <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.65] text-[color:var(--text\/primary,#faf9ff)] text-[15px] md:text-[17px]">
+                  <p className="font-['Inter_Tight',sans-serif] font-[300] leading-none text-[color:var(--text\/secondary,#908e99)] text-[14px] md:text-[16px]">What's the difference?</p>
+                  <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.3] text-[color:var(--text\/primary,#faf9ff)] text-[18px] md:text-[24px]">Full ID vs Age ID</p>
+                  <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.65] text-[color:var(--text\/primary,#faf9ff)] text-[14px] md:text-[17px]">
                     A full ID is the basic ID. In order to showcase age only, the user flips the card to hide private information and showcase their most basic information for store clerks, hiding more personal information like address or blood type.
                   </p>
                 </div>
@@ -465,13 +465,13 @@ export default function CasestudyTexasMobile() {
               <div className="flex gap-[24px] items-start w-full">
                 <div className="flex flex-1 flex-col gap-[24px] items-start min-w-0">
                   <video autoPlay loop muted playsInline className="w-full aspect-square rounded-[8px] object-cover" src={cardLayersVideo} />
-                  <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.5] text-[color:var(--text\/secondary,#908e99)] text-[14px]">
+                  <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.5] text-[color:var(--text\/secondary,#908e99)] text-[12px] md:text-[14px]">
                     Split layers of color, texture, and information
                   </p>
                 </div>
                 <div className="flex flex-1 flex-col gap-[24px] items-start min-w-0">
                   <video autoPlay loop muted playsInline className="w-full aspect-square rounded-[8px] object-cover" src={cardFlipVideo} />
-                  <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.5] text-[color:var(--text\/secondary,#908e99)] text-[14px]">
+                  <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.5] text-[color:var(--text\/secondary,#908e99)] text-[12px] md:text-[14px]">
                     With a simple tap can users change the information shown
                   </p>
                 </div>
@@ -480,8 +480,8 @@ export default function CasestudyTexasMobile() {
               {/* If at first you don't succeed */}
               <div className="flex flex-col gap-[24px] items-start w-full">
                 <div className="flex flex-col gap-[16px] items-start w-full">
-                  <p className="font-['Inter_Tight',sans-serif] font-[300] leading-none text-[color:var(--text\/secondary,#908e99)] text-[16px]">Mobile Iterations</p>
-                  <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.3] text-[color:var(--text\/primary,#faf9ff)] text-[24px]">If at first you don't succeed</p>
+                  <p className="font-['Inter_Tight',sans-serif] font-[300] leading-none text-[color:var(--text\/secondary,#908e99)] text-[14px] md:text-[16px]">Mobile Iterations</p>
+                  <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.3] text-[color:var(--text\/primary,#faf9ff)] text-[18px] md:text-[24px]">If at first you don't succeed</p>
                 </div>
                 <img src={imgIterationExploration} alt="" className="w-full rounded-[8px] object-cover" />
               </div>
@@ -493,7 +493,7 @@ export default function CasestudyTexasMobile() {
           <div className="flex gap-[16px] items-center w-full relative">
             <div className="absolute left-0 top-1/2 -translate-y-1/2 h-[78px] w-[228px] bg-[#d9d9d9] blur-[50px] opacity-10 pointer-events-none" />
             <img src={imgGlassCheckpoint} alt="" className="relative shrink-0 size-[36px]" />
-            <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.1] text-white text-[32px] relative">
+            <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.1] text-white text-[24px] md:text-[32px] relative">
               Final Designs
             </p>
           </div>
@@ -501,16 +501,16 @@ export default function CasestudyTexasMobile() {
           {/* ── Final Designs content ── */}
           <div id="cs-final" className="flex flex-col gap-[48px] w-full">
             <div className="flex flex-col gap-[16px] items-start pb-[42px] w-full">
-              <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.3] text-[color:var(--text\/primary,#faf9ff)] text-[24px] w-full">
+              <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.3] text-[color:var(--text\/primary,#faf9ff)] text-[18px] md:text-[24px] w-full">
                 Adding more breathing room and intention
               </p>
-              <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.65] text-[color:var(--text\/secondary,#908e99)] text-[15px] md:text-[17px] w-full">
+              <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.65] text-[color:var(--text\/secondary,#908e99)] text-[14px] md:text-[17px] w-full">
                 After peer evaluations, I focused on simplifying components and pages to their most basic form, reflecting what people really needed and what was intuitive.
               </p>
             </div>
             <div className="flex flex-col gap-[34px] items-end w-full">
               <div className="flex gap-[25px] items-center">
-                <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.5] text-[color:var(--text\/secondary,#908e99)] text-[14px]">
+                <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.5] text-[color:var(--text\/secondary,#908e99)] text-[12px] md:text-[14px]">
                   In case you forgot what pre-peer eval was
                 </p>
                 <BeforeAfterToggle active={peerView} onChange={setPeerView} />
@@ -521,7 +521,7 @@ export default function CasestudyTexasMobile() {
                   alt=""
                   className="w-full rounded-[8px] object-cover border border-[#302f34]"
                 />
-                <p className="font-['Inter_Tight',sans-serif] font-[300] leading-none text-[color:var(--text\/secondary,#908e99)] text-[14px]">
+                <p className="font-['Inter_Tight',sans-serif] font-[300] leading-none text-[color:var(--text\/secondary,#908e99)] text-[12px] md:text-[14px]">
                   Iteration #5
                 </p>
               </div>
@@ -532,7 +532,7 @@ export default function CasestudyTexasMobile() {
           <div className="flex gap-[16px] items-center w-full relative">
             <div className="absolute left-0 top-1/2 -translate-y-1/2 h-[78px] w-[228px] bg-[#d9d9d9] blur-[50px] opacity-10 pointer-events-none" />
             <img src={imgGlassCheckpoint} alt="" className="relative shrink-0 size-[36px]" />
-            <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.1] text-white text-[32px] relative">
+            <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.1] text-white text-[24px] md:text-[32px] relative">
               Reflection
             </p>
           </div>
@@ -540,25 +540,25 @@ export default function CasestudyTexasMobile() {
           {/* ── Reflection ── */}
           <div id="cs-reflection" className="flex flex-col gap-[24px] items-start w-full">
             <div className="flex flex-col gap-[16px] items-start w-full">
-              <p className="font-['Inter_Tight',sans-serif] font-[300] leading-none text-[color:var(--text\/secondary,#908e99)] text-[16px]">The overall takeaway</p>
-              <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.3] text-[color:var(--text\/primary,#faf9ff)] text-[24px]">Iterate</p>
+              <p className="font-['Inter_Tight',sans-serif] font-[300] leading-none text-[color:var(--text\/secondary,#908e99)] text-[14px] md:text-[16px]">The overall takeaway</p>
+              <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.3] text-[color:var(--text\/primary,#faf9ff)] text-[18px] md:text-[24px]">Iterate</p>
             </div>
 
             <div className="bg-[rgba(219,189,254,0.05)] border border-[#302f34] flex gap-[16px] items-start p-[16px] rounded-[8px] w-full">
-              <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[2.05] text-[color:var(--text\/secondary,#908e99)] text-[14px] shrink-0">1</p>
+              <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[2.05] text-[color:var(--text\/secondary,#908e99)] text-[12px] md:text-[14px] shrink-0">1</p>
               <div className="flex flex-col gap-[8px] items-start flex-1">
-                <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.65] text-[color:var(--text\/primary,#faf9ff)] text-[15px] md:text-[17px]">Don't force things to work</p>
-                <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.65] text-[color:var(--text\/secondary,#908e99)] text-[15px] md:text-[17px] w-full">
+                <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.65] text-[color:var(--text\/primary,#faf9ff)] text-[14px] md:text-[17px]">Don't force things to work</p>
+                <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.65] text-[color:var(--text\/secondary,#908e99)] text-[14px] md:text-[17px] w-full">
                   {`If it hasn't worked already there's probably something wrong with the fundamental concept... try something else, turn things around. If (and only if) that doesn't work, return to the original problem/idea.`}
                 </p>
               </div>
             </div>
 
             <div className="bg-[rgba(219,189,254,0.05)] border border-[#302f34] flex gap-[16px] items-start p-[16px] rounded-[8px] w-full">
-              <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[2.05] text-[color:var(--text\/secondary,#908e99)] text-[14px] shrink-0">2</p>
+              <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[2.05] text-[color:var(--text\/secondary,#908e99)] text-[12px] md:text-[14px] shrink-0">2</p>
               <div className="flex flex-col gap-[8px] items-start flex-1">
-                <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.65] text-[color:var(--text\/primary,#faf9ff)] text-[15px] md:text-[17px]">Peer Eval</p>
-                <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.65] text-[color:var(--text\/secondary,#908e99)] text-[15px] md:text-[17px] w-full">
+                <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.65] text-[color:var(--text\/primary,#faf9ff)] text-[14px] md:text-[17px]">Peer Eval</p>
+                <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.65] text-[color:var(--text\/secondary,#908e99)] text-[14px] md:text-[17px] w-full">
                  Feedback was amazing and I was able to find better solutions!
                 </p>
               </div>

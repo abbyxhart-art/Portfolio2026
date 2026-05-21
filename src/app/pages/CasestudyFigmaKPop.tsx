@@ -166,10 +166,10 @@ export default function CasestudyFigmaKPop() {
             {/* Title + metadata */}
             <motion.div style={{ y: contentY }} className="flex flex-col gap-[32px] items-start w-full">
               <div className="border-b border-[#302f34] flex flex-col gap-[8px] items-start pb-[32px] w-full">
-                <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.3] text-[color:var(--text\/primary,#faf9ff)] text-[24px] w-full">
+                <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.3] text-[color:var(--text\/primary,#faf9ff)] text-[18px] md:text-[24px] w-full">
                   Figma at RIT x KPOP Club
                 </p>
-                <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.25] text-[color:var(--text\/secondary,#908e99)] text-[20px] w-full">
+                <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.25] text-[color:var(--text\/secondary,#908e99)] text-[16px] md:text-[20px] w-full">
                   Breaking Figma into a new space
                 </p>
               </div>
@@ -177,14 +177,14 @@ export default function CasestudyFigmaKPop() {
               <div className="flex font-['Inter_Tight',sans-serif] gap-[57px] items-start w-full">
                 {/* Tools */}
                 <div className="flex flex-col gap-[12px] items-start shrink-0">
-                  <p className="leading-none text-[color:var(--text\/tertiary,#585564)] text-[14px]">Tools</p>
-                  <p className="leading-[1.5] text-[color:var(--text\/primary,#faf9ff)] text-[16px]">Figma!</p>
+                  <p className="leading-none text-[color:var(--text\/tertiary,#585564)] text-[12px] md:text-[14px]">Tools</p>
+                  <p className="leading-[1.5] text-[color:var(--text\/primary,#faf9ff)] text-[14px] md:text-[16px]">Figma!</p>
                 </div>
 
                 {/* Context */}
                 <div className="flex flex-1 flex-col gap-[12px] items-start min-w-0">
-                  <p className="leading-none text-[color:var(--text\/tertiary,#585564)] text-[14px]">Context</p>
-                  <div className="font-[300] leading-[1.65] text-[color:var(--text\/primary,#faf9ff)] text-[16px] w-full">
+                  <p className="leading-none text-[color:var(--text\/tertiary,#585564)] text-[12px] md:text-[14px]">Context</p>
+                  <div className="font-[300] leading-[1.65] text-[color:var(--text\/primary,#faf9ff)] text-[14px] md:text-[16px] w-full">
                     <p className="font-['Inter_Tight',sans-serif] mb-[16px]">
                       I wanted student organizations with strong communities and an appreciation for visuals, creativity, and participation. KPop Club and Nova (a K-Pop dance club) stood out immediately.
                     </p>
@@ -206,7 +206,7 @@ export default function CasestudyFigmaKPop() {
             <div className="absolute left-0 top-1/2 -translate-y-1/2 h-[78px] w-[920px] bg-[#d9d9d9] blur-[50px] opacity-10 pointer-events-none" />
             <img src={imgGlassCheckpoint} alt="" className="relative shrink-0 size-[36px] mt-[2px]" />
             <div className="relative flex flex-col gap-[16px] items-start">
-              <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.1] text-white text-[32px]">
+              <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.1] text-white text-[24px] md:text-[32px]">
                 A custom workshop for inclusions
               </p>
               <p className="font-['Inter_Tight',sans-serif] font-[300] italic leading-[1.3] text-[color:var(--text\/primary,#faf9ff)] text-[18px] max-w-[827px]">
@@ -218,20 +218,20 @@ export default function CasestudyFigmaKPop() {
           {/* ── Workshop ── */}
           <div id="cs-workshop" className="w-full">
             <div className="bg-gradient-to-b from-[#302f34] to-[#161617] border border-[#302f34] flex flex-col gap-[75px] items-start p-[24px] rounded-[8px] w-full">
-              <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.3] text-[color:var(--text\/primary,#faf9ff)] text-[24px] pb-[18px] w-full">
+              <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.3] text-[color:var(--text\/primary,#faf9ff)] text-[18px] md:text-[24px] pb-[18px] w-full">
                 A workshop made in 3 hours? Challenge accepted.
               </p>
 
               {FLOWS.map(({ label, title, body, leftVideo, rightVideo, leftImg, rightImg, leftVideoZoom, leftImgContain, leftImgBg, hideRight }, i) => (
                 <div key={i} className="flex flex-col gap-[24px] items-start w-full">
                   <div className="flex flex-col gap-[16px] items-start w-full">
-                    <p className="font-['Inter_Tight',sans-serif] font-[300] leading-none text-[color:var(--text\/secondary,#908e99)] text-[16px]">
+                    <p className="font-['Inter_Tight',sans-serif] font-[300] leading-none text-[color:var(--text\/secondary,#908e99)] text-[14px] md:text-[16px]">
                       {label}
                     </p>
-                    <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.3] text-[color:var(--text\/primary,#faf9ff)] text-[24px]">
+                    <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.3] text-[color:var(--text\/primary,#faf9ff)] text-[18px] md:text-[24px]">
                       {title}
                     </p>
-                    <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.65] text-[color:var(--text\/secondary,#908e99)] text-[16px] tracking-[-0.32px] w-full">
+                    <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.65] text-[color:var(--text\/secondary,#908e99)] text-[14px] md:text-[16px] tracking-[-0.32px] w-full">
                       {body}
                     </p>
                   </div>
@@ -274,7 +274,7 @@ export default function CasestudyFigmaKPop() {
           <div className="flex gap-[16px] items-center w-full relative">
             <div className="absolute left-0 top-1/2 -translate-y-1/2 h-[78px] w-[237px] bg-[#d9d9d9] blur-[50px] opacity-10 pointer-events-none" />
             <img src={imgGlassCheckpoint} alt="" className="relative shrink-0 size-[36px]" />
-            <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.1] text-white text-[32px] relative">
+            <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.1] text-white text-[24px] md:text-[32px] relative">
               Final Thoughts
             </p>
           </div>
@@ -282,21 +282,21 @@ export default function CasestudyFigmaKPop() {
           {/* ── Reflections ── */}
           <div id="cs-review" className="flex flex-col gap-[24px] items-start w-full">
             <div className="flex flex-col gap-[16px] items-start w-full">
-              <p className="font-['Inter_Tight',sans-serif] font-[300] leading-none text-[color:var(--text\/secondary,#908e99)] text-[16px]">
+              <p className="font-['Inter_Tight',sans-serif] font-[300] leading-none text-[color:var(--text\/secondary,#908e99)] text-[14px] md:text-[16px]">
                 The overall takeaway
               </p>
-              <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.3] text-[color:var(--text\/primary,#faf9ff)] text-[24px]">
+              <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.3] text-[color:var(--text\/primary,#faf9ff)] text-[18px] md:text-[24px]">
                 More fun and less fear
               </p>
             </div>
 
             <div className="bg-[rgba(219,189,254,0.05)] border border-[#302f34] flex gap-[16px] items-start p-[16px] rounded-[8px] w-full">
-              <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[2.05] text-[color:var(--text\/secondary,#908e99)] text-[14px] shrink-0">1</p>
+              <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[2.05] text-[color:var(--text\/secondary,#908e99)] text-[12px] md:text-[14px] shrink-0">1</p>
               <div className="flex flex-col gap-[8px] items-start flex-1">
-                <p className="font-['Inter_Tight',sans-serif] leading-[1.65] text-[color:var(--text\/primary,#faf9ff)] text-[15px] md:text-[17px]">
+                <p className="font-['Inter_Tight',sans-serif] leading-[1.65] text-[color:var(--text\/primary,#faf9ff)] text-[14px] md:text-[17px]">
                   Getting people involved
                 </p>
-                <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.65] text-[color:var(--text\/secondary,#b8b4c5)] text-[16px] tracking-[-0.32px] w-full">
+                <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.65] text-[color:var(--text\/secondary,#b8b4c5)] text-[14px] md:text-[16px] tracking-[-0.32px] w-full">
                   Designing a workshop around KPop was one of the most fun parts of the project. Instead of asking, "How do we make this community fit into Figma?" I focused on the opposite: "How can Figma fit them?" Here's a sneek peek; we saw students play with all 4 categories!
                 </p>
                 <img src={imgPoster2} alt="" className="rounded-[8px] w-1/2 object-cover mt-[8px]" />
@@ -304,12 +304,12 @@ export default function CasestudyFigmaKPop() {
             </div>
 
             <div className="bg-[rgba(219,189,254,0.05)] border border-[#302f34] flex gap-[16px] items-start p-[16px] rounded-[8px] w-full">
-              <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[2.05] text-[color:var(--text\/secondary,#908e99)] text-[14px] shrink-0">2</p>
+              <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[2.05] text-[color:var(--text\/secondary,#908e99)] text-[12px] md:text-[14px] shrink-0">2</p>
               <div className="flex flex-col gap-[8px] items-start flex-1">
-                <p className="font-['Inter_Tight',sans-serif] leading-[1.65] text-[color:var(--text\/primary,#faf9ff)] text-[15px] md:text-[17px]">
+                <p className="font-['Inter_Tight',sans-serif] leading-[1.65] text-[color:var(--text\/primary,#faf9ff)] text-[14px] md:text-[17px]">
                   Making it easier to ask questions
                 </p>
-                <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.65] text-[color:var(--text\/secondary,#b8b4c5)] text-[16px] tracking-[-0.32px] w-full">
+                <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.65] text-[color:var(--text\/secondary,#b8b4c5)] text-[14px] md:text-[16px] tracking-[-0.32px] w-full">
                   By creating a fun space, students were more comfortable asking questions and / or making mistakes. A photocard is way less stressful than creating a website, but the same principles of Figma prototyping applies!
                 </p>
               </div>

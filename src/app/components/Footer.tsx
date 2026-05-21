@@ -70,14 +70,14 @@ export default function Footer() {
 
   return (
     <footer className="bg-[#171717] border-t border-[#585564] flex flex-col h-auto md:h-[402px] items-start justify-between overflow-clip pb-[16px] pt-[48px] md:pt-[100px] relative w-full gap-[32px] md:gap-0">
-      {/* Garden background */}
-      <div className="absolute inset-0">
+      {/* Garden background — desktop only */}
+      <div className="hidden md:block absolute inset-0">
         <LSystemGarden ref={gardenRef} onHasFlowers={setHasFlowers} />
       </div>
 
-      {/* Purple Gradient */}
+      {/* Purple Gradient — desktop only */}
       <div
-        className="absolute inset-x-0 bottom-0 h-[600px] pointer-events-none"
+        className="hidden md:block absolute inset-x-0 bottom-0 h-[600px] pointer-events-none"
         style={{
           background: "radial-gradient(ellipse 80% 600px at 50% 100%, rgba(190,170,255,0.08) 0%, rgba(220,210,255,0.04) 50%, rgba(250,249,255,0) 100%)",
         }}
@@ -132,8 +132,8 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Hover Directions */}
-      <div className="flex flex-col font-['Inter_Tight',sans-serif] font-[300] gap-[5px] items-start md:items-center leading-none shrink-0 text-[#b8b4c5] text-[14px] w-full whitespace-nowrap px-[16px] md:px-0">
+      {/* Hover Directions — desktop only */}
+      <div className="hidden md:flex flex-col font-['Inter_Tight',sans-serif] font-[300] gap-[5px] items-center leading-none shrink-0 text-[#b8b4c5] text-[14px] w-full whitespace-nowrap">
         <p className="shrink-0">Play around. You never know what may grow!</p>
         <p className="shrink-0">Hover based on the book: the algorithmic beauty of plants</p>
       </div>
@@ -154,7 +154,7 @@ export default function Footer() {
       {hasFlowers && (
         <button
           onClick={clearGarden}
-          className="absolute bottom-[16px] right-[16px] flex gap-[9px] items-center pl-[12px] pr-[16px] py-[8px] rounded-[24px] cursor-pointer backdrop-blur-md bg-[rgba(23,23,23,0.3)] hover:bg-[rgba(88,85,100,0.2)] transition-colors duration-150"
+          className="hidden md:flex absolute bottom-[16px] right-[16px] gap-[9px] items-center pl-[12px] pr-[16px] py-[8px] rounded-[24px] cursor-pointer backdrop-blur-md bg-[rgba(23,23,23,0.3)] hover:bg-[rgba(88,85,100,0.2)] transition-colors duration-150"
           style={{ border: "0.75px solid #302f34" }}
         >
           <div className="relative shrink-0 size-[24px] overflow-clip">
