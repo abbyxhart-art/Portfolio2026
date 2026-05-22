@@ -11,7 +11,7 @@ const CASE_STUDIES = [
   { path: "/casestudy/tian-airlines",  label: "Tian Airways" },
   { path: "/casestudy/aixels",         label: "AIXELS" },
   { path: "/casestudy/fragrantica",    label: "Fragrantica" },
-  { path: "/casestudy/figma-kpop",     label: "Figma K-Pop" },
+  { path: "/casestudy/figma-kpop",     label: "Figma K-Pop (Bonus)" },
   { path: "/casestudy/texas-mobile",   label: "Texas Mobile" },
 ];
 

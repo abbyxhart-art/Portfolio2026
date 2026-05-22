@@ -7,7 +7,16 @@ import { useCursor } from '../context/CursorContext';
 export default function CustomCursor() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isVisible, setIsVisible] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const { hoveredProject, isPurple, isInHero } = useCursor();
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 767px)");
+    setIsMobile(mq.matches);
+    const onChange = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, []);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -52,6 +61,8 @@ export default function CustomCursor() {
 
   const isProjectHovered = hoveredProject !== null;
   const readTime = getReadTime();
+
+  if (isMobile) return null;
 
   return (
     <>
