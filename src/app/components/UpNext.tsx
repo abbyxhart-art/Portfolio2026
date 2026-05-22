@@ -18,7 +18,6 @@ const ALL: CasestudyEntry[] = [
   { id: "gentle-monster",  title: "Gentle Monster Kiosk", path: "/casestudy/gentle-monster",  mediaType: "video", mediaSrc: gmTeaserVideo },
   { id: "tian-airlines",   title: "Tian Airways",         path: "/casestudy/tian-airlines",   mediaType: null },
   { id: "texas-mobile",   title: "Texas Mobile",          path: "/casestudy/texas-mobile",    mediaType: null },
-  { id: "figma-kpop",      title: "Figma K-Pop",          path: "/casestudy/figma-kpop",      mediaType: null },
   { id: "fragrantica",     title: "Fragrantica",           path: "/casestudy/fragrantica",     mediaType: null },
   { id: "aixels",          title: "AIXELS",               path: "/casestudy/aixels",          mediaType: "image", mediaSrc: aixelsMeImg },
 ];

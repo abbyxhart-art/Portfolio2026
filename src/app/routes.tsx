@@ -14,12 +14,37 @@ import DrinkFloater from "./components/DrinkFloater";
 import Footer from "./components/Footer";
 import MobileBottomNav from "./components/MobileBottomNav";
 
+const BLUR_LAYERS = [
+  { blur: 2,  mask: "linear-gradient(to bottom, black 0%,   transparent 25%)" },
+  { blur: 4,  mask: "linear-gradient(to bottom, black 12%,  transparent 40%)" },
+  { blur: 8,  mask: "linear-gradient(to bottom, black 25%,  transparent 60%)" },
+  { blur: 12, mask: "linear-gradient(to bottom, black 40%,  transparent 80%)" },
+];
+
 function RootLayout() {
   return (
     <>
       <div className="pb-[110px] md:pb-0">
         <Outlet />
         <Footer />
+      </div>
+      {/* Progressive blur under top nav — desktop only */}
+      <div
+        className="hidden md:flex fixed inset-x-0 top-0 pointer-events-none"
+        style={{ height: "100px", zIndex: 45 }}
+      >
+        {BLUR_LAYERS.map(({ blur, mask }, i) => (
+          <div
+            key={i}
+            className="absolute inset-0"
+            style={{
+              backdropFilter: `blur(${blur}px)`,
+              WebkitBackdropFilter: `blur(${blur}px)`,
+              maskImage: mask,
+              WebkitMaskImage: mask,
+            }}
+          />
+        ))}
       </div>
       <DrinkFloater />
       <MobileBottomNav />
