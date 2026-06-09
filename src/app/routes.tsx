@@ -8,11 +8,12 @@ import CasestudyGentleMonster from "./pages/CasestudyGentleMonster";
 import CasestudyFigmaKPop from "./pages/CasestudyFigmaKPop";
 import CasestudyFragrantica from "./pages/CasestudyFragrantica";
 import CasestudyTexasMobile from "./pages/CasestudyTexasMobile";
+import CasestudyCapitol from "./pages/CasestudyCapitol";
 import Booth from "./pages/Booth";
 import About from "./pages/About";
-import DrinkFloater from "./components/DrinkFloater";
-import Footer from "./components/Footer";
-import MobileBottomNav from "./components/MobileBottomNav";
+import DrinkFloater from "./components/drinks/DrinkFloater";
+import Footer from "./components/layout/Footer";
+import MobileBottomNav from "./components/layout/MobileBottomNav";
 
 const BLUR_LAYERS = [
   { blur: 2,  mask: "linear-gradient(to bottom, black 0%,   transparent 25%)" },
@@ -91,6 +92,10 @@ export const router = createBrowserRouter([
       {
         path: "/casestudy/texas-mobile",
         Component: CasestudyTexasMobile,
+      },
+      {
+        path: "/casestudy/capitol-aluminum",
+        Component: CasestudyCapitol,
       },
       {
         path: "/about",

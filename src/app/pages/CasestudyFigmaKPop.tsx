@@ -2,10 +2,11 @@ import { useState, useEffect, useRef } from "react";
 import { useNavEntrance } from "../hooks/useNavEntrance";
 import { motion, AnimatePresence, useScroll, useTransform, useMotionValue } from "motion/react";
 import Navigation from "../../imports/Navigation";
-import HomeButton from "../components/HomeButton";
-import CasestudyNavigation from "../components/CasestudyNavigation";
-import UpNext from "../components/UpNext";
-import CasestudyMiniMenu from "../components/CasestudyMiniMenu";
+import HomeButton from "../components/layout/HomeButton";
+import CasestudyNavigation from "../components/casestudy/CasestudyNavigation";
+import UpNext from "../components/casestudy/UpNext";
+import CasestudyMiniMenu from "../components/casestudy/CasestudyMiniMenu";
+import CasestudySectionHeader from "../components/casestudy/CasestudySectionHeader";
 
 const KPOP_SECTIONS = [
   { id: "cs-overview", label: "Overview" },
@@ -24,7 +25,7 @@ import imgPoster1 from "../../assets/project/kpop/poster_1.png";
 import imgPoster2 from "../../assets/project/kpop/poster_2.png";
 import imgRecord2 from "../../assets/project/kpop/record_2.png";
 
-const imgGlassCheckpoint = "https://www.figma.com/api/mcp/asset/9b5a5ea4-2281-412d-9627-9e762d699589";
+
 
 const FLOWS: {
   label: string; title: string; body: string;
@@ -114,6 +115,11 @@ export default function CasestudyFigmaKPop() {
 
   return (
     <div className="relative min-h-screen bg-background overflow-x-clip">
+      {/* Top Gradient */}
+      <div
+        className="absolute inset-x-0 z-0 h-[600px] pointer-events-none"
+        style={{ top: 0, background: "linear-gradient(to top, rgba(22,22,23,0.2), #afa4d8)", opacity: 0.5 }}
+      />
       <HomeButton />
       <CasestudyNavigation title="Figma K-Pop" />
       <CasestudyMiniMenu sections={KPOP_SECTIONS} />
@@ -147,7 +153,7 @@ export default function CasestudyFigmaKPop() {
         initial={shouldAnimate ? { opacity: 0, y: 24 } : false}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: "easeOut" }}
-        className="flex flex-col items-center px-[16px] md:px-[20vw] pt-[15vh] pb-[15vh]"
+        className="flex flex-col items-center px-[16px] md:px-[20vw] pt-[15vh] pb-[15vh] relative z-[1]"
       >
         <div className="flex flex-col gap-[110px] items-center w-full">
 
@@ -202,18 +208,11 @@ export default function CasestudyFigmaKPop() {
           </div>
 
           {/* ── Checkpoint: Workshop ── */}
-          <div className="flex gap-[16px] items-start w-full relative">
-            <div className="absolute left-0 top-1/2 -translate-y-1/2 h-[78px] w-[920px] bg-[#d9d9d9] blur-[50px] opacity-10 pointer-events-none" />
-            <img src={imgGlassCheckpoint} alt="" className="relative shrink-0 size-[36px] mt-[2px]" />
-            <div className="relative flex flex-col gap-[16px] items-start">
-              <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.1] text-white text-[24px] md:text-[32px]">
-                A custom workshop for inclusions
-              </p>
-              <p className="font-['Inter_Tight',sans-serif] font-[300] italic leading-[1.3] text-[color:var(--text\/primary,#faf9ff)] text-[18px] max-w-[827px]">
-                K-pop inclusions are bonus items packaged inside physical albums, like posters and photocards.
-              </p>
-            </div>
-          </div>
+          <CasestudySectionHeader
+            eyebrow="Workshop"
+            headline="A custom workshop for inclusions"
+            subtitle="K-pop inclusions are bonus items packaged inside physical albums, like posters and photocards."
+          />
 
           {/* ── Workshop ── */}
           <div id="cs-workshop" className="w-full">
@@ -271,13 +270,11 @@ export default function CasestudyFigmaKPop() {
           </div>
 
           {/* ── Checkpoint: Final Thoughts ── */}
-          <div className="flex gap-[16px] items-center w-full relative">
-            <div className="absolute left-0 top-1/2 -translate-y-1/2 h-[78px] w-[237px] bg-[#d9d9d9] blur-[50px] opacity-10 pointer-events-none" />
-            <img src={imgGlassCheckpoint} alt="" className="relative shrink-0 size-[36px]" />
-            <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.1] text-white text-[24px] md:text-[32px] relative">
-              Final Thoughts
-            </p>
-          </div>
+          <CasestudySectionHeader
+            eyebrow="Reflections"
+            headline="Final Thoughts"
+            subtitle="More fun and less fear"
+          />
 
           {/* ── Reflections ── */}
           <div id="cs-review" className="flex flex-col gap-[24px] items-start w-full">

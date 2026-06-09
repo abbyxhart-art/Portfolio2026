@@ -2,10 +2,11 @@ import { useState, useEffect, useRef } from "react";
 import { useNavEntrance } from "../hooks/useNavEntrance";
 import { motion, AnimatePresence, useScroll, useTransform, useMotionValue } from "motion/react";
 import Navigation from "../../imports/Navigation";
-import HomeButton from "../components/HomeButton";
-import CasestudyNavigation from "../components/CasestudyNavigation";
-import UpNext from "../components/UpNext";
-import CasestudyMiniMenu from "../components/CasestudyMiniMenu";
+import HomeButton from "../components/layout/HomeButton";
+import CasestudyNavigation from "../components/casestudy/CasestudyNavigation";
+import UpNext from "../components/casestudy/UpNext";
+import CasestudyMiniMenu from "../components/casestudy/CasestudyMiniMenu";
+import CasestudySectionHeader from "../components/casestudy/CasestudySectionHeader";
 
 
 function BeforeAfterToggle({ active, onChange }: { active: "after" | "before"; onChange: (v: "after" | "before") => void }) {
@@ -40,7 +41,6 @@ function PhoneVideo({ src }: { src: string }) {
   );
 }
 
-import imgGlassCheckpoint from "../../assets/icons/glass-checkpoint.svg";
 const texasIdVideo = new URL("../../assets/project/texasid/FullPrototype_1200x600_30fps.mp4", import.meta.url).href;
 const cardLayersVideo = new URL("../../assets/project/texasid/cardlayers.mov", import.meta.url).href;
 const cardFlipVideo = new URL("../../assets/project/texasid/cardflip.mov", import.meta.url).href;
@@ -120,6 +120,11 @@ export default function CasestudyTexasMobile() {
 
   return (
     <div className="relative min-h-screen bg-background overflow-x-clip">
+      {/* Top Gradient */}
+      <div
+        className="absolute inset-x-0 z-0 h-[600px] pointer-events-none"
+        style={{ top: 0, background: "linear-gradient(to top, rgba(22,22,23,0.2), #afa4d8)", opacity: 0.5 }}
+      />
       <HomeButton />
       <CasestudyNavigation title="Texas Mobile" />
       <CasestudyMiniMenu sections={TEXAS_SECTIONS} />
@@ -153,7 +158,7 @@ export default function CasestudyTexasMobile() {
         initial={shouldAnimate ? { opacity: 0, y: 24 } : false}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: "easeOut" }}
-        className="flex flex-col items-center px-[16px] md:px-[20vw] pt-[15vh] pb-[15vh]"
+        className="flex flex-col items-center px-[16px] md:px-[20vw] pt-[15vh] pb-[15vh] relative z-[1]"
       >
         <div className="flex flex-col gap-[110px] items-center w-full">
 
@@ -223,14 +228,11 @@ export default function CasestudyTexasMobile() {
           {/* ── Highlights ── */}
           <div id="cs-card" className="flex flex-col gap-[64px] w-full">
 
-            {/* Checkpoint: Tailored design decisions */}
-            <div className="flex gap-[16px] items-center w-full relative">
-              <div className="absolute left-0 top-1/2 -translate-y-1/2 h-[78px] w-[228px] bg-[#d9d9d9] blur-[50px] opacity-10 pointer-events-none" />
-              <img src={imgGlassCheckpoint} alt="" className="relative shrink-0 size-[36px]" />
-              <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.1] text-white text-[24px] md:text-[32px] relative">
-               Highlights
-              </p>
-            </div>
+            <CasestudySectionHeader
+              eyebrow="Highlights"
+              headline="Tailored design decisions"
+              subtitle="Designing for the wallet, the wrist, and the law"
+            />
 
             {/* Row 1: text left, phone right */}
             <div className="flex gap-[50px] items-center justify-center w-full">
@@ -285,13 +287,12 @@ export default function CasestudyTexasMobile() {
           </div>
 
           {/* ── Checkpoint: Wireframes ── */}
-          <div id="cs-explorations" className="flex gap-[16px] items-center w-full relative">
-            <div className="absolute left-0 top-1/2 -translate-y-1/2 h-[78px] w-[228px] bg-[#d9d9d9] blur-[50px] opacity-10 pointer-events-none" />
-            <img src={imgGlassCheckpoint} alt="" className="relative shrink-0 size-[36px]" />
-            <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.1] text-white text-[24px] md:text-[32px] relative">
-              Explorations and Decisions
-            </p>
-          </div>
+          <CasestudySectionHeader
+            id="cs-explorations"
+            eyebrow="Explorations"
+            headline="Explorations and Decisions"
+            subtitle="Creating additional pages to better TexID"
+          />
 
           {/* ── Wireframes content ── */}
           <div className="flex flex-col gap-[48px] w-full">
@@ -382,13 +383,12 @@ export default function CasestudyTexasMobile() {
           </div>
 
           {/* ── Checkpoint: The card ── */}
-          <div id="cs-component" className="flex gap-[16px] items-center w-full relative">
-            <div className="absolute left-0 top-1/2 -translate-y-1/2 h-[78px] w-[228px] bg-[#d9d9d9] blur-[50px] opacity-10 pointer-events-none" />
-            <img src={imgGlassCheckpoint} alt="" className="relative shrink-0 size-[36px]" />
-            <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.1] text-white text-[24px] md:text-[32px] relative">
-              Component Redesign
-            </p>
-          </div>
+          <CasestudySectionHeader
+            id="cs-component"
+            eyebrow="Component Redesign"
+            headline="Color, illustration, and dynamic components"
+            subtitle="Building a system that feels native to Texas"
+          />
 
           {/* ── Color, illustration, and dynamic components ── */}
           <div className="flex flex-col gap-[40px] w-full">
@@ -490,13 +490,11 @@ export default function CasestudyTexasMobile() {
 
 
           {/* ── Checkpoint: Final Designs ── */}
-          <div className="flex gap-[16px] items-center w-full relative">
-            <div className="absolute left-0 top-1/2 -translate-y-1/2 h-[78px] w-[228px] bg-[#d9d9d9] blur-[50px] opacity-10 pointer-events-none" />
-            <img src={imgGlassCheckpoint} alt="" className="relative shrink-0 size-[36px]" />
-            <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.1] text-white text-[24px] md:text-[32px] relative">
-              Final Designs
-            </p>
-          </div>
+          <CasestudySectionHeader
+            eyebrow="Final Designs"
+            headline="Adding more breathing room and intention"
+            subtitle="After peer evaluations, simplifying to what people really needed"
+          />
 
           {/* ── Final Designs content ── */}
           <div id="cs-final" className="flex flex-col gap-[48px] w-full">
@@ -529,13 +527,11 @@ export default function CasestudyTexasMobile() {
           </div>
 
           {/* ── Checkpoint: Reflection ── */}
-          <div className="flex gap-[16px] items-center w-full relative">
-            <div className="absolute left-0 top-1/2 -translate-y-1/2 h-[78px] w-[228px] bg-[#d9d9d9] blur-[50px] opacity-10 pointer-events-none" />
-            <img src={imgGlassCheckpoint} alt="" className="relative shrink-0 size-[36px]" />
-            <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.1] text-white text-[24px] md:text-[32px] relative">
-              Reflection
-            </p>
-          </div>
+          <CasestudySectionHeader
+            eyebrow="Reflection"
+            headline="Iterate"
+            subtitle="Learning through doing and redoing"
+          />
 
           {/* ── Reflection ── */}
           <div id="cs-reflection" className="flex flex-col gap-[24px] items-start w-full">

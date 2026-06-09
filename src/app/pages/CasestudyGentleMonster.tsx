@@ -1,11 +1,13 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavEntrance } from "../hooks/useNavEntrance";
-import { motion, AnimatePresence, useScroll, useTransform, useMotionValue } from "motion/react";
+import { motion, AnimatePresence, useScroll, useTransform } from "motion/react";
 import Navigation from "../../imports/Navigation";
-import HomeButton from "../components/HomeButton";
-import CasestudyNavigation from "../components/CasestudyNavigation";
-import UpNext from "../components/UpNext";
-import CasestudyMiniMenu from "../components/CasestudyMiniMenu";
+import HomeButton from "../components/layout/HomeButton";
+import CasestudyNavigation from "../components/casestudy/CasestudyNavigation";
+import UpNext from "../components/casestudy/UpNext";
+import CasestudyMiniMenu from "../components/casestudy/CasestudyMiniMenu";
+import CasestudySectionHeader from "../components/casestudy/CasestudySectionHeader";
+import imgFaceSmile from "../../assets/icons/face-smile.svg";
 
 const GM_SECTIONS = [
   { id: "cs-overview", label: "Overview" },
@@ -16,7 +18,7 @@ const GM_SECTIONS = [
   { id: "cs-reflection", label: "Reflections" },
 ];
 const vidGmScene = new URL("../../assets/project/gentlemonster/gmscene_2x1.mp4", import.meta.url).href;
-const vidGmFullflow = new URL("../../assets/project/gentlemonster/gm_fullflow_1920x906_30fps.mp4", import.meta.url).href;
+const vidGmFullflow = new URL("../../assets/project/gentlemonster/gm_fullflow_1920x906_30fps.mp4.mp4", import.meta.url).href;
 const vidDesignDoc = new URL("../../assets/project/gentlemonster/designdoc_16x9.mp4", import.meta.url).href;
 const vidOjo01 = new URL("../../assets/project/gentlemonster/ojo01_16x9.mp4", import.meta.url).href;
 const imgKioskFlowFull = new URL("../../assets/project/gentlemonster/kioskflow_full_2x1.png", import.meta.url).href;
@@ -37,11 +39,11 @@ const vidFlowLenses = new URL("../../assets/project/gentlemonster/flow_lenses.mp
 const vidFlowFourmatches = new URL("../../assets/project/gentlemonster/flow_fourmatches.mp4", import.meta.url).href;
 const vidFlowGlasses = new URL("../../assets/project/gentlemonster/flow_glasses.mp4", import.meta.url).href;
 const imgModellingGlasses = new URL("../../assets/project/gentlemonster/modellingglasses.JPG", import.meta.url).href;
-const imgGlassCheckpoint = new URL("../../assets/project/gentlemonster/glass_checkpoint.svg", import.meta.url).href;
 
-const blobGM_pink_left  = "radial-gradient(ellipse at center, rgba(185,175,255,0.15) 0%, rgba(185,175,255,0) 70%)";
-const blobGM_lav_left   = "radial-gradient(ellipse at center, rgba(185,175,255,0.15) 0%, rgba(185,175,255,0) 70%)";
-const blobGM_lav_right  = "radial-gradient(ellipse at center, rgba(200,190,255,0.15) 0%, rgba(200,190,255,0) 70%)";
+
+const blobGM_pink_left  = "radial-gradient(ellipse at center, rgba(175,164,216,0.2) 0%, rgba(175,164,216,0) 70%)";
+
+const blobGM_lav_right  = "radial-gradient(ellipse at center, rgba(175,164,216,0.2) 0%, rgba(175,164,216,0) 70%)";
 
 
 export default function CasestudyGentleMonster() {
@@ -67,36 +69,15 @@ export default function CasestudyGentleMonster() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Hero scale animation
+  // Hero scale animation — latches at 1.0 once reached, never scales back up
   const { scrollY } = useScroll();
-  const heroCompleted = useRef(false);
-  const heroRef = useRef<HTMLDivElement>(null);
-  const heroExtraHeight = useMotionValue(0);
-
-  const heroScale = useTransform(scrollY, (latest) => {
-    if (heroCompleted.current) return 1;
-    const progress = Math.min(latest / 400, 1);
-    if (progress >= 1) heroCompleted.current = true;
-    return 1.35 - 0.35 * progress;
+  const heroScaleDone = useRef(false);
+  const heroScale = useTransform(scrollY, (y) => {
+    if (heroScaleDone.current) return 1;
+    const s = Math.max(1, 1.2 - (y / 400) * 0.2);
+    if (s === 1) heroScaleDone.current = true;
+    return s;
   });
-  const heroBorderRadius = useTransform(scrollY, (latest) => {
-    if (heroCompleted.current) return 8;
-    return 8 * Math.min(latest / 400, 1);
-  });
-  const heroContentY = useTransform(() => {
-    if (heroCompleted.current) return 0;
-    const progress = Math.min(scrollY.get() / 400, 1);
-    return heroExtraHeight.get() * (1 - progress);
-  });
-
-  useEffect(() => {
-    const measure = () => {
-      if (heroRef.current) heroExtraHeight.set(heroRef.current.offsetHeight * 0.35);
-    };
-    measure();
-    window.addEventListener("resize", measure);
-    return () => window.removeEventListener("resize", measure);
-  }, [heroExtraHeight]);
 
   // Sticky scroll
   const stickyRef = useRef<HTMLDivElement>(null);
@@ -105,6 +86,11 @@ export default function CasestudyGentleMonster() {
 
   return (
     <div className="relative min-h-screen bg-background overflow-x-clip">
+      {/* Top Gradient */}
+      <div
+        className="absolute inset-x-0 z-0 h-[600px] pointer-events-none"
+        style={{ top: 0, background: "linear-gradient(to top, rgba(22,22,23,0.2), #afa4d8)", opacity: 0.5 }}
+      />
       <HomeButton />
       <CasestudyNavigation title="Gentle Monster" />
       <CasestudyMiniMenu sections={GM_SECTIONS} />
@@ -137,86 +123,78 @@ export default function CasestudyGentleMonster() {
         initial={shouldAnimate ? { opacity: 0, y: 24 } : false}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: "easeOut" }}
-        className="flex flex-col items-center px-[16px] md:px-[20vw] pt-[15vh] pb-[15vh]"
+        className="flex flex-col items-center px-[16px] md:px-[20vw] pt-[15vh] pb-[15vh] relative z-[1]"
       >
 
         {/* Segment 1: Hero + Overview */}
         <div className="flex flex-col gap-[9vh] items-center w-full">
 
-          {/* ── 1. Hero ── */}
+          {/* ── Title ── */}
+          <div className="flex flex-col gap-[10px] items-center w-full">
+            <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[48px] text-[#faf9ff] text-[32px] md:text-[40px] text-center">
+              Gentle Monster Kiosk
+            </p>
+            <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.4] text-[#908e99] text-[16px] md:text-[20px] text-center">
+              Spring 2024
+            </p>
+          </div>
+
+          {/* ── Hero ── */}
           <motion.div
-            ref={heroRef}
             className="aspect-[2/1] bg-[#505050] w-full overflow-hidden"
-            style={{ scale: heroScale, borderRadius: heroBorderRadius, transformOrigin: "top center" }}
+            style={{ scale: heroScale, borderRadius: 4, transformOrigin: "top center" }}
           >
             <video autoPlay loop muted playsInline className="w-full h-full object-cover" src={vidGmFullflow} />
           </motion.div>
 
-          {/* ── 2. Overview ── */}
-          <motion.div id="cs-overview" style={{ y: heroContentY }} className="flex flex-col gap-[32px] items-start w-full scroll-mt-[100px]">
+          {/* ── Overview ── */}
+          <div id="cs-overview" className="flex flex-col gap-[75px] items-start w-full scroll-mt-[100px]">
 
-            {/* Tagline — negative margin cancels the 9vh gap, leaving exactly 16px below the scaled video */}
-            <p className="font-['Inter_Tight',sans-serif] font-normal leading-none text-[#908e99] text-[12px] md:text-[14px] w-full text-left" style={{ marginTop: "calc(-9vh + 16px)" }}>
-              Modelled, built, and animated in C4D
-            </p>
-            {/* Title + subtitle */}
-            <div className="border-b border-[#302f34] flex flex-col gap-[8px] items-start pb-[32px] w-full">
-              <p className="font-['Inter_Tight',sans-serif] font-[450] leading-[1.3] text-[color:var(--text\/primary,#eeedf5)] text-[18px] md:text-[24px] w-full">
-                Gentle Monster Kiosk
-              </p>
-              <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.25] text-[#908e99] text-[16px] md:text-[20px] w-full">
-                A brand activation + study on heuristics and choice; ultimately gifting shoppers a fun experience to find their perfect match!
-              </p>
-            </div>
+            {/* Divider */}
+            <div className="w-full border-t border-[#302f34]" />
 
-            {/* Metadata */}
-            <div className="flex font-['Inter_Tight',sans-serif] gap-[57px] items-start w-full">
-              {/* Left column */}
-              <div className="flex flex-col gap-[32px] items-start shrink-0">
+            {/* Two-column overview */}
+            <div className="flex gap-[80px] items-start w-full font-['Inter_Tight',sans-serif]">
+
+              {/* Left: metadata */}
+              <div className="flex flex-col gap-[24px] items-start shrink-0">
+                {/* Interface */}
+                <div className="flex flex-col gap-[17px] items-start pb-[32px]">
+                  <p className="font-[300] leading-none text-[#c1becb] text-[14px]">Interface</p>
+                  <div className="font-[300] text-[#908e99] text-[16px]">
+                    <p className="leading-[1.5] mb-[8px]">22 x 11 " (small screen)</p>
+                    <p className="leading-[1.5]">44 x 22" (large screen)</p>
+                  </div>
+                </div>
                 {/* Tools */}
-                <div className="flex flex-col gap-[12px] items-start">
-                  <p className="font-normal leading-none text-[#aeabb9] text-[12px] md:text-[14px]">Tools</p>
-                  <div className="text-[color:var(--text\/primary,#eeedf5)] text-[14px] md:text-[16px]">
-                    <p className="leading-[1.5] mb-0">Figma</p>
-                    <p className="leading-[1.5] mb-0">Adobe Suite</p>
+                <div className="flex flex-col gap-[17px] items-start pb-[32px]">
+                  <p className="font-[300] leading-none text-[#c1becb] text-[14px]">Tools</p>
+                  <div className="font-[300] text-[#908e99] text-[16px]">
+                    <p className="leading-[1.5] mb-[8px]">Figma</p>
+                    <p className="leading-[1.5] mb-[8px]">Adobe Suite</p>
                     <p className="leading-[1.5]">C4D</p>
                   </div>
                 </div>
-                {/* Skills */}
-                <div className="flex flex-col gap-[12px] items-start">
-                  <p className="font-normal leading-none text-[#aeabb9] text-[12px] md:text-[14px]">Skills</p>
-                  <div className="text-[color:var(--text\/primary,#eeedf5)] text-[14px] md:text-[16px]">
-                    <p className="leading-[1.5] mb-0">Research</p>
-                    <p className="leading-[1.5] mb-0">User Journey / Flow</p>
-                    <p className="leading-[1.5] mb-0">Hi-fi Prototype</p>
-                    <p className="leading-[1.5]">3D Modelling / Motion</p>
-                  </div>
-                </div>
                 {/* Timeline */}
-                <div className="flex flex-col gap-[12px] items-start">
-                  <p className="font-normal leading-none text-[#aeabb9] text-[12px] md:text-[14px]">Timeline</p>
-                  <p className="font-normal leading-[1.65] text-[color:var(--text\/primary,#eeedf5)] text-[14px] md:text-[16px]">10 Weeks</p>
+                <div className="flex flex-col gap-[17px] items-start pb-[32px]">
+                  <p className="font-[300] leading-none text-[#c1becb] text-[14px]">Timeline</p>
+                  <p className="font-[300] leading-[1.5] text-[#908e99] text-[16px]">10 Weeks</p>
                 </div>
               </div>
 
-              {/* Right column */}
-              <div className="flex flex-col gap-[32px] items-start flex-1 min-w-0">
-                {/* Interface */}
-                <div className="flex flex-col gap-[12px] items-start">
-                  <p className="font-normal leading-none text-[#aeabb9] text-[12px] md:text-[14px]">Interface</p>
-                  <p className="font-normal leading-[1.65] text-[color:var(--text\/primary,#eeedf5)] text-[14px] md:text-[16px]">22 x 11" and 44 x 22"</p>
-                </div>
-                {/* What is this project? */}
-                <div className="flex flex-col gap-[12px] items-start">
-                  <p className="font-normal leading-none text-[#aeabb9] text-[12px] md:text-[14px]">What is this project?</p>
-                  <div className="text-[color:var(--text\/primary,#eeedf5)] text-[14px] md:text-[16px]">
-                    <p className="leading-[1.65] mb-[16px]">This exploration spans UI, research, and blending it with 3D and motion to create a more realistic proof of concept than just wireframes.</p>
-                    <p className="leading-[1.65]">The project overall asks how can a kiosk create clear choices, avoid fatigue, and best represent the brand's design system.</p>
-                  </div>
+              {/* Right: context */}
+              <div className="flex flex-col gap-[17px] items-start flex-1 min-w-0 pb-[32px]">
+                <p className="font-[300] leading-none text-[#faf9ff] text-[14px] w-full">
+                  Overview
+                </p>
+                <div className="font-[300] text-[#908e99] text-[16px] w-full">
+                  <p className="leading-[1.65] mb-[16px]">This project spans UI, research, and blending it with 3D and motion to create a more realistic concept than just a screen on a page.</p>
+                  <p className="leading-[1.65]">The project overall asks how can a kiosk create clear choices, avoid fatigue, and best represent the brand's design system — ultimately gifting shoppers a fun experience to find their perfect match!</p>
                 </div>
               </div>
+
             </div>
-          </motion.div>
+          </div>
 
         </div>
 
@@ -248,13 +226,13 @@ export default function CasestudyGentleMonster() {
                 {/* Row 1 — Unblurring (left) + Gentle Monster (right) */}
                 <p
                   style={{ position: "absolute", top: "381px", left: "27%", transform: "translateX(-50%)" }}
-                  className="hidden md:block font-['Inter_Tight'] font-[450] text-[50px] leading-[1.5] text-[color:var(--text\/primary,#eeedf5)] whitespace-nowrap"
+                  className="hidden md:block font-['Inter_Tight'] font-[300] text-[50px] leading-[1.5] text-[color:var(--text\/primary,#eeedf5)] whitespace-nowrap"
                 >
                   Unblurring
                 </p>
                 <p
                   style={{ position: "absolute", top: "381px", left: "68%" }}
-                  className="hidden md:block font-['Inter_Tight'] font-[450] text-[50px] leading-none text-[color:var(--text\/primary,#eeedf5)] whitespace-nowrap"
+                  className="hidden md:block font-['Inter_Tight'] font-[300] text-[50px] leading-none text-[color:var(--text\/primary,#eeedf5)] whitespace-nowrap"
                 >
                   Gentle Monster
                 </p>
@@ -304,13 +282,13 @@ export default function CasestudyGentleMonster() {
                 {/* ── Mobile 1-column layout (hidden on desktop) ── */}
                 <p
                   style={{ position: "absolute", top: "596px", left: "15%" }}
-                  className="block md:hidden font-['Inter_Tight'] font-[450] text-[32px] leading-[1.3] text-[color:var(--text\/primary,#eeedf5)]"
+                  className="block md:hidden font-['Inter_Tight'] font-[300] text-[32px] leading-[1.3] text-[color:var(--text\/primary,#eeedf5)]"
                 >
                   Unblurring
                 </p>
                 <p
                   style={{ position: "absolute", top: "646px", left: "15%" }}
-                  className="block md:hidden font-['Inter_Tight'] font-[450] text-[32px] leading-[1.3] text-[color:var(--text\/primary,#eeedf5)]"
+                  className="block md:hidden font-['Inter_Tight'] font-[300] text-[32px] leading-[1.3] text-[color:var(--text\/primary,#eeedf5)]"
                 >
                   Gentle Monster
                 </p>
@@ -408,31 +386,32 @@ export default function CasestudyGentleMonster() {
           {/* ── 4. Section: Flow ── */}
           <div id="cs-flow" className="flex flex-col gap-[9vh] items-start w-full scroll-mt-[100px]">
 
+            <CasestudySectionHeader
+              eyebrow="Flow Highlights"
+              headline="The simple flow"
+              subtitle="Scan. Glasses Found. Checkout."
+              accentColor="#afa4d8"
+            />
+
             {/* Flows container */}
             <div
-              className="flex flex-col gap-[75px] items-start p-[24px] rounded-[8px] w-full border border-[#302f34]"
-              style={{ background: "linear-gradient(to bottom, #302f34 0%, #171717 65%)" }}
+              className="flex flex-col gap-[75px] items-start p-[24px] rounded-[8px] w-full border border-[#302f34] font-['Inter_Tight',sans-serif]"
+              style={{ background: "linear-gradient(to bottom, rgba(88,85,100,0.15) 0%, rgba(22,22,23,0.1) 50%)" }}
             >
               {/* Header */}
-              <div className="flex flex-col gap-[16px] items-start w-full pb-[42px]">
-                <p className="font-['Inter_Tight',sans-serif] leading-none text-[#908e99] text-[14px] md:text-[16px]">
-                  Highlights
-                </p>
-                <div className="font-['Inter_Tight',sans-serif] text-[#faf9ff] text-[18px] md:text-[24px]">
-                  <p className="leading-[1.3] mb-0">A basic flow enabling users to find their mathematically perfect match</p>
-                  <p className="leading-[1.3]">Scan → Glasses Found → Checkout</p>
-                </div>
-              </div>
+              <p className="font-[300] leading-[1.3] text-[#faf9ff] text-[24px] pb-[42px] w-full">
+                Exploring how users can find the one
+              </p>
 
               {/* Flow 1/5 */}
               <div className="flex flex-col gap-[24px] items-start w-full">
-                <div className="flex flex-col gap-[16px] items-start w-full">
-                  <p className="font-['Inter_Tight',sans-serif] leading-none text-[#908e99] text-[14px] md:text-[16px]">Flow 1/5</p>
-                  <p className="font-['Inter_Tight',sans-serif] leading-[1.3] text-[#faf9ff] text-[18px] md:text-[24px]">
-                    Use 3D face tracking to find a perfect match.
+                <div className="flex flex-col gap-[24px] items-start w-full">
+                  <p className="font-[300] leading-none text-[#908e99] text-[14px] tracking-[0.126px]">Flow 1/5</p>
+                  <p className="font-[300] leading-[1.4] text-[#faf9ff] text-[20px]">
+                    Showcasing the shorter main flow inside the kiosk.
                   </p>
-                  <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#908e99] text-[14px] md:text-[16px] tracking-[-0.32px] w-full">
-                    The ultimate goal is to find matches and save items with a sales associate at the counter. The filters are a fun bonus!
+                  <p className="font-[300] leading-[1.65] text-[#908e99] text-[17px] w-full">
+                    The flow displays two screens working in tandem! The ultimate goal is to help users find their best match and have a sales associate save them at the counter!
                   </p>
                 </div>
                 <div className="aspect-[2/1] bg-[#d9d9d9] rounded-[4px] w-full overflow-hidden">
@@ -445,12 +424,12 @@ export default function CasestudyGentleMonster() {
 
               {/* Flow 2/5 */}
               <div className="flex flex-col gap-[24px] items-start w-full">
-                <div className="flex flex-col gap-[16px] items-start w-full">
-                  <p className="font-['Inter_Tight',sans-serif] leading-none text-[#908e99] text-[14px] md:text-[16px]">Flow 2/5</p>
-                  <p className="font-['Inter_Tight',sans-serif] leading-[1.3] text-[#faf9ff] text-[18px] md:text-[24px]">
+                <div className="flex flex-col gap-[24px] items-start w-full">
+                  <p className="font-[300] leading-[1.5] text-[#908e99] text-[14px]">Flow 2/5</p>
+                  <p className="font-[300] leading-[1.25] text-[#faf9ff] text-[20px]">
                     Use smaller filters as matches.
                   </p>
-                  <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#908e99] text-[14px] md:text-[16px] tracking-[-0.32px] w-full">
+                  <p className="font-[300] leading-[1.65] text-[#b8b4c5] text-[17px] w-full">
                     This feature replaces filters by presenting personalized, pre-matched options instead of requiring people to sort through presets themselves (although the filter button still exists should people want to use it!).
                   </p>
                 </div>
@@ -464,13 +443,13 @@ export default function CasestudyGentleMonster() {
 
               {/* Flow 3/5 */}
               <div className="flex flex-col gap-[24px] items-start w-full">
-                <div className="flex flex-col gap-[16px] items-start w-full">
-                  <p className="font-['Inter_Tight',sans-serif] leading-none text-[#908e99] text-[14px] md:text-[16px]">Flow 3/5</p>
-                  <p className="font-['Inter_Tight',sans-serif] leading-[1.3] text-[#faf9ff] text-[18px] md:text-[24px]">
+                <div className="flex flex-col gap-[24px] items-start w-full">
+                  <p className="font-[300] leading-none text-[#908e99] text-[14px] tracking-[0.126px]">Flow 3/5</p>
+                  <p className="font-[300] leading-[1.25] text-[#faf9ff] text-[20px]">
                     Don't overload people.
                   </p>
-                  <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#908e99] text-[14px] md:text-[16px] tracking-[-0.32px] w-full">
-                    Initially display four glasses to reduce decision paralysis! Users can scroll to explore lower-ranked matches, maintaining momentum without overwhelming them. Navigation is positioned at the bottom to minimize hand movement/fatigue.
+                  <p className="font-[300] leading-[1.65] text-[#b8b4c5] text-[17px] w-full">
+                    Initially display five glasses to reduce decision paralysis! Users can scroll to explore lower-ranked matches, maintaining momentum without overwhelming them. Navigation is positioned at the bottom to minimize hand movement/fatigue.
                   </p>
                 </div>
                 <div className="aspect-[2/1] bg-[#d9d9d9] rounded-[4px] w-full overflow-hidden">
@@ -483,12 +462,12 @@ export default function CasestudyGentleMonster() {
 
               {/* Flow 4/5 */}
               <div className="flex flex-col gap-[24px] items-start w-full">
-                <div className="flex flex-col gap-[16px] items-start w-full">
-                  <p className="font-['Inter_Tight',sans-serif] leading-none text-[#908e99] text-[14px] md:text-[16px]">Flow 4/5</p>
-                  <p className="font-['Inter_Tight',sans-serif] leading-[1.3] text-[#faf9ff] text-[18px] md:text-[24px]">
+                <div className="flex flex-col gap-[24px] items-start w-full">
+                  <p className="font-[300] leading-none text-[#908e99] text-[14px] tracking-[0.126px]">Flow 4/5</p>
+                  <p className="font-[300] leading-[1.25] text-[#faf9ff] text-[20px]">
                     Show people how it matches.
                   </p>
-                  <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#908e99] text-[14px] md:text-[16px] tracking-[-0.32px] w-full">
+                  <p className="font-[300] leading-[1.65] text-[#b8b4c5] text-[17px] w-full">
                     Users can interpret the match percentage through four familiar criteria commonly used by lens specialists to distinguish a good fit from a poor one. Lower matches are considerate; higher matches are framed to feel confidence-boosting!
                   </p>
                 </div>
@@ -502,13 +481,13 @@ export default function CasestudyGentleMonster() {
 
               {/* Flow 5/5 */}
               <div className="flex flex-col gap-[24px] items-start w-full">
-                <div className="flex flex-col gap-[16px] items-start w-full">
-                  <p className="font-['Inter_Tight',sans-serif] leading-none text-[#908e99] text-[14px] md:text-[16px]">Flow 5/5</p>
-                  <p className="font-['Inter_Tight',sans-serif] leading-[1.3] text-[#faf9ff] text-[18px] md:text-[24px]">
+                <div className="flex flex-col gap-[24px] items-start w-full">
+                  <p className="font-[300] leading-none text-[#908e99] text-[14px] tracking-[0.126px]">Snippet / Flow 2 / Glasses Customization</p>
+                  <p className="font-[300] leading-[1.25] text-[#faf9ff] text-[20px]">
                     One decision opens up the next one.
                   </p>
-                  <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#908e99] text-[14px] md:text-[16px] tracking-[-0.32px] w-full">
-                    Each decision should feel like a natural progression, and UI should not overflow. Information is really only displayed when necessary, like this lens tints feature!
+                  <p className="font-[300] leading-[1.65] text-[#b8b4c5] text-[17px] w-full">
+                    Each decision should feel like a natural progression, and UI should not overflow. Information is really only displayed when necessary, like this lens tint feature.
                   </p>
                 </div>
                 <div className="aspect-[2/1] bg-[#d9d9d9] rounded-[4px] w-full overflow-hidden">
@@ -524,102 +503,36 @@ export default function CasestudyGentleMonster() {
           </div>
 
           {/* ── 5. Section: Brand Research + Flow ── */}
-          <div id="cs-research" className="flex flex-col gap-[9vh] items-start w-full scroll-mt-[100px]">
+          <div id="cs-research" className="flex flex-col gap-[75px] items-start w-full scroll-mt-[100px] font-['Inter_Tight',sans-serif]">
 
-            {/* Divider line */}
-            <div className="w-full border-t border-[#302f34]" />
-            {/* Title row */}
-            <div className="flex gap-[16px] items-center relative w-full">
-              {/* Blurred glow bar */}
-              <div className="absolute pointer-events-none left-0 top-1/2 -translate-y-1/2 h-[160px] w-full blur-[80px]" style={{ background: "radial-gradient(ellipse at 15% 50%, rgba(200,185,255,0.28) 0%, rgba(200,185,255,0) 65%)" }} />
-              {/* Glass orb */}
-              <img src={imgGlassCheckpoint} alt="" className="relative shrink-0 size-[36px]" />
-              <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.1] text-[#faf9ff] text-[24px] md:text-[32px] relative z-10 md:whitespace-nowrap">
-                Research
-              </p>
-              <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.1] text-[#908e99] text-[24px] md:text-[32px] relative z-10 md:whitespace-nowrap">
-                Real eyes realize real potential
-              </p>
-            </div>
-
-            {/* Opportunity */}
-            <div className="flex flex-col gap-[24px] items-start w-full">
-              <div className="flex flex-col gap-[16px] items-start w-full">
-                <p className="font-['Inter_Tight',sans-serif] leading-none text-[#908e99] text-[14px] md:text-[16px]">
-                  Opportunity
-                </p>
-                <p className="font-['Inter_Tight',sans-serif] font-[450] leading-[1.3] text-[color:var(--text\/primary,#eeedf5)] text-[18px] md:text-[24px]">
-                  Try more and wait less.
-                </p>
-                <div className="font-['Inter_Tight',sans-serif]font-normal leading-[1.65] text-[color:var(--text\/tertiary,#7e7c87)] text-[14px] md:text-[16px] tracking-[-0.32px] w-full">
-                  <p className="mb-[16px]">With growing popularity, Gentle Monster has queued lines stretching outside the storefront in both locations I went to (Toronto, ON) (New York, New York).</p>
-                  <p>I noticed shoppers often waiting for sales associates or to try on different pairs, introducing the opportunity for a second path that both enhances user delight and storefront efficiency.</p>
-                </div>
-              </div>
-              {/* 2 landscape images with captions */}
-              <div className="flex gap-[24px] items-start w-full">
-                <div className="flex flex-col gap-[10px] items-start flex-1 min-w-0">
-                  <img src={imgCrowd} alt="Crowds at GM" className="aspect-[2/1] w-full object-cover rounded-[4px]" />
-                  <p className="font-['Inter_Tight',sans-serif] font-normal text-[12px] md:text-[14px] leading-none text-[color:var(--text\/primary,#eeedf5)]">
-                    Huge crowds are the norm for GM! Bratz pop-up in LA, Spring 2025
-                  </p>
-                </div>
-                <div className="flex flex-col gap-[10px] items-start flex-1 min-w-0">
-                  <img src={imgAr} alt="AR experience at GM" className="aspect-[2/1] w-full object-cover rounded-[4px]" />
-                  <p className="font-['Inter_Tight',sans-serif] font-normal text-[12px] md:text-[14px] leading-none text-[color:var(--text\/primary,#eeedf5)]">
-                    Not afraid of fun experiences! AR Bratz mo-cap experience in LA
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Typical GM shopper card */}
-            <div className="flex flex-col gap-[16px] items-start overflow-clip p-[24px] relative rounded-[8px] w-full border border-[#302f34]" style={{ background: "#161617" }}>
-              {/* Left blob */}
-              <div className="absolute pointer-events-none" style={{ width: "545px", height: "306px", left: "-274px", top: "calc(50% + 42px)", transform: "translateY(-50%)" }}>
-                <div style={{ width: "100%", height: "100%", background: blobGM_pink_left }} />
-              </div>
-              <div className="flex flex-col gap-[16px] items-start relative z-10 w-full">
-                <p className="font-['Inter_Tight',sans-serif] leading-none text-[#908e99] text-[14px] md:text-[16px]">
-                  The typical Gentle Monster shopper
-                </p>
-                <p className="font-['Inter_Tight',sans-serif] font-[450] leading-[1.4] text-[#faf9ff] text-[16px] md:text-[20px]">
-                  Young, trendy, self-aware 18-34 year olds are 64% of GM's market
-                </p>
-                <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#908e99] text-[14px] md:text-[16px] tracking-[-0.32px]">
-                  My users are people who are familiar with technology and care deeply about aesthetics and visuals. It was important to make everything feel clean and cool.
-                </p>
-              </div>
-            </div>
+            <CasestudySectionHeader
+              eyebrow="Research"
+              headline="Real eyes realize real potential"
+              subtitle="Studying the existing brand, main users, and existing kiosks."
+              accentColor="#afa4d8"
+            />
 
             {/* Brand Considerations */}
             <div className="flex flex-col gap-[32px] items-start w-full">
-              {/* Text content */}
               <div className="flex flex-col gap-[16px] items-start w-full">
-                <p className="font-['Inter_Tight',sans-serif] leading-none text-[#908e99] text-[14px] md:text-[16px]">
-                  Brand Considerations
-                </p>
-                <p className="font-['Inter_Tight',sans-serif] font-[450] leading-[1.3] text-[#faf9ff] text-[18px] md:text-[24px]">
+                <p className="font-[300] leading-[20px] text-[#908e99] text-[14px]">Brand Considerations</p>
+                <p className="font-[300] leading-[1.45] text-[#faf9ff] text-[20px] w-full">
                   I categorized every product and major UI elements in Gentle Monster's website, visited 2 locations, and created a 50+ page doc of my findings.
                 </p>
-                <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#b8b4c5] text-[14px] md:text-[16px] tracking-[-0.32px]">
+                <p className="font-[300] leading-[1.65] text-[#b8b4c5] text-[17px] w-full">
                   This was all to really understand Gentle Monster's design system and how people buy glasses. The biggest goal was to make the kiosk feel like it really was part of GM.
                 </p>
               </div>
-              {/* Button + Video */}
               <div className="flex flex-col gap-[16px] items-start w-full">
                 <button
                   onClick={() => window.open(`mailto:abbyxhart@gmail.com?subject=${encodeURIComponent("Loved Gentle Monster, let's chat!")}`)}
                   onMouseEnter={() => setReachOutHovered(true)}
                   onMouseLeave={() => setReachOutHovered(false)}
-                  className="flex items-center justify-center px-[16px] py-[10px] rounded-[24px] border border-solid border-[#302f34] cursor-pointer transition-colors duration-150"
-                  style={{ background: reachOutHovered ? "rgba(144,142,153,0.2)" : "rgba(88,85,100,0.2)" }}
+                  className="flex items-center justify-center px-[16px] py-[8px] rounded-[24px] cursor-pointer border-none transition-colors duration-150"
+                  style={{ background: reachOutHovered ? "rgba(255,255,255,0.15)" : "rgba(255,255,255,0.1)" }}
                 >
-                  <span className="font-['Inter_Tight',sans-serif] leading-none text-[#faf9ff] text-[12px] md:text-[14px] font-[300] whitespace-nowrap">
-                    Full doc? Email me!
-                  </span>
+                  <span className="font-[300] leading-[1.5] text-white text-[14px] whitespace-nowrap">Full doc? Email me!</span>
                 </button>
-                {/* Video */}
                 <div className="aspect-[2/1] bg-[#747474] rounded-[8px] w-full overflow-hidden">
                   <video
                     ref={(el) => {
@@ -638,20 +551,15 @@ export default function CasestudyGentleMonster() {
 
             {/* User Journey */}
             <div className="flex flex-col gap-[32px] items-start w-full">
-              {/* Text */}
               <div className="flex flex-col gap-[16px] items-start w-full">
-                <p className="font-['Inter_Tight',sans-serif] leading-none text-[#908e99] text-[14px] md:text-[16px]">
-                  User Journey
-                </p>
-                <p className="font-['Inter_Tight',sans-serif] leading-[1.3] text-[#faf9ff] text-[18px] md:text-[24px]">
+                <p className="font-[300] leading-[20px] text-[#908e99] text-[14px]">User Journey</p>
+                <p className="font-[300] leading-[1.45] text-[#faf9ff] text-[20px] w-full">
                   I created a comprehensive flow for product view, checkout, create account, prescription, and a few others.
                 </p>
-                <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[#b8b4c5] text-[14px] md:text-[17px]">
+                <p className="font-[300] leading-[1.65] text-[#b8b4c5] text-[17px] w-full">
                   I designed the full flow with first-time users in mind, limiting choices and content to keep it manageable.
                 </p>
               </div>
-
-              {/* Slider tabs + image */}
               <div className="flex flex-col gap-[16px] items-start w-full">
                 {/* Slider switcher */}
                 <div className="flex flex-col items-start">
@@ -659,7 +567,6 @@ export default function CasestudyGentleMonster() {
                     className="relative flex gap-[10px] h-[48px] items-start p-[8px] rounded-[100px]"
                     style={{ width: "340px", background: "rgba(88,85,100,0.2)", border: "1px solid #302f34" }}
                   >
-                    {/* Sliding pill */}
                     <div
                       className="absolute top-[8px] h-[32px] w-[100px] rounded-[24px] pointer-events-none"
                       style={{
@@ -669,7 +576,6 @@ export default function CasestudyGentleMonster() {
                         transition: "transform 200ms ease-out",
                       }}
                     />
-                    {/* Buttons */}
                     {journeyTabs.map((tab) => (
                       <button
                         key={tab}
@@ -679,7 +585,7 @@ export default function CasestudyGentleMonster() {
                         className="relative flex h-[32px] w-[100px] items-center justify-center px-[8px] py-[4px] rounded-[24px] shrink-0 bg-transparent border-none cursor-pointer"
                       >
                         <span
-                          className="font-['Inter_Tight',sans-serif] font-[300] text-[12px] md:text-[14px] leading-none whitespace-nowrap"
+                          className="font-[300] text-[14px] leading-none whitespace-nowrap"
                           style={{
                             color: activeJourneyTab === tab || hoveredJourneyTab === tab ? "#faf9ff" : "#908e99",
                             transition: "color 150ms ease-out",
@@ -690,7 +596,6 @@ export default function CasestudyGentleMonster() {
                       </button>
                     ))}
                   </div>
-                  {/* Underline indicator */}
                   <div
                     className="h-[2px] w-[48px] rounded-b-[4px]"
                     style={{
@@ -701,10 +606,9 @@ export default function CasestudyGentleMonster() {
                     }}
                   />
                 </div>
-
                 {/* Image */}
                 <div
-                  className="aspect-[2/1] w-full rounded-[4px] overflow-hidden bg-[#747474]"
+                  className="aspect-[2/1] w-full rounded-[8px] overflow-hidden bg-[#747474]"
                   style={{ boxShadow: "0px 0px 30px 0px rgba(154,71,255,0.2)" }}
                 >
                   <img
@@ -718,40 +622,110 @@ export default function CasestudyGentleMonster() {
                   />
                 </div>
               </div>
+              {/* Two prescription cards */}
+              <div className="flex gap-[8px] items-stretch w-full">
+                <div className="flex-1 min-w-0 flex flex-col gap-[16px] items-start overflow-clip p-[24px] relative rounded-tl-[24px] rounded-bl-[24px] rounded-tr-[4px] rounded-br-[4px] border border-[#302f34]" style={{ background: "#161617" }}>
+                  <div className="absolute pointer-events-none" style={{ width: "545px", height: "306px", left: "-274px", top: "calc(50% + 42px)", transform: "translateY(-50%)" }}>
+                    <div style={{ width: "100%", height: "100%", background: "radial-gradient(ellipse at center, rgba(175,164,216,0.08) 0%, rgba(175,164,216,0) 70%)" }} />
+                  </div>
+                  <p className="font-[300] leading-[20px] text-[14px] relative z-10">
+                    <span style={{ color: "#908e99" }}>Defining prescription flow: </span>
+                    <span style={{ color: "#b8b4c5" }}>The kiosk is</span>
+                  </p>
+                  <p className="font-[300] leading-[1.45] text-[#b8b4c5] text-[20px] relative z-10">An avenue to get new prescriptions</p>
+                  <p className="font-[300] leading-[1.65] text-[#b8b4c5] text-[16px] tracking-[-0.32px] relative z-10">
+                    Gentle Monster glasses come with plastic lenses, requiring a second trip to fill them. Why not provide in-house lens cutting like other Korean stores?
+                  </p>
+                </div>
+                <div className="flex-1 min-w-0 flex flex-col gap-[16px] items-start overflow-clip p-[24px] relative rounded-tr-[24px] rounded-br-[24px] rounded-tl-[4px] rounded-bl-[4px] border border-[#302f34]" style={{ background: "#161617" }}>
+                  <div className="absolute pointer-events-none" style={{ width: "528px", height: "306px", right: "-144px", top: "calc(50% - 55px)", transform: "translateY(-50%)" }}>
+                    <div style={{ width: "100%", height: "100%", background: "radial-gradient(ellipse at center, rgba(175,164,216,0.08) 0%, rgba(175,164,216,0) 70%)" }} />
+                  </div>
+                  <p className="font-[300] leading-[20px] text-[14px] relative z-10">
+                    <span style={{ color: "#908e99" }}>Defining prescription flow: </span>
+                    <span style={{ color: "#b8b4c5" }}>The kiosk isn't</span>
+                  </p>
+                  <p className="font-[300] leading-[1.45] text-[#b8b4c5] text-[20px] relative z-10">A full prescription service</p>
+                  <p className="font-[300] leading-[1.65] text-[#b8b4c5] text-[16px] tracking-[-0.32px] relative z-10">
+                    The kiosk will not measure prescriptions but provide an avenue for it. The ability to measure prescriptions and users ability to input are contradictory.
+                  </p>
+                </div>
+              </div>
             </div>
 
-            {/* Two column prescription flow */}
-            <div className="flex gap-[8px] items-stretch w-full">
-              {/* Left card */}
-              <div className="flex-1 min-w-0 flex flex-col gap-[16px] items-start overflow-clip p-[24px] relative rounded-tl-[24px] rounded-bl-[24px] rounded-tr-[4px] rounded-br-[4px] border border-[#302f34]" style={{ background: "#171717" }}>
-                <div className="absolute pointer-events-none" style={{ width: "545px", height: "306px", left: "-274px", top: "calc(50% + 42px)", transform: "translateY(-50%)" }}>
-                  <div style={{width:"100%",height:"100%",background:blobGM_lav_left}} />
+            {/* Section Break */}
+            <div className="flex w-full justify-center">
+              <div className="flex gap-[10px] items-start">
+                {/* Smiley pill */}
+                <div className="flex items-center justify-center shrink-0 rounded-[50px]" style={{ width: 45, height: 44, background: "rgba(175,164,216,0.15)" }}>
+                  <img src={imgFaceSmile} alt="" className="size-[24px]" />
                 </div>
-                <p className="font-['Inter_Tight',sans-serif] leading-none text-[14px] md:text-[16px] relative z-10">
-                  <span style={{ color: "#908e99" }}>Defining prescription flow: </span>
-                  <span style={{ color: "#b8b4c5" }}>The kiosk is</span>
+                {/* Speech bubble */}
+                <div
+                  className="py-[8px] px-[16px]"
+                  style={{ background: "rgba(175,164,216,0.15)", borderRadius: "24px 24px 24px 0px" }}
+                >
+                  <p className="font-[300] leading-[1.65] text-[#c1becb] text-[17px] text-left">
+                    Wait, why are you even doing this? Like what's the opportunity with GM and glasses?
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Did you know card */}
+            <div className="flex flex-col gap-[24px] items-start overflow-clip p-[24px] relative rounded-[8px] w-full border border-[#302f34]" style={{ background: "#161617" }}>
+              <div className="absolute pointer-events-none" style={{ width: "545px", height: "306px", left: "-274px", top: "calc(50% + 42px)", transform: "translateY(-50%)" }}>
+                <div style={{ width: "100%", height: "100%", background: "radial-gradient(ellipse at center, rgba(175,164,216,0.08) 0%, rgba(175,164,216,0) 70%)" }} />
+              </div>
+              <div className="absolute pointer-events-none" style={{ width: "528px", height: "306px", right: "-144px", top: "calc(50% - 55px)", transform: "translateY(-50%)" }}>
+                <div style={{ width: "100%", height: "100%", background: "radial-gradient(ellipse at center, rgba(175,164,216,0.08) 0%, rgba(175,164,216,0) 70%)" }} />
+              </div>
+              <div className="flex flex-col gap-[16px] items-start relative z-10 w-full">
+                <p className="font-[300] leading-[20px] text-[#908e99] text-[14px]">Did you know?</p>
+                <p className="font-[300] leading-[1.45] text-[#faf9ff] text-[20px] w-full">
+                  The average time to look for glasses is 15 - 30 minutes. People who know their face frame are able to pick a style in under 10.
                 </p>
-                <p className="font-['Inter_Tight',sans-serif] leading-[1.4] text-[16px] md:text-[20px] relative z-10" style={{ color: "#b8b4c5" }}>
-                  An avenue to get new prescriptions
-                </p>
-                <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[14px] md:text-[16px] tracking-[-0.32px] relative z-10" style={{ color: "#b8b4c5" }}>
-                  Gentle Monster glasses come with plastic lenses, requiring a second trip to fill them. Why not provide in-house lens cutting like other Korean stores?
+                <p className="font-[300] leading-[1.65] text-[#908e99] text-[17px] w-full">
+                 I saw this as a fun brand activation that also does more! My reseaerch from eye care locations suggests it could help GM shoppers move faster through decisions, reduce friction, and drive more conversions.
                 </p>
               </div>
-              {/* Right card */}
-              <div className="flex-1 min-w-0 flex flex-col gap-[16px] items-start overflow-clip p-[24px] relative rounded-tr-[24px] rounded-br-[24px] rounded-tl-[4px] rounded-bl-[4px] border border-[#302f34]" style={{ background: "#171717" }}>
-                <div className="absolute pointer-events-none" style={{ width: "528px", height: "306px", right: "-144px", top: "calc(50% - 55px)", transform: "translateY(-50%)" }}>
-                  <div style={{width:"100%",height:"100%",background:blobGM_lav_right}} />
+            </div>
+
+            {/* Opportunity */}
+            <div className="flex flex-col gap-[24px] items-start w-full">
+              <div className="flex flex-col gap-[24px] items-start w-full">
+                <p className="font-[300] leading-[20px] text-[#908e99] text-[14px]">The opportunity</p>
+                <p className="font-[300] leading-[1.45] text-[#faf9ff] text-[20px]">Try more and wait less.</p>
+                <div className="font-[300] text-[#b8b4c5] text-[17px] w-full">
+                  <p className="leading-[1.65] mb-[16px]">With growing popularity, Gentle Monster has queued lines stretching outside the storefront in both locations I went to (Toronto, ON) (New York, New York).</p>
+                  <p className="leading-[1.65]">I noticed shoppers often waiting for sales associates or to try on different pairs, introducing the opportunity for a second path that both enhances user delight and storefront efficiency.</p>
                 </div>
-                <p className="font-['Inter_Tight',sans-serif] leading-none text-[14px] md:text-[16px] relative z-10">
-                  <span style={{ color: "#908e99" }}>Defining prescription flow: </span>
-                  <span style={{ color: "#b8b4c5" }}>The kiosk isn't</span>
-                </p>
-                <p className="font-['Inter_Tight',sans-serif] leading-[1.4] text-[16px] md:text-[20px] relative z-10" style={{ color: "#b8b4c5" }}>
-                  A full prescription service
-                </p>
-                <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[14px] md:text-[16px] tracking-[-0.32px] relative z-10" style={{ color: "#b8b4c5" }}>
-                  The kiosk will not measure prescriptions but provide an avenue for it. The ability to measure prescriptions and users ability to input are contradictory.
+              </div>
+              <div className="flex gap-[24px] items-start w-full">
+                <div className="flex flex-col gap-[10px] items-start flex-1 min-w-0">
+                  <img src={imgCrowd} alt="Crowds at GM" className="aspect-[2/1] w-full object-cover rounded-[8px]" />
+                  <p className="font-[300] leading-[1.5] text-[#585564] text-[14px]">Huge crowds are the norm for GM! Bratz pop-up in LA, Spring 2025</p>
+                </div>
+                <div className="flex flex-col gap-[10px] items-start flex-1 min-w-0">
+                  <img src={imgAr} alt="AR experience at GM" className="aspect-[2/1] w-full object-cover rounded-[8px]" />
+                  <p className="font-[300] leading-[1.5] text-[#585564] text-[14px]">Not afraid of fun experiences! AR Bratz mo-cap experience in LA</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Typical GM shopper card */}
+            <div className="flex flex-col gap-[16px] items-start overflow-clip p-[24px] relative rounded-[8px] w-full border border-[#302f34]" style={{ background: "#161617" }}>
+              <div className="absolute pointer-events-none" style={{ width: "545px", height: "306px", left: "-274px", top: "calc(50% + 42px)", transform: "translateY(-50%)" }}>
+                <div style={{ width: "100%", height: "100%", background: blobGM_pink_left }} />
+              </div>
+              <div className="absolute pointer-events-none" style={{ width: "528px", height: "306px", right: "-144px", top: "calc(50% - 55px)", transform: "translateY(-50%)" }}>
+                <div style={{ width: "100%", height: "100%", background: blobGM_lav_right }} />
+              </div>
+              <div className="flex flex-col gap-[16px] items-start relative z-10 w-full">
+                <p className="font-[300] leading-[20px] text-[#908e99] text-[14px]">The typical Gentle Monster shopper</p>
+                <p className="font-[300] leading-[1.45] text-[#faf9ff] text-[20px]">Young, trendy, self-aware 18-34 year olds are 64% of GM's market</p>
+                <p className="font-[300] leading-[1.65] text-[#908e99] text-[16px] tracking-[-0.32px]">
+                  My users are people who are familiar with technology and care deeply about aesthetics and visuals! It was important the kiosk reflected the brand and felt minimal / clean, hence lots of documentation!
                 </p>
               </div>
             </div>
@@ -761,28 +735,19 @@ export default function CasestudyGentleMonster() {
           {/* ── 6. Section: Heuristic Research ── */}
           <div id="cs-heuristics" className="flex flex-col gap-[9vh] items-start w-full scroll-mt-[100px]">
 
-            {/* Divider line */}
-            <div className="w-full border-t border-[#302f34]" />
-            {/* Title row */}
-            <div className="flex flex-col items-start w-full">
-              <div className="flex gap-[16px] items-center relative w-full">
-                <div className="absolute pointer-events-none left-0 top-1/2 -translate-y-1/2 h-[160px] w-full blur-[80px]" style={{ background: "radial-gradient(ellipse at 15% 50%, rgba(200,185,255,0.28) 0%, rgba(200,185,255,0) 65%)" }} />
-                <img src={imgGlassCheckpoint} alt="" className="relative shrink-0 size-[36px]" />
-                <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.1] text-white text-[24px] md:text-[32px] relative z-10 md:whitespace-nowrap">
-                  Heuristics
-                </p>
-              </div>
-              <p className="font-['Inter_Tight',sans-serif] font-[300] italic leading-[1.5] text-[#585564] text-[12px] md:text-[14px] mt-[12px]" style={{ paddingLeft: "52px" }}>
-                a metric helping to identify usability problems in interface design
-              </p>
-            </div>
+            <CasestudySectionHeader
+              eyebrow="Heuristics"
+              headline="Clarity from asking questions"
+              subtitle="a metric helping to identify usability problems in interface design"
+              accentColor="#afa4d8"
+            />
 
             {/* Title block */}
             <div className="flex flex-col gap-[16px] items-start w-full">
               <p className="font-['Inter_Tight',sans-serif] leading-none text-[#908e99] text-[14px] md:text-[16px]">
                 General Kiosk Research and Heuristics
               </p>
-              <p className="font-['Inter_Tight',sans-serif] font-[450] leading-[1.3] text-[color:var(--text\/primary,#eeedf5)] text-[18px] md:text-[24px]">
+              <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.3] text-[color:var(--text\/primary,#eeedf5)] text-[18px] md:text-[24px]">
                 Clarity from asking questions
               </p>
               <p className="font-['Inter_Tight',sans-serif]font-normal leading-[1.65] text-[color:var(--text\/tertiary,#7e7c87)] text-[14px] md:text-[16px] tracking-[-0.32px]">
@@ -830,12 +795,12 @@ export default function CasestudyGentleMonster() {
               {/* Problem card */}
               <div className="flex flex-col gap-[16px] items-start overflow-clip p-[24px] relative rounded-tl-[24px] rounded-tr-[24px] rounded-bl-[4px] rounded-br-[4px] w-full border border-[#302f34]" style={{ background: "rgba(88,85,100,0.15)" }}>
                 <div className="absolute pointer-events-none" style={{ width: "528px", height: "306px", right: "531px", top: "calc(50% - 108px)", transform: "translateY(-50%)" }}>
-                  <div style={{ width: "100%", height: "100%", background: "radial-gradient(ellipse at center, rgba(185,175,255,0.2) 0%, rgba(185,175,255,0) 70%)" }} />
+                  <div style={{ width: "100%", height: "100%", background: "radial-gradient(ellipse at center, rgba(175,164,216,0.2) 0%, rgba(175,164,216,0) 70%)" }} />
                 </div>
                 <p className="font-['Inter_Tight',sans-serif] leading-none text-[#908e99] text-[14px] md:text-[16px] relative z-10">
                   The key problem
                 </p>
-                <p className="font-['Inter_Tight',sans-serif] font-[450] leading-[1.4] text-[#faf9ff] text-[16px] md:text-[20px] relative z-10">
+                <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.4] text-[#faf9ff] text-[16px] md:text-[20px] relative z-10">
                   Navigation is inconsistent, people hate scrolling, + range of motion is tiring.
                 </p>
                 <p className="font-['Inter_Tight',sans-serif] leading-none text-[#585564] text-[12px] md:text-[14px] relative z-10">
@@ -876,12 +841,12 @@ export default function CasestudyGentleMonster() {
               {/* Solution card */}
               <div className="flex flex-col gap-[16px] items-start overflow-clip p-[24px] relative rounded-bl-[24px] rounded-br-[24px] rounded-tl-[8px] rounded-tr-[8px] w-full border border-[#302f34]" style={{ background: "rgba(88,85,100,0.15)" }}>
                 <div className="absolute pointer-events-none" style={{ width: "528px", height: "306px", right: "196px", top: "calc(50% + 99px)", transform: "translateY(-50%)" }}>
-                  <div style={{ width: "100%", height: "100%", background: "radial-gradient(ellipse at center, rgba(200,190,255,0.2) 0%, rgba(200,190,255,0) 70%)" }} />
+                  <div style={{ width: "100%", height: "100%", background: "radial-gradient(ellipse at center, rgba(175,164,216,0.2) 0%, rgba(175,164,216,0) 70%)" }} />
                 </div>
                 <p className="font-['Inter_Tight',sans-serif] leading-none text-[#908e99] text-[14px] md:text-[16px] relative z-10">
                   The obvious solution
                 </p>
-                <p className="font-['Inter_Tight',sans-serif] font-[450] leading-[1.4] text-[#faf9ff] text-[16px] md:text-[20px] relative z-10">
+                <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.4] text-[#faf9ff] text-[16px] md:text-[20px] relative z-10">
                   Provide simple menus and large margins, centering the experience.
                 </p>
               </div>
@@ -893,19 +858,12 @@ export default function CasestudyGentleMonster() {
           {/* ── 7. Section: Specs + Modelling ── */}
           <div id="cs-specs" className="flex flex-col gap-[9vh] items-start w-full scroll-mt-[100px]">
 
-            {/* Divider line */}
-            <div className="w-full border-t border-[#302f34]" />
-            {/* Title row */}
-            <div className="flex gap-[16px] items-center relative w-full">
-              <div className="absolute pointer-events-none left-0 top-1/2 -translate-y-1/2 h-[160px] w-full blur-[80px]" style={{ background: "radial-gradient(ellipse at 15% 50%, rgba(200,185,255,0.28) 0%, rgba(200,185,255,0) 65%)" }} />
-              <img src={imgGlassCheckpoint} alt="" className="relative shrink-0 size-[36px]" />
-              <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.1] text-[#faf9ff] text-[24px] md:text-[32px] relative z-10 md:whitespace-nowrap">
-                Specs
-              </p>
-              <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.1] text-[#908e99] text-[24px] md:text-[32px] relative z-10 md:whitespace-nowrap">
-                Planning for the real world
-              </p>
-            </div>
+            <CasestudySectionHeader
+              eyebrow="Specs"
+              headline="Planning for the real world"
+              subtitle="Where physical meets digital"
+              accentColor="#afa4d8"
+            />
 
             <div
               className="flex flex-col gap-[75px] items-start pb-[32px] pt-[24px] px-[24px] rounded-[8px] w-full border border-[#302f34]"
@@ -917,7 +875,7 @@ export default function CasestudyGentleMonster() {
                 <p className="font-['Inter_Tight',sans-serif] leading-none text-[#908e99] text-[14px] md:text-[16px]">
                   Modelling for...
                 </p>
-                <p className="font-['Inter_Tight',sans-serif] font-[450] leading-[1.3] text-[#faf9ff] text-[18px] md:text-[24px]">
+                <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.3] text-[#faf9ff] text-[18px] md:text-[24px]">
                   Both physical dimensions and C4D environments
                 </p>
               </div>
@@ -928,7 +886,7 @@ export default function CasestudyGentleMonster() {
                   <p className="font-['Inter_Tight',sans-serif] leading-none text-[#908e99] text-[14px] md:text-[16px]">
                     Kiosk
                   </p>
-                  <p className="font-['Inter_Tight',sans-serif] font-[450] leading-[1.3] text-[#faf9ff] text-[18px] md:text-[24px]">
+                  <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.3] text-[#faf9ff] text-[18px] md:text-[24px]">
                     Testing button sizes in the real world and creating rules for kiosk build.
                   </p>
                 </div>
@@ -974,7 +932,7 @@ export default function CasestudyGentleMonster() {
                   <p className="font-['Inter_Tight',sans-serif] leading-none text-[#908e99] text-[14px] md:text-[16px]">
                     Glasses
                   </p>
-                  <p className="font-['Inter_Tight',sans-serif] font-[450] leading-[1.3] text-[#faf9ff] text-[18px] md:text-[24px]">
+                  <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.3] text-[#faf9ff] text-[18px] md:text-[24px]">
                     Modelling a pair in C4D.
                   </p>
                 </div>
@@ -1032,7 +990,7 @@ export default function CasestudyGentleMonster() {
               <p className="font-['Inter_Tight',sans-serif] leading-none text-[#908e99] text-[14px] md:text-[16px]">
                 Thank you for shopping with us!
               </p>
-              <p className="font-['Inter_Tight',sans-serif] font-[450] leading-[1.3] text-[#faf9ff] text-[18px] md:text-[24px]">
+              <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.3] text-[#faf9ff] text-[18px] md:text-[24px]">
                 Combining skillsets &gt;&gt;
               </p>
             </div>

@@ -6,16 +6,16 @@ import { Mousewheel } from "swiper/modules";
 import type { Swiper as SwiperType } from "swiper";
 import "swiper/css";
 import Navigation from "../../imports/Navigation";
-import HomeButton from "../components/HomeButton";
-import FriendsCard from "../components/FriendsCard";
-import OfflineCard from "../components/OfflineCard";
-import DrinkCard from "../components/DrinkCard";
+import HomeButton from "../components/layout/HomeButton";
+import FriendsCard from "../components/about/FriendsCard";
+import OfflineCard from "../components/about/OfflineCard";
+import DrinkCard from "../components/drinks/DrinkCard";
 import about1 from "../../assets/project/about/about_1.jpg";
 import about3 from "../../assets/project/about/about_3.png";
 import about4 from "../../assets/project/about/about_4.png";
 const quotes = [
   {
-    text: "What is this doing here? Do you need it? Get rid of it!",
+    text: "What is this doing here? Does your design need it? Get rid of it!",
     attribution: "Adam Smith, RIT professor",
   },
   {
@@ -33,9 +33,9 @@ const quotes = [
 ];
 
 const photos = [
-  { caption: "Me + Lana @ CC Meet, we won!", img: about1 },
-  { caption: "Charlotte, Miggi, Me, Troy, Lasya @ New Media Club", img: about3 },
-  { caption: "Angie, Me, Ivo, TJ, @ NYC", img: about4 },
+  { caption: "Me + Lana @ CC Meet, our team won!", img: about1 },
+  { caption: "Charlotte, Miggi, Troy, Me, Lasya @ New Media Club", img: about3 },
+  { caption: "Angie, Me, Ivo, TJ, Leah @ NYC", img: about4 },
 ];
 
 
@@ -43,7 +43,6 @@ export default function About() {
   const shouldAnimate = useNavEntrance();
   const [scrolled, setScrolled] = useState(false);
   const [activePhoto, setActivePhoto] = useState(0);
-  const [galleryHovered, setGalleryHovered] = useState(false);
   const swiperRef = useRef<SwiperType | null>(null);
   const quotesOuterRef = useRef<HTMLDivElement>(null);
   const quotesInnerRef = useRef<HTMLDivElement>(null);
@@ -203,7 +202,7 @@ export default function About() {
             </div>
 
             {/* Photo gallery */}
-            <div className="flex flex-col gap-[12px]" onMouseEnter={() => setGalleryHovered(true)} onMouseLeave={() => setGalleryHovered(false)}>
+            <div className="flex flex-col gap-[12px]">
               <div className="w-full overflow-x-clip">
                 <Swiper
                   modules={[Mousewheel]}
@@ -249,8 +248,8 @@ export default function About() {
                   />
                 ))}
               </div>
-              <p className="font-['Inter_Tight',sans-serif] font-normal leading-none text-[#908e99] text-[14px] text-center w-full transition-all duration-200">
-                {galleryHovered ? photos[activePhoto].caption : "Offline"}
+              <p className="font-['Inter_Tight',sans-serif] font-normal leading-none text-[#faf9ff] text-[14px] text-center w-full">
+                {photos[activePhoto].caption}
               </p>
             </div>
           </motion.div>

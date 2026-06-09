@@ -2,10 +2,11 @@ import { useState, useEffect, useRef } from "react";
 import { useNavEntrance } from "../hooks/useNavEntrance";
 import { motion, AnimatePresence, useScroll, useTransform, useMotionValue } from "motion/react";
 import Navigation from "../../imports/Navigation";
-import HomeButton from "../components/HomeButton";
-import CasestudyNavigation from "../components/CasestudyNavigation";
-import UpNext from "../components/UpNext";
-import CasestudyMiniMenu from "../components/CasestudyMiniMenu";
+import HomeButton from "../components/layout/HomeButton";
+import CasestudyNavigation from "../components/casestudy/CasestudyNavigation";
+import UpNext from "../components/casestudy/UpNext";
+import CasestudyMiniMenu from "../components/casestudy/CasestudyMiniMenu";
+import CasestudySectionHeader from "../components/casestudy/CasestudySectionHeader";
 
 const FIGMA_SECTIONS = [
   { id: "cs-overview", label: "Overview" },
@@ -81,6 +82,11 @@ export default function CasestudyFigmaRIT() {
 
   return (
     <div className="relative min-h-screen bg-background overflow-x-clip">
+      {/* Top Gradient */}
+      <div
+        className="absolute inset-x-0 z-0 h-[600px] pointer-events-none"
+        style={{ top: 0, background: "linear-gradient(to top, rgba(22,22,23,0.2), #23CB71)", opacity: 0.5 }}
+      />
       <HomeButton />
       <CasestudyNavigation title="FigBuild Badges 2026" />
       <CasestudyMiniMenu sections={FIGMA_SECTIONS} />
@@ -113,7 +119,7 @@ export default function CasestudyFigmaRIT() {
         initial={shouldAnimate ? { opacity: 0, y: 24 } : false}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: "easeOut" }}
-        className="flex flex-col items-center px-[16px] md:px-[20vw] pt-[15vh] pb-[15vh]"
+        className="flex flex-col items-center px-[16px] md:px-[20vw] pt-[15vh] pb-[15vh] relative z-[1]"
       >
         <div className="flex flex-col gap-[75px] items-end w-full">
 
@@ -197,14 +203,13 @@ export default function CasestudyFigmaRIT() {
 
           {/* ── Section: Design ── */}
           <div id="cs-design" className="flex flex-col gap-[75px] items-start w-full">
+            <CasestudySectionHeader
+              eyebrow="Design"
+              headline="Sprinting to be ready for Figbuild on Super Bowl Sunday"
+              subtitle="Wireframes, workflows, and what it took to ship in a weekend"
+            />
             <div className="flex flex-col gap-[32px] items-start w-full">
               <div className="flex flex-col gap-[16px] items-start w-full">
-                <p className="font-['Inter_Tight',sans-serif] leading-none text-[#908e99] text-[14px] md:text-[16px] w-full">
-                  Wireframes
-                </p>
-                <p className="font-['Inter_Tight',sans-serif] font-[450] leading-[1.3] text-[color:var(--text\/primary,#eeedf5)] text-[18px] md:text-[24px] w-full">
-                  Sprinting to be ready for Figbuild on Super Bowl Sunday
-                </p>
                 <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[color:var(--text\/tertiary,#7e7c87)] text-[14px] md:text-[17px] w-full">
                   I took the basic concepts from Troy and laid out the mobile and desktop bento box design, flow chart, and design proposal within 4-6 hours, taking a break to watch Bad Bunny's Halftime performance :D
                 </p>
@@ -295,13 +300,12 @@ export default function CasestudyFigmaRIT() {
           </div>
 
           {/* ── Section: Review ── */}
-          <div id="cs-review" className="flex flex-col gap-[16px] items-start w-full">
-            <p className="font-['Inter_Tight',sans-serif] leading-none text-[#908e99] text-[14px] md:text-[16px]">
-              Reflections
-            </p>
-            <p className="font-['Inter_Tight',sans-serif] font-[450] leading-[1.3] text-[color:var(--text\/primary,#eeedf5)] text-[18px] md:text-[24px]">
-              Turning physical digital
-            </p>
+          <div id="cs-review" className="flex flex-col gap-[24px] items-start w-full">
+            <CasestudySectionHeader
+              eyebrow="Reflections"
+              headline="Turning physical digital"
+              subtitle="What we shipped and what we learned"
+            />
 
             {/* Point 1 */}
             <div className="border border-[#302f34] flex font-['Inter_Tight',sans-serif] gap-[16px] items-start mt-[16px] p-[16px] rounded-[8px] w-full" style={{ background: "rgba(88,85,100,0.2)" }}>

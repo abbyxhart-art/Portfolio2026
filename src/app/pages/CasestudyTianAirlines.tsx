@@ -2,11 +2,12 @@ import { useState, useEffect, useRef } from "react";
 import { useNavEntrance } from "../hooks/useNavEntrance";
 import { motion, AnimatePresence, useScroll, useTransform, useMotionValue } from "motion/react";
 import Navigation from "../../imports/Navigation";
-import HomeButton from "../components/HomeButton";
-import CasestudyNavigation from "../components/CasestudyNavigation";
-import UpNext from "../components/UpNext";
-import CasestudyMiniMenu from "../components/CasestudyMiniMenu";
-import imgGlassCheckpoint from "../../assets/project/gentlemonster/glass_checkpoint.svg";
+import HomeButton from "../components/layout/HomeButton";
+import CasestudyNavigation from "../components/casestudy/CasestudyNavigation";
+import UpNext from "../components/casestudy/UpNext";
+import CasestudyMiniMenu from "../components/casestudy/CasestudyMiniMenu";
+import CasestudySectionHeader from "../components/casestudy/CasestudySectionHeader";
+
 
 const TIAN_SECTIONS = [
   { id: "cs-overview", label: "Overview" },
@@ -81,6 +82,11 @@ export default function CasestudyTianAirlines() {
 
   return (
     <div className="relative min-h-screen bg-background overflow-x-clip">
+      {/* Top Gradient */}
+      <div
+        className="absolute inset-x-0 z-0 h-[600px] pointer-events-none"
+        style={{ top: 0, background: "linear-gradient(to top, rgba(22,22,23,0.2), #9A47FF)", opacity: 0.5 }}
+      />
       <HomeButton />
       <CasestudyNavigation title="Tian Airways" />
       <CasestudyMiniMenu sections={TIAN_SECTIONS} />
@@ -113,7 +119,7 @@ export default function CasestudyTianAirlines() {
         initial={shouldAnimate ? { opacity: 0, y: 24 } : false}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: "easeOut" }}
-        className="flex flex-col items-center px-[16px] md:px-[20vw] pt-[15vh] pb-[15vh]"
+        className="flex flex-col items-center px-[16px] md:px-[20vw] pt-[15vh] pb-[15vh] relative z-[1]"
       >
         <div className="flex flex-col items-center w-full">
 
@@ -193,12 +199,11 @@ export default function CasestudyTianAirlines() {
             <div id="cs-design-system" className="flex flex-col gap-[8vh] items-start w-full scroll-mt-[100px]">
               {/* Divider */}
               <div className="w-full border-t border-[#302f34]" />
-              {/* Title row */}
-              <div className="flex gap-[16px] items-center relative w-full">
-                <div className="absolute pointer-events-none left-0 top-1/2 -translate-y-1/2 h-[160px] w-full blur-[80px]" style={{ background: "radial-gradient(ellipse at 15% 50%, rgba(200,185,255,0.28) 0%, rgba(200,185,255,0) 65%)" }} />
-                <img src={imgGlassCheckpoint} alt="" className="relative shrink-0 size-[36px]" />
-                <p className="font-['Inter_Tight',sans-serif] leading-[1.1] text-[#faf9ff] text-[24px] md:text-[32px] relative z-10 md:whitespace-nowrap">Design System</p>
-              </div>
+              <CasestudySectionHeader
+                eyebrow="Design System"
+                headline="Organized for anyone to use"
+                subtitle="Typography, color, illustration styles, icons, and a full component library"
+              />
               <div className="flex flex-col gap-[32px] items-start w-full">
                 <div className="flex flex-col gap-[16px] items-start w-full">
                   <p className="font-['Inter_Tight',sans-serif] leading-none text-[#908e99] text-[14px] md:text-[16px]">Nebula: Heaven / Tian's System</p>
@@ -275,12 +280,11 @@ export default function CasestudyTianAirlines() {
               <div id="cs-flight-planning" className="flex flex-col gap-[8vh] items-start w-full scroll-mt-[100px]">
                 {/* Divider */}
                 <div className="w-full border-t border-[#302f34]" />
-                {/* Title row */}
-                <div className="flex gap-[16px] items-center relative w-full">
-                  <div className="absolute pointer-events-none left-0 top-1/2 -translate-y-1/2 h-[160px] w-full blur-[80px]" style={{ background: "radial-gradient(ellipse at 15% 50%, rgba(200,185,255,0.28) 0%, rgba(200,185,255,0) 65%)" }} />
-                  <img src={imgGlassCheckpoint} alt="" className="relative shrink-0 size-[36px]" />
-                  <p className="font-['Inter_Tight',sans-serif] leading-[1.1] text-[#faf9ff] text-[24px] md:text-[32px] relative z-10 md:whitespace-nowrap">Flight Planning</p>
-                </div>
+                <CasestudySectionHeader
+                  eyebrow="Flight Planning"
+                  headline="Making a working flight table"
+                  subtitle="Routes, schedules, and the logic behind them"
+                />
                 <div className="flex flex-col gap-[24px] items-start w-full">
                   <div className="flex flex-col gap-[16px] items-start w-full">
                     <p className="font-['Inter_Tight',sans-serif] font-[300] leading-none text-[#908e99] text-[14px] md:text-[16px]">Flight Planning</p>
@@ -327,12 +331,11 @@ export default function CasestudyTianAirlines() {
             <div id="cs-final-designs" className="flex flex-col gap-[8vh] items-start w-full scroll-mt-[100px]">
               {/* Divider */}
               <div className="w-full border-t border-[#302f34]" />
-              {/* Title row */}
-              <div className="flex gap-[16px] items-center relative w-full">
-                <div className="absolute pointer-events-none left-0 top-1/2 -translate-y-1/2 h-[160px] w-full blur-[80px]" style={{ background: "radial-gradient(ellipse at 15% 50%, rgba(200,185,255,0.28) 0%, rgba(200,185,255,0) 65%)" }} />
-                <img src={imgGlassCheckpoint} alt="" className="relative shrink-0 size-[36px]" />
-                <p className="font-['Inter_Tight',sans-serif] leading-[1.1] text-[#faf9ff] text-[24px] md:text-[32px] relative z-10 md:whitespace-nowrap">Prototype</p>
-              </div>
+              <CasestudySectionHeader
+                eyebrow="Prototype"
+                headline="Where am I, where do I want to go, how do I get there?"
+                subtitle="After testing peers, better cues for interactivity"
+              />
 
               {/* Final design flows card */}
               <div className="border border-[#302f34] flex flex-col gap-[75px] items-start p-[24px] rounded-[8px] w-full" style={{ background: "linear-gradient(to bottom, #302f34 0%, #161617 65%)" }}>

@@ -2,10 +2,11 @@ import { useState, useEffect, useRef } from "react";
 import { useNavEntrance } from "../hooks/useNavEntrance";
 import { motion, AnimatePresence, useScroll, useTransform, useMotionValue } from "motion/react";
 import Navigation from "../../imports/Navigation";
-import HomeButton from "../components/HomeButton";
-import CasestudyNavigation from "../components/CasestudyNavigation";
-import UpNext from "../components/UpNext";
-import CasestudyMiniMenu from "../components/CasestudyMiniMenu";
+import HomeButton from "../components/layout/HomeButton";
+import CasestudyNavigation from "../components/casestudy/CasestudyNavigation";
+import UpNext from "../components/casestudy/UpNext";
+import CasestudyMiniMenu from "../components/casestudy/CasestudyMiniMenu";
+import CasestudySectionHeader from "../components/casestudy/CasestudySectionHeader";
 
 import imgUpdate1 from "../../assets/project/fragrantica/update_1.png";
 import imgUpdate2 from "../../assets/project/fragrantica/update_2.png";
@@ -16,8 +17,6 @@ import imgHome3 from "../../assets/project/fragrantica/home_3.png";
 import imgScent1 from "../../assets/project/fragrantica/scent_1.png";
 import imgScent2 from "../../assets/project/fragrantica/scent_2.png";
 import imgScent3 from "../../assets/project/fragrantica/scent_3.png";
-
-const imgGlassCheckpoint = "https://www.figma.com/api/mcp/asset/cd9f6a3e-7f0c-4776-b131-125030b74110";
 
 const FRAG_SECTIONS = [
   { id: "cs-overview",   label: "Overview"   },
@@ -74,6 +73,11 @@ export default function CasestudyFragrantica() {
 
   return (
     <div className="relative min-h-screen bg-background overflow-x-clip">
+      {/* Top Gradient */}
+      <div
+        className="absolute inset-x-0 z-0 h-[600px] pointer-events-none"
+        style={{ top: 0, background: "linear-gradient(to top, rgba(22,22,23,0.2), #afa4d8)", opacity: 0.5 }}
+      />
       <HomeButton />
       <CasestudyNavigation title="Fragrantica" />
       <CasestudyMiniMenu sections={FRAG_SECTIONS} />
@@ -107,7 +111,7 @@ export default function CasestudyFragrantica() {
         initial={shouldAnimate ? { opacity: 0, y: 24 } : false}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: "easeOut" }}
-        className="flex flex-col items-center px-[16px] md:px-[20vw] pt-[15vh] pb-[15vh]"
+        className="flex flex-col items-center px-[16px] md:px-[20vw] pt-[15vh] pb-[15vh] relative z-[1]"
       >
         <div className="flex flex-col gap-[110px] items-center w-full">
 
@@ -166,13 +170,11 @@ We laughed and I wondered how the experience could feel more curated, expressive
           </div>
 
           {/* ── Checkpoint: Redesign ── */}
-          <div className="flex gap-[16px] items-center w-full relative">
-            <div className="absolute left-0 top-1/2 -translate-y-1/2 h-[78px] w-[228px] bg-[#d9d9d9] blur-[50px] opacity-10 pointer-events-none" />
-            <img src={imgGlassCheckpoint} alt="" className="relative shrink-0 size-[36px]" />
-            <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.1] text-white text-[24px] md:text-[32px] relative">
-              Redesign
-            </p>
-          </div>
+          <CasestudySectionHeader
+            eyebrow="Redesign"
+            headline="Making it feel more you"
+            subtitle="Repackaging Fragrantica for people who love scent"
+          />
 
           {/* ── Redesign sections ── */}
           <div id="cs-redesign" className="flex flex-col gap-[40px] w-full">
@@ -287,13 +289,11 @@ We laughed and I wondered how the experience could feel more curated, expressive
           </div>
 
           {/* ── Checkpoint: Reflection ── */}
-          <div className="flex gap-[16px] items-center w-full relative">
-            <div className="absolute left-0 top-1/2 -translate-y-1/2 h-[78px] w-[228px] bg-[#d9d9d9] blur-[50px] opacity-10 pointer-events-none" />
-            <img src={imgGlassCheckpoint} alt="" className="relative shrink-0 size-[36px]" />
-            <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.1] text-white text-[24px] md:text-[32px] relative">
-              Reflection
-            </p>
-          </div>
+          <CasestudySectionHeader
+            eyebrow="Reflection"
+            headline="What I would do differently"
+            subtitle="Looking back at the process"
+          />
 
           {/* ── Reflection ── */}
           <div id="cs-reflection" className="flex flex-col gap-[75px] items-start w-full">

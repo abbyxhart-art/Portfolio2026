@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useNavEntrance } from "../hooks/useNavEntrance";
 import { motion, AnimatePresence } from "motion/react";
 import Navigation from "../../imports/Navigation";
-import HomeButton from "../components/HomeButton";
+import HomeButton from "../components/layout/HomeButton";
 import BoothDial from "../components/BoothDial";
 import imgCos1 from "../../assets/project/booth/cos1_2x1.png";
 import imgCos2 from "../../assets/project/booth/cos2_2x1.png";
