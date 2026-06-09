@@ -3,7 +3,9 @@ import { Link } from "react-router";
 import aixelsMeImg from "../../../assets/project/aixels/me.JPG";
 import gmTeaserVideo from "../../../assets/project/gentlemonster/GM_Teaser_2x1.mp4";
 
-const figbuildVideo = new URL("../../../assets/project/figbuild/figbuild_macstudio_2x1.mp4", import.meta.url).href;
+const figbuildVideo  = new URL("../../../assets/project/figbuild/figbuild_macstudio_2x1.mp4", import.meta.url).href;
+const capitolVideo   = new URL("../../../assets/project/capitol/capitol_fullflow.mp4", import.meta.url).href;
+const texasVideo     = new URL("../../../assets/project/texasid/FullPrototype_1200x600_30fps.mp4", import.meta.url).href;
 
 type CasestudyEntry = {
   id: string;
@@ -14,12 +16,11 @@ type CasestudyEntry = {
 };
 
 const ALL: CasestudyEntry[] = [
-  { id: "figma-rit",       title: "Figma at RIT",         path: "/casestudy/figma-rit",       mediaType: "video", mediaSrc: figbuildVideo },
-  { id: "gentle-monster",  title: "Gentle Monster Kiosk", path: "/casestudy/gentle-monster",  mediaType: "video", mediaSrc: gmTeaserVideo },
-  { id: "tian-airlines",   title: "Tian Airways",         path: "/casestudy/tian-airlines",   mediaType: null },
-  { id: "texas-mobile",   title: "Texas Mobile",          path: "/casestudy/texas-mobile",    mediaType: null },
-  { id: "fragrantica",     title: "Fragrantica",           path: "/casestudy/fragrantica",     mediaType: null },
-  { id: "aixels",          title: "AIXELS",               path: "/casestudy/aixels",          mediaType: "image", mediaSrc: aixelsMeImg },
+  { id: "gentle-monster",    title: "Gentle Monster Kiosk", path: "/casestudy/gentle-monster",    mediaType: "video", mediaSrc: gmTeaserVideo },
+  { id: "capitol-aluminum",  title: "Capitol Aluminum",     path: "/casestudy/capitol-aluminum",  mediaType: "video", mediaSrc: capitolVideo },
+  { id: "texas-mobile",      title: "Texas Mobile",         path: "/casestudy/texas-mobile",      mediaType: "video", mediaSrc: texasVideo },
+  { id: "figma-rit",         title: "FigBuild 2026",        path: "/casestudy/figma-rit",         mediaType: "video", mediaSrc: figbuildVideo },
+  { id: "aixels",            title: "AIXELS",               path: "/casestudy/aixels",            mediaType: "image", mediaSrc: aixelsMeImg },
 ];
 
 const VISITED_KEY = (id: string) => `visited_${id}`;
@@ -39,7 +40,7 @@ export default function UpNext({ currentId }: { currentId: string }) {
   if (!next) return null;
 
   return (
-    <div className="flex flex-col items-start pt-[100px] w-full">
+    <div className="flex flex-col items-start pt-[100px] pb-[100px] w-full">
       <Link
         to={next.path}
         className="flex flex-col gap-[17px] items-start w-full no-underline"

@@ -28,6 +28,10 @@ function HomeCasestudyMenu({ show }: { show: boolean }) {
   const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
     try {
       const stored = localStorage.getItem(VISITED_KEY);
       if (stored) setVisited(JSON.parse(stored));
