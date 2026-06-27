@@ -12,7 +12,7 @@ export default function Navigation({ scrolledDown = false }: { scrolledDown?: bo
 
   return (
     <div
-      className={`hidden md:flex h-[36px] justify-center w-full font-['Inter_Tight',sans-serif] text-[16px] font-normal leading-none tracking-[0] ${scrolledDown ? "items-start py-[8px]" : "items-center"}`}
+      className={`hidden md:flex h-[48px] justify-center w-full font-['Inter_Tight',sans-serif] text-[16px] font-normal leading-none tracking-[0] ${scrolledDown ? "items-start py-[8px]" : "items-center"}`}
       style={{
         gap: scrolledDown ? "16px" : "24px",
         transition: "gap 0.4s cubic-bezier(0.4,0,0.2,1)"
@@ -24,7 +24,7 @@ export default function Navigation({ scrolledDown = false }: { scrolledDown?: bo
           to={to}
           end={end}
           style={({ isActive }) => ({
-            color: isActive || hoveredLink === to ? "#EEEDF5" : "#B8B4C5",
+            color: isActive || hoveredLink === to ? "var(--color-text-primary)" : "var(--color-text-secondary)",
             transition: "color 0.2s",
           })}
           className="relative shrink-0 text-[16px] no-underline cursor-pointer"

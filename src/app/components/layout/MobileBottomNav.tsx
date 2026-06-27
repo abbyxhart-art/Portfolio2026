@@ -37,11 +37,11 @@ function SipCupInner({ drink, sip }: { drink: Exclude<DrinkType, null>; sip: Sip
     const cream = mangoCream[sip];
     return (
       <div className="h-[62px] relative w-[42px]">
-        <div className="absolute bg-[#7e7c87] h-[53px] left-[20px] top-0 w-[4px]" />
+        <div className="absolute bg-[#4f4c58] h-[53px] left-[20px] top-0 w-[4px]" />
         {fill && <div className="absolute bg-[rgba(255,198,43,0.8)] left-[3px] rounded-bl-[24px] rounded-br-[24px] w-[37px]" style={{ height: fill.height, top: fill.top }} />}
         {cream && <div className="absolute bg-white h-[8px] left-[3px] w-[37px]" style={{ top: cream }} />}
         <div className="absolute border-[0.75px] border-[#7e7c87] border-solid h-[53px] left-[3px] rounded-bl-[24px] rounded-br-[24px] top-[9px] w-[37px]" />
-        <div className="absolute bg-[#7e7c87] h-[4px] left-0 rounded-[10px] top-[6px] w-[42px]" />
+        <div className="absolute bg-[#4f4c58] h-[4px] left-0 rounded-[10px] top-[6px] w-[42px]" />
       </div>
     );
   }
@@ -50,7 +50,7 @@ function SipCupInner({ drink, sip }: { drink: Exclude<DrinkType, null>; sip: Sip
     const fill = lycheeFill[sip];
     return (
       <div className="h-[62px] relative w-[42px]">
-        <div className="absolute bg-[#7e7c87] h-[53px] left-[20px] top-0 w-[4px]" />
+        <div className="absolute bg-[#4f4c58] h-[53px] left-[20px] top-0 w-[4px]" />
         <div className={`absolute bg-white left-[6px] size-[4px] top-[42px] ${sip === 4 ? "opacity-0" : ""}`} />
         <div className={`absolute bg-white left-[14px] size-[4px] top-[42px] ${sip === 4 ? "opacity-0" : ""}`} />
         <div className={`absolute bg-white left-[10px] size-[4px] top-[34px] ${is3Or4 ? "opacity-0" : ""}`} />
@@ -61,7 +61,7 @@ function SipCupInner({ drink, sip }: { drink: Exclude<DrinkType, null>; sip: Sip
         <div className={`absolute bg-white left-[10px] size-[4px] top-[50px] ${sip === 4 ? "opacity-0" : ""}`} />
         {fill && <div className="absolute bg-[rgba(193,112,255,0.63)] left-[3px] rounded-bl-[24px] rounded-br-[24px] w-[37px]" style={{ height: fill.height, top: fill.top }} />}
         <div className="absolute border-[0.75px] border-[#7e7c87] border-solid h-[53px] left-[3px] rounded-bl-[24px] rounded-br-[24px] top-[9px] w-[37px]" />
-        <div className="absolute bg-[#7e7c87] h-[4px] left-0 rounded-[10px] top-[6px] w-[42px]" />
+        <div className="absolute bg-[#4f4c58] h-[4px] left-0 rounded-[10px] top-[6px] w-[42px]" />
       </div>
     );
   }
@@ -69,13 +69,13 @@ function SipCupInner({ drink, sip }: { drink: Exclude<DrinkType, null>; sip: Sip
   if (drink === "matcha") {
     return (
       <div className="h-[62px] relative w-[42px]">
-        <div className="absolute bg-[#7e7c87] h-[53px] left-[20px] top-0 w-[4px]" />
+        <div className="absolute bg-[#4f4c58] h-[53px] left-[20px] top-0 w-[4px]" />
         <div className={`absolute bg-[rgba(255,173,172,0.8)] h-[26px] left-[3px] rounded-bl-[24px] rounded-br-[24px] top-[36px] w-[37px] ${[3, 4].includes(sip) ? "opacity-0" : ""}`} />
         <div className={`absolute bg-[rgba(255,173,172,0.8)] h-[35px] left-[3px] rounded-bl-[24px] rounded-br-[24px] top-[27px] w-[37px] ${[2, 3, 4].includes(sip) ? "opacity-0" : ""}`} />
         <div className={`absolute bg-[rgba(255,173,172,0.8)] h-[44px] left-[3px] rounded-bl-[24px] rounded-br-[24px] top-[18px] w-[37px] ${[1, 2, 3, 4].includes(sip) ? "opacity-0" : ""}`} />
         <div className={`absolute left-[3px] rounded-bl-[24px] rounded-br-[24px] w-[37px] ${sip === 4 ? "opacity-0 bg-[rgba(255,255,255,0.7)] h-[17px] top-[45px]" : sip === 3 ? "bg-[rgba(255,231,231,0.7)] h-[19px] top-[43px]" : "bg-[rgba(255,255,255,0.7)] h-[17px] top-[45px]"}`} />
         <div className="absolute border-[0.75px] border-[#7e7c87] border-solid h-[53px] left-[3px] rounded-bl-[24px] rounded-br-[24px] top-[9px] w-[37px]" />
-        <div className="absolute bg-[#7e7c87] h-[4px] left-0 rounded-[10px] top-[6px] w-[42px]" />
+        <div className="absolute bg-[#4f4c58] h-[4px] left-0 rounded-[10px] top-[6px] w-[42px]" />
       </div>
     );
   }
@@ -83,7 +83,7 @@ function SipCupInner({ drink, sip }: { drink: Exclude<DrinkType, null>; sip: Sip
   // sesame
   return (
     <div className="h-[62px] relative w-[42px]">
-      <div className="absolute bg-[#7e7c87] h-[53px] left-[20px] top-0 w-[4px]" />
+      <div className="absolute bg-[#4f4c58] h-[53px] left-[20px] top-0 w-[4px]" />
       {sesameLayers.map((layer, i) => (
         <div key={i} className={`absolute bg-[rgba(224,110,69,0.5)] left-[3px] rounded-bl-[24px] rounded-br-[24px] w-[37px] ${sip >= layer.hideFrom ? "opacity-0" : ""}`} style={{ height: layer.height, top: layer.top }} />
       ))}
@@ -96,7 +96,7 @@ function SipCupInner({ drink, sip }: { drink: Exclude<DrinkType, null>; sip: Sip
       <div className={`absolute bg-[#161617] left-[27px] rounded-[10px] size-[4px] top-[50px] ${sip === 4 ? "opacity-0" : ""}`} />
       <div className={`absolute bg-[#161617] left-[10px] rounded-[10px] size-[4px] top-[50px] ${sip === 4 ? "opacity-0" : ""}`} />
       <div className="absolute border-[#7e7c87] border-[0.75px] border-solid h-[53px] left-[3px] rounded-bl-[24px] rounded-br-[24px] top-[9px] w-[37px]" />
-      <div className="absolute bg-[#7e7c87] h-[4px] left-0 rounded-[10px] top-[6px] w-[42px]" />
+      <div className="absolute bg-[#4f4c58] h-[4px] left-0 rounded-[10px] top-[6px] w-[42px]" />
     </div>
   );
 }

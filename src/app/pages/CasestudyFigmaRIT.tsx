@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavEntrance } from "../hooks/useNavEntrance";
-import { motion, AnimatePresence, useScroll, useTransform, useMotionValue } from "motion/react";
+import { motion, AnimatePresence, useScroll, useTransform, useMotionValue } from "@/lib/motion";
 import Navigation from "../../imports/Navigation";
 import HomeButton from "../components/layout/HomeButton";
 import CasestudyNavigation from "../components/casestudy/CasestudyNavigation";
@@ -19,8 +19,8 @@ import imgDocumentation from "../../assets/project/figbuild/documentation_2x1.pn
 import imgSlackJoanna from "../../assets/project/figbuild/slack_joanna.png";
 import imgFigmaMake from "../../assets/project/figbuild/figmamake.png";
 import imgFigmaMCP from "../../assets/project/figbuild/figmamcp.png";
-import claudeSvg from "../../assets/claude.svg";
-import figmaMakeSvg from "../../assets/figmamake.svg";
+import claudeSvg from "../../assets/icons/claude.svg";
+import figmaMakeSvg from "../../assets/icons/figmamake.svg";
 import imgFigmafam from "../../assets/project/figbuild/figmafam.png";
 import badge01 from "../../assets/project/figbuild/badge01.png";
 import badge02 from "../../assets/project/figbuild/badge02.png";

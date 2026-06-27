@@ -1,179 +1,197 @@
 import React, { useState } from "react";
+import { AnimatePresence, motion } from "@/lib/motion";
 import { useDrink } from "../../context/DrinkContext";
 
 type DrinkFloaterType = 'lychee' | 'matcha' | 'mango' | 'sesame';
 
-const LABEL_TO_FLOATER: Record<string, DrinkFloaterType> = {
-  "Taro Milk":     "lychee",
-  "Peach Cream":   "matcha",
-  "Mango Coconut": "mango",
-  "Thai Tea":      "sesame",
-};
-
 export function EmptyCup() {
   return (
-    <div className="h-[62px] relative w-[42px]">
-      <div className="absolute bg-[#7e7c87] h-[53px] left-[20px] top-0 w-[4px]" />
-      <div className="absolute border-[0.75px] border-[#7e7c87] border-solid h-[53px] left-[3px] rounded-bl-[24px] rounded-br-[24px] top-[9px] w-[37px]" />
-      <div className="absolute bg-[#7e7c87] h-[4px] left-0 rounded-[10px] top-[6px] w-[42px]" />
+    <div className="h-[55.8px] relative w-[37.8px]">
+      <div className="absolute bg-[#4f4c58] h-[47.7px] left-[18px] top-0 w-[3.6px]" />
+      <div className="absolute border-[0.675px] border-[#7e7c87] border-solid h-[47.7px] left-[2.7px] rounded-bl-[21.6px] rounded-br-[21.6px] top-[8.1px] w-[33.3px]" />
+      <div className="absolute bg-[#4f4c58] h-[3.6px] left-0 rounded-[9px] top-[5.4px] w-[37.8px]" />
     </div>
   );
 }
 
 export function TaroMilkCup() {
   return (
-    <div className="h-[62px] relative w-[42px]">
-      <div className="absolute bg-[#7e7c87] h-[53px] left-[20px] top-0 w-[4px]" />
-      <div className="absolute bg-[#faf9ff] left-[6px] size-[4px] top-[42px]" />
-      <div className="absolute bg-[#faf9ff] left-[14px] size-[4px] top-[42px]" />
-      <div className="absolute bg-[#faf9ff] left-[10px] size-[4px] top-[34px]" />
-      <div className="absolute bg-[#faf9ff] left-[19px] size-[4px] top-[55px]" />
-      <div className="absolute bg-[#faf9ff] left-[33px] size-[4px] top-[38px]" />
-      <div className="absolute bg-[#faf9ff] left-[33px] size-[4px] top-[46px]" />
-      <div className="absolute bg-[#faf9ff] left-[27px] size-[4px] top-[42px]" />
-      <div className="absolute bg-[#faf9ff] left-[27px] size-[4px] top-[50px]" />
-      <div className="absolute bg-[#faf9ff] left-[10px] size-[4px] top-[50px]" />
-      <div className="absolute bg-[rgba(193,111,255,0.63)] h-[44px] left-[3px] rounded-bl-[24px] rounded-br-[24px] top-[18px] w-[37px]" />
-      <div className="absolute border-[0.75px] border-[#7e7c87] border-solid h-[53px] left-[3px] rounded-bl-[24px] rounded-br-[24px] top-[9px] w-[37px]" />
-      <div className="absolute bg-[#7e7c87] h-[4px] left-0 rounded-[10px] top-[6px] w-[42px]" />
+    <div className="h-[55.8px] relative w-[37.8px]">
+      <div className="absolute bg-[#4f4c58] h-[47.7px] left-[18px] top-0 w-[3.6px]" />
+      <div className="absolute bg-[#302f34] left-[5.4px] size-[3.6px] top-[37.8px]" />
+      <div className="absolute bg-[#302f34] left-[12.6px] size-[3.6px] top-[37.8px]" />
+      <div className="absolute bg-[#302f34] left-[9px] size-[3.6px] top-[30.6px]" />
+      <div className="absolute flex items-center justify-center left-[17.1px] size-[4.383px] top-[49.5px]">
+        <div className="flex-none rotate-[14.41deg]">
+          <div className="bg-[#302f34] relative size-[3.6px]" />
+        </div>
+      </div>
+      <div className="absolute bg-[#302f34] left-[29.7px] size-[3.6px] top-[34.2px]" />
+      <div className="absolute bg-[#302f34] left-[29.7px] size-[3.6px] top-[41.4px]" />
+      <div className="absolute bg-[#302f34] left-[24.3px] size-[3.6px] top-[37.8px]" />
+      <div className="absolute bg-[#302f34] left-[24.3px] size-[3.6px] top-[45px]" />
+      <div className="absolute bg-[#302f34] left-[9px] size-[3.6px] top-[45px]" />
+      <div className="absolute bg-[rgba(193,111,255,0.63)] h-[39.6px] left-[2.7px] rounded-bl-[21.6px] rounded-br-[21.6px] top-[16.2px] w-[33.3px]" />
+      <div className="absolute border-[0.675px] border-[#9c97a8] border-solid h-[47.7px] left-[2.7px] rounded-bl-[21.6px] rounded-br-[21.6px] top-[8.1px] w-[33.3px]" />
+      <div className="absolute bg-[#4f4c58] h-[3.6px] left-0 rounded-[9px] top-[5.4px] w-[37.8px]" />
     </div>
   );
 }
 
 export function PeachCreamCup() {
   return (
-    <div className="h-[62px] relative w-[42px]">
-      <div className="absolute bg-[#7e7c87] h-[53px] left-[20px] top-0 w-[4px]" />
-      <div className="absolute bg-[rgba(251,192,191,0.7)] h-[26px] left-[3px] rounded-bl-[24px] rounded-br-[24px] top-[36px] w-[37px]" />
-      <div className="absolute bg-[rgba(251,192,191,0.7)] h-[35px] left-[3px] rounded-bl-[24px] rounded-br-[24px] top-[27px] w-[37px]" />
-      <div className="absolute bg-[rgba(251,192,191,0.7)] h-[44px] left-[3px] rounded-bl-[24px] rounded-br-[24px] top-[18px] w-[37px]" />
-      <div className="absolute bg-[rgba(255,255,255,0.7)] h-[17px] left-[3px] rounded-bl-[24px] rounded-br-[24px] top-[44px] w-[37px]" />
-      <div className="absolute border-[0.75px] border-[#7e7c87] border-solid h-[53px] left-[3px] rounded-bl-[24px] rounded-br-[24px] top-[9px] w-[37px]" />
-      <div className="absolute bg-[#7e7c87] h-[4px] left-0 rounded-[10px] top-[6px] w-[42px]" />
+    <div className="h-[55.8px] relative w-[37.8px]">
+      <div className="absolute bg-[#4f4c58] h-[47.7px] left-[18px] top-0 w-[3.6px]" />
+      <div className="absolute bg-[rgba(251,192,191,0.7)] h-[23.4px] left-[2.7px] rounded-bl-[21.6px] rounded-br-[21.6px] top-[32.4px] w-[33.3px]" />
+      <div className="absolute bg-[rgba(251,192,191,0.7)] h-[31.5px] left-[2.7px] rounded-bl-[21.6px] rounded-br-[21.6px] top-[24.3px] w-[33.3px]" />
+      <div className="absolute bg-[rgba(251,192,191,0.7)] h-[39.6px] left-[2.7px] rounded-bl-[21.6px] rounded-br-[21.6px] top-[16.2px] w-[33.3px]" />
+      <div className="absolute bg-[rgba(255,255,255,0.7)] h-[15.3px] left-[2.7px] rounded-bl-[21.6px] rounded-br-[21.6px] top-[39.6px] w-[33.3px]" />
+      <div className="absolute border-[0.675px] border-[#9c97a8] border-solid h-[47.7px] left-[2.7px] rounded-bl-[21.6px] rounded-br-[21.6px] top-[8.1px] w-[33.3px]" />
+      <div className="absolute bg-[#4f4c58] h-[3.6px] left-0 rounded-[9px] top-[5.4px] w-[37.8px]" />
     </div>
   );
 }
 
 export function MangoCocoCup() {
   return (
-    <div className="h-[62px] relative w-[42px]">
-      <div className="absolute bg-[#7e7c87] h-[53px] left-[20px] top-0 w-[4px]" />
-      <div className="absolute bg-[rgba(255,198,43,0.8)] h-[39px] left-[3px] rounded-bl-[24px] rounded-br-[24px] top-[23px] w-[37px]" />
-      <div className="absolute bg-white h-[8px] left-[3px] top-[15px] w-[37px]" />
-      <div className="absolute border-[0.75px] border-[#7e7c87] border-solid h-[53px] left-[3px] rounded-bl-[24px] rounded-br-[24px] top-[9px] w-[37px]" />
-      <div className="absolute bg-[#7e7c87] h-[4px] left-0 rounded-[10px] top-[6px] w-[42px]" />
+    <div className="h-[55.8px] relative w-[37.8px]">
+      <div className="absolute bg-[#4f4c58] h-[47.7px] left-[18px] top-0 w-[3.6px]" />
+      <div className="absolute bg-[rgba(255,198,43,0.8)] h-[35.1px] left-[2.7px] rounded-bl-[21.6px] rounded-br-[21.6px] top-[20.7px] w-[33.3px]" />
+      <div className="absolute bg-white h-[7.2px] left-[2.7px] top-[13.5px] w-[33.3px]" />
+      <div className="absolute border-[0.675px] border-[#9c97a8] border-solid h-[47.7px] left-[2.7px] rounded-bl-[21.6px] rounded-br-[21.6px] top-[8.1px] w-[33.3px]" />
+      <div className="absolute bg-[#4f4c58] h-[3.6px] left-0 rounded-[9px] top-[5.4px] w-[37.8px]" />
     </div>
   );
 }
 
 export function ThaiTeaCup() {
   return (
-    <div className="h-[62px] relative w-[42px]">
-      <div className="absolute bg-[#7e7c87] h-[53px] left-[20px] top-0 w-[4px]" />
-      <div className="absolute bg-[rgba(224,110,69,0.5)] h-[20px] left-[3px] rounded-bl-[24px] rounded-br-[24px] top-[42px] w-[37px]" />
-      <div className="absolute bg-[rgba(224,110,69,0.5)] h-[28px] left-[3px] rounded-bl-[24px] rounded-br-[24px] top-[34px] w-[37px]" />
-      <div className="absolute bg-[rgba(224,110,69,0.5)] h-[36px] left-[3px] rounded-bl-[24px] rounded-br-[24px] top-[26px] w-[37px]" />
-      <div className="absolute bg-[rgba(224,110,69,0.5)] h-[44px] left-[3px] rounded-bl-[24px] rounded-br-[24px] top-[18px] w-[37px]" />
-      <div className="absolute bg-[#161617] left-[6px] rounded-[10px] size-[4px] top-[42px]" />
-      <div className="absolute bg-[#161617] left-[14px] rounded-[10px] size-[4px] top-[42px]" />
-      <div className="absolute bg-[#161617] left-[10px] rounded-[10px] size-[4px] top-[34px]" />
-      <div className="absolute bg-[#161617] left-[19px] rounded-[10px] size-[4px] top-[55px]" />
-      <div className="absolute bg-[#161617] left-[33px] rounded-[10px] size-[4px] top-[38px]" />
-      <div className="absolute bg-[#161617] left-[33px] rounded-[10px] size-[4px] top-[46px]" />
-      <div className="absolute bg-[#161617] left-[27px] rounded-[10px] size-[4px] top-[42px]" />
-      <div className="absolute bg-[#161617] left-[27px] rounded-[10px] size-[4px] top-[50px]" />
-      <div className="absolute bg-[#161617] left-[10px] rounded-[10px] size-[4px] top-[50px]" />
-      <div className="absolute border-[0.75px] border-[#7e7c87] border-solid h-[53px] left-[3px] rounded-bl-[24px] rounded-br-[24px] top-[9px] w-[37px]" />
-      <div className="absolute bg-[#7e7c87] h-[4px] left-0 rounded-[10px] top-[6px] w-[42px]" />
+    <div className="h-[55.8px] relative w-[37.8px]">
+      <div className="absolute bg-[#4f4c58] h-[47.7px] left-[18px] top-0 w-[3.6px]" />
+      <div className="absolute bg-[rgba(224,110,69,0.5)] h-[18px] left-[2.7px] rounded-bl-[21.6px] rounded-br-[21.6px] top-[37.8px] w-[33.3px]" />
+      <div className="absolute bg-[rgba(224,110,69,0.5)] h-[25.2px] left-[2.7px] rounded-bl-[21.6px] rounded-br-[21.6px] top-[30.6px] w-[33.3px]" />
+      <div className="absolute bg-[rgba(224,110,69,0.5)] h-[32.4px] left-[2.7px] rounded-bl-[21.6px] rounded-br-[21.6px] top-[23.4px] w-[33.3px]" />
+      <div className="absolute bg-[rgba(224,110,69,0.5)] h-[39.6px] left-[2.7px] rounded-bl-[21.6px] rounded-br-[21.6px] top-[16.2px] w-[33.3px]" />
+      <div className="absolute bg-[#302f34] left-[5.4px] rounded-[9px] size-[3.6px] top-[37.8px]" />
+      <div className="absolute bg-[#302f34] left-[12.6px] rounded-[9px] size-[3.6px] top-[37.8px]" />
+      <div className="absolute bg-[#302f34] left-[9px] rounded-[9px] size-[3.6px] top-[30.6px]" />
+      <div className="absolute bg-[#302f34] left-[17.1px] rounded-[9px] size-[3.6px] top-[49.5px]" />
+      <div className="absolute bg-[#302f34] left-[29.7px] rounded-[9px] size-[3.6px] top-[34.2px]" />
+      <div className="absolute bg-[#302f34] left-[29.7px] rounded-[9px] size-[3.6px] top-[41.4px]" />
+      <div className="absolute bg-[#302f34] left-[24.3px] rounded-[9px] size-[3.6px] top-[37.8px]" />
+      <div className="absolute bg-[#302f34] left-[24.3px] rounded-[9px] size-[3.6px] top-[45px]" />
+      <div className="absolute bg-[#302f34] left-[9px] rounded-[9px] size-[3.6px] top-[45px]" />
+      <div className="absolute border-[0.675px] border-[#9c97a8] border-solid h-[47.7px] left-[2.7px] rounded-bl-[21.6px] rounded-br-[21.6px] top-[8.1px] w-[33.3px]" />
+      <div className="absolute bg-[#4f4c58] h-[3.6px] left-0 rounded-[9px] top-[5.4px] w-[37.8px]" />
     </div>
   );
 }
 
-type SlotDef = {
-  cup: React.ReactNode;
-  label: string;
-  leftPct: string;
-  topPct: string;
-};
+type DrinkEntry = { cup: React.ReactNode; label: string; type: DrinkFloaterType };
 
-const SLOTS: SlotDef[] = [
-  { cup: <TaroMilkCup />,  label: "Taro Milk",     leftPct: "15.1%", topPct: "25.5%" },
-  { cup: <PeachCreamCup />, label: "Peach Cream",   leftPct: "53.2%", topPct: "25.5%" },
-  { cup: <MangoCocoCup />,  label: "Mango Coconut", leftPct: "15.1%", topPct: "61.5%" },
-  { cup: <ThaiTeaCup />,    label: "Thai Tea",      leftPct: "53.2%", topPct: "61.5%" },
+const DRINKS: DrinkEntry[] = [
+  { cup: <TaroMilkCup />,   label: "Taro Milk",     type: "lychee"  },
+  { cup: <PeachCreamCup />, label: "Peach Cream",   type: "matcha"  },
+  { cup: <MangoCocoCup />,  label: "Mango Coconut", type: "mango"   },
+  { cup: <ThaiTeaCup />,    label: "Thai Tea",       type: "sesame"  },
 ];
 
-const FLOATER_TO_LABEL: Record<string, string> = Object.fromEntries(
-  Object.entries(LABEL_TO_FLOATER).map(([label, type]) => [type, label])
-);
+const UNLOCK_KEY = "__portfolio_drinks_unlocked__";
 
-export default function DrinkCard() {
-  const [hoveredLabel, setHoveredLabel] = useState<string | null>(null);
-  const [resetHovered, setResetHovered] = useState(false);
-  const [unlockedCount, setUnlockedCount] = useState(4);
-  const { selectedDrink, setSelectedDrink } = useDrink();
-  const selectedLabel = selectedDrink ? FLOATER_TO_LABEL[selectedDrink] : null;
-  const allUnlocked = unlockedCount >= 4;
+function getUnlockedCount(): number {
+  try {
+    const stored = localStorage.getItem(UNLOCK_KEY);
+    if (stored !== null) return parseInt(stored, 10);
+    localStorage.setItem(UNLOCK_KEY, "2");
+    return 2;
+  } catch {
+    return 2;
+  }
+}
 
-  const handleReset = () => {
-    setUnlockedCount(1);
-    if (selectedDrink && selectedDrink !== "lychee") setSelectedDrink(null);
+interface DrinkCardProps {
+  size?: number;
+}
+
+export default function DrinkCard({ size = 150 }: DrinkCardProps) {
+  const [idx, setIdx] = useState(0);
+  const [unlockedCount] = useState(getUnlockedCount);
+  const [hovered, setHovered] = useState(false);
+  const { setSelectedDrink } = useDrink();
+
+  const isLocked = idx >= unlockedCount;
+  const sc = size / 150;
+
+  const handleTap = () => {
+    const next = (idx + 1) % DRINKS.length;
+    setIdx(next);
+    if (next < unlockedCount) setSelectedDrink(DRINKS[next].type);
   };
+
+  const current = DRINKS[idx];
 
   return (
     <div
-      className="relative w-full rounded-[8px] overflow-hidden border border-[#302f34]"
-      style={{ aspectRatio: "1 / 1", background: "rgba(88,85,100,0.15)" }}
+      onClick={handleTap}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      className="relative rounded-[12px] overflow-hidden cursor-pointer select-none"
+      style={{
+        width: size,
+        height: size,
+        background: "rgba(201,197,211,0.3)",
+        backdropFilter: "blur(5px)",
+        WebkitBackdropFilter: "blur(5px)",
+      }}
     >
-      {/* Caption */}
-      <div className="absolute top-[15px] left-[15px] flex flex-col gap-[6px]">
-        <p className="font-['Inter_Tight',sans-serif] font-normal text-[#faf9ff] text-[14px] leading-none whitespace-nowrap">
-          Want to sip while you scroll?
+      {/* Header — single line, crossfades on hover */}
+      <div className="absolute top-[12px] left-[12px]" style={{ height: "1em" }}>
+        <p
+          className="absolute font-['Inter_Tight',sans-serif] text-[14px] leading-none text-foreground whitespace-nowrap"
+          style={{ opacity: hovered ? 0 : 1, transition: "opacity 0.2s ease" }}
+        >
+          Get a drink
         </p>
-        {allUnlocked ? (
-          <p
-            className="font-['Inter_Tight',sans-serif] font-normal text-[14px] leading-none whitespace-nowrap underline cursor-pointer"
-            style={{ color: resetHovered ? "var(--text-primary, #faf9ff)" : "var(--text-secondary, #908e99)", transition: "color 150ms ease-out" }}
-            onMouseEnter={() => setResetHovered(true)}
-            onMouseLeave={() => setResetHovered(false)}
-            onClick={handleReset}
-          >
-            Reset drink menu
-          </p>
-        ) : (
-          <p className="font-['Inter_Tight',sans-serif] font-normal text-[#908e99] text-[14px] leading-none whitespace-nowrap">
-            Come back to unlock more flavors
-          </p>
-        )}
+        <p
+          className="absolute font-['Inter_Tight',sans-serif] text-[14px] leading-none text-muted-foreground whitespace-nowrap"
+          style={{ opacity: hovered ? 1 : 0, transition: "opacity 0.2s ease" }}
+        >
+          {isLocked ? "Return to unlock" : "Tap to cycle"}
+        </p>
       </div>
 
-      {/* Drink slots */}
-      {SLOTS.map(({ cup, label, leftPct, topPct }, index) => {
-        const unlocked = index < unlockedCount;
-        return (
-          <div
-            key={label}
-            className={`absolute flex flex-col items-center gap-[14px] w-[30.8%] ${unlocked ? "cursor-pointer" : "cursor-default"}`}
-            style={{ left: leftPct, top: topPct }}
-            onMouseEnter={() => unlocked && setHoveredLabel(label)}
-            onMouseLeave={() => setHoveredLabel(null)}
-            onClick={() => unlocked && setSelectedDrink(LABEL_TO_FLOATER[label])}
+      {/* Drink — centered, offset toward bottom half */}
+      <div
+        className="absolute flex flex-col items-center justify-end pb-[8px]"
+        style={{
+          gap: 14 * sc,
+          width: 100 * sc,
+          height: 93 * sc,
+          left: "50%",
+          top: `calc(50% + ${28.5 * sc}px)`,
+          transform: "translate(-50%, -50%)",
+        }}
+      >
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={idx}
+            initial={{ opacity: 0, y: 4 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -4 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+            className="flex flex-col items-center"
+            style={{ gap: 14 * sc }}
           >
-            <div className="scale-[0.7] md:scale-100 origin-top">
-              {unlocked ? cup : <EmptyCup />}
-            </div>
+            {isLocked ? <EmptyCup /> : current.cup}
             <p
-              className="font-['Inter_Tight',sans-serif] font-[300] text-[14px] leading-[1.2] tracking-[-0.02em] whitespace-nowrap text-center"
-              style={{
-                color: unlocked && (hoveredLabel === label || selectedLabel === label) ? "#faf9ff" : "#585564",
-                transition: "color 0.15s ease",
-              }}
+              className="font-['Inter_Tight',sans-serif] text-[14px] leading-[1.2] tracking-[-0.02em] whitespace-nowrap"
+              style={{ color: "var(--color-text-secondary)" }}
             >
-              {unlocked ? label : "?"}
+              {isLocked ? "?" : current.label}
             </p>
-          </div>
-        );
-      })}
+          </motion.div>
+        </AnimatePresence>
+      </div>
     </div>
   );
 }

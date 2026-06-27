@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavEntrance } from "../hooks/useNavEntrance";
-import { motion, AnimatePresence, useScroll, useTransform, useMotionValue } from "motion/react";
+import { motion, AnimatePresence, useScroll, useTransform, useMotionValue } from "@/lib/motion";
 import Navigation from "../../imports/Navigation";
 import HomeButton from "../components/layout/HomeButton";
 import CasestudyNavigation from "../components/casestudy/CasestudyNavigation";

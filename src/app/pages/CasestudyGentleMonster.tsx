@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavEntrance } from "../hooks/useNavEntrance";
-import { motion, AnimatePresence, useScroll, useTransform } from "motion/react";
+import { motion, AnimatePresence, useScroll, useTransform } from "@/lib/motion";
 import Navigation from "../../imports/Navigation";
 import HomeButton from "../components/layout/HomeButton";
 import CasestudyNavigation from "../components/casestudy/CasestudyNavigation";
@@ -188,7 +188,8 @@ export default function CasestudyGentleMonster() {
                   Overview
                 </p>
                 <div className="font-[300] text-[#908e99] text-[16px] w-full">
-                  <p className="leading-[1.65] mb-[16px]">This project spans UI, research, and blending it with 3D and motion to create a more realistic concept than just a screen on a page.</p>
+                  <p className="leading-[1.65] mb-[16px]">Gentle Monster is a luxury fashion brand known for experimental retail spaces and glasses.</p>
+                  <p className="leading-[1.65] mb-[16px]"> The problem is GM is always busy with long lines and customers waiting to try on specific pairs in a crowded store. Finding the right glasses isn't easy. One choice becomes part of your face and everyday identity for years... and the added pressure of finding glasses before the next queue of people come in? Even harder.</p>
                   <p className="leading-[1.65]">The project overall asks how can a kiosk create clear choices, avoid fatigue, and best represent the brand's design system — ultimately gifting shoppers a fun experience to find their perfect match!</p>
                 </div>
               </div>

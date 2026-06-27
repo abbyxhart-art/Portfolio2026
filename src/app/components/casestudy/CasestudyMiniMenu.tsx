@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "motion/react";
+import { motion, AnimatePresence } from "@/lib/motion";
 
 export type MiniMenuSection = { id: string; label: string };
 
@@ -100,7 +100,7 @@ export default function CasestudyMiniMenu({ sections }: { sections: MiniMenuSect
               style={{
                 fontFamily: "'Inter Tight', sans-serif",
                 fontSize: 12,
-                fontWeight: 300,
+                fontWeight: 400,
                 color: "#908E99",
                 background: "none",
                 border: "none",
@@ -141,7 +141,7 @@ export default function CasestudyMiniMenu({ sections }: { sections: MiniMenuSect
                       textAlign: "left",
                       fontFamily: "'Inter Tight', sans-serif",
                       fontSize: 12,
-                      fontWeight: 300,
+                      fontWeight: 400,
                     }}
                   >
                     <span style={{ color: isHov ? "#908E99" : "#585564", transition: "color 150ms ease", lineHeight: 1 }}>
@@ -203,7 +203,7 @@ export default function CasestudyMiniMenu({ sections }: { sections: MiniMenuSect
 
               {/* Section label */}
               <motion.p
-                style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 12, fontWeight: 300, lineHeight: 1, color: "#FAF9FF", margin: 0, whiteSpace: "nowrap" }}
+                style={{ fontFamily: "'Inter Tight', sans-serif", fontSize: 12, fontWeight: 400, lineHeight: 1, color: "#FAF9FF", margin: 0, whiteSpace: "nowrap" }}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.4, delay: 0.26, ease: "easeOut" }}

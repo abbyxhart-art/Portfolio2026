@@ -32,18 +32,18 @@ const INDICATOR_LEFT: Record<Category, string> = {
   eye:   "77.95%",
 };
 
-// Desktop: fixed pixel positions for a 307px-wide bar
+// Desktop: fixed pixel positions for a 220px-wide bar w/ justify-evenly
 const PILL_LEFT_PX: Record<Category, number> = {
-  star:  8,
-  heart: 84,
-  art:   158,
-  eye:   235,
+  star:  9,
+  heart: 60,
+  art:   110,
+  eye:   161,
 };
 const INDICATOR_LEFT_PX: Record<Category, number> = {
-  star:  28,
-  heart: 103,
-  art:   178,
-  eye:   254,
+  star:  24,
+  heart: 75,
+  art:   125,
+  eye:   176,
 };
 
 const BUTTONS: { id: Category; icon: string }[] = [
@@ -113,7 +113,8 @@ export default function OfflineCard() {
             textDecorationStyle: "dotted",
             textDecorationColor: "#faf9ff",
             color: "#faf9ff",
-            fontWeight: beliHovered ? 500 : 300,
+            fontWeight: beliHovered ? 500 : 400,
+            fontVariationSettings: beliHovered ? "'wght' 500" : "'wght' 400",
             transition: "font-weight 0.15s ease",
           }}
           onMouseEnter={(e) => { e.stopPropagation(); setBeliHovered(true); }}
@@ -245,7 +246,7 @@ export default function OfflineCard() {
                   src={icon}
                   className="block w-full h-full object-contain"
                   style={{
-                    filter: selected === id || hoveredBtn === id ? "brightness(1)" : "brightness(0.2)",
+                    filter: "brightness(1)",
                     transition: "filter 0.15s ease",
                   }}
                 />
@@ -262,7 +263,7 @@ export default function OfflineCard() {
           bottom: "16px",
           left: "50%",
           transform: "translateX(-50%)",
-          width: "307px",
+          width: "220px",
           height: "48px",
           background: "rgba(144,142,153,0.2)",
           backdropFilter: "blur(12px)",
@@ -275,7 +276,7 @@ export default function OfflineCard() {
           style={{
             background: "rgba(209,206,220,0.3)",
             left: `${PILL_LEFT_PX[selected]}px`,
-            width: "64px",
+            width: "50px",
             height: "36px",
             transform: "translateY(-50%)",
             transition: "left 0.2s ease",
@@ -287,7 +288,7 @@ export default function OfflineCard() {
           className="absolute h-[2px] rounded-b-[4px]"
           style={{
             background: "#d9d9d9",
-            width: "25px",
+            width: "20px",
             bottom: "-2px",
             left: `${INDICATOR_LEFT_PX[selected]}px`,
             transition: "left 0.2s ease",
@@ -296,7 +297,7 @@ export default function OfflineCard() {
 
         {/* Border + buttons */}
         <div
-          className="absolute inset-0 rounded-[100px] flex items-center justify-between px-[24px]"
+          className="absolute inset-0 rounded-[100px] flex items-center justify-evenly"
           style={{ border: "1px solid #908e99" }}
         >
           {BUTTONS.map(({ id, icon }) => (
@@ -313,7 +314,7 @@ export default function OfflineCard() {
                   src={icon}
                   className="block w-full h-full object-contain"
                   style={{
-                    filter: selected === id || hoveredBtn === id ? "brightness(1)" : "brightness(0.2)",
+                    filter: "brightness(1)",
                     transition: "filter 0.15s ease",
                   }}
                 />

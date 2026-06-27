@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Link } from "react-router";
-import iconArrow from "../../../assets/icon-arrow.svg";
-import undoArrow from "../../../assets/undo-arrow.svg";
+import iconArrow from "../../../assets/icons/icon-arrow.svg";
+import undoArrow from "../../../assets/icons/undo-arrow.svg";
 import LSystemGarden, { LSystemGardenHandle } from "../LSystemGarden";
 
 const connectLinks = [
@@ -24,7 +24,7 @@ function AnimatedLink({ label, href }: { label: string; href: string }) {
       target="_blank"
       rel="noopener noreferrer"
       className="relative shrink-0 w-full no-underline font-['Inter_Tight',sans-serif] font-[300] text-[14px] leading-none"
-      style={{ color: isHovered ? "#9a47ff" : "#faf9ff", transition: "color 100ms ease" }}
+      style={{ color: isHovered ? "var(--color-accent-default)" : "var(--color-text-primary)", transition: "color 100ms ease" }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -40,12 +40,44 @@ function AnimatedNavLink({ label, to }: { label: string; to: string }) {
     <Link
       to={to}
       className="relative shrink-0 w-full no-underline font-['Inter_Tight',sans-serif] font-[300] text-[14px] leading-none"
-      style={{ color: isHovered ? "#9a47ff" : "#faf9ff", transition: "color 100ms ease" }}
+      style={{ color: isHovered ? "var(--color-accent-default)" : "var(--color-text-primary)", transition: "color 100ms ease" }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       {label}
     </Link>
+  );
+}
+
+function ClearGardenButton({ onClick }: { onClick: () => void }) {
+  const [hovered, setHovered] = useState(false);
+  return (
+    <button
+      onClick={onClick}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      className="hidden md:flex absolute bottom-[16px] right-[16px] gap-[9px] items-center pl-[12px] pr-[16px] py-[8px] rounded-[24px] cursor-pointer"
+      style={{
+        backgroundColor: hovered ? "rgba(132,127,144,0.25)" : "rgba(201,197,211,0.30)",
+        backdropFilter: "blur(12px)",
+        WebkitBackdropFilter: "blur(12px)",
+        border: "none",
+        transition: "background-color 0.15s ease",
+      }}
+    >
+      <div className="relative shrink-0 size-[24px] overflow-clip">
+        <div className="absolute inset-[20.83%_12.5%]">
+          <img alt="" src={undoArrow} className="block" style={{ position: "absolute", inset: "-4.07% -3.17%", maxWidth: "none", width: "100%", height: "100%", filter: "brightness(0) saturate(0) opacity(0.5)" }} />
+        </div>
+      </div>
+      <div className="flex gap-[2px] items-center">
+        {["shift", "X"].map((key) => (
+          <div key={key} className={`h-[24px] rounded-[4px] flex items-center justify-center ${key === "shift" ? "px-[8px]" : "w-[24px]"}`} style={{ backgroundColor: "rgba(132,127,144,0.30)" }}>
+            <span className="font-['Inter_Tight',sans-serif] text-[12px]" style={{ color: hovered ? "#4F4C58" : "#847F90" }}>{key}</span>
+          </div>
+        ))}
+      </div>
+    </button>
   );
 }
 
@@ -66,7 +98,7 @@ export default function Footer() {
   }, [clearGarden]);
 
   return (
-    <footer className="bg-[#171717] border-t border-[#585564] flex flex-col h-auto md:h-[402px] items-start justify-between overflow-clip pb-[16px] pt-[48px] md:pt-[100px] relative w-full gap-[32px] md:gap-0">
+    <footer className="bg-[var(--color-surface-primary-default)] border-t border-[var(--color-border-default)] flex flex-col h-auto md:h-[402px] items-start justify-between overflow-clip pb-[16px] pt-[48px] md:pt-[100px] relative w-full gap-[32px] md:gap-0">
       {/* Garden background — desktop only */}
       <div className="hidden md:block absolute inset-0">
         <LSystemGarden ref={gardenRef} onHasFlowers={setHasFlowers} />
@@ -76,7 +108,7 @@ export default function Footer() {
       <div
         className="hidden md:block absolute inset-x-0 bottom-0 h-[600px] pointer-events-none"
         style={{
-          background: "radial-gradient(ellipse 80% 600px at 50% 100%, rgba(190,170,255,0.08) 0%, rgba(220,210,255,0.04) 50%, rgba(250,249,255,0) 100%)",
+          background: "radial-gradient(ellipse 70% 420px at 50% 100%, rgba(243, 155, 139, 0.18) 0%, rgba(220, 110, 190, 0.12) 28%, rgba(154, 71, 255, 0.06) 55%, transparent 100%)",
         }}
       />
 
@@ -85,23 +117,23 @@ export default function Footer() {
         {/* Left: tagline + design info */}
         <div className="flex flex-col h-full items-start justify-between relative shrink-0 gap-[16px] md:gap-0">
           <div className="flex flex-col gap-[4px] items-start shrink-0 w-[235px]">
-            <p className="font-['Inter_Tight',sans-serif] font-[350] leading-none text-[color:var(--text\/primary,#eeedf5)] text-[14px] md:text-[17px] w-full">
+            <p className="font-['Inter_Tight',sans-serif] font-[350] leading-none text-[14px] md:text-[17px] w-full" style={{ color: "var(--color-text-primary)" }}>
               I design for connection.
             </p>
             <div className="flex gap-[4px] items-center shrink-0 w-full">
-              <img src={iconArrow} alt="" className="shrink-0 size-[18px]" />
-              <p className="font-['Inter_Tight',sans-serif] font-[350] leading-none text-[#faf9ff] text-[14px] md:text-[17px] whitespace-nowrap">
+              <img src={iconArrow} alt="" className="shrink-0 size-[18px]" style={{ filter: "brightness(0) saturate(0) opacity(0.4)" }} />
+              <p className="font-['Inter_Tight',sans-serif] font-[350] leading-none text-[14px] md:text-[17px] whitespace-nowrap" style={{ color: "var(--color-text-primary)" }}>
                 It was nice to meet you!
               </p>
             </div>
           </div>
           <div className="flex flex-col font-['Inter_Tight',sans-serif] font-[300] gap-[8px] items-start leading-none shrink-0 text-[14px] whitespace-nowrap">
             <div className="flex gap-[3px] items-center shrink-0">
-              <p className="text-[#908e99]">Typeset</p>
-              <p className="text-[#908e99]">Inter Tight</p>
+              <p style={{ color: "var(--color-text-secondary)" }}>Typeset</p>
+              <p style={{ color: "var(--color-text-secondary)" }}>Inter Tight</p>
             </div>
             <div className="flex gap-[3px] items-center shrink-0">
-              <p className="text-[#908e99]">Last edit: May 2026</p>
+              <p style={{ color: "var(--color-text-secondary)" }}>Last edit: May 2026</p>
             </div>
           </div>
         </div>
@@ -110,7 +142,7 @@ export default function Footer() {
         <div className="flex gap-[24px] items-start leading-none shrink-0">
           {/* Connect */}
           <div className="flex flex-col gap-[32px] items-start shrink-0 w-[61px]">
-            <p className="font-['Inter_Tight',sans-serif] text-[#908e99] text-[12px] leading-none w-full">Connect</p>
+            <p className="font-['Inter_Tight',sans-serif] text-[12px] leading-none w-full" style={{ color: "var(--color-text-secondary)" }}>Connect</p>
             <div className="flex flex-col gap-[16px] items-start shrink-0 w-full">
               {connectLinks.map(({ label, href }) => (
                 <AnimatedLink key={label} label={label} href={href} />
@@ -119,7 +151,7 @@ export default function Footer() {
           </div>
           {/* Navigation */}
           <div className="flex flex-col gap-[32px] items-start shrink-0 w-[61px]">
-            <p className="font-['Inter_Tight',sans-serif] text-[#908e99] text-[12px] leading-none w-full">Navigation</p>
+            <p className="font-['Inter_Tight',sans-serif] text-[12px] leading-none w-full" style={{ color: "var(--color-text-secondary)" }}>Navigation</p>
             <div className="flex flex-col gap-[16px] items-start shrink-0 w-full">
               {navLinks.map(({ label, to }) => (
                 <AnimatedNavLink key={label} label={label} to={to} />
@@ -130,43 +162,26 @@ export default function Footer() {
       </div>
 
       {/* Hover Directions — desktop only */}
-      <div className="hidden md:flex flex-col font-['Inter_Tight',sans-serif] font-[300] gap-[5px] items-center leading-none shrink-0 text-[#b8b4c5] text-[14px] w-full whitespace-nowrap">
+      <div className="hidden md:flex flex-col font-['Inter_Tight',sans-serif] font-[300] gap-[5px] items-center leading-none shrink-0 text-[14px] w-full whitespace-nowrap" style={{ color: "var(--color-text-secondary)" }}>
         <p className="shrink-0">Play around. You never know what may grow!</p>
         <p className="shrink-0">Hover based on the book: the algorithmic beauty of plants</p>
       </div>
 
       {/* RIT Info */}
       <div className="md:absolute md:bottom-[15px] md:left-[99px] flex flex-col font-['Inter_Tight',sans-serif] font-[300] gap-[8px] items-start leading-none px-[16px] md:px-0 text-[14px] whitespace-nowrap">
-        <p className="text-[#faf9ff]">Rochester Institute of Technology</p>
+        <p style={{ color: "var(--color-text-primary)" }}>Rochester Institute of Technology</p>
         <div className="flex gap-[3px] items-center shrink-0">
-          <p className="text-[#908e99]">BFA</p>
-          <p className="text-[#faf9ff]">New Media Design</p>
+          <p style={{ color: "var(--color-text-secondary)" }}>BFA</p>
+          <p style={{ color: "var(--color-text-primary)" }}>New Media Design</p>
         </div>
         <div className="flex gap-[3px] items-center shrink-0 w-full">
-          <p className="text-[#908e99]">Minors</p>
-          <p className="text-[#faf9ff]">Mobile Design and Development, Fine Arts</p>
+          <p style={{ color: "var(--color-text-secondary)" }}>Minors</p>
+          <p style={{ color: "var(--color-text-primary)" }}>Mobile Design and Development, Fine Arts</p>
         </div>
       </div>
 
       {hasFlowers && (
-        <button
-          onClick={clearGarden}
-          className="hidden md:flex absolute bottom-[16px] right-[16px] gap-[9px] items-center pl-[12px] pr-[16px] py-[8px] rounded-[24px] cursor-pointer backdrop-blur-md bg-[rgba(23,23,23,0.3)] hover:bg-[rgba(88,85,100,0.2)] transition-colors duration-150"
-          style={{ border: "0.75px solid #302f34" }}
-        >
-          <div className="relative shrink-0 size-[24px] overflow-clip">
-            <div className="absolute inset-[20.83%_12.5%]">
-              <img alt="" src={undoArrow} className="block" style={{ position: 'absolute', inset: '-4.07% -3.17%', maxWidth: 'none', width: '100%', height: '100%' }} />
-            </div>
-          </div>
-          <div className="flex gap-[2px] items-center">
-            {["shift", "X"].map((key) => (
-              <div key={key} className={`h-[24px] rounded-[4px] flex items-center justify-center ${key === "shift" ? "px-[8px]" : "w-[24px]"}`} style={{ background: "rgba(144,142,153,0.15)" }}>
-                <span className="font-['Inter_Tight',sans-serif] text-[12px] text-[#b8b4c5]">{key}</span>
-              </div>
-            ))}
-          </div>
-        </button>
+        <ClearGardenButton onClick={clearGarden} />
       )}
     </footer>
   );

@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavEntrance } from "../hooks/useNavEntrance";
-import { motion, AnimatePresence, useScroll, useTransform, useMotionValue } from "motion/react";
+import { motion, AnimatePresence, useScroll, useTransform, useMotionValue } from "@/lib/motion";
 import Navigation from "../../imports/Navigation";
 import HomeButton from "../components/layout/HomeButton";
 import CasestudyNavigation from "../components/casestudy/CasestudyNavigation";
@@ -59,7 +59,7 @@ import imgComponent2 from "../../assets/project/texasid/component_2.png";
 import imgComponent3 from "../../assets/project/texasid/component_3.png";
 import imgComponent4 from "../../assets/project/texasid/component_4.png";
 import imgComponent5 from "../../assets/project/texasid/component_5.png";
-import imgCursor02 from "../../assets/cursor-02.svg";
+import imgCursor02 from "../../assets/icons/cursor-02.svg";
 
 const TEXAS_SECTIONS = [
   { id: "cs-overview",     label: "Overview"              },

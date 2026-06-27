@@ -1,12 +1,13 @@
 @import './fonts.css';
 @import './tailwind.css';
 @import './theme.css';
+@import './tokens.css';
 
 html, body {
   overscroll-behavior: none;
 }
 
 ::selection {
-  background-color: #DBBDFE;
-  color: #000000;
+  background-color: var(--color-interactive-selection-background);
+  color: var(--color-interactive-selection-foreground);
 }

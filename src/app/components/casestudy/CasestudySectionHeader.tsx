@@ -30,7 +30,7 @@ export default function CasestudySectionHeader({ id, eyebrow, headline, subtitle
           <p style={{
             fontFamily: "'Inter Tight', sans-serif",
             fontSize: 12,
-            fontWeight: 300,
+            fontWeight: 400,
             color: "#908e99",
             letterSpacing: "0.08em",
             lineHeight: "16.5px",
@@ -45,7 +45,7 @@ export default function CasestudySectionHeader({ id, eyebrow, headline, subtitle
         <p style={{
           fontFamily: "'Inter Tight', sans-serif",
           fontSize: "clamp(28px, 4vw, 40px)",
-          fontWeight: 300,
+          fontWeight: 400,
           color: "#faf9ff",
           lineHeight: 1.2,
           textAlign: "center",
@@ -58,7 +58,7 @@ export default function CasestudySectionHeader({ id, eyebrow, headline, subtitle
           <p style={{
             fontFamily: "'Inter Tight', sans-serif",
             fontSize: 17,
-            fontWeight: 300,
+            fontWeight: 400,
             color: "#908e99",
             lineHeight: 1.65,
             textAlign: "center",

@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavEntrance } from "../hooks/useNavEntrance";
-import { motion, AnimatePresence } from "motion/react";
+import { motion, AnimatePresence } from "@/lib/motion";
 import Navigation from "../../imports/Navigation";
 import HomeButton from "../components/layout/HomeButton";
 import BoothDial from "../components/BoothDial";

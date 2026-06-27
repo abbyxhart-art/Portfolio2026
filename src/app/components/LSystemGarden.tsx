@@ -42,7 +42,7 @@ function LSystemGarden({ onHasFlowers, minX = 420 }, ref) {
     useEffect(() => {
         // "a" and "f" are common; "d" is rare
         const patternKeys = ["a", "f", "a", "f", "a", "a", "f", "d"]
-        const colors = ["#171717", "#171717"]
+        const colors = ["#4F4C58", "#4F4C58"]
         const numPlants = 22
 
         // Generate plants ensuring no two of the same type are adjacent
@@ -381,7 +381,7 @@ function LSystemGarden({ onHasFlowers, minX = 420 }, ref) {
             }
             const baseLength = (100 / Math.pow(2, currentIter - 1)) * heightMultiplier
 
-            const stemColor = "#b8b4c5"
+            const stemColor = "#4F4C58"
             const growthProgress = growthLevel / pattern.n
 
             const plantOpacity = plantOpacities[index] || 0

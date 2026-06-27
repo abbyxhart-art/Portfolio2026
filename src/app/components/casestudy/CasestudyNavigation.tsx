@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router";
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, motion } from "@/lib/motion";
 import chevronIcon from "../../../assets/icons/chevron-selector-vertical.svg";
 
 const VISITED_KEY = "visited_casestudies";
@@ -70,7 +70,7 @@ export default function CasestudyNavigation({ title }: CasestudyNavigationProps)
   const itemStyle: React.CSSProperties = {
     fontFamily: "'Inter Tight', sans-serif",
     fontSize: 12,
-    fontWeight: 300,
+    fontWeight: 400,
     lineHeight: 1,
     textDecoration: "none",
     display: "block",
@@ -121,7 +121,7 @@ export default function CasestudyNavigation({ title }: CasestudyNavigationProps)
           width: 160,
           fontFamily: "'Inter Tight', sans-serif",
           fontSize: 12,
-          fontWeight: 300,
+          fontWeight: 400,
           color: hovered ? "#FAF9FF" : "#908E99",
           transition: "background 0.15s ease, color 0.15s ease",
           cursor: "pointer",
