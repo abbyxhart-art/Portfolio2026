@@ -335,7 +335,7 @@ export default function About() {
                     <p className="font-[‘Inter_Tight’,sans-serif] text-muted-foreground text-[14px] leading-[1.5]">
                       How I fell into it
                     </p>
-                    <p className="font-[‘Inter’,sans-serif] font-regular text-foreground text-[17px] leading-[1.65]" style={{ letterSpacing: "-0.06em" }}>
+                    <p className="font-[‘Inter_Tight’,sans-serif] font-regular text-foreground text-[16px] leading-[1.65]">
                       My friend Lana and I found our thing in AP CompSci: me with mini GUI applets, her with algorithms.
                       I opened Figma to pitch our local hackathon for kids, and that road eventually led me to RIT and
                       some incredibly inspiring friends.
@@ -392,7 +392,7 @@ export default function About() {
                     Nice to meet you
                   </p>
                   <div className="font-['Inter_Tight',sans-serif] font-regular text-foreground text-[17px]">
-                    <p className="leading-[1.65] mb-[16px]">Hey, I'm Abby! Product designer and creative technologist.</p>
+                    <p className="text-[14px] leading-[1.65] mb-[16px]">Hey, I'm Abby! Product designer and creative technologist.</p>
                     <p className="leading-[1.65]">
                       The work I'm most proud of helps people navigate and explore tools, products, and worlds. To me, design is about connection.
                     </p>
@@ -437,7 +437,7 @@ export default function About() {
               Nice to meet you
             </p>
             <div className="font-['Inter_Tight',sans-serif] font-regular text-foreground text-[17px]">
-              <p className="leading-[1.65] mb-[16px]">Hey, I'm Abby! Product designer and creative technologist.</p>
+              <p className="text-[14px] leading-[1.65] mb-[16px]">Hey, I'm Abby! Product designer and creative technologist.</p>
               <p className="leading-[1.65]">
                 The work I'm most proud of helps people navigate and explore tools, products, and worlds. To me, design is about connection.
               </p>
@@ -470,7 +470,6 @@ export default function About() {
           <div style={{ position: "absolute", left: 0, bottom: 0, width: 260, borderRadius: 8, overflow: "hidden" }}>
             <FriendsCard />
           </div>
-          <div style={{ position: "absolute", left: 390, bottom: 0, width: 130, aspectRatio: "1/1", borderRadius: 8, background: "#1a1920" }} />
           <BookStack />
         </div>
 
@@ -479,7 +478,6 @@ export default function About() {
           <div style={{ position: "absolute", left: 0, bottom: 0, width: 190, borderRadius: 8, overflow: "hidden" }}>
             <FriendsCard />
           </div>
-          <div style={{ width: 95, aspectRatio: "1/1", borderRadius: 8, background: "#1a1920" }} />
           <BookStack />
         </div>
 

@@ -10,6 +10,7 @@ import gmVideo from "../../assets/project/gentlemonster/GM_Teaser_2x1.mp4";
 import texasVideo from "../../assets/project/texasid/FullPrototype_1200x600_30fps.mp4";
 import figbuildVideo from "../../assets/project/figbuild/figbuild_macstudio_2x1.mp4";
 import capitolVideo from "../../assets/project/capitol/Demo_1920x960_V1.mp4";
+import tianVideo from "../../assets/project/tianair/tian_fullflow_macstudio_2x1.mp4";
 
 const CASE_STUDIES = [
   { label: "Gentle Monster Kiosk", path: "/casestudy/gentle-monster" },
@@ -17,6 +18,7 @@ const CASE_STUDIES = [
   { label: "Texas Mobile", path: "/casestudy/texas-mobile" },
   { label: "FigBuild 2026", path: "/casestudy/figma-rit" },
   { label: "Aixels", path: "/casestudy/aixels" },
+  { label: "Tian Airlines", path: "/casestudy/tian-airlines" },
 ];
 
 const VISITED_KEY = "__portfolio_visited__";
@@ -324,10 +326,20 @@ const CARD_DATA: CardData[] = [
     title: "Aixels",
     tag1: "Team Lead",
     tag2: "Designathon Winner",
+    tag3: "shipped",
     description: "Grappling the concept of AI with a pixel mirror",
     readTime: "3 min.",
     path: "/casestudy/aixels",
     video: aixelsVideo,
+  },
+  {
+    title: "Tian Airlines",
+    tag1: "Mobile Design",
+    tag2: "Design Systems",
+    description: "Designing a full airline booking experience with a complete token and component system",
+    readTime: "5 min.",
+    path: "/casestudy/tian-airlines",
+    video: tianVideo,
   },
 ];
 
@@ -364,8 +376,8 @@ function StyledCard({ initialHovered = false, onInitialLeave, data }: { initialH
               <p style={{ color: "var(--color-text-primary)", fontSize: 17, fontWeight: 400, lineHeight: 1.65, margin: 0 }}>{data.title}</p>
               <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
                 {data.tag3 && (
-                  <div style={{ background: "rgba(189,254,212,0.2)", borderRadius: 2, padding: "0 8px", display: "flex", alignItems: "center", height: 18 }}>
-                    <span style={{ color: "#23cb71", fontSize: 11, fontWeight: 400, lineHeight: 1, whiteSpace: "nowrap" }}>{data.tag3}</span>
+                  <div style={{ background: "var(--color-accent2-background)", borderRadius: 2, padding: "0 8px", display: "flex", alignItems: "center", height: 18 }}>
+                    <span style={{ color: "var(--color-accent2-foreground)", fontSize: 11, fontWeight: 400, lineHeight: 1, whiteSpace: "nowrap" }}>{data.tag3}</span>
                   </div>
                 )}
                 <p style={{ color: "var(--color-text-secondary)", fontSize: 14, fontWeight: 400, lineHeight: 1.2, margin: 0 }}>{data.tag1}</p>
@@ -414,7 +426,7 @@ function FirstCardAnimation({ shouldStart, onDone, onFullyDone, contained = fals
 
   // Both card and bar animate to this same scaleX so their widths always match
   const scaleX = !shouldStart ? 0 : phase === "bar" ? 0.5 : 1;
-  const scaleTransition = { duration: phase === "bar" ? 1.2 : 1.5, ease: [0.4, 0, 0.2, 1] as const };
+  const scaleTransition = { duration: phase === "bar" ? 0.8 : 1.2, ease: [0.4, 0, 0.2, 1] as const };
 
   return (
     <div style={{ position: "relative", width: "100%", ...(contained ? { height: "100%" } : { aspectRatio: "2 / 1" }) }}>
@@ -527,7 +539,7 @@ export default function Home() {
 
   useEffect(() => {
     if (!shouldAnimate) return;
-    const t = setTimeout(() => setCardShouldStart(true), 2000);
+    const t = setTimeout(() => setCardShouldStart(true), 1400);
     return () => clearTimeout(t);
   }, [shouldAnimate]);
 

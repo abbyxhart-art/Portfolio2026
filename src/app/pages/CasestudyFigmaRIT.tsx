@@ -21,14 +21,22 @@ import imgFigmaMake from "../../assets/project/figbuild/figmamake.png";
 import imgFigmaMCP from "../../assets/project/figbuild/figmamcp.png";
 import claudeSvg from "../../assets/icons/claude.svg";
 import figmaMakeSvg from "../../assets/icons/figmamake.svg";
+import imgIterations from "../../assets/project/figbuild/iterations.png";
+import imgUserflow from "../../assets/project/figbuild/userflow.png";
 import imgFigmafam from "../../assets/project/figbuild/figmafam.png";
 import badge01 from "../../assets/project/figbuild/badge01.png";
 import badge02 from "../../assets/project/figbuild/badge02.png";
 import badge03 from "../../assets/project/figbuild/badge03.png";
 import badge04 from "../../assets/project/figbuild/badge04.png";
 import badge05 from "../../assets/project/figbuild/badge05.png";
+import badge06 from "../../assets/project/figbuild/badge06.png";
+import badge07 from "../../assets/project/figbuild/badge07.png";
+import badge08 from "../../assets/project/figbuild/badge08.png";
+import badge09 from "../../assets/project/figbuild/badge09.png";
+import badge10 from "../../assets/project/figbuild/badge10.png";
+import badge11 from "../../assets/project/figbuild/badge11.png";
 
-const badges = [badge01, badge02, badge03, badge04, badge05];
+const badges = [badge01, badge02, badge03, badge04, badge05, badge06, badge07, badge08, badge09, badge10, badge11];
 
 export default function CasestudyFigmaRIT() {
   const shouldAnimate = useNavEntrance();
@@ -82,11 +90,6 @@ export default function CasestudyFigmaRIT() {
 
   return (
     <div className="relative min-h-screen bg-background overflow-x-clip">
-      {/* Top Gradient */}
-      <div
-        className="absolute inset-x-0 z-0 h-[600px] pointer-events-none"
-        style={{ top: 0, background: "linear-gradient(to top, rgba(22,22,23,0.2), #23CB71)", opacity: 0.5 }}
-      />
       <HomeButton />
       <CasestudyNavigation title="FigBuild Badges 2026" />
       <CasestudyMiniMenu sections={FIGMA_SECTIONS} />
@@ -121,7 +124,17 @@ export default function CasestudyFigmaRIT() {
         transition={{ duration: 0.5, ease: "easeOut" }}
         className="flex flex-col items-center px-[16px] md:px-[20vw] pt-[15vh] pb-[15vh] relative z-[1]"
       >
-        <div className="flex flex-col gap-[75px] items-end w-full">
+        <div className="flex flex-col gap-[9vh] items-center w-full">
+
+          {/* Title + subtitle */}
+          <div className="flex flex-col gap-[10px] items-center w-full">
+            <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.2] text-[#faf9ff] text-[32px] md:text-[40px] text-center">
+              FigBuild 2026 Badges
+            </p>
+            <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.4] text-[#908e99] text-[16px] md:text-[20px] text-center">
+              A brand activation for students across the world
+            </p>
+          </div>
 
           {/* ── Hero ── */}
           <motion.div
@@ -136,26 +149,27 @@ export default function CasestudyFigmaRIT() {
           <motion.div style={{ y: contentY }} className="flex flex-col gap-[75px] items-start w-full">
 
             <div id="cs-overview" className="flex flex-col gap-[32px] items-start w-full">
-              {/* Title + subtitle */}
-              <div className="border-b border-[#302f34] flex flex-col gap-[8px] items-start pb-[32px] w-full">
-                <p className="font-['Inter_Tight',sans-serif] font-[450] leading-[1.3] text-[color:var(--text\/primary,#eeedf5)] text-[18px] md:text-[24px] w-full">
-                  FigBuild 2026 Badges
-                </p>
-                <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.25] text-[#908e99] text-[16px] md:text-[20px] w-full">
-                  I got to build a brand activation for students across the world
-                </p>
-              </div>
+              <div className="w-full border-t border-[#302f34]" />
 
               {/* Metadata columns */}
               <div className="flex gap-[57px] items-start w-full">
                 {/* Left: Tools + Timeline + Role */}
-                <div className="flex flex-col font-['Inter_Tight',sans-serif] gap-[32px] items-start shrink-0 w-[159px]">
-                  <div className="flex flex-col gap-[16px] items-start w-[90px]">
-                    <p className="leading-none text-[#908e99] text-[14px] md:text-[16px] w-full">Tools</p>
-                    <div className="text-[color:var(--text\/primary,#eeedf5)] text-[14px] md:text-[17px] w-full">
-                      <p className="leading-none mb-[12px]">Figma</p>
-                      <p className="leading-none mb-[12px]">Figma MCP</p>
-                      <p className="leading-none">Claude</p>
+                <div className="flex flex-col font-['Inter_Tight',sans-serif] gap-[32px] items-start shrink-0 w-[210px]">
+                  <div className="flex flex-col gap-[16px] items-start w-full">
+                    <p className="leading-none text-[#908e99] text-[14px] md:text-[16px] w-full">Team</p>
+                    <div className="text-[14px] md:text-[17px] w-full">
+                      <p className="leading-none mb-[12px]">
+                        <span className="text-[color:var(--text\/primary,#eeedf5)]">Troy Ramiscal </span>
+                        <span className="text-[#908e99]"> Motion, UX</span>
+                      </p>
+                      <p className="leading-none mb-[12px]">
+                        <span className="text-[color:var(--text\/primary,#eeedf5)]">Lasya Josyula </span>
+                        <span className="text-[#908e99]"> UX, Dev</span>
+                      </p>
+                      <p className="leading-none">
+                        <span className="text-[color:var(--text\/primary,#eeedf5)]">Charlotte </span>
+                        <span className="text-[#908e99]"> UX</span>
+                      </p>
                     </div>
                   </div>
                   <div className="flex flex-col gap-[16px] items-start">
@@ -178,10 +192,10 @@ export default function CasestudyFigmaRIT() {
                     <p className="font-['Inter_Tight',sans-serif] leading-none text-[#908e99] text-[14px] md:text-[16px] w-full">Notes</p>
                     <div className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[color:var(--text\/primary,#eeedf5)] text-[14px] md:text-[17px] w-full">
                       <p className="mb-[16px]">
-                        FigBuild is Figma's annual hackathon, bringing students together with this year's challenge of creating something with Figma Make.
+                        FigBuild is Figma's annual hackathon, bringing students together to push the bounds of their creativity! 
                       </p>
                       <p className="mb-[16px]">
-                        Figma at RIT 2026 (Troy, Lasya, Charlotte, and I) were able to do this because of TK and Joanna at the Figma for Edu team! Huge thank you :D
+                        Figma at RIT 2026 (Troy, Lasya, Charlotte, and I) were unable to participate (our spring breaks clashed). From that friction, we wanted to create something that could bring students together, regardless of location and time. We were able to do this because of TK and Joanna at the Figma for Edu team! Huge thank you :D
                       </p>
                       <p>
                         I kept all our Figma files neat, token system locked for Claude, and Github conflict free!
@@ -193,7 +207,7 @@ export default function CasestudyFigmaRIT() {
                     onMouseEnter={() => setBadgeBtnHovered(true)}
                     onMouseLeave={() => setBadgeBtnHovered(false)}
                     className="flex items-center justify-center px-[16px] py-[10px] rounded-[24px] border border-solid border-[#302f34] cursor-pointer transition-colors duration-150"
-                    style={{ background: badgeBtnHovered ? "rgba(144,142,153,0.2)" : "rgba(88,85,100,0.2)" }}
+                    style={{ background: badgeBtnHovered ? "rgba(144,142,153,0.2)" : "rgba(88,85,100,0.3)" }}
                   >
                     <span className="font-['Inter_Tight',sans-serif] font-[300] leading-none text-[#faf9ff] text-[12px] md:text-[14px]">Build your FigBuild Badge</span>
                   </button>
@@ -201,17 +215,64 @@ export default function CasestudyFigmaRIT() {
               </div>
             </div>
 
+          {/* ── Section: Statistics ── */}
+          <div className="flex flex-col gap-[16px] items-start w-full">
+            <p className="font-['Inter_Tight',sans-serif] font-[300] leading-none text-[#908e99] text-[14px] md:text-[16px] w-full">
+              Our impact
+            </p>
+            <div className="font-['Inter_Tight',sans-serif] font-[450] leading-[1.2] text-[color:var(--text\/primary,#faf9ff)] text-[32px] md:text-[40px] w-full">
+              <p className="mb-[4px]">690+ international teams</p>
+              <p className="mb-[4px]">2,000+ participants</p>
+              <p>Thousands of impressions</p>
+            </div>
+          </div>
+
+          <div className="w-full border-t border-[#302f34]" />
+
           {/* ── Section: Design ── */}
           <div id="cs-design" className="flex flex-col gap-[75px] items-start w-full">
-            <CasestudySectionHeader
-              eyebrow="Design"
-              headline="Sprinting to be ready for Figbuild on Super Bowl Sunday"
-              subtitle="Wireframes, workflows, and what it took to ship in a weekend"
-            />
+            {/* Section header */}
+            <div className="flex flex-col gap-[16px] items-start w-full">
+              <p className="font-['Inter_Tight',sans-serif] font-[300] leading-none text-[#908e99] text-[14px] md:text-[16px] w-full text-center">Wireframes</p>
+              <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.2] text-[#faf9ff] text-[32px] md:text-[40px] w-full">Sprinting to be ready for Figbuild on Super Bowl Sunday</p>
+            </div>
+
+            {/* The Flow */}
             <div className="flex flex-col gap-[32px] items-start w-full">
               <div className="flex flex-col gap-[16px] items-start w-full">
-                <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.65] text-[color:var(--text\/tertiary,#7e7c87)] text-[14px] md:text-[17px] w-full">
-                  I took the basic concepts from Troy and laid out the mobile and desktop bento box design, flow chart, and design proposal within 4-6 hours, taking a break to watch Bad Bunny's Halftime performance :D
+                <p className="font-['Inter_Tight',sans-serif] font-[300] leading-none text-[#908e99] text-[14px] md:text-[16px]">The Flow</p>
+                <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.3] text-[#faf9ff] text-[18px] md:text-[24px] w-full">
+                  The flow was meant to be easy, and we narrowed our scope.
+                </p>
+                <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.65] text-[#908e99] text-[14px] md:text-[17px] w-full">
+                  While we originally wanted users to have two options: make from scratch or scan their in person ID's and create a digital replica, we very quickly realized we couldn't do that in the 3 day scope.
+                </p>
+              </div>
+              <img src={imgUserflow} className="aspect-[2/1] rounded-[8px] w-full object-cover" alt="User flow" />
+            </div>
+
+            {/* Iterations — two column */}
+            <div className="flex flex-col md:flex-row gap-[24px] items-start w-full">
+              <div className="flex flex-1 flex-col gap-[16px] items-start min-w-0">
+                <p className="font-['Inter_Tight',sans-serif] font-[300] leading-none text-[#908e99] text-[14px] md:text-[16px]">Iterations</p>
+                <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.3] text-[#faf9ff] text-[18px] md:text-[24px] w-full">After the initial call, we built for just one flow.</p>
+                <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.65] text-[#908e99] text-[14px] md:text-[17px] w-full">
+                  We knew we wanted all the work to be on one screen, but with so many interactions, finding a clear way to organize them all was difficult.
+                </p>
+                <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.65] text-[#908e99] text-[14px] md:text-[17px] w-full">
+                  In the end, we followed a bento box approach!
+                </p>
+              </div>
+              <img src={imgIterations} className="flex-1 min-w-0 rounded-[8px] object-cover" alt="Iterations" />
+            </div>
+
+            {/* Design Proposal */}
+            <div className="flex flex-col gap-[32px] items-start w-full">
+              <div className="flex flex-col gap-[16px] items-start w-full">
+                <p className="font-['Inter_Tight',sans-serif] font-[300] leading-none text-[#908e99] text-[14px] md:text-[16px]">Design Proposal</p>
+                <p className="font-['Inter_Tight',sans-serif] font-normal leading-[1.3] text-[#faf9ff] text-[18px] md:text-[24px] w-full">Finalizing wireframes and design proposal for branding</p>
+                <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.65] text-[#908e99] text-[14px] md:text-[17px] w-full">
+                  I took the basic concepts from Troy's Figma Flowers, and laid out the mobile and desktop bento box design, flow chart, and design proposal within 4-6 hours, taking a break to watch Bad Bunny's Halftime performance :D
                 </p>
               </div>
               <img src={imgDocumentation} className="aspect-[2/1] rounded-[8px] w-full object-cover" alt="Documentation" />
@@ -224,10 +285,9 @@ export default function CasestudyFigmaRIT() {
               <div className="flex flex-col gap-[24px] items-start pb-[42px] w-full">
                 <p className="font-['Inter_Tight',sans-serif] font-[300] leading-none text-[#908e99] text-[14px] md:text-[16px]">Workflow</p>
                 {/* Icons with glow */}
-                <div className="relative flex gap-[8px] items-center">
-                  <div className="absolute pointer-events-none left-0 top-1/2 -translate-y-1/2 h-[120px] w-[220px] blur-[48px]" style={{ background: "radial-gradient(ellipse at 30% 50%, rgba(160,130,255,0.35) 0%, rgba(221,251,170,0.2) 60%, rgba(160,130,255,0) 100%)" }} />
-                  <img src={figmaMakeSvg} alt="" className="relative h-[44px] w-auto" />
-                  <img src={claudeSvg} alt="" className="relative h-[44px] w-auto" />
+                <div className="flex gap-[8px] items-center">
+                  <img src={figmaMakeSvg} alt="" className="h-[44px] w-auto" />
+                  <img src={claudeSvg} alt="" className="h-[44px] w-auto" />
                 </div>
                 <p className="font-['Inter_Tight',sans-serif] leading-[1.3] text-[#faf9ff] text-[18px] md:text-[24px] w-full">
                   Figma Make → Figma MCP + Claude
@@ -278,7 +338,7 @@ export default function CasestudyFigmaRIT() {
                 onMouseEnter={() => setLinkedinBtnHovered(true)}
                 onMouseLeave={() => setLinkedinBtnHovered(false)}
                 className="flex items-center justify-center px-[16px] py-[10px] rounded-[24px] border border-solid border-[#302f34] cursor-pointer transition-colors duration-150"
-                style={{ background: linkedinBtnHovered ? "rgba(144,142,153,0.2)" : "rgba(88,85,100,0.2)" }}
+                style={{ background: linkedinBtnHovered ? "rgba(144,142,153,0.2)" : "rgba(88,85,100,0.3)" }}
               >
                 <span className="font-['Inter_Tight',sans-serif] font-[300] leading-none text-[#faf9ff] text-[12px] md:text-[14px]">Follow the hashtag on LinkedIn</span>
               </button>
@@ -290,9 +350,11 @@ export default function CasestudyFigmaRIT() {
                   }
                   .badge-marquee { animation: marquee 18s linear infinite; }
                 `}</style>
-                <div className="badge-marquee flex" style={{ gap: "16px", width: "max-content" }}>
+                <div className="badge-marquee flex items-center" style={{ gap: "16px", width: "max-content" }}>
                   {[...badges, ...badges].map((src, i) => (
-                    <img key={i} src={src} alt={`Badge ${(i % badges.length) + 1}`} className="h-[180px] w-auto" />
+                    <div key={i} className="h-[180px] w-auto shrink-0 flex items-center">
+                      <img src={src} alt={`Badge ${(i % badges.length) + 1}`} className="h-full w-auto object-contain" />
+                    </div>
                   ))}
                 </div>
               </div>
@@ -308,7 +370,7 @@ export default function CasestudyFigmaRIT() {
             />
 
             {/* Point 1 */}
-            <div className="border border-[#302f34] flex font-['Inter_Tight',sans-serif] gap-[16px] items-start mt-[16px] p-[16px] rounded-[8px] w-full" style={{ background: "rgba(88,85,100,0.2)" }}>
+            <div className="border border-[#302f34] flex font-['Inter_Tight',sans-serif] gap-[16px] items-start mt-[16px] p-[16px] rounded-[8px] w-full" style={{ background: "rgba(88,85,100,0.3)" }}>
               <p className="font-[300] leading-[2.05] text-[#908e99] text-[12px] md:text-[14px] shrink-0">1</p>
               <div className="flex flex-1 flex-col gap-[8px] items-start leading-[1.65] text-[14px] md:text-[17px] min-w-0">
                 <p className="text-[#faf9ff] whitespace-nowrap">AI can carry you far</p>
@@ -319,7 +381,7 @@ export default function CasestudyFigmaRIT() {
             </div>
 
             {/* Point 2 */}
-            <div className="border border-[#302f34] flex font-['Inter_Tight',sans-serif] gap-[16px] items-start p-[16px] rounded-[8px] w-full" style={{ background: "rgba(88,85,100,0.2)" }}>
+            <div className="border border-[#302f34] flex font-['Inter_Tight',sans-serif] gap-[16px] items-start p-[16px] rounded-[8px] w-full" style={{ background: "rgba(88,85,100,0.3)" }}>
               <p className="font-[300] leading-[2.05] text-[#908e99] text-[12px] md:text-[14px] shrink-0">2</p>
               <div className="flex flex-1 flex-col gap-[8px] items-start leading-[1.65] text-[14px] md:text-[17px] min-w-0">
                 <p className="text-[#faf9ff] whitespace-nowrap">My Figma fam</p>
@@ -331,7 +393,7 @@ export default function CasestudyFigmaRIT() {
             </div>
 
             {/* Point 3 */}
-            <div className="border border-[#302f34] flex font-['Inter_Tight',sans-serif] gap-[16px] items-start p-[16px] rounded-[8px] w-full" style={{ background: "rgba(88,85,100,0.2)" }}>
+            <div className="border border-[#302f34] flex font-['Inter_Tight',sans-serif] gap-[16px] items-start p-[16px] rounded-[8px] w-full" style={{ background: "rgba(88,85,100,0.3)" }}>
               <p className="font-[300] leading-[2.05] text-[#908e99] text-[12px] md:text-[14px] shrink-0">3</p>
               <div className="flex flex-1 flex-col gap-[8px] items-start leading-[1.65] text-[14px] md:text-[17px] min-w-0">
                 <p className="text-[#faf9ff] whitespace-nowrap">Leaving RIT's impact :D</p>

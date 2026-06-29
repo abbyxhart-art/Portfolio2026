@@ -27,6 +27,9 @@ const imgSecondaryColor = new URL("../../assets/project/capitol/secondarycolor.p
 const imgIcons = new URL("../../assets/project/capitol/icons.png", import.meta.url).href;
 const imgSlides35 = new URL("../../assets/project/capitol/8.5x3.5slides.png", import.meta.url).href;
 const vidEntrance = new URL("../../assets/project/capitol/entrancepage_1920_860.mp4", import.meta.url).href;
+const imgTimeline = new URL("../../assets/project/capitol/capitol_timeline.png", import.meta.url).href;
+const vidNavigation = new URL("../../assets/project/capitol/navigation_1920x860.mp4", import.meta.url).href;
+const vidProductPage = new URL("../../assets/project/capitol/productpage_1920x860.mp4", import.meta.url).href;
 
 const CAPITOL_SECTIONS = [
   { id: "cs-overview", label: "Overview" },
@@ -43,6 +46,7 @@ const vidCapitol = new URL("../../assets/project/capitol/Demo_1920x960_V1.mp4", 
 
 const blobBottom = "radial-gradient(ellipse at center, rgba(88,85,100,0.35) 0%, rgba(88,85,100,0) 70%)";
 const blobTop = "radial-gradient(ellipse at center, rgba(175,164,216,0.15) 0%, rgba(175,164,216,0) 70%)";
+const blobBlue = "radial-gradient(ellipse at center, rgba(90,150,220,0.18) 0%, rgba(90,150,220,0) 70%)";
 
 export default function CasestudyCapitol() {
   const shouldAnimate = useNavEntrance();
@@ -148,10 +152,10 @@ export default function CasestudyCapitol() {
               <div className="flex flex-col gap-[17px] items-start flex-1 min-w-0 pb-[32px]">
                 <p className="font-[300] leading-none text-[#faf9ff] text-[14px] w-full">Overview</p>
                 <div className="font-[300] text-[#908e99] text-[16px] w-full">
-                  <p className="leading-[1.65] mb-[16px]">As the sole design hire at Capitol Aluminum, I led the company's complete brand transformation across three phases — foundational research, brand system development, and print/digital/web rollout.</p>
+                  <p className="leading-[1.65] mb-[16px]">Capitol hadn't updated since 1960; they needed to refresh their brand.</p>
 
-                  <p className="leading-[1.65] mb-[16px]">As the sole design hire at Capitol Aluminum, I led the company's complete brand transformation across three phases — foundational research, brand system development, and print/digital/web rollout.</p>
-                  <p className="leading-[1.65]">Working directly with stakeholders, I built a brand identity from the ground up that could scale across every touchpoint the company uses.</p>
+                  <p className="leading-[1.65] mb-[16px]">As the sole design hire at Capitol Aluminum, I led the company's complete brand transformation across three phases: foundational research, brand system development, and print/digital/web rollout and handoff.</p>
+                  <p className="leading-[1.65]">Working directly with the people who's opinions mattered (sales and marketing), I built a brand identity from the ground up that could scale across every touchpoint the company uses.</p>
                 </div>
               </div>
             </div>
@@ -276,13 +280,13 @@ export default function CasestudyCapitol() {
             </div>
 
             {/* Goals */}
-            <div className="flex flex-col items-start w-full">
-              <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.3] text-[#faf9ff] text-[24px] pb-[42px] w-full">Goals for the summer</p>
+            <div className="flex flex-col items-center w-full">
+              <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.3] text-[#faf9ff] text-[24px] pb-[42px] w-full text-center">Goals for the summer</p>
               <div className="flex flex-col md:flex-row gap-[24px] items-stretch w-full">
 
                 <div className="flex flex-1 flex-col gap-[16px] items-start min-w-0 overflow-clip p-[24px] relative rounded-[12px] border border-[#302f34] bg-[#161617]">
                   <div className="absolute pointer-events-none" style={{ width: 545, height: 306, left: -157, top: "calc(50% - 78px)", transform: "translateY(-50%)" }}>
-                    <div style={{ width: "100%", height: "100%", background: blobTop }} />
+                    <div style={{ width: "100%", height: "100%", background: blobBlue }} />
                   </div>
                   <div className="font-['Inter_Tight',sans-serif] font-[300] flex gap-[16px] items-start leading-[1.45] text-[20px] relative z-10">
                     <p className="text-[#908e99]">01</p>
@@ -295,7 +299,7 @@ export default function CasestudyCapitol() {
 
                 <div className="flex flex-1 flex-col gap-[16px] items-start min-w-0 overflow-clip p-[24px] relative rounded-[12px] border border-[#302f34] bg-[#161617]">
                   <div className="absolute pointer-events-none" style={{ width: 545, height: 306, left: -158, top: "calc(50% - 78px)", transform: "translateY(-50%)" }}>
-                    <div style={{ width: "100%", height: "100%", background: blobTop }} />
+                    <div style={{ width: "100%", height: "100%", background: blobBlue }} />
                   </div>
                   <div className="font-['Inter_Tight',sans-serif] font-[300] flex gap-[16px] items-start leading-[1.45] text-[20px] relative z-10">
                     <p className="text-[#908e99]">02</p>
@@ -308,7 +312,7 @@ export default function CasestudyCapitol() {
 
                 <div className="flex flex-1 flex-col gap-[16px] items-start min-w-0 overflow-clip p-[24px] relative rounded-[12px] border border-[#302f34] bg-[#161617]">
                   <div className="absolute pointer-events-none" style={{ width: 545, height: 306, left: -158, top: "calc(50% - 78px)", transform: "translateY(-50%)" }}>
-                    <div style={{ width: "100%", height: "100%", background: blobTop }} />
+                    <div style={{ width: "100%", height: "100%", background: blobBlue }} />
                   </div>
                   <div className="font-['Inter_Tight',sans-serif] font-[300] flex gap-[16px] items-start leading-[1.45] text-[20px] relative z-10">
                     <p className="text-[#908e99]">03</p>
@@ -387,13 +391,17 @@ export default function CasestudyCapitol() {
             {/* Timeline */}
             <div className="flex flex-col gap-[42px] items-start w-full">
               <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[20px] text-[#908e99] text-[14px]">Timeline</p>
-              <div className="aspect-[2/1] rounded-[4px] w-full overflow-hidden bg-[#2c2c2c]" />
+              <div className="rounded-[4px] w-full overflow-hidden bg-[#2c2c2c]">
+                <img src={imgTimeline} alt="Project timeline" className="w-full h-full object-cover" />
+              </div>
             </div>
 
           </div>
 
           {/* ── Section: Branding ── */}
           <div id="cs-branding" className="flex flex-col gap-[75px] items-start w-full scroll-mt-[100px]">
+
+            <div className="w-full border-t border-[#302f34]" />
 
             {/* Center Title */}
             <div className="flex flex-col gap-[24px] items-center w-full">
@@ -413,7 +421,7 @@ export default function CasestudyCapitol() {
               <div className="flex flex-col gap-[16px] items-start w-full">
                 <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[20px] text-[#908e99] text-[14px]">Lockup / Logo</p>
                 <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.3] text-[#faf9ff] text-[24px]">A change in perspective</p>
-                <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.65] text-[#b8b4c5] text-[17px]">Grounded and solid — no more lines or isometric angle. Custom kerning on the lockup text, plus a tagline version at Gail's request.</p>
+                <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.65] text-[#b8b4c5] text-[17px]">Grounded and solid: no more lines or isometric angle. Custom kerning on the lockup text, plus a tagline version at Gail's request.</p>
               </div>
               <div className="rounded-[4px] w-full overflow-hidden bg-[#2c2c2c]" style={{ aspectRatio: "1920 / 960" }}>
                 <img src={imgLogo} alt="Brand document" className="w-full h-full object-cover" />
@@ -620,6 +628,8 @@ export default function CasestudyCapitol() {
           {/* ── Section: Website ── */}
           <div id="cs-website" className="flex flex-col gap-[75px] items-start w-full scroll-mt-[100px]">
 
+            <div className="w-full border-t border-[#302f34]" />
+
             {/* Center Title */}
             <div className="flex flex-col gap-[24px] items-center w-full">
               <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[16.5px] text-[#908e99] text-[12px] text-center tracking-[0.1px] uppercase">
@@ -644,10 +654,6 @@ export default function CasestudyCapitol() {
                 <img src={imgDesignTokens} alt="Design tokens" className="w-full" />
                 <img src={imgDesignComponents} alt="Design components" className="w-full" />
               </div>
-              <div className="flex gap-[24px] items-start w-full">
-                <div className="flex-1 min-w-0 rounded-[4px] overflow-hidden bg-[#2c2c2c]" style={{ aspectRatio: "827 / 810" }} />
-                <div className="flex-1 min-w-0 rounded-[4px] overflow-hidden bg-[#2c2c2c]" style={{ aspectRatio: "827 / 810" }} />
-              </div>
             </div>
 
             {/* Website highlights card */}
@@ -660,46 +666,39 @@ export default function CasestudyCapitol() {
                 <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.65] text-[#b8b4c5] text-[17px]">I simplified the experience and emphasized promotional offers and design benefits.</p>
               </div>
 
-              {/* 1/4 */}
+              {/* 1/3 */}
               <div className="flex flex-col gap-[24px] items-start w-full">
                 <div className="flex flex-col gap-[16px] items-start w-full">
-                  <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[20px] text-[#908e99] text-[14px]">1/4</p>
+                  <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[20px] text-[#908e99] text-[14px]">1/3</p>
                   <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.3] text-[#faf9ff] text-[24px]">Each category page has a comparison of products</p>
-                  <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.65] text-[#b8b4c5] text-[17px]">Each page focuses on one thing to give a complete image of Capitol.</p>
                 </div>
                 <div className="rounded-[4px] w-full overflow-hidden bg-[#2c2c2c]" style={{ aspectRatio: "1920 / 860" }}>
                   <video autoPlay loop muted playsInline className="w-full h-full object-cover" src={vidEntrance} />
                 </div>
               </div>
 
-              {/* 2/4 */}
+              {/* 2/3 */}
               <div className="flex flex-col gap-[24px] items-start w-full">
                 <div className="flex flex-col gap-[16px] items-start w-full">
-                  <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[20px] text-[#908e99] text-[14px]">2/4</p>
+                  <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[20px] text-[#908e99] text-[14px]">2/3</p>
                   <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.3] text-[#faf9ff] text-[24px]">From 5 tabs and a few submenus to one clean navigation</p>
-                  <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.65] text-[#b8b4c5] text-[17px]">I solidified the navigation to be more intuitive, grouping products and pages together</p>
+                  <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.65] text-[#b8b4c5] text-[17px]">Now products and information is grouped in a simpler format!</p>
                 </div>
-                <div className="aspect-[2/1] rounded-[4px] w-full overflow-hidden bg-[#2c2c2c]" />
+                <div className="rounded-[4px] w-full overflow-hidden bg-[#2c2c2c]" style={{ aspectRatio: "1920 / 860" }}>
+                  <video autoPlay loop muted playsInline className="w-full h-full object-cover" src={vidNavigation} />
+                </div>
               </div>
 
-              {/* 3/4 */}
+              {/* 3/3 */}
               <div className="flex flex-col gap-[24px] items-start w-full">
                 <div className="flex flex-col gap-[16px] items-start w-full">
-                  <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[20px] text-[#908e99] text-[14px]">3/4</p>
+                  <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[20px] text-[#908e99] text-[14px]">3/3</p>
                   <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.3] text-[#faf9ff] text-[24px]">Product Pages</p>
                   <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.65] text-[#b8b4c5] text-[17px]">Now designed with images and quotes from projects where those products were used</p>
                 </div>
-                <div className="aspect-[2/1] rounded-[4px] w-full overflow-hidden bg-[#2c2c2c]" />
-              </div>
-
-              {/* 4/4 */}
-              <div className="flex flex-col gap-[24px] items-start w-full">
-                <div className="flex flex-col gap-[16px] items-start w-full">
-                  <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[20px] text-[#908e99] text-[14px]">4/4</p>
-                  <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.3] text-[#faf9ff] text-[24px]">Project Spotlight pages</p>
-                  <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.65] text-[#b8b4c5] text-[17px]">A whole page dedicated to projects, with a case study approach (an expansion of Jon's idea!)</p>
+                <div className="rounded-[4px] w-full overflow-hidden bg-[#2c2c2c]" style={{ aspectRatio: "1920 / 860" }}>
+                  <video autoPlay loop muted playsInline className="w-full h-full object-cover" src={vidProductPage} />
                 </div>
-                <div className="aspect-[2/1] rounded-[4px] w-full overflow-hidden bg-[#2c2c2c]" />
               </div>
             </div>
 
@@ -707,11 +706,27 @@ export default function CasestudyCapitol() {
 
           {/* ── Section: Reflections ── */}
           <div id="cs-reflection" className="flex flex-col gap-[24px] items-start w-full scroll-mt-[100px]">
-            <CasestudySectionHeader
-              eyebrow="Reflections"
-              headline="What I learned"
-              subtitle="Working as the sole designer taught me how to own decisions end-to-end, communicate design rationale to non-designers, and ship work that sticks — even after you leave."
-            />
+            <div className="w-full border-t border-[#302f34]" />
+            <div className="flex flex-col gap-[16px] items-start w-full">
+              <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[20px] text-[#908e99] text-[14px]">What I learned</p>
+              <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.3] text-[#faf9ff] text-[24px]">Working as the sole designer</p>
+            </div>
+
+            <div className="flex gap-[16px] items-start p-[16px] rounded-[8px] w-full border border-[#302f34]" style={{ background: "rgba(219,189,254,0.05)" }}>
+              <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[2.05] text-[#908e99] text-[14px] shrink-0">1</p>
+              <div className="flex flex-col gap-[8px] items-start flex-1 min-w-0">
+                <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.65] text-[#faf9ff] text-[17px]">Your design system is only as good as your ability to communicate it</p>
+                <p className="font-['Inter',sans-serif] font-[400] leading-[1.65] text-[#b8b4c5] text-[16px] tracking-[-0.32px]">Designing templates and intuitive layouts that people could use, duplicate, and reuse was one of my favorite challenges, and communicating those challenges and choices clearly was so important!</p>
+              </div>
+            </div>
+
+            <div className="flex gap-[16px] items-start p-[16px] rounded-[8px] w-full border border-[#302f34]" style={{ background: "rgba(219,189,254,0.05)" }}>
+              <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[2.05] text-[#908e99] text-[14px] shrink-0">2</p>
+              <div className="flex flex-col gap-[8px] items-start flex-1 min-w-0">
+                <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.65] text-[#faf9ff] text-[17px]">Get feedback in moderation</p>
+                <p className="font-['Inter',sans-serif] font-[400] leading-[1.65] text-[#b8b4c5] text-[16px] tracking-[-0.32px]">Some of the best designs came from feedback, but also there were times it was important to trust my gut. Luckily, my team trusted me and we made it work!</p>
+              </div>
+            </div>
           </div>
 
           <UpNext currentId="capitol-aluminum" />

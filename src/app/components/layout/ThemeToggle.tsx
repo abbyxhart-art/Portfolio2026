@@ -25,6 +25,7 @@ export default function ThemeToggle() {
 
   const [pending, setPending] = useState<"dark" | "light" | null>(null);
   const [hoveredIcon, setHoveredIcon] = useState<"moon" | "sun" | null>(null);
+  const [hovered, setHovered] = useState(false);
 
   const sliderTheme = pending ?? theme;
   const sliderLeft = (sliderTheme === "dark" ? MOON_LEFT : SUN_LEFT) - SLIDER_OFFSET;
@@ -54,6 +55,8 @@ export default function ThemeToggle() {
   return (
     <button
       onClick={handleClick}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
       aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
       style={{
         position: "relative",
@@ -62,9 +65,10 @@ export default function ThemeToggle() {
         height: H,
         borderRadius: 9999,
         border: "1px solid var(--color-border-dark)",
-        background: "var(--color-surface-fill2)",
+        background: hovered ? "var(--color-surface-secondary-hover)" : "var(--color-surface-fill3)",
         cursor: "pointer",
         padding: 0,
+        transition: "background-color 0.15s ease",
       }}
     >
       {/* Sliding pill */}
@@ -77,6 +81,7 @@ export default function ThemeToggle() {
           height: SLIDER_H,
           borderRadius: 9999,
           background: "var(--color-surface-fill2)",
+          opacity: 0.8,
           transition: `left ${SWITCH_DELAY}ms cubic-bezier(0.4,0,0.2,1)`,
           pointerEvents: "none",
         }}

@@ -1,4 +1,6 @@
-import { createBrowserRouter, Outlet } from "react-router";
+import { useEffect } from "react";
+import { createBrowserRouter, Outlet, useLocation } from "react-router";
+import { motion } from "@/lib/motion";
 import Home from "./pages/Home";
 import InteractiveWebpage from "./components/InteractiveWebpage";
 import CasestudyFigmaRIT from "./pages/CasestudyFigmaRIT";
@@ -14,6 +16,7 @@ import About from "./pages/About";
 import DrinkFloater from "./components/drinks/DrinkFloater";
 import Footer from "./components/layout/Footer";
 import MobileBottomNav from "./components/layout/MobileBottomNav";
+import ThemeToggle from "./components/layout/ThemeToggle";
 
 const BLUR_LAYERS = [
   { blur: 2,  mask: "linear-gradient(to bottom, black 0%,   transparent 25%)" },
@@ -23,8 +26,24 @@ const BLUR_LAYERS = [
 ];
 
 function RootLayout() {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    document.dispatchEvent(new CustomEvent("cursor:scale", { detail: 1 }));
+  }, [pathname]);
+
+  const isCasestudy = pathname.startsWith("/casestudy/");
+
   return (
     <>
+      <motion.div
+        className="hidden md:flex fixed top-[15px] z-[100] items-center"
+        style={{ right: isCasestudy ? "16px" : "calc(4.5vw + 16px)" }}
+        initial={{ opacity: 0, y: -16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: [0.33, 0, 0, 1], delay: 0.1 }}
+      >
+        <ThemeToggle />
+      </motion.div>
       <div className="pb-[110px] md:pb-0">
         <Outlet />
         <Footer />
@@ -46,6 +65,12 @@ function RootLayout() {
             }}
           />
         ))}
+        <div
+          className="absolute inset-0"
+          style={{
+            background: "linear-gradient(to bottom, rgba(var(--color-background-fade),0.85) 0%, rgba(var(--color-background-fade),0.4) 50%, transparent 100%)",
+          }}
+        />
       </div>
       <DrinkFloater />
       <MobileBottomNav />

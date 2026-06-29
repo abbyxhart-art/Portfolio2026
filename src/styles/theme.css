@@ -140,7 +140,7 @@
 
 [data-theme="dark"] {
   color-scheme: dark;
-  --color-background-fade: 23, 23, 23;
+  --color-background-fade: 22, 22, 23;
 }
 
 /* ─── Base layer ─────────────────────────────────────────────────────────── */
@@ -156,8 +156,8 @@
 
   html, body {
     background-color: var(--background);
-    -webkit-font-smoothing: subpixel-antialiased;
-    -moz-osx-font-smoothing: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     font-synthesis: none;
   }
 

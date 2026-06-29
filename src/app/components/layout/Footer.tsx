@@ -58,10 +58,10 @@ function ClearGardenButton({ onClick }: { onClick: () => void }) {
       onMouseLeave={() => setHovered(false)}
       className="hidden md:flex absolute bottom-[16px] right-[16px] gap-[9px] items-center pl-[12px] pr-[16px] py-[8px] rounded-[24px] cursor-pointer"
       style={{
-        backgroundColor: hovered ? "rgba(132,127,144,0.25)" : "rgba(201,197,211,0.30)",
+        backgroundColor: hovered ? "var(--color-surface-secondary-hover)" : "var(--color-surface-fill3)",
         backdropFilter: "blur(12px)",
         WebkitBackdropFilter: "blur(12px)",
-        border: "none",
+        border: "1px solid var(--color-border-dark)",
         transition: "background-color 0.15s ease",
       }}
     >
@@ -72,8 +72,8 @@ function ClearGardenButton({ onClick }: { onClick: () => void }) {
       </div>
       <div className="flex gap-[2px] items-center">
         {["shift", "X"].map((key) => (
-          <div key={key} className={`h-[24px] rounded-[4px] flex items-center justify-center ${key === "shift" ? "px-[8px]" : "w-[24px]"}`} style={{ backgroundColor: "rgba(132,127,144,0.30)" }}>
-            <span className="font-['Inter_Tight',sans-serif] text-[12px]" style={{ color: hovered ? "#4F4C58" : "#847F90" }}>{key}</span>
+          <div key={key} className={`h-[24px] rounded-[4px] flex items-center justify-center ${key === "shift" ? "px-[8px]" : "w-[24px]"}`} style={{ backgroundColor: "var(--color-surface-fill2)" }}>
+            <span className="font-['Inter_Tight',sans-serif] text-[12px]" style={{ color: "var(--color-text-secondary)" }}>{key}</span>
           </div>
         ))}
       </div>

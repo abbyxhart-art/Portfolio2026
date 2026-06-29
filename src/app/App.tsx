@@ -4,7 +4,6 @@ import { router } from './routes';
 import { DrinkProvider } from './context/DrinkContext';
 import { ThemeProvider } from './context/ThemeContext';
 import CustomCursor from './components/layout/CustomCursor';
-import ThemeToggle from './components/layout/ThemeToggle';
 import Lenis from 'lenis';
 
 export default function App() {
@@ -22,9 +21,6 @@ export default function App() {
     <ThemeProvider>
       <DrinkProvider>
         <CustomCursor />
-        <div className="hidden md:flex fixed top-[15px] right-[calc(4.5vw+16px)] z-[100] items-center">
-          <ThemeToggle />
-        </div>
         <RouterProvider router={router} />
       </DrinkProvider>
     </ThemeProvider>
