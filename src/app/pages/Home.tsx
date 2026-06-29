@@ -219,7 +219,7 @@ function LinkedInButton({ show }: { show: boolean }) {
       {/* Status pill */}
       <div
         className="hidden md:block overflow-hidden select-none"
-        style={{ ...pillStyle, height: 32, borderRadius: 4, width: 260 }}
+        style={{ ...pillStyle, border: "none", height: 32, borderRadius: 4, width: 260 }}
       >
         <div
           className="flex items-center h-full"
@@ -542,6 +542,12 @@ export default function Home() {
     const t = setTimeout(() => setCardShouldStart(true), 1400);
     return () => clearTimeout(t);
   }, [shouldAnimate]);
+
+  useEffect(() => {
+    if (firstCardDone) {
+      document.dispatchEvent(new CustomEvent("home:nav:ready"));
+    }
+  }, [firstCardDone]);
 
   return (
     <div className="relative min-h-screen bg-background overflow-x-clip">
