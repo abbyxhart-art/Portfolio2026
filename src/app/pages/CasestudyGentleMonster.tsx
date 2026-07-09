@@ -1,8 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavEntrance } from "../hooks/useNavEntrance";
 import { motion, AnimatePresence, useScroll, useTransform } from "@/lib/motion";
-import Navigation from "../../imports/Navigation";
-import HomeButton from "../components/layout/HomeButton";
 import CasestudyNavigation from "../components/casestudy/CasestudyNavigation";
 import UpNext from "../components/casestudy/UpNext";
 import CasestudyMiniMenu from "../components/casestudy/CasestudyMiniMenu";
@@ -86,12 +84,6 @@ export default function CasestudyGentleMonster() {
 
   return (
     <div className="relative min-h-screen bg-background overflow-x-clip">
-      {/* Top Gradient */}
-      <div
-        className="absolute inset-x-0 z-0 h-[600px] pointer-events-none"
-        style={{ top: 0, background: "linear-gradient(to top, rgba(22,22,23,0.2), #afa4d8)", opacity: 0.5 }}
-      />
-      <HomeButton />
       <CasestudyNavigation title="Gentle Monster" />
       <CasestudyMiniMenu sections={GM_SECTIONS} />
       <AnimatePresence>
@@ -109,15 +101,6 @@ export default function CasestudyGentleMonster() {
         )}
       </AnimatePresence>
 
-      <motion.div
-        initial={shouldAnimate ? { opacity: 0, y: -20 } : false}
-        animate={{ opacity: 1, y: 0, top: scrolled ? "8px" : "16px" }}
-        transition={{ duration: 0.4, ease: "easeOut" }}
-        className="fixed left-[20px] right-[20px] z-50"
-        style={{ top: "16px" }}
-      >
-        <Navigation scrolledDown={scrolled} />
-      </motion.div>
 
       <motion.div
         initial={shouldAnimate ? { opacity: 0, y: 24 } : false}

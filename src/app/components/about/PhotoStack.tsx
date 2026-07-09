@@ -67,6 +67,10 @@ export default function PhotoStack({ images, captions = [], peekVisible = false 
               background: "#201f23",
               zIndex: images.length - pos,
               transformOrigin: "top center",
+              willChange: "transform",
+              backfaceVisibility: "hidden",
+              WebkitBackfaceVisibility: "hidden",
+              isolation: "isolate",
             }}
             initial={false}
             animate={{
@@ -89,6 +93,7 @@ export default function PhotoStack({ images, captions = [], peekVisible = false 
             <img
               src={images[imgIdx]}
               alt=""
+              loading="lazy"
               className="w-full h-full object-cover"
               draggable={false}
             />

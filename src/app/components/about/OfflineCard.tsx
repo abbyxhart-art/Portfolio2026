@@ -9,7 +9,7 @@ import star3 from "../../../assets/project/about/star_3.png";
 import heart1 from "../../../assets/project/about/heart_1.png";
 import heart2 from "../../../assets/project/about/heart_2.png";
 import heart3 from "../../../assets/project/about/heart_3.png";
-import art1 from "../../../assets/project/about/art_1.png";
+import art1 from "../../../assets/project/about/art_1.JPG";
 import art2 from "../../../assets/project/about/art_2.png";
 import art3 from "../../../assets/project/about/art_3.png";
 import eye1 from "../../../assets/project/about/eye_1.png";
@@ -135,37 +135,17 @@ export default function OfflineCard() {
       onMouseLeave={() => setHovered(false)}
       onClick={handleCardClick}
     >
-      {/* Star images */}
-      {STAR_IMAGES.map((src, i) => (
-        <img key={`star-${i}`} src={src} alt={STAR_TITLES[i]}
-          className="absolute inset-0 w-full h-full object-cover"
-          style={{ opacity: isStar && starIndex === i ? 1 : 0, transition: "opacity 0.3s ease" }}
-        />
-      ))}
-
-      {/* Heart images */}
-      {HEART_IMAGES.map((src, i) => (
-        <img key={`heart-${i}`} src={src} alt={HEART_TITLES[i]}
-          className="absolute inset-0 w-full h-full object-cover"
-          style={{ opacity: isHeart && heartIndex === i ? 1 : 0, transition: "opacity 0.3s ease" }}
-        />
-      ))}
-
-      {/* Art images */}
-      {ART_IMAGES.map((src, i) => (
-        <img key={`art-${i}`} src={src} alt={ART_TITLES[i]}
-          className="absolute inset-0 w-full h-full object-cover"
-          style={{ opacity: isArt && artIndex === i ? 1 : 0, transition: "opacity 0.3s ease" }}
-        />
-      ))}
-
-      {/* Eye images */}
-      {EYE_IMAGES.map((src, i) => (
-        <img key={`eye-${i}`} src={src} alt={`eye ${i + 1}`}
-          className="absolute inset-0 w-full h-full object-cover"
-          style={{ opacity: isEye && eyeIndex === i ? 1 : 0, transition: "opacity 0.3s ease" }}
-        />
-      ))}
+      {/* Active category images only */}
+      {(isStar ? STAR_IMAGES : isHeart ? HEART_IMAGES : isArt ? ART_IMAGES : EYE_IMAGES).map((src, i) => {
+        const activeIndex = isStar ? starIndex : isHeart ? heartIndex : isArt ? artIndex : eyeIndex;
+        const titles = isStar ? STAR_TITLES : isHeart ? HEART_TITLES : isArt ? ART_TITLES : EYE_TITLES;
+        return (
+          <img key={`${selected}-${i}`} src={src} alt={titles[i] ?? ""}
+            className="absolute inset-0 w-full h-full object-cover"
+            style={{ opacity: activeIndex === i ? 1 : 0, transition: "opacity 0.3s ease" }}
+          />
+        );
+      })}
 
       {/* Progressive blur */}
       <div

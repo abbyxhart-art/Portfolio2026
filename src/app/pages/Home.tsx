@@ -1,27 +1,19 @@
 import { motion, AnimatePresence } from "@/lib/motion";
 import { useState, useEffect, useRef, type ReactNode } from "react";
 import { useNavEntrance } from "../hooks/useNavEntrance";
-import linkedInIcon from "../../assets/icons/linkedin.svg";
+import { useIsMobile } from "../components/ui/use-mobile";
+import icons from "../../assets/icons/icons.json";
 import chevronIcon from "../../assets/icons/chevron-selector-vertical.svg";
-import Navigation from "../../imports/Navigation";
 import { Link, useNavigate } from "react-router";
 import aixelsVideo from "../../assets/project/aixels/Aixels_1920x960_29.99fps.mp4";
 import gmVideo from "../../assets/project/gentlemonster/GM_Teaser_2x1.mp4";
 import texasVideo from "../../assets/project/texasid/FullPrototype_1200x600_30fps.mp4";
 import figbuildVideo from "../../assets/project/figbuild/figbuild_macstudio_2x1.mp4";
 import capitolVideo from "../../assets/project/capitol/Demo_1920x960_V1.mp4";
-import tianVideo from "../../assets/project/tianair/tian_fullflow_macstudio_2x1.mp4";
 
-const CASE_STUDIES = [
-  { label: "Gentle Monster Kiosk", path: "/casestudy/gentle-monster" },
-  { label: "Capitol Aluminum", path: "/casestudy/capitol-aluminum" },
-  { label: "Texas Mobile", path: "/casestudy/texas-mobile" },
-  { label: "FigBuild 2026", path: "/casestudy/figma-rit" },
-  { label: "Aixels", path: "/casestudy/aixels" },
-  { label: "Tian Airlines", path: "/casestudy/tian-airlines" },
-];
+import { CASE_STUDIES } from "../data/casestudies";
 
-const VISITED_KEY = "__portfolio_visited__";
+const VISITED_KEY = "visited_casestudies";
 
 function HomeCasestudyMenu({ show }: { show: boolean }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -74,8 +66,8 @@ function HomeCasestudyMenu({ show }: { show: boolean }) {
       initial={{ opacity: 0, y: -8 }}
       animate={{ opacity: show ? 1 : 0, y: show ? 0 : -8 }}
       transition={{ duration: 0.4, ease: [0.33, 0, 0, 1] }}
-      className="fixed left-[16px] md:left-[calc(4.5vw+16px)] z-50 flex flex-col gap-[12px]"
-      style={{ top: 56, pointerEvents: show ? "auto" : "none" }}
+      className="fixed left-[16px] md:left-[calc(4.5vw+16px)] z-50 hidden md:flex flex-col gap-[12px]"
+      style={{ top: "calc(env(safe-area-inset-top) + 56px)", pointerEvents: show ? "auto" : "none" }}
     >
       {/* Trigger pill */}
       <button
@@ -128,19 +120,21 @@ function HomeCasestudyMenu({ show }: { show: boolean }) {
             }}
           >
             {/* Unvisited */}
-            <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-              {unvisited.map(({ label, path }) => (
-                <Link
-                  key={path}
-                  to={path}
-                  style={itemStyle}
-                  onMouseEnter={e => (e.currentTarget.style.color = "var(--color-text-primary)")}
-                  onMouseLeave={e => (e.currentTarget.style.color = "var(--color-text-secondary)")}
-                >
-                  {label}
-                </Link>
-              ))}
-            </div>
+            {unvisited.length > 0 && (
+              <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+                {unvisited.map(({ label, path }) => (
+                  <Link
+                    key={path}
+                    to={path}
+                    style={itemStyle}
+                    onMouseEnter={e => (e.currentTarget.style.color = "var(--color-text-primary)")}
+                    onMouseLeave={e => (e.currentTarget.style.color = "var(--color-text-secondary)")}
+                  >
+                    {label}
+                  </Link>
+                ))}
+              </div>
+            )}
 
             {/* Already visited */}
             {alreadyVisited.length > 0 && (
@@ -205,7 +199,6 @@ function LinkedInButton({ show }: { show: boolean }) {
     backgroundColor: hovered ? "var(--color-surface-secondary-hover)" : "var(--color-surface-fill3)",
     backdropFilter: "blur(12px)",
     WebkitBackdropFilter: "blur(12px)",
-    border: "1px solid var(--color-border-dark)",
     transition: "background-color 0.15s ease",
   };
 
@@ -214,7 +207,8 @@ function LinkedInButton({ show }: { show: boolean }) {
       initial={{ opacity: 0, y: -16 }}
       animate={{ opacity: show ? 1 : 0, y: show ? 0 : -16 }}
       transition={{ duration: 1.6, ease: [0.33, 0, 0, 1], delay: show ? 0.1 : 0 }}
-      className="fixed top-[16px] right-[calc(4.5vw+100px)] z-[100] flex items-center gap-[6px]"
+      className="hidden md:flex fixed md:right-[calc(4.5vw+100px)] z-[100] items-center gap-[6px]"
+      style={{ top: "calc(env(safe-area-inset-top) + 16px)" }}
     >
       {/* Status pill */}
       <div
@@ -232,8 +226,8 @@ function LinkedInButton({ show }: { show: boolean }) {
             color: hovered ? "var(--color-text-between)" : "var(--color-text-secondary)",
           }}
         >
-          <span style={{ padding: "0 16px" }}>Currently seeking co-ops / full time positions</span>
-          <span style={{ padding: "0 16px" }}>Currently seeking co-ops / full time positions</span>
+          <span style={{ padding: "0 6px" }}>Currently seeking fall / winter internships or full time opportunities</span>
+          <span style={{ padding: "0 6px" }}>Currently seeking fall / winter internships or full time opportunities</span>
         </div>
         <style>{`@keyframes statusTicker { from { transform: translateX(0); } to { transform: translateX(-50%); } }`}</style>
       </div>
@@ -243,7 +237,7 @@ function LinkedInButton({ show }: { show: boolean }) {
         onClick={() => window.open("https://linkedin.com/in/abbyxhart", "_blank", "noopener,noreferrer")}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
-        className="flex items-center gap-[9px] pl-[12px] pr-[16px] rounded-[24px] cursor-pointer select-none"
+        className="flex items-center gap-[9px] p-[7px] md:pl-[12px] md:pr-[16px] rounded-[24px] cursor-pointer select-none"
         style={{
           ...pillStyle,
           height: 32,
@@ -254,10 +248,12 @@ function LinkedInButton({ show }: { show: boolean }) {
         <div className="flex items-center gap-[9px]" style={{ pointerEvents: "none" }}>
           <div className="relative shrink-0 size-[18px]">
             <div className="absolute inset-[6.25%]">
-              <img alt="" className="absolute block inset-0 max-w-none size-full" src={linkedInIcon} />
+              <svg width="100%" height="100%" viewBox={icons.social.linkedin.viewBox} fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d={icons.social.linkedin.paths[0].d} fill="var(--color-text-primary)" />
+              </svg>
             </div>
           </div>
-          <div className="flex gap-[2px] items-center">
+          <div className="hidden md:flex gap-[2px] items-center">
             {["C", "V"].map(key => (
               <div key={key} className="flex flex-col items-center justify-center rounded-[4px] shrink-0 size-[18px]" style={{ backgroundColor: "var(--color-surface-secondary-active)" }}>
                 <p className="leading-[normal] text-[10px] text-center" style={{ color: hovered ? "var(--color-text-between)" : "var(--color-text-secondary)", margin: 0 }}>{key}</p>
@@ -289,7 +285,7 @@ const CARD_DATA: CardData[] = [
     tag1: "Kiosk Design",
     tag2: "UX Research",
     description: "Gifting shoppers the ability to find their perfect match",
-    readTime: "5 min.",
+    readTime: "5 min read",
     path: "/casestudy/gentle-monster",
     video: gmVideo,
   },
@@ -299,7 +295,7 @@ const CARD_DATA: CardData[] = [
     tag2: "Summer 2024",
     tag3: "shipped",
     description: "Sole design hire at Capitol. Led Capitol's complete brand transformation across three phases [foundational research, brand system development, print/digital/web]",
-    readTime: "4 min.",
+    readTime: "4 min read",
     path: "/casestudy/capitol-aluminum",
     video: capitolVideo,
   },
@@ -309,7 +305,7 @@ const CARD_DATA: CardData[] = [
     tag2: "Design Lead",
     tag3: "shipped",
     description: "Building a digital playground for students in 2 days",
-    readTime: "3 min.",
+    readTime: "3 min read",
     path: "/casestudy/figma-rit",
     video: figbuildVideo,
   },
@@ -318,7 +314,7 @@ const CARD_DATA: CardData[] = [
     tag1: "Mobile Design",
     tag2: "UX Research",
     description: "Creating a dynamic mobile alternative as states roll-out digital ID programs",
-    readTime: "6 min.",
+    readTime: "6 min read",
     path: "/casestudy/texas-mobile",
     video: texasVideo,
   },
@@ -328,23 +324,15 @@ const CARD_DATA: CardData[] = [
     tag2: "Designathon Winner",
     tag3: "shipped",
     description: "Grappling the concept of AI with a pixel mirror",
-    readTime: "3 min.",
+    readTime: "3 min read",
     path: "/casestudy/aixels",
     video: aixelsVideo,
   },
-  {
-    title: "Tian Airlines",
-    tag1: "Mobile Design",
-    tag2: "Design Systems",
-    description: "Designing a full airline booking experience with a complete token and component system",
-    readTime: "5 min.",
-    path: "/casestudy/tian-airlines",
-    video: tianVideo,
-  },
 ];
 
-function StyledCard({ initialHovered = false, onInitialLeave, data }: { initialHovered?: boolean; onInitialLeave?: () => void; data: CardData }) {
+function StyledCard({ initialHovered = false, onInitialLeave, data, isMobile = false }: { initialHovered?: boolean; onInitialLeave?: () => void; data: CardData; isMobile?: boolean }) {
   const [hovered, setHovered] = useState(initialHovered);
+  const isSelected = isMobile || hovered;
   const initialHoverActive = useRef(initialHovered);
   const navigate = useNavigate();
   return (
@@ -364,42 +352,52 @@ function StyledCard({ initialHovered = false, onInitialLeave, data }: { initialH
       {/* Background frame — expands from 16px inset on hover */}
       <motion.div
         initial={false}
-        animate={{ top: hovered ? 0 : 16, right: hovered ? 0 : 16, bottom: hovered ? 0 : 16, left: hovered ? 0 : 16, opacity: hovered ? 1 : 0 }}
+        animate={{ top: isSelected ? 0 : 16, right: isSelected ? 0 : 16, bottom: isSelected ? 0 : 16, left: isSelected ? 0 : 16, opacity: isSelected ? 1 : 0 }}
         transition={{ duration: 0.35, ease: [0.33, 0, 0, 1] }}
         style={{ position: "absolute", background: "var(--color-button-default-fill)", border: "1px solid var(--color-border-dark)", borderRadius: 4, pointerEvents: "none" }}
       />
       {/* Content */}
-      <div style={{ position: "relative", zIndex: 1, padding: 16, display: "flex", flexDirection: "column", gap: 16, boxSizing: "border-box" }}>
-        <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", width: "100%" }}>
-          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+      <div style={{ position: "relative", zIndex: 1, padding: isMobile ? "12px 12px 0 12px" : 16, display: "flex", flexDirection: "column", gap: 16, boxSizing: "border-box" }}>
+        <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", width: "100%" }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: 8, width: isMobile ? "100%" : undefined }}>
             <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
-              <p style={{ color: "var(--color-text-primary)", fontSize: 17, fontWeight: 400, lineHeight: 1.65, margin: 0 }}>{data.title}</p>
+              <p style={{ color: "var(--color-text-primary)", fontSize: "var(--text-size\\/card-title)", fontWeight: 400, lineHeight: 1.65, margin: 0 }}>{data.title}</p>
               <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
                 {data.tag3 && (
                   <div style={{ background: "var(--color-accent2-background)", borderRadius: 2, padding: "0 8px", display: "flex", alignItems: "center", height: 18 }}>
-                    <span style={{ color: "var(--color-accent2-foreground)", fontSize: 11, fontWeight: 400, lineHeight: 1, whiteSpace: "nowrap" }}>{data.tag3}</span>
+                    <span style={{ color: "var(--color-accent2-foreground)", fontSize: "var(--text-size\\/card-badge)", fontWeight: 400, lineHeight: 1, whiteSpace: "nowrap" }}>{data.tag3}</span>
                   </div>
                 )}
-                <p style={{ color: "var(--color-text-secondary)", fontSize: 14, fontWeight: 400, lineHeight: 1.2, margin: 0 }}>{data.tag1}</p>
+                <p style={{ color: "var(--color-text-secondary)", fontSize: "var(--text-size\\/card-tag)", fontWeight: 400, lineHeight: 1.2, margin: 0 }}>{data.tag1}</p>
                 <div style={{ width: 4, height: 4, borderRadius: "50%", backgroundColor: "var(--color-text-secondary)", flexShrink: 0 }} />
-                <p style={{ color: "var(--color-text-secondary)", fontSize: 14, fontWeight: 400, lineHeight: 1.2, margin: 0 }}>{data.tag2}</p>
+                <p style={{ color: "var(--color-text-secondary)", fontSize: "var(--text-size\\/card-tag)", fontWeight: 400, lineHeight: 1.2, margin: 0 }}>{data.tag2}</p>
               </div>
             </div>
-            <p style={{ color: "var(--color-text-between)", fontSize: 14, fontWeight: 400, lineHeight: 1.65, margin: 0, maxWidth: 600 }}>{data.description}</p>
+            <p style={{ color: "var(--color-text-between)", fontSize: "var(--text-size\\/card-description)", fontWeight: 400, lineHeight: 1.65, margin: 0, maxWidth: 600 }}>{data.description}</p>
           </div>
-          <motion.div
-            animate={{ opacity: hovered ? 1 : 0 }}
-            transition={{ duration: 0.25, ease: [0.33, 0, 0, 1] }}
-            style={{ display: "flex", gap: 9, alignItems: "center", flexShrink: 0 }}
+          {!isMobile && (
+          <motion.p
+            animate={hovered ? "visible" : "hidden"}
+            initial="hidden"
+            variants={{ visible: { transition: { staggerChildren: 0.03 } }, hidden: {} }}
+            style={{ color: "var(--color-text-between)", fontSize: 12, fontWeight: 400, lineHeight: 1.65, margin: 0, whiteSpace: "nowrap", flexShrink: 0 }}
           >
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="8" cy="8" r="6.5" stroke="var(--color-text-secondary)" strokeWidth="1"/>
-              <path d="M8 5V8.5L10 10" stroke="var(--color-text-secondary)" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-            <p style={{ color: "var(--color-text-secondary)", fontSize: 14, fontWeight: 400, lineHeight: 1.5, margin: 0, whiteSpace: "nowrap" }}>{data.readTime}</p>
-          </motion.div>
+            {data.readTime.split("").map((char, i) => (
+              <motion.span
+                key={i}
+                variants={{
+                  hidden: { opacity: 0 },
+                  visible: { opacity: 1, transition: { duration: 0.075, ease: "easeIn" } },
+                }}
+                style={{ display: "inline-block" }}
+              >
+                {char === " " ? " " : char}
+              </motion.span>
+            ))}
+          </motion.p>
+          )}
         </div>
-        <div style={{ width: "100%", aspectRatio: "2 / 1", backgroundColor: hovered ? "var(--color-text-primary)" : "rgba(255,255,255,0.2)", borderRadius: 4, overflow: "hidden", transition: "background-color 0.35s cubic-bezier(0.33,0,0,1)" }}>
+        <div style={{ width: isMobile ? "calc(100% + 24px)" : "100%", margin: isMobile ? "0 -12px" : undefined, aspectRatio: "2 / 1", backgroundColor: isSelected ? "var(--color-text-primary)" : "rgba(255,255,255,0.2)", borderRadius: isMobile ? 0 : 4, overflow: "hidden", transition: "background-color 0.35s cubic-bezier(0.33,0,0,1)" }}>
           {data.video && (
             <video src={data.video} autoPlay loop muted playsInline style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
           )}
@@ -518,7 +516,8 @@ function FirstCardAnimation({ shouldStart, onDone, onFullyDone, contained = fals
 
 export default function Home() {
   const shouldAnimate = useNavEntrance();
-  const [cardShouldStart, setCardShouldStart] = useState(!shouldAnimate);
+  const isMobile = useIsMobile();
+  const [cardShouldStart, setCardShouldStart] = useState(false);
   const [firstCardDone, setFirstCardDone] = useState(false);
   const [cardFullyDone, setCardFullyDone] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -537,9 +536,11 @@ export default function Home() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Always kick the intro off via a post-mount state change: under the router's
+  // AnimatePresence initial={false}, mount-time animations are skipped entirely,
+  // which would leave onAnimationComplete unfired and the intro stuck on the bar.
   useEffect(() => {
-    if (!shouldAnimate) return;
-    const t = setTimeout(() => setCardShouldStart(true), 1400);
+    const t = setTimeout(() => setCardShouldStart(true), shouldAnimate ? 1400 : 50);
     return () => clearTimeout(t);
   }, [shouldAnimate]);
 
@@ -550,7 +551,7 @@ export default function Home() {
   }, [firstCardDone]);
 
   return (
-    <div className="relative min-h-screen bg-background overflow-x-clip">
+    <div className="relative min-h-screen">
 
       {/* Scroll fade gradient */}
       <AnimatePresence>
@@ -560,13 +561,8 @@ export default function Home() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.4, ease: "easeOut" }}
-            className="fixed inset-x-0 top-0 z-40 h-[10vh] pointer-events-none"
+            className="hidden md:block fixed inset-x-0 top-0 z-40 h-[10vh] pointer-events-none"
           >
-            <div style={{ position: "absolute", inset: 0, backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)", maskImage: "linear-gradient(to bottom, black 0%, transparent 20%)", WebkitMaskImage: "linear-gradient(to bottom, black 0%, transparent 20%)" }} />
-            <div style={{ position: "absolute", inset: 0, backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)", maskImage: "linear-gradient(to bottom, black 0%, transparent 35%)", WebkitMaskImage: "linear-gradient(to bottom, black 0%, transparent 35%)" }} />
-            <div style={{ position: "absolute", inset: 0, backdropFilter: "blur(4px)", WebkitBackdropFilter: "blur(4px)", maskImage: "linear-gradient(to bottom, black 0%, transparent 55%)", WebkitMaskImage: "linear-gradient(to bottom, black 0%, transparent 55%)" }} />
-            <div style={{ position: "absolute", inset: 0, backdropFilter: "blur(2px)", WebkitBackdropFilter: "blur(2px)", maskImage: "linear-gradient(to bottom, black 0%, transparent 75%)", WebkitMaskImage: "linear-gradient(to bottom, black 0%, transparent 75%)" }} />
-            <div style={{ position: "absolute", inset: 0, backdropFilter: "blur(0.5px)", WebkitBackdropFilter: "blur(0.5px)", maskImage: "linear-gradient(to bottom, black 0%, transparent 100%)", WebkitMaskImage: "linear-gradient(to bottom, black 0%, transparent 100%)" }} />
             <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, rgba(var(--color-background-fade),0.75) 0%, rgba(var(--color-background-fade),0.48) 30%, rgba(var(--color-background-fade),0.18) 65%, rgba(var(--color-background-fade),0) 100%)" }} />
           </motion.div>
         )}
@@ -578,7 +574,10 @@ export default function Home() {
         animate={{ opacity: firstCardDone ? 0.2 : 0 }}
         transition={{ duration: 1.5, ease: [0.33, 0, 0, 1], delay: firstCardDone ? 0.2 : 0 }}
         className="absolute top-0 left-0 right-0 z-0 pointer-events-none"
-        style={{
+        style={isMobile ? {
+          height: "75vh",
+          background: "linear-gradient(to bottom, var(--background) 0%, #afa4d8 25%, transparent 100%)",
+        } : {
           height: "50vh",
           background: "linear-gradient(to top, transparent, #afa4d8)",
         }}
@@ -594,8 +593,8 @@ export default function Home() {
           y: firstCardDone ? 0 : -16,
         }}
         transition={{ duration: 1.6, ease: [0.33, 0, 0, 1], delay: firstCardDone ? 0.1 : 0 }}
-        className="fixed top-[16px] left-[16px] md:left-[calc(4.5vw+16px)] z-50 flex flex-row items-center gap-[10px] pointer-events-none"
-        style={{ fontFamily: "var(--text-font/default, 'Inter Tight', sans-serif)", color: "var(--color-text-primary)" }}
+        className="fixed left-[16px] md:left-[calc(4.5vw+16px)] z-50 flex flex-row items-center gap-[10px] h-[32px] md:h-auto pointer-events-none"
+        style={{ top: "calc(env(safe-area-inset-top) + 16px)", fontFamily: "var(--text-font/default, 'Inter Tight', sans-serif)", color: "var(--color-text-primary)" }}
       >
         <p className="mb-0 text-[15px] md:text-[17px]" style={{ fontWeight: 400 }}>Abby Hart</p>
         <p className="mb-0 text-[12px]" style={{ color: "var(--color-text-secondary)" }}>New Media '26 @ RIT</p>
@@ -603,19 +602,6 @@ export default function Home() {
 
       {/* Casestudy menu */}
       <HomeCasestudyMenu show={cardShrunk} />
-
-      {/* Navigation */}
-      <motion.div
-        initial={{ opacity: 0, y: -16 }}
-        animate={{
-          opacity: firstCardDone ? 1 : 0,
-          y: firstCardDone ? 0 : -16,
-        }}
-        transition={{ duration: 1.5, ease: [0.33, 0, 0, 1], delay: firstCardDone ? 0.2 : 0 }}
-        className="hidden md:block fixed top-[16px] left-[20px] right-[20px] z-50"
-      >
-        <Navigation scrolledDown={scrolled} />
-      </motion.div>
 
       {/* Scrollable content — z-index above gradient */}
       <div style={{ position: "relative", zIndex: 1 }}>
@@ -625,7 +611,7 @@ export default function Home() {
         initial={{ opacity: 0, y: -16 }}
         animate={{ opacity: firstCardDone ? 1 : 0, y: firstCardDone ? 0 : -16 }}
         transition={{ duration: 1.4, ease: [0.33, 0, 0, 1], delay: firstCardDone ? 0.3 : 0 }}
-        className="w-full flex flex-col items-center justify-center gap-[24px]"
+        className="w-full flex flex-col items-center justify-center gap-[24px] px-[4.5vw] md:px-0"
         style={{ height: "50vh", fontFamily: "'Inter Tight', sans-serif" }}
       >
 
@@ -637,15 +623,15 @@ export default function Home() {
           <p className="text-[50px] font-[350] text-center" style={{ lineHeight: 0.7 }}>
             Abby Hart
           </p> */}
-          <p className="text-[28px] font-[300] text-center" style={{ lineHeight: 1.5 }}>
-            I turn rough concepts / problems into smooth experiences.<br />My work is product design and creative technology
+          <p className="text-[22px] md:text-[28px] font-[300] text-center" style={{ lineHeight: 1.5 }}>
+            Unconstrained by tools, driven by craft <br />My work is product design <br className="md:hidden" />and creative technology
           </p>
         </div>
 
         {/* Experience */}
-        <div className="flex flex-col gap-[8px] items-start">
-          <p className="text-[17px] font-[300] whitespace-nowrap" style={{ color: "var(--color-text-secondary)", lineHeight: 0.7 }}>
-            built communities w/ <GlowLink path="/casestudy/figma-rit">Figma Edu</GlowLink> + relaunched @ <GlowLink path="/casestudy/capitol-aluminum">Capitol</GlowLink>'s brand identity
+        <div className="flex flex-col gap-[8px] items-center">
+          <p className="text-[15px] md:text-[17px] font-[300] text-center md:whitespace-nowrap" style={{ color: "var(--color-text-secondary)", lineHeight: 1.4 }}>
+            built community interfaces w/ <GlowLink path="/casestudy/figma-rit">Figma Edu</GlowLink><br className="md:hidden" /> + relaunched <GlowLink path="/casestudy/capitol-aluminum">Capitol</GlowLink>'s brand identity
           </p>
         </div>
       </motion.div>
@@ -653,7 +639,7 @@ export default function Home() {
       {/* Animation phase — first card 3D flip + additional cards fade in */}
       {!cardFullyDone && (
         <>
-          <div className="w-full" style={{ paddingLeft: cardShrunk ? "17vw" : "4.5vw", paddingRight: cardShrunk ? "17vw" : "4.5vw", transition: "padding 0.5s cubic-bezier(0.33,0,0,1)" }}>
+          <div className="w-full" style={{ paddingLeft: !isMobile && cardShrunk ? "17vw" : "4.5vw", paddingRight: !isMobile && cardShrunk ? "17vw" : "4.5vw", transition: "padding 0.5s cubic-bezier(0.33,0,0,1)" }}>
             <div style={{ position: "relative", width: "100%" }}>
               <motion.div
                 style={{ position: "absolute", inset: 0, zIndex: 1, pointerEvents: "auto" }}
@@ -678,7 +664,7 @@ export default function Home() {
                   }}
                   style={{ transformOrigin: "top center" }}
                 >
-                  <StyledCard initialHovered={firstCardStaysHovered} onInitialLeave={() => setFirstCardStaysHovered(false)} data={CARD_DATA[0]} />
+                  <StyledCard initialHovered={firstCardStaysHovered} onInitialLeave={() => setFirstCardStaysHovered(false)} data={CARD_DATA[0]} isMobile={isMobile} />
                 </motion.div>
               </div>
             </div>
@@ -688,15 +674,15 @@ export default function Home() {
             animate={{ opacity: firstCardDone ? 1 : 0 }}
             transition={{ duration: 0.6, ease: [0.33, 0, 0, 1], delay: firstCardDone ? 0.5 : 0 }}
             style={{
-              paddingLeft: cardShrunk ? "17vw" : "4.5vw",
-              paddingRight: cardShrunk ? "17vw" : "4.5vw",
+              paddingLeft: !isMobile && cardShrunk ? "17vw" : "4.5vw",
+              paddingRight: !isMobile && cardShrunk ? "17vw" : "4.5vw",
               transition: "padding 0.5s cubic-bezier(0.33,0,0,1)",
               marginTop: 16, marginBottom: 100,
-              display: "flex", flexDirection: "column", gap: 16,
+              display: "flex", flexDirection: "column", gap: 40,
             }}
           >
             {CARD_DATA.slice(1).map((data) => (
-              <StyledCard key={data.path} data={data} />
+              <StyledCard key={data.path} data={data} isMobile={isMobile} />
             ))}
           </motion.div>
         </>
@@ -705,11 +691,11 @@ export default function Home() {
       {/* Unified container — all cards stacked after animation */}
       {cardFullyDone && (
         <div style={{
-          paddingLeft: cardShrunk ? "17vw" : "4.5vw",
-          paddingRight: cardShrunk ? "17vw" : "4.5vw",
+          paddingLeft: !isMobile && cardShrunk ? "17vw" : "4.5vw",
+          paddingRight: !isMobile && cardShrunk ? "17vw" : "4.5vw",
           transition: "padding 0.5s cubic-bezier(0.33,0,0,1)",
           marginBottom: 100,
-          display: "flex", flexDirection: "column", gap: 16,
+          display: "flex", flexDirection: "column", gap: 40,
         }}>
           {CARD_DATA.map((data, i) => (
             <StyledCard
@@ -717,6 +703,7 @@ export default function Home() {
               data={data}
               initialHovered={i === 0 ? firstCardStaysHovered : false}
               onInitialLeave={i === 0 ? () => setFirstCardStaysHovered(false) : undefined}
+              isMobile={isMobile}
             />
           ))}
         </div>

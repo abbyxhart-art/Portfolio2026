@@ -1,8 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import iconPlay from "../../../assets/icons/play.svg";
-import iconPause from "../../../assets/icons/Media/Pause.svg";
-import iconSkip from "../../../assets/icons/skip-forward.svg";
-import iconSpotify from "../../../assets/icons/spotify.svg";
+import icons from "../../../assets/icons/icons.json";
 
 const TRACKS = [
   { term: "Matt's Apartment The Internet", darkHeader: true },
@@ -203,15 +200,29 @@ export default function SpotifyPlayer() {
       >
         <div className="flex" style={{ gap: 3 }}>
           <PillButton onClick={togglePlay} disabled={!previewUrl}>
-            <img src={playing ? iconPause : iconPlay} alt={playing ? "Pause" : "Play"} style={{ width: 16, height: 16 }} />
+            {playing ? (
+              <svg width="16" height="16" viewBox={icons.media.pause.viewBox} fill="none" xmlns="http://www.w3.org/2000/svg">
+                {icons.media.pause.paths.map((p, i) => (
+                  <path key={i} d={p.d} stroke="white" strokeLinecap="round" strokeLinejoin="round" />
+                ))}
+              </svg>
+            ) : (
+              <svg width="16" height="16" viewBox={icons.media.play.viewBox} fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d={icons.media.play.paths[0].d} fill="white" />
+              </svg>
+            )}
           </PillButton>
           <PillButton onClick={next} disabled={tracks.length <= 1}>
-            <img src={iconSkip} alt="Next" style={{ width: 16, height: 16 }} />
+            <svg width="16" height="16" viewBox={icons.media["skip-forward"].viewBox} fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d={icons.media["skip-forward"].paths[0].d} stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
           </PillButton>
         </div>
 
         <PillLink href={PLAYLIST_URL}>
-          <img src={iconSpotify} alt="Open in Spotify" style={{ width: 18, height: 18 }} />
+          <svg width="18" height="18" viewBox={icons.social.spotify.viewBox} fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d={icons.social.spotify.paths[0].d} fill="white" />
+          </svg>
         </PillLink>
       </div>
     </div>

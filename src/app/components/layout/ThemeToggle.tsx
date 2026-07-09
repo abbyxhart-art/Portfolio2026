@@ -64,7 +64,7 @@ export default function ThemeToggle() {
         width: W,
         height: H,
         borderRadius: 9999,
-        border: "1px solid var(--color-border-dark)",
+        border: "none",
         background: hovered ? "var(--color-surface-secondary-hover)" : "var(--color-surface-fill3)",
         cursor: "pointer",
         padding: 0,
@@ -102,9 +102,9 @@ export default function ThemeToggle() {
           justifyContent: "center",
         }}
       >
-        <svg width="13" height="13" viewBox={icons.moon.viewBox} fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg width="13" height="13" viewBox={icons.system.moon.viewBox} fill="none" xmlns="http://www.w3.org/2000/svg">
           <path
-            d={icons.moon.path}
+            d={icons.system.moon.paths[0].d}
             stroke={moonStroke()}
             strokeWidth={1.5}
             strokeLinecap="round"
@@ -129,9 +129,9 @@ export default function ThemeToggle() {
           justifyContent: "center",
         }}
       >
-        <svg width="13" height="13" viewBox={icons.sun.viewBox} fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg width="13" height="13" viewBox={icons.system.sun.viewBox} fill="none" xmlns="http://www.w3.org/2000/svg">
           <path
-            d={icons.sun.path}
+            d={icons.system.sun.paths[0].d}
             stroke={sunStroke()}
             strokeWidth={1.5}
             strokeLinecap="round"

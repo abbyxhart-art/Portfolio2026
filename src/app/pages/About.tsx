@@ -1,8 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { useNavEntrance } from "../hooks/useNavEntrance";
 import { motion, AnimatePresence } from "@/lib/motion";
-import Navigation from "../../imports/Navigation";
-import HomeButton from "../components/layout/HomeButton";
 import OfflineCard from "../components/about/OfflineCard";
 import DrinkCard from "../components/drinks/DrinkCard";
 import SpotifyPlayer from "../components/about/SpotifyPlayer";
@@ -13,10 +10,18 @@ import about4 from "../../assets/project/about/about_4.png";
 import about5 from "../../assets/project/about/about_5.JPG";
 import about6 from "../../assets/project/about/about_6.JPG";
 import PhotoStack from "../components/about/PhotoStack";
-import BookStack from "../components/about/BookStack";
-import FriendsCard from "../components/about/FriendsCard";
+import QuoteCard from "../components/about/QuoteCard";
 import sfVideo from "../../assets/project/about/sanfrancisco.mov";
-import chevronIcon from "../../assets/icons/chevron.svg";
+import icons from "../../assets/icons/icons.json";
+import { useTheme } from "../context/ThemeContext";
+import ArtGallery from "../components/about/ArtGallery";
+
+const PILL_PHRASES = [
+  "Like the playlist?",
+  "Got a cool project?",
+  "Grab a matcha?",
+];
+const COPY_EMAIL = "abbyxhart@gmail.com";
 
 
 const glassStyle: React.CSSProperties = {
@@ -28,12 +33,65 @@ const glassStyle: React.CSSProperties = {
   padding: 6,
 };
 
-function ResumeCard({ collapsed, onToggle }: { collapsed: boolean; onToggle: () => void }) {
+function ResumeCard({ collapsed, onToggle, isDark }: { collapsed: boolean; onToggle: () => void; isDark: boolean }) {
   const contentRef = useRef<HTMLDivElement>(null);
   const [contentHeight, setContentHeight] = useState(0);
   const [viewMoreExpanded, setViewMoreExpanded] = useState(false);
   const [viewMoreHovered, setViewMoreHovered] = useState(false);
   const [pillHovered, setPillHovered] = useState(false);
+  const [phraseIdx, setPhraseIdx] = useState(1);
+  const [displayText, setDisplayText] = useState(PILL_PHRASES[1]);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const displayRef = useRef(PILL_PHRASES[1]);
+  const [copied, setCopied] = useState(false);
+  const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setPhraseIdx(i => (i + 1) % PILL_PHRASES.length);
+    }, 4500);
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    const target = PILL_PHRASES[phraseIdx];
+    if (target === displayRef.current) return;
+    let cancelled = false;
+    const delay = (ms: number) => new Promise<void>(r => setTimeout(r, ms));
+
+    const run = async () => {
+      setIsAnimating(true);
+      let curr = displayRef.current;
+
+      // Delete phase — backspace char by char
+      while (curr.length > 0 && !cancelled) {
+        curr = curr.slice(0, -1);
+        displayRef.current = curr;
+        setDisplayText(curr);
+        await delay(28);
+      }
+
+      // Type phase — char by char
+      while (curr.length < target.length && !cancelled) {
+        curr = target.slice(0, curr.length + 1);
+        displayRef.current = curr;
+        setDisplayText(curr);
+        await delay(55);
+      }
+
+      if (!cancelled) setIsAnimating(false);
+    };
+
+    run();
+    return () => { cancelled = true; };
+  }, [phraseIdx]);
+
+  const handlePillClick = () => {
+    navigator.clipboard.writeText(COPY_EMAIL).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    });
+  };
 
   useEffect(() => {
     const el = contentRef.current;
@@ -54,7 +112,7 @@ function ResumeCard({ collapsed, onToggle }: { collapsed: boolean; onToggle: () 
       className="relative flex flex-col items-center w-full rounded-[8px]"
       style={{
         padding: 24,
-        background: "rgba(226,224,234,0.7)",
+        background: isDark ? "rgba(48,47,52,0.8)" : "rgba(233,232,239,0.8)",
       }}
     >
       {/* Chevron toggle — absolutely positioned at top center */}
@@ -63,24 +121,86 @@ function ResumeCard({ collapsed, onToggle }: { collapsed: boolean; onToggle: () 
         className="absolute top-[2px] left-1/2 -translate-x-1/2 flex items-center justify-center cursor-pointer bg-transparent border-0 p-0 z-10"
         style={{ width: 24, height: 24 }}
       >
-        <motion.img
-          src={chevronIcon}
+        <motion.svg
+          width="16"
+          height="16"
+          viewBox={icons.navigation.chevron.viewBox}
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
           animate={{ rotate: collapsed ? 180 : 0 }}
           transition={{ duration: 0.35, ease: [0.33, 0, 0, 1] }}
-          style={{ width: 16, height: 16 }}
-          alt=""
-        />
+        >
+          <path
+            d={icons.navigation.chevron.paths[0].d}
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </motion.svg>
       </button>
 
       {/* Header pill — always visible */}
-      <div className="flex items-center justify-between w-full px-[12px] py-[4px] rounded-[4px]" style={{ background: pillHovered ? "#171717" : "#404040", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)", transition: "background 0.2s ease" }} onMouseEnter={() => setPillHovered(true)} onMouseLeave={() => setPillHovered(false)}>
+      <div
+        className="flex items-center justify-between w-full px-[12px] py-[4px] rounded-[4px] cursor-none"
+        style={{ background: pillHovered ? "rgba(255,255,255,1)" : "rgba(255,255,255,0.92)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)", transition: "background 0.2s ease", position: "relative" }}
+        onMouseEnter={() => setPillHovered(true)}
+        onMouseLeave={() => setPillHovered(false)}
+        onMouseMove={e => setCursorPos({ x: e.clientX, y: e.clientY })}
+        onClick={handlePillClick}
+      >
         <div className="flex gap-[8px] items-center">
-          <p className="font-['Inter_Tight',sans-serif] text-[14px] leading-[1.5] whitespace-nowrap" style={{ color: "#f2f2f6" }}>Abby Hart</p>
-          <p className="font-['Inter_Tight',sans-serif] text-[14px] leading-[1.5] w-[63px]" style={{ color: "#f2f2f6" }}>NYC/SF</p>
+          <p className="font-['Inter_Tight',sans-serif] text-[14px] leading-[1.5] whitespace-nowrap" style={{ color: "#302f34" }}>Abby Hart</p>
+          <p className="font-['Inter_Tight',sans-serif] text-[14px] leading-[1.5] w-[63px]" style={{ color: "#302f34" }}>NYC/SF</p>
         </div>
-        <p className="font-['Inter_Tight',sans-serif] text-[12px] leading-[1.5] whitespace-nowrap" style={{ color: "#f2f2f6" }}>
-          Like my music choices? Click to connect :D
-        </p>
+
+        {/* Right side: scramble phrase + copy label inline */}
+        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          <p style={{
+            fontFamily: "'Inter Tight', sans-serif",
+            fontSize: 12,
+            lineHeight: 1.5,
+            whiteSpace: "nowrap",
+            color: "#847f90",
+            margin: 0,
+            minWidth: 150,
+            textAlign: "right",
+          }}>
+            {displayText}{isAnimating && <span style={{ opacity: 0.7 }}>|</span>}
+          </p>
+          <p style={{
+            fontFamily: "'Inter Tight', sans-serif",
+            fontSize: 12,
+            lineHeight: 1.5,
+            whiteSpace: "nowrap",
+            color: "rgba(132,127,144,0.7)",
+            margin: 0,
+          }}>
+            {copied ? "Email Copied!" : "Copy Email"}
+          </p>
+        </div>
+
+        {/* Custom cursor tooltip */}
+        {pillHovered && (
+          <div
+            style={{
+              position: "fixed",
+              left: cursorPos.x + 12,
+              top: cursorPos.y + 12,
+              pointerEvents: "none",
+              zIndex: 9999,
+              background: "rgba(0,0,0,0.75)",
+              color: "#fff",
+              fontFamily: "'Inter Tight', sans-serif",
+              fontSize: 11,
+              padding: "3px 8px",
+              borderRadius: 4,
+              whiteSpace: "nowrap",
+            }}
+          >
+            {copied ? "Copied!" : "Copy Email"}
+          </div>
+        )}
       </div>
 
       {/* Collapsible content */}
@@ -90,29 +210,29 @@ function ResumeCard({ collapsed, onToggle }: { collapsed: boolean; onToggle: () 
           opacity: collapsed ? 0 : 1,
           marginTop: collapsed ? 0 : 17,
         }}
-        transition={{ duration: collapsed ? 0.35 : 1.1, ease: [0.33, 0, 0, 1] }}
+        transition={{ duration: collapsed ? 0.35 : 0.65, ease: [0.33, 0, 0, 1] }}
         style={{ overflow: "hidden", pointerEvents: collapsed ? "none" : "auto" }}
         className="w-full"
       >
             <div ref={contentRef} className="flex flex-col gap-[17px]">
               {/* Education */}
               <div className="flex flex-col gap-[12px] w-full">
-                <p className="font-['Inter_Tight',sans-serif] text-[12px] leading-[1.5]" style={{ color: "#302f34" }}>Rochester Institute of Technology</p>
+                <p className="font-['Inter_Tight',sans-serif] text-[12px] leading-[1.5]" style={{ color: isDark ? "#faf9ff" : "#302f34" }}>Rochester Institute of Technology</p>
                 <div className="flex flex-col gap-[2px]">
                   <div className="flex gap-[4px] items-center w-full">
-                    <p className="font-['Inter_Tight',sans-serif] text-[14px] leading-[1.5] flex-1" style={{ color: "#302f34" }}>New Media Design</p>
-                    <p className="font-['Inter_Tight',sans-serif] text-[14px] leading-[1.5] text-right shrink-0 w-[70px]" style={{ color: "#847f90" }}>2026 BFA</p>
+                    <p className="font-['Inter_Tight',sans-serif] text-[14px] leading-[1.5] flex-1" style={{ color: isDark ? "#faf9ff" : "#302f34" }}>New Media Design</p>
+                    <p className="font-['Inter_Tight',sans-serif] text-[14px] leading-[1.5] text-right shrink-0 w-[70px]" style={{ color: isDark ? "#908e99" : "#847f90" }}>2026 BFA</p>
                   </div>
                   <div className="flex gap-[4px] items-center w-full">
-                    <p className="font-['Inter_Tight',sans-serif] text-[14px] leading-[1.5] flex-1" style={{ color: "#302f34" }}>Mobile Design & Development, Fine Arts</p>
-                    <p className="font-['Inter_Tight',sans-serif] text-[14px] leading-[1.5] text-right shrink-0 w-[70px]" style={{ color: "#847f90" }}>Minors</p>
+                    <p className="font-['Inter_Tight',sans-serif] text-[14px] leading-[1.5] flex-1" style={{ color: isDark ? "#faf9ff" : "#302f34" }}>Mobile Design & Development, Fine Arts</p>
+                    <p className="font-['Inter_Tight',sans-serif] text-[14px] leading-[1.5] text-right shrink-0 w-[70px]" style={{ color: isDark ? "#908e99" : "#847f90" }}>Minors</p>
                   </div>
                 </div>
               </div>
 
               {/* Experience */}
               <div className="flex flex-col gap-[12px] w-full">
-                <p className="font-['Inter_Tight',sans-serif] text-[12px] leading-[1.5]" style={{ color: "#847f90" }}>Experience</p>
+                <p className="font-['Inter_Tight',sans-serif] text-[12px] leading-[1.5]" style={{ color: isDark ? "#908e99" : "#847f90" }}>Experience</p>
                 <div className="flex flex-col gap-[12px]">
                   {[
                     { company: "Figma", role: "Brand Activations / Campus Leadership", year: "2025" },
@@ -121,10 +241,10 @@ function ResumeCard({ collapsed, onToggle }: { collapsed: boolean; onToggle: () 
                   ].map(({ company, role, year }) => (
                     <div key={company} className="flex gap-[42px] items-center w-full">
                       <div className="flex gap-[8px] items-center flex-1 min-w-0">
-                        <p className="font-['Inter_Tight',sans-serif] text-[14px] leading-[1.5] shrink-0" style={{ color: "#302f34" }}>{company}</p>
-                        <p className="font-['Inter_Tight',sans-serif] text-[14px] leading-[1.5] truncate" style={{ color: "#847f90" }}>{role}</p>
+                        <p className="font-['Inter_Tight',sans-serif] text-[14px] leading-[1.5] shrink-0" style={{ color: isDark ? "#faf9ff" : "#302f34" }}>{company}</p>
+                        <p className="font-['Inter_Tight',sans-serif] text-[14px] leading-[1.5] truncate" style={{ color: isDark ? "#908e99" : "#847f90" }}>{role}</p>
                       </div>
-                      <p className="font-['Inter_Tight',sans-serif] text-[14px] leading-[1.5] text-right shrink-0 w-[70px]" style={{ color: "#302f34" }}>{year}</p>
+                      <p className="font-['Inter_Tight',sans-serif] text-[14px] leading-[1.5] text-right shrink-0 w-[70px]" style={{ color: isDark ? "#faf9ff" : "#302f34" }}>{year}</p>
                     </div>
                   ))}
                   <AnimatePresence initial={false}>
@@ -141,10 +261,10 @@ function ResumeCard({ collapsed, onToggle }: { collapsed: boolean; onToggle: () 
                         {EXTRA_EXPERIENCES.map(({ company, role, year }) => (
                           <div key={company} className="flex gap-[42px] items-center w-full">
                             <div className="flex gap-[8px] items-center flex-1 min-w-0">
-                              <p className="font-['Inter_Tight',sans-serif] text-[14px] leading-[1.5] shrink-0" style={{ color: "#302f34" }}>{company}</p>
-                              <p className="font-['Inter_Tight',sans-serif] text-[14px] leading-[1.5] truncate" style={{ color: "#847f90" }}>{role}</p>
+                              <p className="font-['Inter_Tight',sans-serif] text-[14px] leading-[1.5] shrink-0" style={{ color: isDark ? "#faf9ff" : "#302f34" }}>{company}</p>
+                              <p className="font-['Inter_Tight',sans-serif] text-[14px] leading-[1.5] truncate" style={{ color: isDark ? "#908e99" : "#847f90" }}>{role}</p>
                             </div>
-                            <p className="font-['Inter_Tight',sans-serif] text-[14px] leading-[1.5] text-right shrink-0 w-[70px]" style={{ color: "#302f34" }}>{year}</p>
+                            <p className="font-['Inter_Tight',sans-serif] text-[14px] leading-[1.5] text-right shrink-0 w-[70px]" style={{ color: isDark ? "#faf9ff" : "#302f34" }}>{year}</p>
                           </div>
                         ))}
                       </motion.div>
@@ -156,10 +276,10 @@ function ResumeCard({ collapsed, onToggle }: { collapsed: boolean; onToggle: () 
                     onMouseLeave={() => setViewMoreHovered(false)}
                     className="font-['Inter_Tight',sans-serif] text-[12px] leading-[1.5] bg-transparent border-0 p-0 cursor-pointer text-left"
                     style={{
-                      color: viewMoreHovered ? "#302f34" : "#847f90",
+                      color: isDark ? (viewMoreHovered ? "#faf9ff" : "#908e99") : (viewMoreHovered ? "#302f34" : "#847f90"),
                       textDecoration: "underline",
                       textDecorationStyle: "dotted",
-                      textDecorationColor: viewMoreHovered ? "#302f34" : "#847f90",
+                      textDecorationColor: isDark ? (viewMoreHovered ? "#faf9ff" : "#908e99") : (viewMoreHovered ? "#302f34" : "#847f90"),
                       transition: "color 0.15s ease, text-decoration-color 0.15s ease",
                     }}
                   >
@@ -175,15 +295,22 @@ function ResumeCard({ collapsed, onToggle }: { collapsed: boolean; onToggle: () 
 
 
 export default function About() {
-  const shouldAnimate = useNavEntrance();
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
   const [scrolled, setScrolled] = useState(false);
   const [resumeCollapsed, setResumeCollapsed] = useState(true);
   const [stackPeek, setStackPeek] = useState(false);
   const [footerVisible, setFooterVisible] = useState(false);
+  const [videoVisible, setVideoVisible] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    const timer = setTimeout(() => {
+      videoRef.current?.play().catch(() => {});
+    }, 700);
+    return () => clearTimeout(timer);
   }, []);
+
 
   useEffect(() => {
     const checkFooter = () => {
@@ -199,7 +326,7 @@ export default function About() {
   useEffect(() => {
     const timer = setTimeout(() => {
       if (window.scrollY <= 60) setResumeCollapsed(false);
-    }, 900);
+    }, 500);
     return () => clearTimeout(timer);
   }, []);
 
@@ -218,7 +345,6 @@ export default function About() {
 
   return (
     <div className="relative min-h-screen bg-background overflow-x-clip">
-      <HomeButton />
 
       <AnimatePresence>
         {scrolled && (
@@ -234,20 +360,45 @@ export default function About() {
             <div style={{ position: "absolute", inset: 0, backdropFilter: "blur(4px)", WebkitBackdropFilter: "blur(4px)", maskImage: "linear-gradient(to bottom, black 0%, transparent 55%)", WebkitMaskImage: "linear-gradient(to bottom, black 0%, transparent 55%)" }} />
             <div style={{ position: "absolute", inset: 0, backdropFilter: "blur(2px)", WebkitBackdropFilter: "blur(2px)", maskImage: "linear-gradient(to bottom, black 0%, transparent 75%)", WebkitMaskImage: "linear-gradient(to bottom, black 0%, transparent 75%)" }} />
             <div style={{ position: "absolute", inset: 0, backdropFilter: "blur(0.5px)", WebkitBackdropFilter: "blur(0.5px)", maskImage: "linear-gradient(to bottom, black 0%, transparent 100%)", WebkitMaskImage: "linear-gradient(to bottom, black 0%, transparent 100%)" }} />
-            <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, rgba(242,242,246,0.75) 0%, rgba(242,242,246,0.48) 30%, rgba(242,242,246,0.18) 65%, rgba(242,242,246,0) 100%)" }} />
+            <div style={{ position: "absolute", inset: 0, background: isDark
+                ? "linear-gradient(to bottom, rgba(22,22,23,0.85) 0%, rgba(22,22,23,0.55) 30%, rgba(22,22,23,0.2) 65%, rgba(22,22,23,0) 100%)"
+                : "linear-gradient(to bottom, rgba(242,242,246,0.75) 0%, rgba(242,242,246,0.48) 30%, rgba(242,242,246,0.18) 65%, rgba(242,242,246,0) 100%)" }} />
           </motion.div>
         )}
       </AnimatePresence>
 
-      <motion.div
-        initial={shouldAnimate ? { y: -20 } : false}
-        animate={{ y: 0, top: scrolled ? "8px" : "16px" }}
-        transition={{ duration: 0.4, ease: "easeOut" }}
-        className={`hidden md:block fixed left-[20px] right-[20px] z-50${shouldAnimate ? ' animate-[fadeSlideDown_0.4s_ease-out_both]' : ''}`}
-        style={{ top: "16px" }}
+      {/* LinkedIn button — fixed top right */}
+      <a
+        href="https://linkedin.com/in/abbyxhart"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="hidden md:flex fixed z-50 items-center gap-[9px] p-[7px] pl-[12px] pr-[16px] rounded-[24px] select-none"
+        style={{
+          top: "calc(env(safe-area-inset-top) + 16px)",
+          right: "calc(4.5vw + 100px)",
+          backgroundColor: "var(--color-surface-fill3)",
+          backdropFilter: "blur(12px)",
+          WebkitBackdropFilter: "blur(12px)",
+          height: 32,
+          fontFamily: "'Inter Tight', sans-serif",
+          textDecoration: "none",
+        }}
       >
-        <Navigation scrolledDown={scrolled} />
-      </motion.div>
+        <div className="relative shrink-0 size-[18px]">
+          <div className="absolute inset-[6.25%]">
+            <svg width="100%" height="100%" viewBox={icons.social.linkedin.viewBox} fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d={icons.social.linkedin.paths[0].d} fill="var(--color-text-primary)" />
+            </svg>
+          </div>
+        </div>
+        <div className="flex gap-[2px] items-center">
+          {["C", "V"].map(key => (
+            <div key={key} className="flex flex-col items-center justify-center rounded-[4px] shrink-0 size-[18px]" style={{ backgroundColor: "var(--color-surface-secondary-active)" }}>
+              <p className="leading-[normal] text-[10px] text-center" style={{ color: "var(--color-text-secondary)", margin: 0 }}>{key}</p>
+            </div>
+          ))}
+        </div>
+      </a>
 
       {/* ══ Section 1: 100vh — bio, side panels, DrinkCard ══ */}
       <div className="relative px-[2vw]" style={{ paddingTop: 140, minHeight: "100vh" }}>
@@ -260,7 +411,7 @@ export default function About() {
           animate={{ opacity: footerVisible ? 0 : 1, pointerEvents: footerVisible ? "none" : "auto" }}
           transition={{ opacity: footerVisible ? { duration: 0 } : { duration: 0.3, ease: "easeOut" } }}
         >
-          <ResumeCard collapsed={resumeCollapsed} onToggle={() => setResumeCollapsed(v => !v)} />
+          <ResumeCard collapsed={resumeCollapsed} onToggle={() => setResumeCollapsed(v => !v)} isDark={isDark} />
         </motion.div>
 
         {/* Desktop xl */}
@@ -269,11 +420,11 @@ export default function About() {
 
             {/* Left: SF video + weather */}
             <div
-              className="absolute animate-[fadeSlideIn_0.5s_ease-out_both]"
+              className="absolute"
               style={{ left: 0, top: 30, width: 270 }}
             >
               <div className="relative w-full rounded-[8px] overflow-hidden" style={{ aspectRatio: "3/2", background: "#201f23" }}>
-                <video src={sfVideo} autoPlay muted loop playsInline className="absolute inset-0 w-full h-full object-cover" />
+                <video ref={videoRef} src={sfVideo} muted loop playsInline preload="auto" onCanPlay={() => setVideoVisible(true)} className="absolute inset-0 w-full h-full object-cover" style={{ opacity: videoVisible ? 1 : 0, transition: "opacity 0.5s ease" }} />
                 <div
                   className="absolute inset-x-0 top-0 h-[72px] pointer-events-none"
                   style={{ background: "linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0) 100%)" }}
@@ -292,17 +443,17 @@ export default function About() {
 
             {/* Left: SpotifyPlayer */}
             <div
-              className="absolute animate-[fadeSlideIn_0.5s_ease-out_both]"
-              style={{ left: 130, bottom: 110, width: 260 }}
+              className="absolute"
+              style={{ left: 130, bottom: 50, width: 260 }}
             >
-              <div className="w-full relative overflow-hidden" style={{ borderRadius: 8, border: "1px solid #585564", aspectRatio: "1/1" }}>
+              <div className="w-full relative overflow-hidden" style={{ borderRadius: 8, aspectRatio: "1/1" }}>
                 <SpotifyPlayer />
               </div>
             </div>
 
             {/* Right: OfflineCard */}
             <div
-              className="absolute animate-[fadeSlideIn_0.5s_ease-out_both]"
+              className="absolute"
               style={{ right: 0, top: 0, width: 260 }}
             >
               <OfflineCard />
@@ -310,7 +461,7 @@ export default function About() {
 
             {/* Right: DrinkCard */}
             <div
-              className="absolute animate-[fadeSlideIn_0.5s_ease-out_both]"
+              className="absolute"
               style={{ right: 260, bottom: 50 }}
             >
               <DrinkCard size={130} />
@@ -361,6 +512,9 @@ export default function About() {
             </div>
 
           </div>
+          <div className="mx-auto" style={{ maxWidth: 520, paddingTop: 10 }}>
+            <QuoteCard height={260} />
+          </div>
         </div>
 
         {/* Tablet md–xl */}
@@ -369,7 +523,7 @@ export default function About() {
 
             {/* Right: OfflineCard */}
             <div
-              className="absolute animate-[fadeSlideIn_0.5s_ease-out_both]"
+              className="absolute"
               style={{ right: 0, top: 0, width: 190 }}
             >
               <OfflineCard />
@@ -377,7 +531,7 @@ export default function About() {
 
             {/* Right: DrinkCard */}
             <div
-              className="absolute animate-[fadeSlideIn_0.5s_ease-out_both]"
+              className="absolute"
               style={{ right: 190, bottom: 50 }}
             >
               <DrinkCard size={95} />
@@ -386,7 +540,7 @@ export default function About() {
 
             {/* Centered primary content */}
             <div className="relative mx-auto" style={{ maxWidth: 520, paddingBottom: 48 }}>
-              <div className="flex flex-col gap-[40px] animate-[fadeSlideIn_0.5s_ease-out_both]">
+              <div className="flex flex-col gap-[40px]">
                 <div className="flex flex-col gap-[24px]">
                   <p className="font-['Inter_Tight',sans-serif] text-muted-foreground text-[14px] leading-[1.5]">
                     Nice to meet you
@@ -428,11 +582,14 @@ export default function About() {
             </div>
 
           </div>
+          <div className="mx-auto" style={{ maxWidth: 520, paddingTop: 10 }}>
+            <QuoteCard height={260} />
+          </div>
         </div>
 
         {/* Mobile */}
         <div className="flex flex-col gap-[40px] md:hidden pt-[20px] pb-[40px]">
-          <div className="flex flex-col gap-[24px] animate-[fadeSlideIn_0.5s_ease-out_both]">
+          <div className="flex flex-col gap-[24px]">
             <p className="font-['Inter_Tight',sans-serif] text-muted-foreground text-[14px] leading-[1.5]">
               Nice to meet you
             </p>
@@ -443,7 +600,7 @@ export default function About() {
               </p>
             </div>
           </div>
-          <div className="flex flex-col gap-[24px] animate-[fadeSlideIn_0.5s_ease-out_both]">
+          <div className="flex flex-col gap-[24px]">
             <p className="font-['Inter_Tight',sans-serif] text-muted-foreground text-[14px] leading-[1.5]">
               How I fell into it
             </p>
@@ -462,35 +619,9 @@ export default function About() {
         </div>
       </div>
 
-      {/* ══ Section 2: Friends + Quotes ══ */}
-      <div className="px-[2vw] pb-[14vh]">
-
-        {/* Desktop xl */}
-        <div className="hidden xl:flex relative items-end gap-[10px] justify-end animate-[fadeSlideIn_0.5s_ease-out_both]" style={{ minHeight: 260 }}>
-          <div style={{ position: "absolute", left: 0, bottom: 0, width: 260, borderRadius: 8, overflow: "hidden" }}>
-            <FriendsCard />
-          </div>
-          <BookStack />
-        </div>
-
-        {/* Tablet md–xl */}
-        <div className="hidden md:flex xl:hidden relative items-end gap-[10px] justify-end animate-[fadeSlideIn_0.5s_ease-out_both]" style={{ minHeight: 190 }}>
-          <div style={{ position: "absolute", left: 0, bottom: 0, width: 190, borderRadius: 8, overflow: "hidden" }}>
-            <FriendsCard />
-          </div>
-          <BookStack />
-        </div>
-
-        {/* Mobile */}
-        <div className="flex flex-col gap-[10px] md:hidden">
-          <div className="animate-[fadeSlideIn_0.5s_ease-out_both] flex justify-center">
-            <BookStack />
-          </div>
-          <div className="animate-[fadeSlideIn_0.5s_ease-out_both] w-full rounded-[8px] overflow-hidden">
-            <FriendsCard />
-          </div>
-        </div>
-
+      {/* ══ Section 2: Art Gallery ══ */}
+      <div className="px-[2vw] pt-[8vh] pb-[14vh]">
+        <ArtGallery />
       </div>
     </div>
   );

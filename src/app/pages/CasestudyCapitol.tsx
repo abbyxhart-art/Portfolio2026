@@ -1,8 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavEntrance } from "../hooks/useNavEntrance";
 import { motion, AnimatePresence, useScroll, useTransform } from "@/lib/motion";
-import Navigation from "../../imports/Navigation";
-import HomeButton from "../components/layout/HomeButton";
 import CasestudyNavigation from "../components/casestudy/CasestudyNavigation";
 import UpNext from "../components/casestudy/UpNext";
 import CasestudyMiniMenu from "../components/casestudy/CasestudyMiniMenu";
@@ -78,7 +76,6 @@ export default function CasestudyCapitol() {
 
   return (
     <div className="relative min-h-screen bg-background overflow-x-clip" style={{ fontFamily: "'Inter Tight', sans-serif", color: "#FAF9FF" }}>
-      <HomeButton />
       <CasestudyNavigation title="CAPITOL" />
       <CasestudyMiniMenu sections={CAPITOL_SECTIONS} />
 
@@ -93,15 +90,6 @@ export default function CasestudyCapitol() {
         )}
       </AnimatePresence>
 
-      <motion.div
-        initial={shouldAnimate ? { opacity: 0, y: -20 } : false}
-        animate={{ opacity: 1, y: 0, top: scrolled ? "8px" : "16px" }}
-        transition={{ duration: 0.4, ease: "easeOut" }}
-        className="fixed left-[20px] right-[20px] z-50"
-        style={{ top: "16px" }}
-      >
-        <Navigation scrolledDown={scrolled} />
-      </motion.div>
 
       <motion.div
         initial={shouldAnimate ? { opacity: 0, y: 24 } : false}

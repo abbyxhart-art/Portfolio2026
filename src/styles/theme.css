@@ -13,6 +13,12 @@
   --text-size\/extra-small: 14px;
   --text-size\/smallest: 12px;
 
+  /* Card text sizes */
+  --text-size\/card-title: 17px;
+  --text-size\/card-description: 14px;
+  --text-size\/card-tag: 14px;
+  --text-size\/card-badge: 11px;
+
   /* Font weights */
   --text-weight\/medium: 500;
   --text-weight\/middle: 450;

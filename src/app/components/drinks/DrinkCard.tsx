@@ -139,13 +139,13 @@ export default function DrinkCard({ size = 150 }: DrinkCardProps) {
       style={{
         width: size,
         height: size,
-        background: "rgba(201,197,211,0.3)",
+        background: "rgba(88,85,100,0.15)",
         backdropFilter: "blur(5px)",
         WebkitBackdropFilter: "blur(5px)",
       }}
     >
       {/* Header — single line, crossfades on hover */}
-      <div className="absolute top-[12px] left-[12px]" style={{ height: "1em" }}>
+      <div className="absolute top-[12px] inset-x-0 flex justify-center" style={{ height: "1em" }}>
         <p
           className="absolute font-['Inter_Tight',sans-serif] text-[14px] leading-none text-foreground whitespace-nowrap"
           style={{ opacity: hovered ? 0 : 1, transition: "opacity 0.2s ease" }}

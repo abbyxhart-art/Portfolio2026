@@ -15,6 +15,8 @@ export {
   useMotionValue,
   useInView,
   useAnimationControls,
+  useIsPresent,
+  useDragControls,
 } from 'motion/react';
 
 // Props that are motion-specific and should be stripped in static mode
@@ -26,7 +28,7 @@ const MOTION_KEYS = new Set([
   'onAnimationStart', 'onAnimationComplete', 'onAnimationIteration',
   'drag', 'dragConstraints', 'dragDirectionLock', 'dragElastic',
   'dragMomentum', 'dragPropagation', 'onDragStart', 'onDragEnd', 'onDrag',
-  'onDirectionLock',
+  'onDirectionLock', 'dragListener', 'dragControls', 'dragSnapToOrigin',
 ]);
 
 function makeStatic(tag: string) {

@@ -7,7 +7,20 @@ html, body {
   overscroll-behavior: none;
 }
 
+@media (max-width: 767px) {
+  :root {
+    --text-size\/card-title: 15px;
+    --text-size\/card-tag: 12px;
+    --text-size\/card-badge: 10px;
+  }
+}
+
+
 ::selection {
   background-color: var(--color-interactive-selection-background);
   color: var(--color-interactive-selection-foreground);
+}
+
+[data-theme="dark"] footer {
+  border-top-color: var(--color-border-dark);
 }

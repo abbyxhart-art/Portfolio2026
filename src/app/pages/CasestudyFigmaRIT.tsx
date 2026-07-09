@@ -1,8 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavEntrance } from "../hooks/useNavEntrance";
 import { motion, AnimatePresence, useScroll, useTransform, useMotionValue } from "@/lib/motion";
-import Navigation from "../../imports/Navigation";
-import HomeButton from "../components/layout/HomeButton";
 import CasestudyNavigation from "../components/casestudy/CasestudyNavigation";
 import UpNext from "../components/casestudy/UpNext";
 import CasestudyMiniMenu from "../components/casestudy/CasestudyMiniMenu";
@@ -20,7 +18,7 @@ import imgSlackJoanna from "../../assets/project/figbuild/slack_joanna.png";
 import imgFigmaMake from "../../assets/project/figbuild/figmamake.png";
 import imgFigmaMCP from "../../assets/project/figbuild/figmamcp.png";
 import claudeSvg from "../../assets/icons/claude.svg";
-import figmaMakeSvg from "../../assets/icons/figmamake.svg";
+import icons from "../../assets/icons/icons.json";
 import imgIterations from "../../assets/project/figbuild/iterations.png";
 import imgUserflow from "../../assets/project/figbuild/userflow.png";
 import imgFigmafam from "../../assets/project/figbuild/figmafam.png";
@@ -90,7 +88,6 @@ export default function CasestudyFigmaRIT() {
 
   return (
     <div className="relative min-h-screen bg-background overflow-x-clip">
-      <HomeButton />
       <CasestudyNavigation title="FigBuild Badges 2026" />
       <CasestudyMiniMenu sections={FIGMA_SECTIONS} />
       <AnimatePresence>
@@ -108,15 +105,6 @@ export default function CasestudyFigmaRIT() {
         )}
       </AnimatePresence>
 
-      <motion.div
-        initial={shouldAnimate ? { opacity: 0, y: -20 } : false}
-        animate={{ opacity: 1, y: 0, top: scrolled ? "8px" : "16px" }}
-        transition={{ duration: 0.4, ease: "easeOut" }}
-        className="fixed left-[20px] right-[20px] z-50"
-        style={{ top: "16px" }}
-      >
-        <Navigation scrolledDown={scrolled} />
-      </motion.div>
 
       <motion.div
         initial={shouldAnimate ? { opacity: 0, y: 24 } : false}
@@ -286,7 +274,9 @@ export default function CasestudyFigmaRIT() {
                 <p className="font-['Inter_Tight',sans-serif] font-[300] leading-none text-[#908e99] text-[14px] md:text-[16px]">Workflow</p>
                 {/* Icons with glow */}
                 <div className="flex gap-[8px] items-center">
-                  <img src={figmaMakeSvg} alt="" className="h-[44px] w-auto" />
+                  <svg height="44" viewBox={icons.brands["figma-make"].viewBox} fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: "auto" }}>
+                    <path d={icons.brands["figma-make"].paths[0].d} fill="#FCFCFC" />
+                  </svg>
                   <img src={claudeSvg} alt="" className="h-[44px] w-auto" />
                 </div>
                 <p className="font-['Inter_Tight',sans-serif] leading-[1.3] text-[#faf9ff] text-[18px] md:text-[24px] w-full">

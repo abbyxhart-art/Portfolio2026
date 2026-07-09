@@ -4,7 +4,7 @@ import { NavLink } from "react-router";
 const links = [
   { to: "/", label: "Home", end: true },
   { to: "/about", label: "About", end: false },
-  { to: "/booth", label: "The Booth", end: false },
+  { to: "/lab", label: "Lab", end: false },
 ];
 
 export default function Navigation({ scrolledDown = false }: { scrolledDown?: boolean }) {
