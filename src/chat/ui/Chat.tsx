@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import Navigation from "../../imports/Navigation";
+import MainNavigation from "../../imports/MainNavigation";
 import HomeButton from "../../app/components/layout/HomeButton";
 import ChatWindow from "./ChatWindow";
 import ChatInput from "./ChatInput";
@@ -75,7 +75,7 @@ export default function Chat() {
         flexDirection: "column",
       }}
     >
-      <Navigation />
+      <MainNavigation />
       <HomeButton />
 
       <div

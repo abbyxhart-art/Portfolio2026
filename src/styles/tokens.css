@@ -11,7 +11,7 @@
   --color-accent2-foreground: #00867D;
   --color-background-page: #F2F2F6;
   --color-border-dark: #C9C5D3;
-  --color-border-default: #E9E8EF;
+  --color-border-default: rgba(218,216,227,0.1);
   --color-border-focus: #995D7B;
   --color-border-light: #DAD8E3;
   --color-border-strong: #9C97A8;
@@ -150,13 +150,13 @@
   --color-accent2-foreground: #00D3A7;
   --color-background-page: #161617;
   --color-border-dark: #302F34;
-  --color-border-default: #585564;
+  --color-border-default: rgba(174,171,185,0.1);
   --color-border-focus: #D6A2B8;
   --color-border-light: #AEABB9;
   --color-border-strong: #7E7C87;
   --color-border-subtle: rgba(88,85,100,0.12);
   --color-button-default-border: #302F34;
-  --color-button-default-fill: rgba(88,85,100,0.20);
+  --color-button-default-fill: rgba(48,47,52,0.40);
   --color-button-default-hover-fill: rgba(144,142,153,0.20);
   --color-button-default-hover-label: #FAF9FF;
   --color-button-default-label: #908E99;
@@ -197,7 +197,7 @@
   --color-surface-fill1: rgba(144,142,153,0.50);
   --color-surface-fill2: rgba(144,142,153,0.20);
   --color-surface-fill3: rgba(88,85,100,0.20);
-  --color-surface-fill4: rgba(88,85,100,0.15);
+  --color-surface-fill4: rgba(48,47,52,0.40);
   --color-surface-ghost: rgba(22,22,23,0.05);
   --color-surface-overlay-default: rgba(22,22,23,0.85);
   --color-surface-overlay-fade: rgba(22,22,23,0.35);

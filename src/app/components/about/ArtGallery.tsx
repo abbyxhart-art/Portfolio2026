@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "@/lib/motion";
 import { ART_CATEGORIES, GALLERY_SECTION_LABEL, GALLERY_SECTION_SUBTITLE } from "../../data/artGallery";
 import { useTheme } from "../../context/ThemeContext";
+import EarlyDaysCard from "./EarlyDaysCard";
 
 function ChevronLeft() {
   return (
@@ -166,8 +167,13 @@ export default function ArtGallery() {
         </div>
       </div>
 
-      {/* ── Below xl: tabs + 2×2 squares, bordered frame ── */}
-      <div className="xl:hidden" style={{ ...frameStyle, padding: 24 }}>
+      {/* ── Mobile: synced left menu / right scroll-pane (Figma 5382:831) ── */}
+      <div className="md:hidden">
+        <EarlyDaysCard />
+      </div>
+
+      {/* ── Tablet (md–xl): tabs + 2×2 squares, bordered frame ── */}
+      <div className="hidden md:block xl:hidden" style={{ ...frameStyle, padding: 24 }}>
         <SectionTitle />
 
         <div className="flex items-center gap-[16px]" style={{ marginTop: 24 }}>

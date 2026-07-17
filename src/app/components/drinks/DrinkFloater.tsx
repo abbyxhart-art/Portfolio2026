@@ -16,7 +16,6 @@ function Wrapper({ children }: React.PropsWithChildren<{}>) {
 export default function DrinkFloater() {
   const { selectedDrink } = useDrink();
   const [isSipHovered, setIsSipHovered] = useState(false);
-  const [isContactHovered, setIsContactHovered] = useState(false);
 
   // Hidden until the user picks a drink on the About page
   if (!selectedDrink) return null;
@@ -90,17 +89,13 @@ export default function DrinkFloater() {
   };
 
   return (
-    <div className="hidden md:flex sticky bottom-[16px] left-[16px] z-50 flex-col items-start gap-[8px] animate-[fadeIn_0.4s_ease-out]">
-      {drinkType === 'mango' && <MiniInteractionMangoCoconut />}
-      {drinkType === 'matcha' && <MiniInteractionMatchaCream />}
-      {drinkType === 'lychee' && <MiniInteractionLycheeRose />}
-      {drinkType === 'sesame' && <MiniInteractionBlackSesame />}
-      <p
-        className="font-['Inter_Tight',sans-serif] font-normal leading-none text-[14px] tracking-[-0.28px] whitespace-nowrap cursor-pointer"
-        style={{ color: isContactHovered ? "#faf9ff" : "#908e99", transition: "color 150ms ease-out" }}
-        onMouseEnter={() => setIsContactHovered(true)}
-        onMouseLeave={() => setIsContactHovered(false)}
-      >Contact</p>
+    <div className="hidden md:flex fixed bottom-[16px] right-[24px] z-50 flex-col items-end gap-[8px] animate-[fadeIn_0.4s_ease-out]">
+      <div style={{ transform: "scale(0.8)", transformOrigin: "bottom right" }}>
+        {drinkType === 'mango' && <MiniInteractionMangoCoconut />}
+        {drinkType === 'matcha' && <MiniInteractionMatchaCream />}
+        {drinkType === 'lychee' && <MiniInteractionLycheeRose />}
+        {drinkType === 'sesame' && <MiniInteractionBlackSesame />}
+      </div>
     </div>
   );
 }

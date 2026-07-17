@@ -64,7 +64,7 @@ export default function ThemeToggle() {
         width: W,
         height: H,
         borderRadius: 9999,
-        border: "none",
+        border: "1px solid var(--color-border-default)",
         background: hovered ? "var(--color-surface-secondary-hover)" : "var(--color-surface-fill3)",
         cursor: "pointer",
         padding: 0,

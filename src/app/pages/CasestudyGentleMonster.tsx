@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavEntrance } from "../hooks/useNavEntrance";
-import { motion, AnimatePresence, useScroll, useTransform } from "@/lib/motion";
+import { motion, useScroll, useTransform } from "@/lib/motion";
 import CasestudyNavigation from "../components/casestudy/CasestudyNavigation";
 import UpNext from "../components/casestudy/UpNext";
-import CasestudyMiniMenu from "../components/casestudy/CasestudyMiniMenu";
+import SectionNavigation from "../components/casestudy/SectionNavigation";
 import CasestudySectionHeader from "../components/casestudy/CasestudySectionHeader";
 import imgFaceSmile from "../../assets/icons/face-smile.svg";
 
@@ -46,7 +46,6 @@ const blobGM_lav_right  = "radial-gradient(ellipse at center, rgba(175,164,216,0
 
 export default function CasestudyGentleMonster() {
   const shouldAnimate = useNavEntrance();
-  const [scrolled, setScrolled] = useState(false);
   const [activeJourneyTab, setActiveJourneyTab] = useState<"Full Flow" | "Checkout" | "Prescription">("Full Flow");
   const [hoveredJourneyTab, setHoveredJourneyTab] = useState<string | null>(null);
   const [reachOutHovered, setReachOutHovered] = useState(false);
@@ -54,17 +53,6 @@ export default function CasestudyGentleMonster() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, []);
-
-  useEffect(() => {
-    let lastScrollY = window.scrollY;
-    const handleScroll = () => {
-      const y = window.scrollY;
-      setScrolled(y > 10 && y > lastScrollY);
-      lastScrollY = y;
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   // Hero scale animation — latches at 1.0 once reached, never scales back up
@@ -85,22 +73,7 @@ export default function CasestudyGentleMonster() {
   return (
     <div className="relative min-h-screen bg-background overflow-x-clip">
       <CasestudyNavigation title="Gentle Monster" />
-      <CasestudyMiniMenu sections={GM_SECTIONS} />
-      <AnimatePresence>
-        {scrolled && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.4, ease: "easeOut" }}
-            className="fixed inset-x-0 top-0 z-40 h-[10vh] pointer-events-none"
-            style={{
-              background: "linear-gradient(to bottom, rgba(23, 23, 23, 0.98) 0%, rgba(23, 23, 23, 0.85) 25%, rgba(23, 23, 23, 0.35) 55%, rgba(23, 23, 23, 0.05) 80%, rgba(23, 23, 23, 0) 100%)",
-            }}
-          />
-        )}
-      </AnimatePresence>
-
+      <SectionNavigation sections={GM_SECTIONS} title="Gentle Monster Casestudy Navigation" />
 
       <motion.div
         initial={shouldAnimate ? { opacity: 0, y: 24 } : false}
@@ -187,7 +160,12 @@ export default function CasestudyGentleMonster() {
           <div
             style={{
               position: "sticky",
-              top: "calc(50vh - 397px)",
+              // svh (small viewport height) rather than vh: this sits inside a
+              // 4000px scroll-jacked track, and raw vh recalculates live as
+              // Safari's chrome collapses/expands during that long scroll,
+              // which was producing a visible seam. svh locks to the chrome's
+              // smallest-viewport size so the offset never shifts mid-scroll.
+              top: "calc(50svh - 397px)",
             }}
           >
             {/* Frame */}

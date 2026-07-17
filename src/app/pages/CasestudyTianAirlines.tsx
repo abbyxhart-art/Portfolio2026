@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavEntrance } from "../hooks/useNavEntrance";
-import { motion, AnimatePresence, useScroll, useTransform, useMotionValue } from "@/lib/motion";
+import { motion, useScroll, useTransform, useMotionValue } from "@/lib/motion";
 import CasestudyNavigation from "../components/casestudy/CasestudyNavigation";
 import UpNext from "../components/casestudy/UpNext";
-import CasestudyMiniMenu from "../components/casestudy/CasestudyMiniMenu";
+import SectionNavigation from "../components/casestudy/SectionNavigation";
 import CasestudySectionHeader from "../components/casestudy/CasestudySectionHeader";
 
 
@@ -30,7 +30,6 @@ const vidEndscreen = new URL("../../assets/project/tianair/tian_endscreen_2x1.mp
 
 export default function CasestudyTianAirlines() {
   const shouldAnimate = useNavEntrance();
-  const [scrolled, setScrolled] = useState(false);
   const [designSysBtnHovered, setDesignSysBtnHovered] = useState(false);
   const [bradFrostBtnHovered, setBradFrostBtnHovered] = useState(false);
   const { scrollY } = useScroll();
@@ -67,36 +66,10 @@ export default function CasestudyTianAirlines() {
     return () => window.removeEventListener("resize", measure);
   }, [heroExtraHeight]);
 
-  useEffect(() => {
-    let lastScrollY = window.scrollY;
-    const handleScroll = () => {
-      const y = window.scrollY;
-      setScrolled(y > 10 && y > lastScrollY);
-      lastScrollY = y;
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
   return (
     <div className="relative min-h-screen bg-background overflow-x-clip">
       <CasestudyNavigation title="Tian Airways" />
-      <CasestudyMiniMenu sections={TIAN_SECTIONS} />
-      <AnimatePresence>
-        {scrolled && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.4, ease: "easeOut" }}
-            className="fixed inset-x-0 top-0 z-40 h-[10vh] pointer-events-none"
-            style={{
-              background: "linear-gradient(to bottom, rgba(23, 23, 23, 0.98) 0%, rgba(23, 23, 23, 0.85) 25%, rgba(23, 23, 23, 0.35) 55%, rgba(23, 23, 23, 0.05) 80%, rgba(23, 23, 23, 0) 100%)",
-            }}
-          />
-        )}
-      </AnimatePresence>
-
+      <SectionNavigation sections={TIAN_SECTIONS} title="Tian Airways Casestudy Navigation" />
 
       <motion.div
         initial={shouldAnimate ? { opacity: 0, y: 24 } : false}

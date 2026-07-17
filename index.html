@@ -4,8 +4,12 @@
     <head>
       <meta charset="UTF-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-      <meta name="theme-color" media="(prefers-color-scheme: light)" content="#F2F2F6" />
-      <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#161617" />
+      <!-- Tints the iOS status bar / safe-area strip. Kept in sync with the
+           app's own light/dark toggle by ThemeContext.tsx — not tied to
+           prefers-color-scheme, which only reflects OS setting and can
+           disagree with the in-app theme. Default here matches
+           ThemeProvider's default theme ("dark") for the pre-hydration paint. -->
+      <meta name="theme-color" content="#161617" />
       <meta name="apple-mobile-web-app-capable" content="yes" />
       <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
       <title>Abby Hart, Product Designer</title>

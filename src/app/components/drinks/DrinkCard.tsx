@@ -7,9 +7,9 @@ type DrinkFloaterType = 'lychee' | 'matcha' | 'mango' | 'sesame';
 export function EmptyCup() {
   return (
     <div className="h-[55.8px] relative w-[37.8px]">
-      <div className="absolute bg-[#4f4c58] h-[47.7px] left-[18px] top-0 w-[3.6px]" />
+      <div className="absolute bg-[#7e7c87] h-[47.7px] left-[18px] top-0 w-[3.6px]" />
       <div className="absolute border-[0.675px] border-[#7e7c87] border-solid h-[47.7px] left-[2.7px] rounded-bl-[21.6px] rounded-br-[21.6px] top-[8.1px] w-[33.3px]" />
-      <div className="absolute bg-[#4f4c58] h-[3.6px] left-0 rounded-[9px] top-[5.4px] w-[37.8px]" />
+      <div className="absolute bg-[#7e7c87] h-[3.6px] left-0 rounded-[9px] top-[5.4px] w-[37.8px]" />
     </div>
   );
 }
@@ -17,23 +17,23 @@ export function EmptyCup() {
 export function TaroMilkCup() {
   return (
     <div className="h-[55.8px] relative w-[37.8px]">
-      <div className="absolute bg-[#4f4c58] h-[47.7px] left-[18px] top-0 w-[3.6px]" />
-      <div className="absolute bg-[#302f34] left-[5.4px] size-[3.6px] top-[37.8px]" />
-      <div className="absolute bg-[#302f34] left-[12.6px] size-[3.6px] top-[37.8px]" />
-      <div className="absolute bg-[#302f34] left-[9px] size-[3.6px] top-[30.6px]" />
+      <div className="absolute bg-[#7e7c87] h-[47.7px] left-[18px] top-0 w-[3.6px]" />
+      <div className="absolute bg-white left-[5.4px] size-[3.6px] top-[37.8px]" />
+      <div className="absolute bg-white left-[12.6px] size-[3.6px] top-[37.8px]" />
+      <div className="absolute bg-white left-[9px] size-[3.6px] top-[30.6px]" />
       <div className="absolute flex items-center justify-center left-[17.1px] size-[4.383px] top-[49.5px]">
         <div className="flex-none rotate-[14.41deg]">
-          <div className="bg-[#302f34] relative size-[3.6px]" />
+          <div className="bg-white relative size-[3.6px]" />
         </div>
       </div>
-      <div className="absolute bg-[#302f34] left-[29.7px] size-[3.6px] top-[34.2px]" />
-      <div className="absolute bg-[#302f34] left-[29.7px] size-[3.6px] top-[41.4px]" />
-      <div className="absolute bg-[#302f34] left-[24.3px] size-[3.6px] top-[37.8px]" />
-      <div className="absolute bg-[#302f34] left-[24.3px] size-[3.6px] top-[45px]" />
-      <div className="absolute bg-[#302f34] left-[9px] size-[3.6px] top-[45px]" />
+      <div className="absolute bg-white left-[29.7px] size-[3.6px] top-[34.2px]" />
+      <div className="absolute bg-white left-[29.7px] size-[3.6px] top-[41.4px]" />
+      <div className="absolute bg-white left-[24.3px] size-[3.6px] top-[37.8px]" />
+      <div className="absolute bg-white left-[24.3px] size-[3.6px] top-[45px]" />
+      <div className="absolute bg-white left-[9px] size-[3.6px] top-[45px]" />
       <div className="absolute bg-[rgba(193,111,255,0.63)] h-[39.6px] left-[2.7px] rounded-bl-[21.6px] rounded-br-[21.6px] top-[16.2px] w-[33.3px]" />
-      <div className="absolute border-[0.675px] border-[#9c97a8] border-solid h-[47.7px] left-[2.7px] rounded-bl-[21.6px] rounded-br-[21.6px] top-[8.1px] w-[33.3px]" />
-      <div className="absolute bg-[#4f4c58] h-[3.6px] left-0 rounded-[9px] top-[5.4px] w-[37.8px]" />
+      <div className="absolute border-[0.675px] border-[#7e7c87] border-solid h-[47.7px] left-[2.7px] rounded-bl-[21.6px] rounded-br-[21.6px] top-[8.1px] w-[33.3px]" />
+      <div className="absolute bg-[#7e7c87] h-[3.6px] left-0 rounded-[9px] top-[5.4px] w-[37.8px]" />
     </div>
   );
 }
@@ -41,13 +41,13 @@ export function TaroMilkCup() {
 export function PeachCreamCup() {
   return (
     <div className="h-[55.8px] relative w-[37.8px]">
-      <div className="absolute bg-[#4f4c58] h-[47.7px] left-[18px] top-0 w-[3.6px]" />
+      <div className="absolute bg-[#7e7c87] h-[47.7px] left-[18px] top-0 w-[3.6px]" />
       <div className="absolute bg-[rgba(251,192,191,0.7)] h-[23.4px] left-[2.7px] rounded-bl-[21.6px] rounded-br-[21.6px] top-[32.4px] w-[33.3px]" />
       <div className="absolute bg-[rgba(251,192,191,0.7)] h-[31.5px] left-[2.7px] rounded-bl-[21.6px] rounded-br-[21.6px] top-[24.3px] w-[33.3px]" />
       <div className="absolute bg-[rgba(251,192,191,0.7)] h-[39.6px] left-[2.7px] rounded-bl-[21.6px] rounded-br-[21.6px] top-[16.2px] w-[33.3px]" />
       <div className="absolute bg-[rgba(255,255,255,0.7)] h-[15.3px] left-[2.7px] rounded-bl-[21.6px] rounded-br-[21.6px] top-[39.6px] w-[33.3px]" />
-      <div className="absolute border-[0.675px] border-[#9c97a8] border-solid h-[47.7px] left-[2.7px] rounded-bl-[21.6px] rounded-br-[21.6px] top-[8.1px] w-[33.3px]" />
-      <div className="absolute bg-[#4f4c58] h-[3.6px] left-0 rounded-[9px] top-[5.4px] w-[37.8px]" />
+      <div className="absolute border-[0.675px] border-[#7e7c87] border-solid h-[47.7px] left-[2.7px] rounded-bl-[21.6px] rounded-br-[21.6px] top-[8.1px] w-[33.3px]" />
+      <div className="absolute bg-[#7e7c87] h-[3.6px] left-0 rounded-[9px] top-[5.4px] w-[37.8px]" />
     </div>
   );
 }
@@ -55,11 +55,11 @@ export function PeachCreamCup() {
 export function MangoCocoCup() {
   return (
     <div className="h-[55.8px] relative w-[37.8px]">
-      <div className="absolute bg-[#4f4c58] h-[47.7px] left-[18px] top-0 w-[3.6px]" />
+      <div className="absolute bg-[#7e7c87] h-[47.7px] left-[18px] top-0 w-[3.6px]" />
       <div className="absolute bg-[rgba(255,198,43,0.8)] h-[35.1px] left-[2.7px] rounded-bl-[21.6px] rounded-br-[21.6px] top-[20.7px] w-[33.3px]" />
       <div className="absolute bg-white h-[7.2px] left-[2.7px] top-[13.5px] w-[33.3px]" />
-      <div className="absolute border-[0.675px] border-[#9c97a8] border-solid h-[47.7px] left-[2.7px] rounded-bl-[21.6px] rounded-br-[21.6px] top-[8.1px] w-[33.3px]" />
-      <div className="absolute bg-[#4f4c58] h-[3.6px] left-0 rounded-[9px] top-[5.4px] w-[37.8px]" />
+      <div className="absolute border-[0.675px] border-[#7e7c87] border-solid h-[47.7px] left-[2.7px] rounded-bl-[21.6px] rounded-br-[21.6px] top-[8.1px] w-[33.3px]" />
+      <div className="absolute bg-[#7e7c87] h-[3.6px] left-0 rounded-[9px] top-[5.4px] w-[37.8px]" />
     </div>
   );
 }
@@ -67,22 +67,22 @@ export function MangoCocoCup() {
 export function ThaiTeaCup() {
   return (
     <div className="h-[55.8px] relative w-[37.8px]">
-      <div className="absolute bg-[#4f4c58] h-[47.7px] left-[18px] top-0 w-[3.6px]" />
+      <div className="absolute bg-[#7e7c87] h-[47.7px] left-[18px] top-0 w-[3.6px]" />
       <div className="absolute bg-[rgba(224,110,69,0.5)] h-[18px] left-[2.7px] rounded-bl-[21.6px] rounded-br-[21.6px] top-[37.8px] w-[33.3px]" />
       <div className="absolute bg-[rgba(224,110,69,0.5)] h-[25.2px] left-[2.7px] rounded-bl-[21.6px] rounded-br-[21.6px] top-[30.6px] w-[33.3px]" />
       <div className="absolute bg-[rgba(224,110,69,0.5)] h-[32.4px] left-[2.7px] rounded-bl-[21.6px] rounded-br-[21.6px] top-[23.4px] w-[33.3px]" />
       <div className="absolute bg-[rgba(224,110,69,0.5)] h-[39.6px] left-[2.7px] rounded-bl-[21.6px] rounded-br-[21.6px] top-[16.2px] w-[33.3px]" />
-      <div className="absolute bg-[#302f34] left-[5.4px] rounded-[9px] size-[3.6px] top-[37.8px]" />
-      <div className="absolute bg-[#302f34] left-[12.6px] rounded-[9px] size-[3.6px] top-[37.8px]" />
-      <div className="absolute bg-[#302f34] left-[9px] rounded-[9px] size-[3.6px] top-[30.6px]" />
-      <div className="absolute bg-[#302f34] left-[17.1px] rounded-[9px] size-[3.6px] top-[49.5px]" />
-      <div className="absolute bg-[#302f34] left-[29.7px] rounded-[9px] size-[3.6px] top-[34.2px]" />
-      <div className="absolute bg-[#302f34] left-[29.7px] rounded-[9px] size-[3.6px] top-[41.4px]" />
-      <div className="absolute bg-[#302f34] left-[24.3px] rounded-[9px] size-[3.6px] top-[37.8px]" />
-      <div className="absolute bg-[#302f34] left-[24.3px] rounded-[9px] size-[3.6px] top-[45px]" />
-      <div className="absolute bg-[#302f34] left-[9px] rounded-[9px] size-[3.6px] top-[45px]" />
-      <div className="absolute border-[0.675px] border-[#9c97a8] border-solid h-[47.7px] left-[2.7px] rounded-bl-[21.6px] rounded-br-[21.6px] top-[8.1px] w-[33.3px]" />
-      <div className="absolute bg-[#4f4c58] h-[3.6px] left-0 rounded-[9px] top-[5.4px] w-[37.8px]" />
+      <div className="absolute bg-[#161617] left-[5.4px] rounded-[9px] size-[3.6px] top-[37.8px]" />
+      <div className="absolute bg-[#161617] left-[12.6px] rounded-[9px] size-[3.6px] top-[37.8px]" />
+      <div className="absolute bg-[#161617] left-[9px] rounded-[9px] size-[3.6px] top-[30.6px]" />
+      <div className="absolute bg-[#161617] left-[17.1px] rounded-[9px] size-[3.6px] top-[49.5px]" />
+      <div className="absolute bg-[#161617] left-[29.7px] rounded-[9px] size-[3.6px] top-[34.2px]" />
+      <div className="absolute bg-[#161617] left-[29.7px] rounded-[9px] size-[3.6px] top-[41.4px]" />
+      <div className="absolute bg-[#161617] left-[24.3px] rounded-[9px] size-[3.6px] top-[37.8px]" />
+      <div className="absolute bg-[#161617] left-[24.3px] rounded-[9px] size-[3.6px] top-[45px]" />
+      <div className="absolute bg-[#161617] left-[9px] rounded-[9px] size-[3.6px] top-[45px]" />
+      <div className="absolute border-[0.675px] border-[#7e7c87] border-solid h-[47.7px] left-[2.7px] rounded-bl-[21.6px] rounded-br-[21.6px] top-[8.1px] w-[33.3px]" />
+      <div className="absolute bg-[#7e7c87] h-[3.6px] left-0 rounded-[9px] top-[5.4px] w-[37.8px]" />
     </div>
   );
 }
@@ -111,9 +111,10 @@ function getUnlockedCount(): number {
 
 interface DrinkCardProps {
   size?: number;
+  labelSize?: number;
 }
 
-export default function DrinkCard({ size = 150 }: DrinkCardProps) {
+export default function DrinkCard({ size = 150, labelSize = 14 }: DrinkCardProps) {
   const [idx, setIdx] = useState(0);
   const [unlockedCount] = useState(getUnlockedCount);
   const [hovered, setHovered] = useState(false);
@@ -147,14 +148,14 @@ export default function DrinkCard({ size = 150 }: DrinkCardProps) {
       {/* Header — single line, crossfades on hover */}
       <div className="absolute top-[12px] inset-x-0 flex justify-center" style={{ height: "1em" }}>
         <p
-          className="absolute font-['Inter_Tight',sans-serif] text-[14px] leading-none text-foreground whitespace-nowrap"
-          style={{ opacity: hovered ? 0 : 1, transition: "opacity 0.2s ease" }}
+          className="absolute font-['Inter_Tight',sans-serif] leading-none text-foreground whitespace-nowrap"
+          style={{ fontSize: labelSize, opacity: hovered ? 0 : 1, transition: "opacity 0.2s ease" }}
         >
           Get a drink
         </p>
         <p
-          className="absolute font-['Inter_Tight',sans-serif] text-[14px] leading-none text-muted-foreground whitespace-nowrap"
-          style={{ opacity: hovered ? 1 : 0, transition: "opacity 0.2s ease" }}
+          className="absolute font-['Inter_Tight',sans-serif] leading-none text-muted-foreground whitespace-nowrap"
+          style={{ fontSize: labelSize, opacity: hovered ? 1 : 0, transition: "opacity 0.2s ease" }}
         >
           {isLocked ? "Return to unlock" : "Tap to cycle"}
         </p>

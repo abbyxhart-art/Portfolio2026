@@ -7,6 +7,18 @@ html, body {
   overscroll-behavior: none;
 }
 
+/* Edge-to-edge on iPhone: html/body/#root must fill the viewport with no
+   implicit spacing, so nothing pushes content down from under the Dynamic
+   Island / status bar. viewport-fit=cover (index.html) makes the safe-area
+   env() vars available; the fix is simply never adding them as top padding
+   on mobile — see Home.tsx's name plate for the one place that used to. */
+html, body, #root {
+  width: 100%;
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
 @media (max-width: 767px) {
   :root {
     --text-size\/card-title: 15px;

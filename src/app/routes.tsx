@@ -15,10 +15,8 @@ import Booth from "./pages/Booth";
 import About from "./pages/About";
 import DrinkFloater from "./components/drinks/DrinkFloater";
 import Footer from "./components/layout/Footer";
-import MobileBottomNav from "./components/layout/MobileBottomNav";
-import ThemeToggle from "./components/layout/ThemeToggle";
-import HomeButton from "./components/layout/HomeButton";
-import Navigation from "../imports/Navigation";
+import MobileMainNav from "./components/layout/MobileMainNav";
+import MainNavigation from "../imports/MainNavigation";
 
 const BLUR_LAYERS = [
   { blur: 2,  mask: "linear-gradient(to bottom, black 0%,   transparent 25%)" },
@@ -57,7 +55,7 @@ function PageFade({
 
   return (
     <motion.div
-      className="page-content pb-[110px] md:pb-0"
+      className="page-content"
       variants={pageFadeVariants}
       initial="initial"
       animate="animate"
@@ -112,8 +110,6 @@ function RootLayout() {
     document.dispatchEvent(new CustomEvent("cursor:scale", { detail: 1 }));
   }, [pathname]);
 
-  const isCasestudy = pathname.startsWith("/casestudy/");
-
   const [isDesktop, setIsDesktop] = useState(
     () => typeof window !== "undefined" && window.matchMedia("(min-width: 768px)").matches
   );
@@ -137,47 +133,21 @@ function RootLayout() {
 
   return (
     <>
-      <AnimatePresence>
-        {isDesktop && pathname !== "/" && (
-          <motion.div
-            key="home-button"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.25, ease: "easeInOut" }}
-          >
-            <HomeButton />
-          </motion.div>
-        )}
-      </AnimatePresence>
       {isDesktop && (
         <motion.div
           initial={false}
           animate={{
             opacity: navReady ? 1 : 0,
             y: navReady ? 0 : -16,
-            top: scrolled ? "8px" : "16px",
           }}
           transition={{
             opacity: { duration: 1.5, ease: [0.33, 0, 0, 1], delay: navReady ? 0.2 : 0 },
             y: { duration: 1.5, ease: [0.33, 0, 0, 1], delay: navReady ? 0.2 : 0 },
-            top: { duration: 0.4, ease: "easeOut" },
           }}
-          className="hidden md:block fixed left-[20px] right-[20px] z-50"
+          className="hidden md:block fixed left-[32px] right-[32px] z-50"
           style={{ top: "16px" }}
         >
-          <Navigation scrolledDown={scrolled} />
-        </motion.div>
-      )}
-      {isDesktop && (
-        <motion.div
-          className="flex fixed z-[100] items-center"
-          style={{ top: "calc(env(safe-area-inset-top) + 15px)", right: isCasestudy ? "16px" : "calc(4.5vw + 16px)" }}
-          initial={{ opacity: 0, y: -16 }}
-          animate={{ opacity: navReady ? 1 : 0, y: navReady ? 0 : -16 }}
-          transition={{ duration: 1.6, ease: [0.33, 0, 0, 1], delay: navReady ? 0.1 : 0 }}
-        >
-          <ThemeToggle />
+          <MainNavigation scrolledDown={scrolled} />
         </motion.div>
       )}
       <AnimatePresence initial={false}>
@@ -212,7 +182,7 @@ function RootLayout() {
         </div>
       )}
       <DrinkFloater />
-      <MobileBottomNav />
+      <MobileMainNav />
     </>
   );
 }

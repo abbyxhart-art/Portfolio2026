@@ -91,7 +91,7 @@ function PillLink({ href, children }: { href: string; children: React.ReactNode 
   );
 }
 
-export default function SpotifyPlayer() {
+export default function SpotifyPlayer({ labelSize = 14 }: { labelSize?: number }) {
   const [tracks, setTracks] = useState<Track[]>([]);
   const [idx, setIdx] = useState(0);
   const [playing, setPlaying] = useState(false);
@@ -170,23 +170,23 @@ export default function SpotifyPlayer() {
           <>
             <p
               className="font-['Inter_Tight',sans-serif] font-light leading-[1.35] truncate"
-              style={{ fontSize: 14, color: "#fff", margin: 0 }}
+              style={{ fontSize: labelSize, color: "#fff", margin: 0 }}
             >
               {track.name}
             </p>
             <p
               className="font-['Inter_Tight',sans-serif] font-light leading-[1.35] truncate"
-              style={{ fontSize: 14, color: "rgba(255,255,255,0.65)", margin: 0 }}
+              style={{ fontSize: labelSize, color: "rgba(255,255,255,0.65)", margin: 0 }}
             >
               {track.artist}
             </p>
           </>
         ) : (
           <>
-            <p className="font-['Inter_Tight',sans-serif] font-light leading-[1.35]" style={{ fontSize: 14, color: "#fff", margin: 0 }}>
+            <p className="font-['Inter_Tight',sans-serif] font-light leading-[1.35]" style={{ fontSize: labelSize, color: "#fff", margin: 0 }}>
               The BEST instrumental playlist
             </p>
-            <p className="font-['Inter_Tight',sans-serif] font-light leading-[1.35]" style={{ fontSize: 14, color: "rgba(255,255,255,0.65)", margin: 0 }}>
+            <p className="font-['Inter_Tight',sans-serif] font-light leading-[1.35]" style={{ fontSize: labelSize, color: "rgba(255,255,255,0.65)", margin: 0 }}>
               for locking in
             </p>
           </>

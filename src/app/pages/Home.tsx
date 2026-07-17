@@ -3,7 +3,6 @@ import { useState, useEffect, useRef, type ReactNode } from "react";
 import { useNavEntrance } from "../hooks/useNavEntrance";
 import { useIsMobile } from "../components/ui/use-mobile";
 import icons from "../../assets/icons/icons.json";
-import chevronIcon from "../../assets/icons/chevron-selector-vertical.svg";
 import { Link, useNavigate } from "react-router";
 import aixelsVideo from "../../assets/project/aixels/Aixels_1920x960_29.99fps.mp4";
 import gmVideo from "../../assets/project/gentlemonster/GM_Teaser_2x1.mp4";
@@ -12,6 +11,7 @@ import figbuildVideo from "../../assets/project/figbuild/figbuild_macstudio_2x1.
 import capitolVideo from "../../assets/project/capitol/Demo_1920x960_V1.mp4";
 
 import { CASE_STUDIES } from "../data/casestudies";
+import MobileCasestudyNav from "../components/layout/MobileCasestudyNav";
 
 const VISITED_KEY = "visited_casestudies";
 
@@ -66,8 +66,8 @@ function HomeCasestudyMenu({ show }: { show: boolean }) {
       initial={{ opacity: 0, y: -8 }}
       animate={{ opacity: show ? 1 : 0, y: show ? 0 : -8 }}
       transition={{ duration: 0.4, ease: [0.33, 0, 0, 1] }}
-      className="fixed left-[16px] md:left-[calc(4.5vw+16px)] z-50 hidden md:flex flex-col gap-[12px]"
-      style={{ top: "calc(env(safe-area-inset-top) + 56px)", pointerEvents: show ? "auto" : "none" }}
+      className="fixed left-[16px] md:left-[32px] z-50 hidden md:flex flex-col gap-[12px]"
+      style={{ top: "calc(env(safe-area-inset-top) + 64px)", pointerEvents: show ? "auto" : "none" }}
     >
       {/* Trigger pill */}
       <button
@@ -78,8 +78,8 @@ function HomeCasestudyMenu({ show }: { show: boolean }) {
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          background: pillHovered ? "var(--color-button-default-fill)" : "var(--color-surface-ghost)",
-          border: "1px solid var(--color-border-dark)",
+          background: pillHovered ? "var(--color-button-default-fill)" : "var(--color-surface-fill4)",
+          border: "1px solid var(--color-border-default)",
           borderRadius: 20,
           padding: "6px 12px",
           width: 160,
@@ -93,11 +93,22 @@ function HomeCasestudyMenu({ show }: { show: boolean }) {
         }}
       >
         <span>Casestudies ({CASE_STUDIES.length})</span>
-        <img
-          src={chevronIcon}
-          alt=""
-          style={{ width: 18, height: 18, transition: "transform 0.2s ease", transform: isOpen ? "rotate(180deg)" : "rotate(0deg)" }}
-        />
+        <svg
+          width="18"
+          height="18"
+          viewBox={icons.navigation["vertical-chevron"].viewBox}
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          style={{ transition: "transform 0.2s ease", transform: isOpen ? "rotate(180deg)" : "rotate(0deg)" }}
+        >
+          <path
+            d={icons.navigation["vertical-chevron"].paths[0].d}
+            stroke="var(--color-text-secondary)"
+            strokeWidth={1.5}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
       </button>
 
       {/* Dropdown panel */}
@@ -176,6 +187,70 @@ function GlowLink({ children, path }: { children: ReactNode; path: string }) {
   );
 }
 
+const NAME_PLATE_PHRASES = [
+  "keeps her files organized",
+  "stays in auto layout",
+  "loves shortcut keys",
+  "finally got X / twitter",
+  "can eyeball perfect alignment",
+  "might get into rock climbing...",
+];
+
+// "Abby Hart" + cycling typewriter phrase, same font size for both — used by
+// both the desktop-pinned and mobile-inline name plates below.
+function AnimatedNamePlate({ size }: { size: number }) {
+  const [phraseIdx, setPhraseIdx] = useState(0);
+  const [displayText, setDisplayText] = useState(NAME_PLATE_PHRASES[0]);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const displayRef = useRef(NAME_PLATE_PHRASES[0]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setPhraseIdx(i => (i + 1) % NAME_PLATE_PHRASES.length);
+    }, 4500);
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    const target = NAME_PLATE_PHRASES[phraseIdx];
+    if (target === displayRef.current) return;
+    let cancelled = false;
+    const delay = (ms: number) => new Promise<void>(r => setTimeout(r, ms));
+
+    const run = async () => {
+      setIsAnimating(true);
+      let curr = displayRef.current;
+
+      while (curr.length > 0 && !cancelled) {
+        curr = curr.slice(0, -1);
+        displayRef.current = curr;
+        setDisplayText(curr);
+        await delay(28);
+      }
+
+      while (curr.length < target.length && !cancelled) {
+        curr = target.slice(0, curr.length + 1);
+        displayRef.current = curr;
+        setDisplayText(curr);
+        await delay(55);
+      }
+
+      if (!cancelled) setIsAnimating(false);
+    };
+
+    run();
+    return () => { cancelled = true; };
+  }, [phraseIdx]);
+
+  // Figma 5420:2921 — one continuous line ("Abby Hart is amazing."), single
+  // size and single color; only the phrase after the name types/deletes.
+  return (
+    <p className="mb-0 whitespace-nowrap" style={{ fontSize: size, fontWeight: 400, lineHeight: "20px", color: "#FFFFFF" }}>
+      Abby Hart {displayText}{isAnimating && <span style={{ opacity: 0.6 }}>|</span>}
+    </p>
+  );
+}
+
 function LinkedInButton({ show }: { show: boolean }) {
   const [hovered, setHovered] = useState(false);
 
@@ -196,24 +271,29 @@ function LinkedInButton({ show }: { show: boolean }) {
   }, []);
 
   const pillStyle = {
-    backgroundColor: hovered ? "var(--color-surface-secondary-hover)" : "var(--color-surface-fill3)",
+    backgroundColor: hovered ? "var(--color-surface-secondary-hover)" : "var(--color-surface-fill4)",
+    border: "1px solid var(--color-border-default)",
     backdropFilter: "blur(12px)",
     WebkitBackdropFilter: "blur(12px)",
     transition: "background-color 0.15s ease",
   };
 
+  // Figma 5402:1342 "Linkedin Button" — a 40px-tall pair matching the nav's
+  // height: the status ticker (181×40, 4px corners, 5402:1165) and the
+  // shortcut button (85×40, 4/24/24/4 corners, 5402:1080) holding a centered
+  // group of 18px LinkedIn icon + C/V chips (18px, 9px text, 3px radius).
   return (
     <motion.div
       initial={{ opacity: 0, y: -16 }}
       animate={{ opacity: show ? 1 : 0, y: show ? 0 : -16 }}
       transition={{ duration: 1.6, ease: [0.33, 0, 0, 1], delay: show ? 0.1 : 0 }}
-      className="hidden md:flex fixed md:right-[calc(4.5vw+100px)] z-[100] items-center gap-[6px]"
-      style={{ top: "calc(env(safe-area-inset-top) + 16px)" }}
+      className="hidden md:flex fixed right-[32px] z-[100] items-center gap-[4px]"
+      style={{ top: "calc(env(safe-area-inset-top) + 16px)", height: 40 }}
     >
-      {/* Status pill */}
+      {/* Status ticker — 5402:1165 */}
       <div
         className="hidden md:block overflow-hidden select-none"
-        style={{ ...pillStyle, border: "none", height: 32, borderRadius: 4, width: 260 }}
+        style={{ ...pillStyle, width: 181, height: 40, borderRadius: "24px 4px 4px 24px" }}
       >
         <div
           className="flex items-center h-full"
@@ -221,46 +301,57 @@ function LinkedInButton({ show }: { show: boolean }) {
             whiteSpace: "nowrap",
             width: "max-content",
             animation: "statusTicker 16s linear infinite",
-            fontFamily: "'Inter', sans-serif",
-            fontSize: 12,
-            color: hovered ? "var(--color-text-between)" : "var(--color-text-secondary)",
+            fontFamily: "'Inter Tight', sans-serif",
+            fontSize: 14,
+            lineHeight: "20px",
+            color: "#FFFFFF",
           }}
         >
-          <span style={{ padding: "0 6px" }}>Currently seeking fall / winter internships or full time opportunities</span>
-          <span style={{ padding: "0 6px" }}>Currently seeking fall / winter internships or full time opportunities</span>
+          <span style={{ padding: "0 10px" }}>Seeking fall internships or full time opportunities</span>
+          <span style={{ padding: "0 10px" }}>Seeking fall internships or full time opportunities</span>
         </div>
         <style>{`@keyframes statusTicker { from { transform: translateX(0); } to { transform: translateX(-50%); } }`}</style>
       </div>
 
-      {/* LinkedIn button */}
+      {/* Button Shortcut — 5402:1080 */}
       <button
         onClick={() => window.open("https://linkedin.com/in/abbyxhart", "_blank", "noopener,noreferrer")}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
-        className="flex items-center gap-[9px] p-[7px] md:pl-[12px] md:pr-[16px] rounded-[24px] cursor-pointer select-none"
+        className="relative shrink-0 cursor-pointer select-none"
         style={{
           ...pillStyle,
-          height: 32,
-          fontFamily: "'Inter Tight', sans-serif",
+          width: 85,
+          height: 40,
+          borderRadius: "4px 24px 24px 4px",
+          padding: 0,
           outline: "none",
         }}
       >
-        <div className="flex items-center gap-[9px]" style={{ pointerEvents: "none" }}>
-          <div className="relative shrink-0 size-[18px]">
-            <div className="absolute inset-[6.25%]">
-              <svg width="100%" height="100%" viewBox={icons.social.linkedin.viewBox} fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d={icons.social.linkedin.paths[0].d} fill="var(--color-text-primary)" />
-              </svg>
-            </div>
-          </div>
-          <div className="hidden md:flex gap-[2px] items-center">
+        {/* Centered icon + chips group — 5420:3234 */}
+        <span
+          className="absolute flex items-center"
+          style={{ left: "calc(50% - 1.75px)", top: "50%", translate: "-50% -50%", gap: 8 }}
+        >
+          {/* linkedin icon — 5402:1162 */}
+          <span className="block shrink-0" style={{ width: 18, height: 18 }}>
+            <svg width="18" height="18" viewBox={icons.social.linkedin.viewBox} fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d={icons.social.linkedin.paths[0].d} fill="var(--color-text-primary)" />
+            </svg>
+          </span>
+          {/* C / V chips — 5402:1095 */}
+          <span className="flex items-center" style={{ gap: 1.5 }}>
             {["C", "V"].map(key => (
-              <div key={key} className="flex flex-col items-center justify-center rounded-[4px] shrink-0 size-[18px]" style={{ backgroundColor: "var(--color-surface-secondary-active)" }}>
-                <p className="leading-[normal] text-[10px] text-center" style={{ color: hovered ? "var(--color-text-between)" : "var(--color-text-secondary)", margin: 0 }}>{key}</p>
-              </div>
+              <span
+                key={key}
+                className="flex items-center justify-center shrink-0"
+                style={{ width: 18, height: 18, borderRadius: 3, backgroundColor: "var(--color-surface-fill2)" }}
+              >
+                <span className="text-[9px] leading-none" style={{ color: "var(--color-text-secondary)" }}>{key}</span>
+              </span>
             ))}
-          </div>
-        </div>
+          </span>
+        </span>
       </button>
     </motion.div>
   );
@@ -576,7 +667,7 @@ export default function Home() {
         className="absolute top-0 left-0 right-0 z-0 pointer-events-none"
         style={isMobile ? {
           height: "75vh",
-          background: "linear-gradient(to bottom, var(--background) 0%, #afa4d8 25%, transparent 100%)",
+          background: "linear-gradient(to bottom, var(--background) 0%, #afa4d8 18%, transparent 100%)",
         } : {
           height: "50vh",
           background: "linear-gradient(to top, transparent, #afa4d8)",
@@ -585,7 +676,8 @@ export default function Home() {
 
       <LinkedInButton show={firstCardDone} />
 
-      {/* Name plate */}
+      {/* Name plate — desktop only: pinned top-left. On mobile it renders
+          inline further down, scrolling with the rest of the page instead. */}
       <motion.div
         initial={{ opacity: 0, y: -16 }}
         animate={{
@@ -593,27 +685,50 @@ export default function Home() {
           y: firstCardDone ? 0 : -16,
         }}
         transition={{ duration: 1.6, ease: [0.33, 0, 0, 1], delay: firstCardDone ? 0.1 : 0 }}
-        className="fixed left-[16px] md:left-[calc(4.5vw+16px)] z-50 flex flex-row items-center gap-[10px] h-[32px] md:h-auto pointer-events-none"
-        style={{ top: "calc(env(safe-area-inset-top) + 16px)", fontFamily: "var(--text-font/default, 'Inter Tight', sans-serif)", color: "var(--color-text-primary)" }}
+        className="hidden md:flex fixed md:left-[32px] md:top-[calc(env(safe-area-inset-top)+28px)] z-50 flex-row items-center pointer-events-none"
+        style={{ fontFamily: "var(--text-font/default, 'Inter Tight', sans-serif)", color: "var(--color-text-primary)" }}
       >
-        <p className="mb-0 text-[15px] md:text-[17px]" style={{ fontWeight: 400 }}>Abby Hart</p>
-        <p className="mb-0 text-[12px]" style={{ color: "var(--color-text-secondary)" }}>New Media '26 @ RIT</p>
+        <AnimatedNamePlate size={14} />
       </motion.div>
 
-      {/* Casestudy menu */}
+      {/* Casestudy menu — desktop stays scroll-gated (cardShrunk); mobile
+          appears as soon as the page loads (firstCardDone), matching the
+          rest of the fixed mobile chrome (LinkedIn button, name plate)
+          instead of waiting on a scroll gesture. */}
       <HomeCasestudyMenu show={cardShrunk} />
+      <MobileCasestudyNav show={firstCardDone} />
 
       {/* Scrollable content — z-index above gradient */}
       <div style={{ position: "relative", zIndex: 1 }}>
 
-      {/* Hero text — occupies the 50vh above the card */}
+      {/* Hero text — occupies the 50vh above the card on desktop. On mobile,
+          height is auto and the name plate joins this same gap-[24px] flex
+          column as its first child, so the name-plate→title and
+          title→subheader gaps match exactly instead of the name plate being
+          separated by whatever the old vh-centered box happened to leave. */}
       <motion.div
         initial={{ opacity: 0, y: -16 }}
         animate={{ opacity: firstCardDone ? 1 : 0, y: firstCardDone ? 0 : -16 }}
         transition={{ duration: 1.4, ease: [0.33, 0, 0, 1], delay: firstCardDone ? 0.3 : 0 }}
         className="w-full flex flex-col items-center justify-center gap-[24px] px-[4.5vw] md:px-0"
-        style={{ height: "50vh", fontFamily: "'Inter Tight', sans-serif" }}
+        style={
+          isMobile
+            ? { paddingTop: "calc(env(safe-area-inset-top) + 40px)", paddingBottom: 72, fontFamily: "'Inter Tight', sans-serif" }
+            : { height: "50vh", fontFamily: "'Inter Tight', sans-serif" }
+        }
       >
+
+        {/* Name plate — mobile only: scrolls with the page instead of
+            staying fixed (desktop keeps the separate pinned version above). */}
+        <motion.div
+          initial={{ opacity: 0, y: -16 }}
+          animate={{ opacity: firstCardDone ? 1 : 0, y: firstCardDone ? 0 : -16 }}
+          transition={{ duration: 1.6, ease: [0.33, 0, 0, 1], delay: firstCardDone ? 0.1 : 0 }}
+          className="md:hidden flex flex-row items-center justify-center gap-[10px]"
+          style={{ fontFamily: "var(--text-font/default, 'Inter Tight', sans-serif)", color: "var(--color-text-primary)" }}
+        >
+          <AnimatedNamePlate size={13} />
+        </motion.div>
 
         {/* Text block */}
         <div className="flex flex-col items-center gap-[42px]" style={{ color: "var(--color-text-primary)" }}>

@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavEntrance } from "../hooks/useNavEntrance";
-import { motion, AnimatePresence, useScroll, useTransform } from "@/lib/motion";
+import { motion, useScroll, useTransform } from "@/lib/motion";
 import CasestudyNavigation from "../components/casestudy/CasestudyNavigation";
 import UpNext from "../components/casestudy/UpNext";
-import CasestudyMiniMenu from "../components/casestudy/CasestudyMiniMenu";
+import SectionNavigation from "../components/casestudy/SectionNavigation";
 import CasestudySectionHeader from "../components/casestudy/CasestudySectionHeader";
 
 const imgDesignComponents = new URL("../../assets/project/capitol/designcomponents.png", import.meta.url).href;
@@ -48,22 +48,10 @@ const blobBlue = "radial-gradient(ellipse at center, rgba(90,150,220,0.18) 0%, r
 
 export default function CasestudyCapitol() {
   const shouldAnimate = useNavEntrance();
-  const [scrolled, setScrolled] = useState(false);
   const [templateTab, setTemplateTab] = useState<1 | 2>(1);
   const [hoveredTemplateTab, setHoveredTemplateTab] = useState<1 | 2 | null>(null);
 
   useEffect(() => { window.scrollTo(0, 0); }, []);
-
-  useEffect(() => {
-    let lastScrollY = window.scrollY;
-    const handleScroll = () => {
-      const y = window.scrollY;
-      setScrolled(y > 10 && y > lastScrollY);
-      lastScrollY = y;
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   const { scrollY } = useScroll();
   const heroScaleDone = useRef(false);
@@ -77,18 +65,7 @@ export default function CasestudyCapitol() {
   return (
     <div className="relative min-h-screen bg-background overflow-x-clip" style={{ fontFamily: "'Inter Tight', sans-serif", color: "#FAF9FF" }}>
       <CasestudyNavigation title="CAPITOL" />
-      <CasestudyMiniMenu sections={CAPITOL_SECTIONS} />
-
-      <AnimatePresence>
-        {scrolled && (
-          <motion.div
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-            transition={{ duration: 0.4, ease: "easeOut" }}
-            className="fixed inset-x-0 top-0 z-40 h-[10vh] pointer-events-none"
-            style={{ background: "linear-gradient(to bottom, rgba(23,23,23,0.98) 0%, rgba(23,23,23,0.85) 25%, rgba(23,23,23,0.35) 55%, rgba(23,23,23,0.05) 80%, rgba(23,23,23,0) 100%)" }}
-          />
-        )}
-      </AnimatePresence>
+      <SectionNavigation sections={CAPITOL_SECTIONS} title="CAPITOL Casestudy Navigation" />
 
 
       <motion.div
@@ -624,10 +601,10 @@ export default function CasestudyCapitol() {
                 website
               </p>
               <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[48px] text-[#faf9ff] text-[40px] text-center">
-                Simple to replicate
+                Simple to replicate and templatize
               </p>
               <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.65] text-[#908e99] text-[17px] text-center">
-                Designed to be made for future and later development
+                Designed to be super easy to develop and maintain
               </p>
             </div>
 

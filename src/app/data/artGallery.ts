@@ -10,6 +10,7 @@
 
 import calligraphy2 from "../../assets/project/about/calligraphy-2.JPG";
 import art2 from "../../assets/project/about/art_2.png";
+import art3 from "../../assets/project/about/art_3.png";
 import ipad1 from "../../assets/project/about/ipad-1.jpg";
 import ipad2 from "../../assets/project/about/ipad-2.jpg";
 import ipad4 from "../../assets/project/about/ipad-4.jpg";
@@ -18,7 +19,6 @@ import shoe2 from "../../assets/project/about/shoe-2.jpg";
 import shoe3 from "../../assets/project/about/shoe-3.jpg";
 import shoe4 from "../../assets/project/about/shoe-4.jpg";
 import traditional1 from "../../assets/project/about/traditional-1.jpg";
-import traditional2 from "../../assets/project/about/traditional-2.jpg";
 import traditional3 from "../../assets/project/about/traditional-3.jpg";
 import traditional4 from "../../assets/project/about/traditional-4.jpg";
 
@@ -71,7 +71,7 @@ export const ART_CATEGORIES: ArtCategory[] = [
     year: "c. 2022",
     photos: [
       { tag: "2021", title: "Blob",              subtitle: "Colored Pencil",      image: traditional1 },
-      { tag: "2022", title: "Girl",              subtitle: "Charcoal",             image: traditional2 },
+      { tag: "2022", title: "Girl",              subtitle: "Ink",                  image: art3 },
       { tag: "2021", title: "Decorative Plate",  subtitle: "Clay",                 image: traditional3 },
       { tag: "2022", title: "Dress",             subtitle: "Crochet Trashbags",    image: traditional4 },
     ],

@@ -2,6 +2,8 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Link } from "react-router";
 import icons from "../../../assets/icons/icons.json";
 import LSystemGarden, { LSystemGardenHandle } from "../LSystemGarden";
+import { useIsMobile } from "../ui/use-mobile";
+import ThemeToggle from "./ThemeToggle";
 
 const FOOTER_PHRASES = [
   "Got a cool project?",
@@ -38,6 +40,7 @@ function SocialPill({ href, label, icon, stroke, iconViewBox }: { href: string; 
       onMouseLeave={() => setHovered(false)}
       style={{
         background: hovered ? "rgba(88,85,100,0.4)" : "rgba(88,85,100,0.2)",
+        border: "1px solid var(--color-border-default)",
         borderRadius: 24,
         padding: 10,
         display: "flex",
@@ -93,7 +96,7 @@ function ClearGardenButton({ onClick }: { onClick: () => void }) {
         backgroundColor: hovered ? "var(--color-surface-secondary-hover)" : "var(--color-surface-fill3)",
         borderRadius: 24,
         padding: "6px 12px 6px 10px",
-        border: "none",
+        border: "1px solid var(--color-border-default)",
         flexShrink: 0,
         transition: "background-color 0.15s ease",
       }}
@@ -119,6 +122,7 @@ function ClearGardenButton({ onClick }: { onClick: () => void }) {
 }
 
 export default function Footer() {
+  const isMobile = useIsMobile();
   const [hasFlowers, setHasFlowers] = useState(false);
   const gardenRef = useRef<LSystemGardenHandle>(null);
   const footerRef = useRef<HTMLElement>(null);
@@ -219,18 +223,26 @@ export default function Footer() {
   };
 
   return (
-    <footer ref={footerRef} className="bg-[var(--color-surface-primary-default)] border-t border-[var(--color-border-default)] flex flex-col items-start overflow-clip px-[16px] md:px-[50px] pb-[16px] pt-[50px] relative w-full gap-[32px] md:gap-[80px]">
+    <footer ref={footerRef} className="bg-[var(--color-surface-primary-default)] border-t border-[var(--color-border-default)] flex flex-col items-start overflow-clip px-[16px] md:px-[50px] pb-[calc(110px+env(safe-area-inset-bottom)+16px)] md:pb-[16px] pt-[48px] md:pt-[50px] relative w-full gap-[20px] md:gap-[80px]">
 
       {/* Garden background — desktop only */}
       <div className="hidden md:block absolute inset-0">
         <LSystemGarden ref={gardenRef} onHasFlowers={setHasFlowers} />
       </div>
 
-      {/* Purple Gradient */}
+      {/* Purple Gradient — mobile: recentered further below the box's own
+          bottom edge (rather than exactly on it) so the visible slice at the
+          footer's true bottom sits well inside the gradient's full-intensity
+          belly instead of right at its tapering edge. Radius widened (420px
+          -> 600px) so the belly stays visible far enough up to still glow
+          behind the fixed Casestudies Nav pill, instead of tapering to
+          nothing above it. */}
       <div
         className="absolute inset-x-0 bottom-0 h-[600px] pointer-events-none"
         style={{
-          background: "radial-gradient(ellipse 70% 420px at 50% 100%, rgba(243, 155, 139, 0.18) 0%, rgba(220, 110, 190, 0.12) 28%, rgba(154, 71, 255, 0.06) 55%, transparent 100%)",
+          background: isMobile
+            ? "radial-gradient(ellipse 70% 600px at 50% 130%, rgba(243, 155, 139, 0.18) 0%, rgba(220, 110, 190, 0.12) 28%, rgba(154, 71, 255, 0.06) 55%, transparent 100%)"
+            : "radial-gradient(ellipse 70% 420px at 50% 100%, rgba(243, 155, 139, 0.18) 0%, rgba(220, 110, 190, 0.12) 28%, rgba(154, 71, 255, 0.06) 55%, transparent 100%)",
         }}
       />
 
@@ -287,6 +299,10 @@ export default function Footer() {
               <AnimatedNavLink key={label} label={label} to={to} />
             ))}
           </div>
+          {/* Theme toggle — desktop only, under the right nav column */}
+          <div className="hidden md:flex relative z-[1]">
+            <ThemeToggle />
+          </div>
         </div>
       </div>
 
@@ -297,7 +313,7 @@ export default function Footer() {
       </div>
 
       {/* Made with */}
-      <div className="md:absolute md:bottom-[15px] md:left-[50px] flex flex-col gap-[8px] items-start font-['Inter_Tight',sans-serif] font-[300] leading-none text-[14px]">
+      <div className="mt-[12px] md:mt-0 md:absolute md:bottom-[15px] md:left-[50px] flex flex-col gap-[8px] items-start font-['Inter_Tight',sans-serif] font-[300] leading-none text-[14px]">
         <p style={{ color: "var(--color-text-primary)" }}>Made with</p>
         <p style={{ color: "var(--color-text-secondary)" }}>
           {'Figma {Design, Motion, MCP} → Claude → Git → Vercel'}

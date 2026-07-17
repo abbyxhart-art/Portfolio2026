@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router";
 import { AnimatePresence, motion } from "@/lib/motion";
-import chevronIcon from "../../../assets/icons/chevron-selector-vertical.svg";
+import icons from "../../../assets/icons/icons.json";
 
 const VISITED_KEY = "visited_casestudies";
 
@@ -130,18 +130,27 @@ export default function CasestudyNavigation({ title }: CasestudyNavigationProps)
         }}
       >
         <span>Casestudies</span>
-        <img
-          alt=""
-          src={chevronIcon}
+        <svg
+          width="16"
+          height="16"
+          viewBox={icons.navigation["vertical-chevron"].viewBox}
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
           style={{
-            width: 16,
-            height: 16,
             flexShrink: 0,
             transform: isOpen ? "rotate(180deg)" : "rotate(0deg)",
-            filter: hovered ? "brightness(0) invert(1)" : "none",
-            transition: "transform 0.2s ease, filter 0.15s ease",
+            transition: "transform 0.2s ease",
           }}
-        />
+        >
+          <path
+            d={icons.navigation["vertical-chevron"].paths[0].d}
+            stroke={hovered ? "#FAF9FF" : "#908E99"}
+            strokeWidth={1.5}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            style={{ transition: "stroke 0.15s ease" }}
+          />
+        </svg>
       </button>
 
       {/* Dropdown */}
