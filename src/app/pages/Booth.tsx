@@ -8,7 +8,7 @@ import munsonVideo from "../../assets/project/booth/munson.mp4";
 import munsonDefault from "../../assets/project/booth/munson_default.png";
 import munsonInstallation from "../../assets/project/booth/munson-installation.png";
 import munsonMe from "../../assets/project/booth/munson-me.JPG";
-import beyondDefault from "../../assets/project/booth/beyondfashion_default.png";
+import beyondCover from "../../assets/project/booth/beyondfashion-cover.mp4";
 import beyondVolunteerTeam from "../../assets/project/booth/beyondfashion_hover.JPG";
 import beyondRehearsal from "../../assets/project/booth/beyondfashion-rehearsal.jpeg";
 import beyondTest from "../../assets/project/booth/beyondfashion-test.jpeg";
@@ -65,9 +65,9 @@ const LAB_CARDS = [
   { id: "tian-airlines", category: "Advanced Figma Logic", title: "Tian Air", year: "2025", video: tianCover },
   { id: "figma-rit", category: "Workshop", title: "Figma at RIT", year: "2025", video: kpopCover },
   { id: "iris", category: "Experience", title: "IRIS AI", year: "2024", video: irisCover, hasAudio: true },
-  { id: "dj-munson", category: "Installation", title: "DJ Munson's Last Spin", year: "2025", video: munsonVideo },
+  { id: "beyond-fashion", category: "Motion", title: "Beyond Fashion", year: "2024", video: beyondCover },
   { id: "marc-jacobs", category: "Illustration", title: "Marc Jacobs Daisy Haze", year: "2023", image: marcCover },
-  { id: "beyond-fashion", category: "Motion", title: "Beyond Fashion", year: "2024", image: beyondDefault },
+  { id: "dj-munson", category: "Installation", title: "DJ Munson's Last Spin", year: "2025", video: munsonVideo },
   { id: "sg-stickers", category: "Illustration", title: "Popcorn Stickers", year: "2023", image: sgCover },
   { id: "college-of-science", category: "Graphic", title: "College of Science", year: "2023", image: cosCover },
 ];
@@ -189,6 +189,7 @@ function LabCard({
   video,
   showVolumeToggle,
   onClick,
+  background,
 }: {
   category: string;
   title: string;
@@ -197,6 +198,7 @@ function LabCard({
   video?: string;
   showVolumeToggle?: boolean;
   onClick?: () => void;
+  background?: string;
 }) {
   return (
     <button
@@ -204,7 +206,7 @@ function LabCard({
       onMouseEnter={() => document.dispatchEvent(new CustomEvent("cursor:scale", { detail: 2.5 }))}
       onMouseLeave={() => document.dispatchEvent(new CustomEvent("cursor:scale", { detail: 1 }))}
       className="relative aspect-square rounded-[16px] overflow-hidden shrink-0 text-left border border-solid"
-      style={{ background: "var(--color-surface-fill4)", borderColor: "var(--color-border-default)" }}
+      style={{ background: background ?? "var(--color-surface-fill4)", borderColor: "var(--color-border-default)" }}
     >
       {video ? (
         <LazyVideo src={video} className="absolute inset-0 w-full h-full object-cover" showVolumeToggle={showVolumeToggle} />
@@ -857,7 +859,7 @@ function BeyondFashionModal({ onClose }: { onClose: () => void }) {
     <div className="flex flex-col gap-[8px] w-full">
       <div className="flex flex-col lg:flex-row gap-[64px] items-center w-full pr-[32px]">
         <div className="relative w-full aspect-[1200/800] flex-1 rounded-[12px] overflow-hidden bg-white shrink-0">
-          <img src={beyondDefault} alt="Beyond Fashion" loading="lazy" decoding="async" className="absolute inset-0 w-full h-full object-cover" />
+          <LazyVideo src={beyondCover} className="absolute inset-0 w-full h-full object-cover" />
         </div>
         <div className="flex flex-col gap-[50px] justify-center w-full lg:w-[435px] shrink-0">
           <div className="flex flex-col gap-[16px] w-full">
@@ -1034,7 +1036,7 @@ function IrisModal({ onClose }: { onClose: () => void }) {
     <ModalFrame onClose={onClose} overview={overview}>
       <div className="flex flex-col gap-[100px] items-start w-full px-[36px]">
         <ModalSection
-          eyebrow="Prompt from 2024 Alumni: Phil Sierzoga @ BUCK"
+          eyebrow="Prompt from Alumni: Phil Sierzoga @ BUCK"
           title="“Opposing Forces, the intersection of conflict, synthesis of design, humanity, and AI”"
           body="Our installation examined trust in machines, and what can happen when we rely on models that don't always have our best interests in mind, further exploring machines that have bias embedded in a funny way: the AI assistant thinks the user is lazy and useless the more the game continues!"
         >
@@ -1044,8 +1046,8 @@ function IrisModal({ onClose }: { onClose: () => void }) {
               { src: irisHover, alt: "Resolume testing", video: true },
               { src: irisFeedback2, alt: "IRIS Feedback", video: true, hasAudio: true },
               { src: irisNotes, alt: "Narrowing the scope down" },
-              { src: irisFlow1, alt: "Full flow" },
-              { src: irisFlow2, alt: "Full flow" },
+              { src: irisFlow1, alt: "Phase 1: Passive Aggressive" },
+              { src: irisFlow2, alt: "Phase 3: Cruel" },
               { src: irisPrototype1, alt: "Prototype 1" },
             ]}
           />
@@ -1297,6 +1299,7 @@ export default function Booth() {
                   image={image}
                   video={video}
                   showVolumeToggle={hasAudio}
+                  background={id === "sg-stickers" ? "var(--color-surface-primary)" : undefined}
                   onClick={() => setOpenLab(id)}
                 />
               ))}
