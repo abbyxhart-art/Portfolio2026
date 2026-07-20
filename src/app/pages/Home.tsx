@@ -579,6 +579,43 @@ function FirstCardAnimation({ shouldStart, onDone, onFullyDone, contained = fals
       <AnimatePresence>
         {phase === "bar" && shouldStart && (
           <>
+            {/* Favicon + attribution — above the loading text/bar */}
+            <motion.div
+              key="brand"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0, transition: { duration: 0.2 } }}
+              transition={{ duration: 0.4, ease: [0.33, 0, 0, 1] }}
+              style={{
+                position: "absolute",
+                top: -93,
+                left: "50%",
+                transform: "translateX(-50%)",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                gap: 16,
+              }}
+            >
+              <img src="/favicon.png" alt="" style={{ width: 24, height: 24 }} />
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  gap: 4,
+                  fontFamily: "'Inter Tight', sans-serif",
+                  fontWeight: 300,
+                  fontSize: 12,
+                  color: "#fff",
+                  textAlign: "center",
+                }}
+              >
+                <p style={{ margin: 0 }}>Abby Hart © 2026</p>
+                <p style={{ margin: 0, whiteSpace: "nowrap" }}>interdisciplinary design + craft</p>
+              </div>
+            </motion.div>
+
             {/* Loading text below the bar */}
             <motion.p
               key="text"

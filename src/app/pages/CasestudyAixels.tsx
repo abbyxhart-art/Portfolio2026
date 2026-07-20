@@ -166,6 +166,29 @@ export default function CasestudyAixels() {
               </div>
             </motion.div>
 
+            {/* 5 hours of nonstop fun — separate, static container (no card wiggle) */}
+            <div
+              className="flex gap-[24px] items-start p-[32px] rounded-[4px] w-full"
+              style={{ backgroundColor: "#161617" }}
+            >
+              <div className="flex-1 min-w-0">
+                <div className="aspect-square w-full overflow-hidden rounded-[4px] bg-[#1c1b1f] border border-[#302f34]">
+                  <img src={imgFeedback} className="w-full h-full object-cover" alt="5 hours of nonstop fun at the booth" />
+                </div>
+              </div>
+              <div className="flex flex-1 flex-col gap-[16px] items-start min-w-0">
+                <p className="font-['Inter_Tight',sans-serif] font-[300] leading-none text-[color:var(--text\/secondary,#908e99)] text-[15px]">
+                  The results
+                </p>
+                <p className="font-['Inter_Tight',sans-serif] font-[350] leading-[1.3] text-[color:var(--text\/primary,#faf9ff)] text-[18px] md:text-[24px]">
+                  5 hours of nonstop fun
+                </p>
+                <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.65] text-[color:var(--text\/secondary,#908e99)] text-[15px] md:text-[17px] w-full">
+                  Our booth was never without a crowd of people. Everyone had something fun and nice to say about our project, even a potential promise to come back to the project later.
+                </p>
+              </div>
+            </div>
+
             {/* Section Overview card — pushback + response combined */}
             <motion.div
               ref={cardRef}
@@ -222,9 +245,6 @@ export default function CasestudyAixels() {
             >
               {/* Card header text */}
               <div className="flex flex-col gap-[16px] items-start pb-[42px] w-full">
-                <p className="font-['Inter_Tight',sans-serif] font-[350] leading-[1.3] text-[color:var(--text\/primary,#faf9ff)] text-[18px] md:text-[24px] w-full">
-                  Four layers of "pixels" that shift based on sound
-                </p>
                 <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.65] text-[color:var(--text\/secondary,#908e99)] text-[15px] md:text-[17px] w-full">
                   We wanted noise for users to shout at AI, to scream, to laugh, to feel large emotions, which affected the pixels.
                 </p>
@@ -364,26 +384,6 @@ export default function CasestudyAixels() {
               headline="5 hours of nonstop fun"
               subtitle="Building something people wanted to stay at"
             />
-
-            {/* 5 hours of nonstop fun */}
-            <div className="flex gap-[24px] items-start w-full">
-              <div className="flex-1 min-w-0">
-                <div className="aspect-square w-full overflow-hidden rounded-[4px] bg-[#1c1b1f] border border-[#302f34]">
-                  <img src={imgFeedback} className="w-full h-full object-cover" alt="5 hours of nonstop fun at the booth" />
-                </div>
-              </div>
-              <div className="flex flex-1 flex-col gap-[16px] items-start min-w-0">
-                <p className="font-['Inter_Tight',sans-serif] font-[300] leading-none text-[color:var(--text\/secondary,#908e99)] text-[15px]">
-                  The results
-                </p>
-                <p className="font-['Inter_Tight',sans-serif] font-[350] leading-[1.3] text-[color:var(--text\/primary,#faf9ff)] text-[18px] md:text-[24px]">
-                  5 hours of nonstop fun
-                </p>
-                <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.65] text-[color:var(--text\/secondary,#908e99)] text-[15px] md:text-[17px] w-full">
-                  Our booth was never without a crowd of people. Everyone had something fun and nice to say about our project, even a potential promise to come back to the project later.
-                </p>
-              </div>
-            </div>
 
             {/* Replay */}
             <div className="flex flex-col gap-[16px] items-start w-full">
