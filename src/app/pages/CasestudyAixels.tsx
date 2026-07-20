@@ -1,7 +1,6 @@
 import { useEffect, useRef } from "react";
 import { useNavEntrance } from "../hooks/useNavEntrance";
 import { motion, useScroll, useTransform, useMotionValue, useInView, useAnimationControls } from "@/lib/motion";
-import CasestudyNavigation from "../components/casestudy/CasestudyNavigation";
 import UpNext from "../components/casestudy/UpNext";
 import SectionNavigation from "../components/casestudy/SectionNavigation";
 import CasestudySectionHeader from "../components/casestudy/CasestudySectionHeader";
@@ -90,7 +89,6 @@ export default function CasestudyAixels() {
 
   return (
     <div className="relative min-h-screen overflow-x-clip" style={{ backgroundColor: "#161617" }}>
-      <CasestudyNavigation title="AIXELS" />
       <SectionNavigation sections={AIXELS_SECTIONS} title="AIXELS Casestudy Navigation" />
 
 

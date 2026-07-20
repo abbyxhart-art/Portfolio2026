@@ -103,7 +103,7 @@ export default function EthosMiniCard() {
       {/* Fixed header */}
       <div style={{ position: "absolute", top: 0, left: 0, right: 0, zIndex: 3, padding: "10px 12px 0" }}>
         <div className="flex items-center justify-between">
-          <p className="font-['Inter_Tight',sans-serif] leading-none text-foreground" style={{ fontSize: 12 }}>
+          <p className="font-['Inter_Tight',sans-serif] leading-none text-foreground" style={{ fontSize: 14 }}>
             Ethos
           </p>
           <p className="font-['Inter_Tight',sans-serif] leading-none text-muted-foreground" style={{ fontSize: 10 }}>

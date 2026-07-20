@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "@/lib/motion";
 import { ART_CATEGORIES, GALLERY_SECTION_LABEL, GALLERY_SECTION_SUBTITLE } from "../../data/artGallery";
-import { useTheme } from "../../context/ThemeContext";
 import EarlyDaysCard from "./EarlyDaysCard";
 
 function ChevronLeft() {
@@ -21,9 +20,6 @@ function ChevronRight() {
 }
 
 export default function ArtGallery() {
-  const { theme } = useTheme();
-  const isDark = theme === "dark";
-
   const [activeIdx, setActiveIdx] = useState(2);
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
 
@@ -39,10 +35,6 @@ export default function ArtGallery() {
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, []);
-
-  // Dot fill switches with theme since CSS vars can't be used inside SVG data URIs
-  const dotFill = isDark ? "%23faf9ff" : "%2324232a";
-  const dotPattern = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30'%3E%3Ccircle cx='15' cy='15' r='1' fill='${dotFill}' fill-opacity='0.12'/%3E%3C/svg%3E")`;
 
   const NavButtons = () => (
     <div className="flex gap-[8px] items-center">
@@ -107,9 +99,9 @@ export default function ArtGallery() {
     border: "1px solid var(--color-border-dark)",
     borderRadius: 24,
     overflow: "hidden",
-    backgroundImage: dotPattern,
-    backgroundRepeat: "repeat",
-    backgroundSize: "30px 30px",
+    background: "var(--color-surface-primary)",
+    width: "fit-content",
+    margin: "0 auto",
   };
 
   const PhotoCaption = ({ tag, title, subtitle }: { tag: string; title?: string; subtitle: string }) => (
@@ -138,7 +130,10 @@ export default function ArtGallery() {
             <NavButtons />
           </div>
 
-          <div className="flex-1">
+          {/* Fixed width (not flex-1/fit-content) so this column can't
+              collapse during AnimatePresence's exit→enter gap, when neither
+              category's grid is mounted for an instant. */}
+          <div style={{ width: 4 * 260 + 3 * 22 }}>
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeIdx}
@@ -146,19 +141,29 @@ export default function ArtGallery() {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.25, ease: "easeOut" }}
-                className="flex gap-[22px] w-full"
+                className="grid gap-[22px]"
+                style={{ gridTemplateColumns: "repeat(4, 260px)" }}
               >
-                {ART_CATEGORIES[activeIdx].photos.slice(0, 4).map((photo, i) => (
-                  <div key={i} className="flex flex-col gap-[11px] items-center shrink-0" style={{ width: "calc(25% - 16.5px)" }}>
+                {/* Always render 4 slots, even for categories with fewer
+                    photos, and lay them out on fixed-width grid tracks —
+                    both so the frame never "snaps" narrower for shorter
+                    categories, and so it doesn't momentarily collapse
+                    during the exit/enter gap between category fades. */}
+                {Array.from({ length: 4 }, (_, i) => ART_CATEGORIES[activeIdx].photos[i] ?? null).map((photo, i) => (
+                  <div
+                    key={i}
+                    className="flex flex-col gap-[11px] items-center"
+                    style={{ visibility: photo ? "visible" : "hidden" }}
+                  >
                     <div
                       className="rounded-[7px] overflow-hidden w-full"
                       style={{ aspectRatio: "1/1", background: "var(--color-background-page)" }}
                     >
-                      {photo.image && (
+                      {photo?.image && (
                         <img src={photo.image} alt={photo.title} loading="lazy" className="w-full h-full object-cover" />
                       )}
                     </div>
-                    <PhotoCaption tag={photo.tag} title={photo.title} subtitle={photo.subtitle} />
+                    <PhotoCaption tag={photo?.tag ?? ""} title={photo?.title} subtitle={photo?.subtitle ?? ""} />
                   </div>
                 ))}
               </motion.div>
@@ -181,31 +186,45 @@ export default function ArtGallery() {
           <NavButtons />
         </div>
 
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={activeIdx}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.25, ease: "easeOut" }}
-            className="flex flex-wrap gap-[12px]"
-            style={{ marginTop: 24 }}
-          >
-            {ART_CATEGORIES[activeIdx].photos.slice(0, 4).map((photo, i) => (
-              <div key={i} className="flex flex-col gap-[11px] items-center" style={{ width: "calc(50% - 6px)" }}>
+        {/* Fixed width (not fit-content) so this can't collapse during
+            AnimatePresence's exit→enter gap, when neither category's grid
+            is mounted for an instant. */}
+        <div style={{ width: 2 * 190 + 12 }}>
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeIdx}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.25, ease: "easeOut" }}
+              className="grid gap-[12px]"
+              style={{ gridTemplateColumns: "repeat(2, 190px)", marginTop: 24 }}
+            >
+              {/* Always render 4 slots (2×2), even for categories with fewer
+                  photos, on fixed-width grid tracks — both so the frame's size
+                  stays constant when switching categories instead of
+                  collapsing to fewer rows, and so it doesn't momentarily
+                  shrink during the exit/enter gap between category fades. */}
+              {Array.from({ length: 4 }, (_, i) => ART_CATEGORIES[activeIdx].photos[i] ?? null).map((photo, i) => (
                 <div
-                  className="rounded-[7px] overflow-hidden w-full"
-                  style={{ aspectRatio: "1/1", background: "var(--color-background-page)" }}
+                  key={i}
+                  className="flex flex-col gap-[11px] items-center"
+                  style={{ visibility: photo ? "visible" : "hidden" }}
                 >
-                  {photo.image && (
-                    <img src={photo.image} alt={photo.title} loading="lazy" className="w-full h-full object-cover" />
-                  )}
+                  <div
+                    className="rounded-[7px] overflow-hidden w-full"
+                    style={{ aspectRatio: "1/1", background: "var(--color-background-page)" }}
+                  >
+                    {photo?.image && (
+                      <img src={photo.image} alt={photo.title} loading="lazy" className="w-full h-full object-cover" />
+                    )}
+                  </div>
+                  <PhotoCaption tag={photo?.tag ?? ""} title={photo?.title} subtitle={photo?.subtitle ?? ""} />
                 </div>
-                <PhotoCaption tag={photo.tag} title={photo.title} subtitle={photo.subtitle} />
-              </div>
-            ))}
-          </motion.div>
-        </AnimatePresence>
+              ))}
+            </motion.div>
+          </AnimatePresence>
+        </div>
       </div>
     </>
   );

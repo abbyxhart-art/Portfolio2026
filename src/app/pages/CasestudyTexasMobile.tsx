@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavEntrance } from "../hooks/useNavEntrance";
 import { motion, useScroll, useTransform, useMotionValue } from "@/lib/motion";
-import CasestudyNavigation from "../components/casestudy/CasestudyNavigation";
 import UpNext from "../components/casestudy/UpNext";
 import SectionNavigation from "../components/casestudy/SectionNavigation";
 import CasestudySectionHeader from "../components/casestudy/CasestudySectionHeader";
@@ -106,7 +105,6 @@ export default function CasestudyTexasMobile() {
 
   return (
     <div className="relative min-h-screen bg-background overflow-x-clip">
-      <CasestudyNavigation title="Texas Mobile" />
       <SectionNavigation sections={TEXAS_SECTIONS} title="Texas Mobile Casestudy Navigation" />
 
       <motion.div

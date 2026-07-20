@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "@/lib/motion";
 import OfflineCard, { OfflineMiniCard } from "../components/about/OfflineCard";
-import FavoriteToolsCard from "../components/about/FavoriteToolsCard";
 import EthosMiniCard from "../components/about/EthosMiniCard";
 import DrinkCard from "../components/drinks/DrinkCard";
 import SpotifyPlayer from "../components/about/SpotifyPlayer";
@@ -10,30 +9,11 @@ import about3 from "../../assets/project/about/about_3.png";
 import about4 from "../../assets/project/about/about_4.png";
 import about5 from "../../assets/project/about/about_5.JPG";
 import PhotoStack from "../components/about/PhotoStack";
-import sfVideo from "../../assets/project/about/sanfrancisco.mov";
 import { useTheme } from "../context/ThemeContext";
 import ArtGallery from "../components/about/ArtGallery";
 import ResumeCard from "../components/layout/ResumeCard";
 import { STICKY_WIDGET_BOTTOM } from "../components/layout/mobileNavLayout";
-
-// Mobile-only: fills its flex parent (relies on the sibling square cell in
-// MobileVideoPhotoRow to establish the row's height via flexbox stretch).
-function MobileSfVideo() {
-  const [visible, setVisible] = useState(false);
-  return (
-    <video
-      src={sfVideo}
-      autoPlay
-      muted
-      loop
-      playsInline
-      preload="auto"
-      onCanPlay={() => setVisible(true)}
-      className="absolute inset-0 w-full h-full object-cover"
-      style={{ opacity: visible ? 1 : 0, transition: "opacity 0.5s ease" }}
-    />
-  );
-}
+import { getDotBackground } from "../utils/dotBackground";
 
 // Mobile-only: measures its own cell width so DrinkCard's pixel-based
 // illustration scales to fill it (DrinkCard takes an explicit `size`, not a
@@ -69,16 +49,6 @@ export default function About() {
   const [resumeCollapsed, setResumeCollapsed] = useState(true);
   const [stackPeek, setStackPeek] = useState(false);
   const [footerVisible, setFooterVisible] = useState(false);
-  const [videoVisible, setVideoVisible] = useState(false);
-  const videoRef = useRef<HTMLVideoElement>(null);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      videoRef.current?.play().catch(() => {});
-    }, 700);
-    return () => clearTimeout(timer);
-  }, []);
-
 
   useEffect(() => {
     const checkFooter = () => {
@@ -112,7 +82,7 @@ export default function About() {
   }, []);
 
   return (
-    <div className="relative min-h-screen bg-background overflow-x-clip">
+    <div className="relative min-h-screen bg-background overflow-x-clip" style={getDotBackground(isDark)}>
 
       <AnimatePresence>
         {scrolled && (
@@ -140,11 +110,11 @@ export default function About() {
 
         {/* Resume card — desktop: page-centered, bottom of section */}
         <motion.div
-          className="hidden xl:block fixed z-10 overflow-hidden rounded-[8px]"
-          style={{ bottom: 0, left: 0, right: 0, marginLeft: "auto", marginRight: "auto", width: 520, backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)" }}
+          className="hidden xl:block fixed z-10 overflow-hidden"
+          style={{ bottom: 16, left: 0, right: 0, marginLeft: "auto", marginRight: "auto", width: 520, backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)" }}
           initial={{ opacity: 0 }}
-          animate={{ opacity: footerVisible ? 0 : 1, pointerEvents: footerVisible ? "none" : "auto" }}
-          transition={{ opacity: footerVisible ? { duration: 0 } : { duration: 0.3, ease: "easeOut" } }}
+          animate={{ opacity: footerVisible ? 0 : 1, pointerEvents: footerVisible ? "none" : "auto", borderRadius: resumeCollapsed ? 999 : 8 }}
+          transition={{ opacity: footerVisible ? { duration: 0 } : { duration: 0.3, ease: "easeOut" }, borderRadius: { duration: 0.35, ease: [0.33, 0, 0, 1] } }}
         >
           <ResumeCard collapsed={resumeCollapsed} onToggle={() => setResumeCollapsed(v => !v)} isDark={isDark} />
         </motion.div>
@@ -157,10 +127,10 @@ export default function About() {
             otherwise that blur (which extends 80px above the nav bar) reads
             through and blurs the card itself. */}
         <motion.div
-          className="md:hidden fixed z-[70] overflow-hidden rounded-[8px]"
+          className="md:hidden fixed z-[70] overflow-hidden"
           style={{ left: 16, right: 16, bottom: STICKY_WIDGET_BOTTOM, backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)" }}
           initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: footerVisible ? 0 : 1, y: 0, pointerEvents: footerVisible ? "none" : "auto" }}
+          animate={{ opacity: footerVisible ? 0 : 1, y: 0, pointerEvents: footerVisible ? "none" : "auto", borderRadius: resumeCollapsed ? 999 : 8 }}
           transition={{ duration: 0.5, ease: [0.33, 0, 0, 1] }}
         >
           <ResumeCard collapsed={resumeCollapsed} onToggle={() => setResumeCollapsed(v => !v)} isDark={isDark} />
@@ -170,94 +140,54 @@ export default function About() {
         <div className="hidden xl:block">
           <div className="relative" style={{ minHeight: "calc(100vh - 140px)" }}>
 
-            {/* Left: SF video */}
-            <div
-              className="absolute"
-              style={{ left: 0, top: 30, width: 130 }}
-            >
-              <div className="relative w-full rounded-[8px] overflow-hidden" style={{ aspectRatio: "1/1", background: "#201f23" }}>
-                <video ref={videoRef} src={sfVideo} muted loop playsInline preload="auto" onCanPlay={() => setVideoVisible(true)} className="absolute inset-0 w-full h-full object-cover" style={{ opacity: videoVisible ? 1 : 0, transition: "opacity 0.5s ease" }} />
-                <div
-                  className="absolute inset-x-0 top-0 h-[72px] pointer-events-none"
-                  style={{ background: "linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0) 100%)" }}
-                />
-                <div className="absolute top-[14px] left-[14px] flex flex-col gap-[5px]">
-                  <p className="font-[‘Inter_Tight’,sans-serif] text-[13px] leading-none" style={{ color: "#fff" }}>Hello from SF!</p>
-                  <p className="font-[‘Inter_Tight’,sans-serif] text-[13px] leading-none" style={{ color: "rgba(255,255,255,0.65)" }}>
-                   Config 2026
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Left: SpotifyPlayer */}
-            <div
-              className="absolute"
-              style={{ left: 130, bottom: 50, width: 260 }}
-            >
+            {/* Left: SpotifyPlayer — top aligned with the bio text */}
+            <div className="absolute" style={{ left: 0, top: 30, width: 260 }}>
               <div className="w-full relative overflow-hidden" style={{ borderRadius: 8, aspectRatio: "1/1" }}>
                 <SpotifyPlayer />
               </div>
             </div>
 
-            {/* Left: FavoriteToolsCard — right edge aligns with SpotifyPlayer's right edge (130 + 260),
-                vertically centered between the SF photo's bottom edge and the playlist's top edge */}
-            <div
-              className="absolute"
-              style={{ left: 260, top: "calc(50% - 140px)", width: 130, aspectRatio: "1/1" }}
-            >
-              <FavoriteToolsCard />
-            </div>
-
-            {/* Right: EthosMiniCard — sits where OfflineCard used to be, left edge aligned with DrinkCard's left edge */}
-            <div
-              className="absolute"
-              style={{ right: 260, top: 30, width: 130, aspectRatio: "1/1" }}
-            >
+            {/* Left: EthosMiniCard — left edge at the playlist's right edge, bottom aligned */}
+            <div className="absolute" style={{ left: 260, bottom: 50, width: 130, aspectRatio: "1/1" }}>
               <EthosMiniCard />
             </div>
 
-            {/* Right: OfflineCard — vertically centered level with FavoriteToolsCard */}
-            <div
-              className="absolute"
-              style={{ right: 0, top: "calc(50% - 205px)", width: 260 }}
-            >
+            {/* Right: OfflineCard — top aligned with the bio text */}
+            <div className="absolute" style={{ right: 0, top: 30, width: 260 }}>
               <OfflineCard />
             </div>
 
-            {/* Right: DrinkCard */}
-            <div
-              className="absolute"
-              style={{ right: 260, bottom: 50 }}
-            >
+            {/* Right: DrinkCard — right edge at the offline card's left edge, bottom aligned */}
+            <div className="absolute" style={{ right: 260, bottom: 50 }}>
               <DrinkCard size={130} />
             </div>
-
 
             {/* Centered primary content */}
             <div className="relative mx-auto" style={{ maxWidth: 520, paddingBottom: 48 }}>
               <div className="flex flex-col gap-[40px]">
-                  <div className="flex flex-col gap-[24px]">
-                    <p className="font-['Inter_Tight',sans-serif] text-muted-foreground text-[16px] leading-[1.5]">
-                      I'm a product designer and creative technologist!
-                    </p>
-                    <p className="font-['Inter_Tight',sans-serif] font-regular text-foreground text-[16px] leading-[1.65]">
-                      The work I'm most proud of is at the intersection of design, technology, and human connection.
-                      I love creating things to help people navigate and explore tools, products, and worlds.
-                    </p>
-                  </div>
-                  <div className="flex flex-col gap-[24px]">
-                    <p className="font-['Inter_Tight',sans-serif] text-muted-foreground text-[16px] leading-[1.5]">
-                      How I fell into it
-                    </p>
-                    <p className="font-['Inter_Tight',sans-serif] font-regular text-foreground text-[16px] leading-[1.65]">
-                      My friend Lana and I found our thing in AP CompSci: me with mini GUI applets, her with robotics.
-                      I opened Figma to pitch our local hackathon for kids, which eventually led me to RIT and
-                      some inspiring friends.
-                    </p>
+                  <div className="flex flex-col gap-[24px] items-start">
+                    <div className="flex flex-col gap-[4px] items-start w-full">
+                      <p className="font-['Inter_Tight',sans-serif] text-foreground text-[20px] leading-[1.45]">
+                        Hey, I'm Abby!
+                      </p>
+                      <p className="font-['Inter_Tight',sans-serif] text-muted-foreground text-[16px] leading-[1.65]">
+                        product designer / creative technologist
+                      </p>
+                    </div>
+                    <div className="font-['Inter_Tight',sans-serif] font-regular text-foreground text-[16px]">
+                      <p className="leading-[1.65] mb-[16px]">
+                        The work I'm most proud of is at the intersection of design, technology, and human connection.
+                        I love creating things to help people navigate and explore tools, products, and worlds.
+                      </p>
+                      <p className="leading-[1.65]">
+                        My friend Lana and I found our thing in AP CompSci: me with mini GUI applets, her with robotics.
+                        I opened Figma to pitch our local hackathon for kids, which eventually led me to RIT and
+                        some inspiring friends.
+                      </p>
+                    </div>
                   </div>
                   <motion.div
-                    animate={{ marginTop: stackPeek ? 0 : -100 }}
+                    animate={{ marginTop: stackPeek ? 0 : -76 }}
                     transition={{ duration: 0.5, ease: [0.33, 0, 0, 1] }}
                   >
                     <PhotoStack
@@ -301,27 +231,29 @@ export default function About() {
             {/* Centered primary content */}
             <div className="relative mx-auto" style={{ maxWidth: 520, paddingBottom: 48 }}>
               <div className="flex flex-col gap-[40px]">
-                <div className="flex flex-col gap-[24px]">
-                  <p className="font-['Inter_Tight',sans-serif] text-muted-foreground text-[16px] leading-[1.5]">
-                    I'm a product designer and creative technologist!
-                  </p>
-                  <p className="font-['Inter_Tight',sans-serif] font-regular text-foreground text-[16px] leading-[1.65]">
-                    The work I'm most proud of is at the intersection of design, technology, and human connection.
-                    I love creating things to help people navigate and explore tools, products, and worlds.
-                  </p>
-                </div>
-                <div className="flex flex-col gap-[24px]">
-                  <p className="font-['Inter_Tight',sans-serif] text-muted-foreground text-[16px] leading-[1.5]">
-                    How I fell into it
-                  </p>
-                  <p className="font-['Inter_Tight',sans-serif] font-regular text-foreground text-[16px] leading-[1.65]">
-                    My friend Lana and I found our thing in AP CompSci: me with mini GUI applets, her with robotics.
-                    I opened Figma to pitch our local hackathon for kids, which eventually led me to RIT and
-                    some inspiring friends.
-                  </p>
+                <div className="flex flex-col gap-[24px] items-start">
+                  <div className="flex flex-col gap-[4px] items-start w-full">
+                    <p className="font-['Inter_Tight',sans-serif] text-foreground text-[20px] leading-[1.45]">
+                      Hey, I'm Abby!
+                    </p>
+                    <p className="font-['Inter_Tight',sans-serif] text-muted-foreground text-[16px] leading-[1.65]">
+                      product designer / creative technologist
+                    </p>
+                  </div>
+                  <div className="font-['Inter_Tight',sans-serif] font-regular text-foreground text-[16px]">
+                    <p className="leading-[1.65] mb-[16px]">
+                      The work I'm most proud of is at the intersection of design, technology, and human connection.
+                      I love creating things to help people navigate and explore tools, products, and worlds.
+                    </p>
+                    <p className="leading-[1.65]">
+                      My friend Lana and I found our thing in AP CompSci: me with mini GUI applets, her with robotics.
+                      I opened Figma to pitch our local hackathon for kids, which eventually led me to RIT and
+                      some inspiring friends.
+                    </p>
+                  </div>
                 </div>
                 <motion.div
-                  animate={{ marginTop: stackPeek ? 0 : -100 }}
+                  animate={{ marginTop: stackPeek ? 0 : -76 }}
                   transition={{ duration: 0.5, ease: [0.33, 0, 0, 1] }}
                 >
                   <PhotoStack
@@ -343,27 +275,29 @@ export default function About() {
 
         {/* Mobile */}
         <div className="flex flex-col gap-[40px] md:hidden pt-[20px] pb-[40px]">
-          <div className="flex flex-col gap-[24px]">
-            <p className="font-['Inter_Tight',sans-serif] text-muted-foreground text-[16px] leading-[1.5]">
-              I'm a product designer and creative technologist!
-            </p>
-            <p className="font-['Inter_Tight',sans-serif] font-regular text-foreground text-[16px] leading-[1.65]">
-              The work I'm most proud of is at the intersection of design, technology, and human connection.
-              I love creating things to help people navigate and explore tools, products, and worlds.
-            </p>
-          </div>
-          <div className="flex flex-col gap-[24px]">
-            <p className="font-['Inter_Tight',sans-serif] text-muted-foreground text-[16px] leading-[1.5]">
-              How I fell into it
-            </p>
-            <p className="font-['Inter_Tight',sans-serif] font-regular text-foreground text-[16px] leading-[1.65]">
-              My friend Lana and I found our thing in AP CompSci: me with mini GUI applets, her with robotics.
-              I opened Figma to pitch our local hackathon for kids, which eventually led me to RIT and
-              some inspiring friends.
-            </p>
+          <div className="flex flex-col gap-[24px] items-start">
+            <div className="flex flex-col gap-[4px] items-start w-full">
+              <p className="font-['Inter_Tight',sans-serif] text-foreground text-[20px] leading-[1.45]">
+                Hey, I'm Abby!
+              </p>
+              <p className="font-['Inter_Tight',sans-serif] text-muted-foreground text-[16px] leading-[1.65]">
+                product designer / creative technologist
+              </p>
+            </div>
+            <div className="font-['Inter_Tight',sans-serif] font-regular text-foreground text-[16px]">
+              <p className="leading-[1.65] mb-[16px]">
+                The work I'm most proud of is at the intersection of design, technology, and human connection.
+                I love creating things to help people navigate and explore tools, products, and worlds.
+              </p>
+              <p className="leading-[1.65]">
+                My friend Lana and I found our thing in AP CompSci: me with mini GUI applets, her with robotics.
+                I opened Figma to pitch our local hackathon for kids, which eventually led me to RIT and
+                some inspiring friends.
+              </p>
+            </div>
           </div>
           <motion.div
-            animate={{ marginTop: stackPeek ? 0 : -100 }}
+            animate={{ marginTop: stackPeek ? 0 : -76 }}
             transition={{ duration: 0.5, ease: [0.33, 0, 0, 1] }}
           >
             <PhotoStack
@@ -378,22 +312,6 @@ export default function About() {
             />
           </motion.div>
 
-          {/* SF video */}
-          <div
-            className="relative rounded-[8px] overflow-hidden animate-[fadeSlideIn_0.5s_ease-out_both]"
-            style={{ background: "#201f23", aspectRatio: "1/1" }}
-          >
-            <MobileSfVideo />
-            <div
-              className="absolute inset-x-0 top-0 h-[56px] pointer-events-none"
-              style={{ background: "linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0) 100%)" }}
-            />
-            <div className="absolute top-[10px] left-[10px] flex flex-col gap-[3px]">
-              <p className="font-['Inter_Tight',sans-serif] text-[12px] leading-none" style={{ color: "#fff" }}>Hello from SF!</p>
-              <p className="font-['Inter_Tight',sans-serif] text-[12px] leading-none" style={{ color: "rgba(255,255,255,0.65)" }}>Config 2026</p>
-            </div>
-          </div>
-
           {/* Offline — split into 3 tap-to-cycle mini cards */}
           <div className="flex gap-[16px] animate-[fadeSlideIn_0.5s_ease-out_both]">
             <OfflineMiniCard category="heart" className="flex-1" />
@@ -407,7 +325,7 @@ export default function About() {
       </div>
 
       {/* ══ Section 2: Art Gallery ══ */}
-      <div className="px-[16px] md:px-[2vw] pt-[8vh] pb-[14vh]">
+      <div className="px-[16px] md:px-[2vw] pt-[2vh] pb-[14vh]">
         <ArtGallery />
       </div>
     </div>

@@ -91,10 +91,13 @@ export default function ResumeCard({ collapsed, onToggle, isDark }: { collapsed:
 
   return (
     <div
-      className="relative flex flex-col items-center w-full rounded-[8px]"
+      className="relative flex flex-col items-center w-full"
       style={{
         padding: isMobile ? 16 : 24,
         background: isDark ? "rgba(48,47,52,0.8)" : "rgba(233,232,239,0.8)",
+        border: "1px solid var(--color-border-default)",
+        borderRadius: collapsed ? 999 : 8,
+        transition: "border-radius 0.35s ease",
       }}
     >
       {/* Chevron toggle — absolutely positioned at top center */}
@@ -109,7 +112,7 @@ export default function ResumeCard({ collapsed, onToggle, isDark }: { collapsed:
           viewBox={icons.navigation.chevron.viewBox}
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
-          animate={{ rotate: collapsed ? 180 : 0 }}
+          animate={{ rotate: collapsed ? 0 : 180 }}
           transition={{ duration: 0.35, ease: [0.33, 0, 0, 1] }}
         >
           <path
@@ -124,8 +127,16 @@ export default function ResumeCard({ collapsed, onToggle, isDark }: { collapsed:
 
       {/* Header pill — always visible */}
       <div
-        className="flex items-center justify-between w-full px-[12px] py-[4px] rounded-[4px] cursor-none"
-        style={{ background: pillHovered ? "rgba(255,255,255,1)" : "rgba(255,255,255,0.92)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)", transition: "background 0.2s ease", position: "relative", overflow: "hidden" }}
+        className="flex items-center justify-between w-full px-[12px] py-[4px] cursor-none"
+        style={{
+          background: pillHovered ? "rgba(255,255,255,1)" : "rgba(255,255,255,0.92)",
+          backdropFilter: "blur(12px)",
+          WebkitBackdropFilter: "blur(12px)",
+          borderRadius: collapsed ? 999 : 4,
+          transition: "background 0.2s ease, border-radius 0.35s ease",
+          position: "relative",
+          overflow: "hidden",
+        }}
         onMouseEnter={() => setPillHovered(true)}
         onMouseLeave={() => setPillHovered(false)}
         onMouseMove={e => setCursorPos({ x: e.clientX, y: e.clientY })}
@@ -202,7 +213,7 @@ export default function ResumeCard({ collapsed, onToggle, isDark }: { collapsed:
             <div ref={contentRef} className="flex flex-col gap-[17px]">
               {/* Education */}
               <div className="flex flex-col gap-[12px] w-full">
-                <p className="font-['Inter_Tight',sans-serif] text-[12px] leading-[1.5]" style={{ color: isDark ? "#faf9ff" : "#302f34" }}>Rochester Institute of Technology</p>
+                <p className="font-['Inter_Tight',sans-serif] text-[12px] leading-[1.5]" style={{ color: isDark ? "#908e99" : "#847f90" }}>Rochester Institute of Technology</p>
                 <div className="flex flex-col gap-[2px]">
                   <div className="flex gap-[4px] items-center w-full">
                     <p className="font-['Inter_Tight',sans-serif] text-[14px] leading-[1.5] flex-1" style={{ color: isDark ? "#faf9ff" : "#302f34" }}>New Media Design</p>

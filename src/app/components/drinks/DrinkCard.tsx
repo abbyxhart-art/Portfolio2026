@@ -112,37 +112,97 @@ function getUnlockedCount(): number {
 interface DrinkCardProps {
   size?: number;
   labelSize?: number;
+  /** "cycle" (default) shows one drink at a time, tap to advance — used
+   * wherever the card is too small to fit all 4 at once. "grid" lays all 4
+   * out in a 2x2 at once, for the larger About-page card that has the room. */
+  layout?: "cycle" | "grid";
 }
 
-export default function DrinkCard({ size = 150, labelSize = 14 }: DrinkCardProps) {
+function ArrowButton({
+  direction,
+  pillSize,
+  iconSize,
+  visible,
+  onClick,
+}: {
+  direction: "left" | "right";
+  pillSize: number;
+  iconSize: number;
+  visible: boolean;
+  onClick: () => void;
+}) {
+  const [hovered, setHovered] = useState(false);
+  return (
+    <button
+      type="button"
+      onClick={(e) => { e.stopPropagation(); onClick(); }}
+      onMouseEnter={(e) => { e.stopPropagation(); setHovered(true); }}
+      onMouseLeave={() => setHovered(false)}
+      className="flex items-center justify-center bg-transparent border-0 p-0 cursor-pointer shrink-0"
+      style={{
+        width: pillSize,
+        height: pillSize,
+        marginTop: -pillSize * 0.3,
+        color: hovered ? "var(--color-text-primary)" : "var(--color-text-secondary)",
+        opacity: visible ? 1 : 0,
+        pointerEvents: visible ? "auto" : "none",
+        transition: "color 0.15s ease, opacity 0.2s ease",
+      }}
+    >
+      <div
+        className="flex items-center justify-center rounded-full"
+        style={{
+          width: "100%",
+          height: "100%",
+          background: "var(--color-surface-fill3)",
+          border: "1px solid var(--color-border-default)",
+          transition: "background 0.15s ease",
+        }}
+      >
+        <svg width={iconSize} height={iconSize} viewBox="0 0 10 10" fill="none">
+          <path
+            d={direction === "left" ? "M6.5 1.5L2.5 5l4 3.5" : "M3.5 1.5L7.5 5l-4 3.5"}
+            stroke="currentColor"
+            strokeWidth="1.25"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      </div>
+    </button>
+  );
+}
+
+function CycleDrinkCard({ size, labelSize }: { size: number; labelSize: number }) {
   const [idx, setIdx] = useState(0);
   const [unlockedCount] = useState(getUnlockedCount);
   const [hovered, setHovered] = useState(false);
+  const [drinkHovered, setDrinkHovered] = useState(false);
   const { setSelectedDrink } = useDrink();
 
   const isLocked = idx >= unlockedCount;
   const sc = size / 150;
 
-  const handleTap = () => {
-    const next = (idx + 1) % DRINKS.length;
-    setIdx(next);
-    if (next < unlockedCount) setSelectedDrink(DRINKS[next].type);
-  };
+  const prev = () => setIdx((i) => (i - 1 + DRINKS.length) % DRINKS.length);
+  const next = () => setIdx((i) => (i + 1) % DRINKS.length);
+  const selectCurrent = () => { if (!isLocked) setSelectedDrink(DRINKS[idx].type); };
 
   const current = DRINKS[idx];
 
   return (
     <div
-      onClick={handleTap}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      className="relative rounded-[12px] overflow-hidden cursor-pointer select-none"
+      className="relative rounded-[12px] overflow-hidden select-none"
       style={{
-        width: size,
+        // Widens on hover so the arrow buttons flanking the drink have
+        // room without feeling cramped against the card's edge.
+        width: hovered ? size + 64 : size,
         height: size,
         background: "rgba(88,85,100,0.15)",
         backdropFilter: "blur(5px)",
         WebkitBackdropFilter: "blur(5px)",
+        transition: "width 0.5s cubic-bezier(0.33, 0, 0, 1)",
       }}
     >
       {/* Header — single line, crossfades on hover */}
@@ -157,42 +217,120 @@ export default function DrinkCard({ size = 150, labelSize = 14 }: DrinkCardProps
           className="absolute font-['Inter_Tight',sans-serif] leading-none text-muted-foreground whitespace-nowrap"
           style={{ fontSize: labelSize, opacity: hovered ? 1 : 0, transition: "opacity 0.2s ease" }}
         >
-          {isLocked ? "Return to unlock" : "Tap to cycle"}
+          {isLocked ? "Return to unlock" : "Tap to select"}
         </p>
       </div>
 
-      {/* Drink — centered, offset toward bottom half */}
+      {/* Drink — arrows (either side) cycle through drinks; tapping the drink itself selects it */}
       <div
-        className="absolute flex flex-col items-center justify-end pb-[8px]"
+        className="absolute flex items-center justify-center"
         style={{
-          gap: 14 * sc,
-          width: 100 * sc,
-          height: 93 * sc,
+          gap: 10 * sc,
           left: "50%",
           top: `calc(50% + ${28.5 * sc}px)`,
           transform: "translate(-50%, -50%)",
         }}
       >
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={idx}
-            initial={{ opacity: 0, y: 4 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -4 }}
-            transition={{ duration: 0.2, ease: "easeOut" }}
-            className="flex flex-col items-center"
-            style={{ gap: 14 * sc }}
-          >
-            {isLocked ? <EmptyCup /> : current.cup}
-            <p
-              className="font-['Inter_Tight',sans-serif] text-[14px] leading-[1.2] tracking-[-0.02em] whitespace-nowrap"
-              style={{ color: "var(--color-text-secondary)" }}
+        <ArrowButton direction="left" pillSize={34 * sc} iconSize={13 * sc} visible={hovered} onClick={prev} />
+
+        <button
+          type="button"
+          onClick={selectCurrent}
+          onMouseEnter={(e) => { e.stopPropagation(); setDrinkHovered(true); }}
+          onMouseLeave={() => setDrinkHovered(false)}
+          className="flex flex-col items-center justify-end pb-[8px] bg-transparent border-0 p-0"
+          style={{ gap: 14 * sc, width: 100 * sc, height: 93 * sc, cursor: isLocked ? "default" : "pointer" }}
+        >
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={idx}
+              initial={{ opacity: 0, y: 4 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -4 }}
+              transition={{ duration: 0.2, ease: "easeOut" }}
+              className="flex flex-col items-center"
+              style={{ gap: 14 * sc }}
             >
-              {isLocked ? "?" : current.label}
-            </p>
-          </motion.div>
-        </AnimatePresence>
+              {isLocked ? <EmptyCup /> : current.cup}
+              <p
+                className="font-['Inter_Tight',sans-serif] text-[14px] leading-[1.2] tracking-[-0.02em] whitespace-nowrap"
+                style={{
+                  color: drinkHovered ? "var(--color-text-primary)" : "var(--color-text-secondary)",
+                  transition: "color 0.15s ease",
+                }}
+              >
+                {isLocked ? "?" : current.label}
+              </p>
+            </motion.div>
+          </AnimatePresence>
+        </button>
+
+        <ArrowButton direction="right" pillSize={34 * sc} iconSize={13 * sc} visible={hovered} onClick={next} />
       </div>
     </div>
   );
+}
+
+function GridDrinkCard({ size, labelSize }: { size: number; labelSize: number }) {
+  const [unlockedCount] = useState(getUnlockedCount);
+  const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
+  const { setSelectedDrink } = useDrink();
+
+  return (
+    <div
+      className="relative rounded-[12px] overflow-hidden select-none"
+      style={{
+        width: size,
+        height: size,
+        background: "rgba(88,85,100,0.15)",
+        backdropFilter: "blur(5px)",
+        WebkitBackdropFilter: "blur(5px)",
+      }}
+    >
+      {/* Header */}
+      <div className="absolute top-[12px] inset-x-0 flex justify-center">
+        <p
+          className="font-['Inter_Tight',sans-serif] leading-none text-foreground whitespace-nowrap"
+          style={{ fontSize: labelSize }}
+        >
+          Get a drink
+        </p>
+      </div>
+
+      {/* 2x2 grid — all 4 drinks at once, locked ones shown as a mystery cup */}
+      <div
+        className="absolute inset-0 grid grid-cols-2 grid-rows-2 place-items-center"
+        style={{ paddingTop: 40, paddingBottom: 16 }}
+      >
+        {DRINKS.map((drink, i) => {
+          const locked = i >= unlockedCount;
+          return (
+            <button
+              key={drink.label}
+              type="button"
+              onClick={() => { if (!locked) setSelectedDrink(drink.type); }}
+              onMouseEnter={() => setHoveredIdx(i)}
+              onMouseLeave={() => setHoveredIdx(null)}
+              className="flex flex-col items-center gap-[10px] bg-transparent border-0 p-0"
+              style={{ cursor: locked ? "default" : "pointer" }}
+            >
+              {locked ? <EmptyCup /> : drink.cup}
+              <p
+                className="font-['Inter_Tight',sans-serif] text-[13px] leading-[1.2] tracking-[-0.02em] whitespace-nowrap"
+                style={{ color: "var(--color-text-secondary)" }}
+              >
+                {locked ? (hoveredIdx === i ? "Return to unlock" : "?") : drink.label}
+              </p>
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+export default function DrinkCard({ size = 150, labelSize = 14, layout = "cycle" }: DrinkCardProps) {
+  return layout === "grid"
+    ? <GridDrinkCard size={size} labelSize={labelSize} />
+    : <CycleDrinkCard size={size} labelSize={labelSize} />;
 }

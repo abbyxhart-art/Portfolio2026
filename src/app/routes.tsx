@@ -17,6 +17,7 @@ import DrinkFloater from "./components/drinks/DrinkFloater";
 import Footer from "./components/layout/Footer";
 import MobileMainNav from "./components/layout/MobileMainNav";
 import MainNavigation from "../imports/MainNavigation";
+import { NAV_TOP_REST, NAV_TOP_SCROLLED } from "./navPosition";
 
 const BLUR_LAYERS = [
   { blur: 2,  mask: "linear-gradient(to bottom, black 0%,   transparent 25%)" },
@@ -139,15 +140,16 @@ function RootLayout() {
           animate={{
             opacity: navReady ? 1 : 0,
             y: navReady ? 0 : -16,
+            top: scrolled ? NAV_TOP_SCROLLED : NAV_TOP_REST,
           }}
           transition={{
             opacity: { duration: 1.5, ease: [0.33, 0, 0, 1], delay: navReady ? 0.2 : 0 },
             y: { duration: 1.5, ease: [0.33, 0, 0, 1], delay: navReady ? 0.2 : 0 },
+            top: { duration: 0.4, ease: [0.33, 0, 0, 1] },
           }}
           className="hidden md:block fixed left-[32px] right-[32px] z-50"
-          style={{ top: "16px" }}
         >
-          <MainNavigation scrolledDown={scrolled} />
+          <MainNavigation />
         </motion.div>
       )}
       <AnimatePresence initial={false}>

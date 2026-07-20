@@ -1,6 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { ART_CATEGORIES, GALLERY_SECTION_LABEL, GALLERY_SECTION_SUBTITLE } from "../../data/artGallery";
-import { useTheme } from "../../context/ThemeContext";
 
 const MENU_WIDTH = 99;
 
@@ -11,8 +10,6 @@ const MENU_WIDTH = 99;
 // clicking a menu title scrolls that category into view — both drive the
 // same activeIdx.
 export default function EarlyDaysCard() {
-  const { theme } = useTheme();
-  const isDark = theme === "dark";
   const [activeIdx, setActiveIdx] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
   const sectionRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -82,10 +79,6 @@ export default function EarlyDaysCard() {
     suppressTimeout.current = setTimeout(() => { suppressObserver.current = false; }, 600);
   };
 
-  // Same dot-pattern background as the desktop/tablet Early Days frame.
-  const dotFill = isDark ? "%23faf9ff" : "%2324232a";
-  const dotPattern = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30'%3E%3Ccircle cx='15' cy='15' r='1' fill='${dotFill}' fill-opacity='0.12'/%3E%3C/svg%3E")`;
-
   return (
     <div
       className="relative w-full flex flex-col"
@@ -93,9 +86,7 @@ export default function EarlyDaysCard() {
         border: "1px solid var(--color-border-dark)",
         borderRadius: 24,
         overflow: "hidden",
-        backgroundImage: dotPattern,
-        backgroundRepeat: "repeat",
-        backgroundSize: "30px 30px",
+        background: "var(--color-surface-primary)",
       }}
     >
       {/* Header */}

@@ -1,161 +1,135 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useLayoutEffect, useRef } from "react";
 import { motion, AnimatePresence } from "@/lib/motion";
+import Lenis from "lenis";
+import { useLenis } from "../context/LenisContext";
 import icons from "../../assets/icons/icons.json";
 
 import munsonVideo from "../../assets/project/booth/munson.mp4";
+import munsonDefault from "../../assets/project/booth/munson_default.png";
 import munsonInstallation from "../../assets/project/booth/munson-installation.png";
+import munsonMe from "../../assets/project/booth/munson-me.JPG";
 import beyondDefault from "../../assets/project/booth/beyondfashion_default.png";
-import beyondHover from "../../assets/project/booth/beyondfashion_hover.JPG";
-import beyondInstallation from "../../assets/project/booth/beyondfashion-installation.jpeg";
-import beyondTest from "../../assets/project/booth/beyondfashion-test.jpeg";
+import beyondVolunteerTeam from "../../assets/project/booth/beyondfashion_hover.JPG";
 import beyondRehearsal from "../../assets/project/booth/beyondfashion-rehearsal.jpeg";
-import marcFinal from "../../assets/project/booth/marc-final.png";
-import marcFinal2 from "../../assets/project/booth/marc-final2.png";
+import beyondTest from "../../assets/project/booth/beyondfashion-test.jpeg";
+import beyondInstallation from "../../assets/project/booth/beyondfashion-installation.jpeg";
+import marcCover from "../../assets/project/booth/marc-cover.png";
+import marcShot from "../../assets/project/booth/marc-shot.png";
+import marcNotes from "../../assets/project/booth/marc-notes.jpg";
+import marcNodes from "../../assets/project/booth/marc-nodes.jpeg";
 import marcModel1 from "../../assets/project/booth/marc-model1.png";
 import marcModel2 from "../../assets/project/booth/marc-model2.png";
-import marcNodes from "../../assets/project/booth/marc-nodes.jpeg";
-import marcNotes from "../../assets/project/booth/marc-notes.jpg";
-import marcShot from "../../assets/project/booth/marc-shot.png";
-import irisDefault from "../../assets/project/booth/iris_default.png";
-import irisHover from "../../assets/project/booth/iris_hover.MOV";
+import marcLightingStudy from "../../assets/project/booth/cos2_2x1.png";
+import irisCover from "../../assets/project/booth/iris-cover.mp4";
 import irisGroup from "../../assets/project/booth/iris-group.jpg";
+import irisHover from "../../assets/project/booth/iris_hover.MOV";
+import irisFeedback2 from "../../assets/project/booth/IRIS-feedback2.mp4";
 import irisNotes from "../../assets/project/booth/iris-notes.png";
-import irisFlow from "../../assets/project/booth/iris-flow.png";
+import irisFlow1 from "../../assets/project/booth/iris-flow1.png";
+import irisFlow2 from "../../assets/project/booth/iris-flow2.png";
 import irisPrototype1 from "../../assets/project/booth/iris-protoype1.png";
+import sgCover from "../../assets/project/booth/sg-cover.png";
 import sgOlivia from "../../assets/project/booth/sg_olivia.png";
 import sgGaby from "../../assets/project/booth/sg_gaby.png";
 import sgPole from "../../assets/project/booth/sg_pole.png";
-import tianBooking from "../../assets/project/booth/tian-booking.mp4";
+import tianCover from "../../assets/project/booth/tian-cover.mp4";
 import tianCalendar from "../../assets/project/booth/tian-calendar.mp4";
 import tianComponentSystem from "../../assets/project/booth/tian-componentsystem.png";
 import tianForms from "../../assets/project/booth/tian-forms.mp4";
 import tianMilitaryTime from "../../assets/project/booth/tian-militarytime.png";
 import tianPrototyping from "../../assets/project/booth/tian-prototyping.png";
+import tianTickets from "../../assets/project/booth/tian-tickets.mp4";
+import tianConfirmed from "../../assets/project/booth/tian-confirmed.mp4";
 import tianTokenSystem from "../../assets/project/booth/tian-tokensystem.png";
 import tianVariables from "../../assets/project/booth/tian-variables.png";
+import kpopCover from "../../assets/project/booth/kpop-cover.mp4";
 import figmaRitFashion from "../../assets/project/booth/figmarit-fashion.png";
 import figmaRitKpop from "../../assets/project/booth/figmarit-kpop.png";
 import figmaRitLeaders from "../../assets/project/booth/figmarit-leaders.jpg";
-import figmaRitWorkshop from "../../assets/project/booth/figmarit-workshop.png";
+import cosCover from "../../assets/project/booth/cos_cover.png";
+import batesReal1 from "../../assets/project/booth/bates-real1.jpg";
+import batesReal2 from "../../assets/project/booth/bates-real2.jpg";
 import batesDean from "../../assets/project/booth/bates-dean.jpg";
 import batesIllustrator from "../../assets/project/booth/bates-illustrator.jpg";
 import batesIndesign from "../../assets/project/booth/bates-indesign.jpg";
-import batesReal1 from "../../assets/project/booth/bates-real1.jpg";
-import batesReal2 from "../../assets/project/booth/bates-real2.jpg";
-import dragonFigmaMake from "../../assets/project/booth/dragondoodle-figmamake.MOV";
-import dragonText from "../../assets/project/booth/dragondoodle-text.jpg";
-import dragonTesting from "../../assets/project/booth/dragondoodle-testing.mov";
+import dragonCover from "../../assets/project/booth/dragondoodle-cover.mp4";
 import dragonBones from "../../assets/project/booth/dragondoodle-bones.png";
 import dragonCode from "../../assets/project/booth/dragondoodle-code.png";
-import dragonRiveTimeline from "../../assets/project/booth/dragondoodle-rivetimeline.png";
 import dragonAssets from "../../assets/project/booth/dragondoodle-assets.png";
+import dragonRiveTimeline from "../../assets/project/booth/dragondoodle-rivetimeline.png";
+import dragonTesting from "../../assets/project/booth/dragondoodle-testing.mov";
+import dragonText from "../../assets/project/booth/dragondoodle-text.jpg";
 
-const NAV_ITEMS = [
-  { id: "dragon-doodle", label: "Dragon Doodle — Rive" },
-  { id: "iris", label: "IRIS — An AI Planner" },
-  { id: "figma-rit", label: "Figma at RIT — Workshops" },
-  { id: "dj-munson", label: "DJ Munson — RIT NMD x CAB" },
-  { id: "marc-jacobs", label: "Marc Jacobs Daisy — 3D" },
-  { id: "beyond-fashion", label: "Beyond Fashion — Touch Designer" },
-  { id: "sg-stickers", label: "Popcorn Stickers — SG" },
-  { id: "tian-airlines", label: "Tian Airlines — Figma" },
-  { id: "college-of-science", label: "College of Science — Print" },
+const LAB_CARDS = [
+  { id: "dragon-doodle", category: "Interaction", title: "Dragon Doodle", year: "2025", video: dragonCover },
+  { id: "tian-airlines", category: "Advanced Figma Logic", title: "Tian Air", year: "2025", video: tianCover },
+  { id: "figma-rit", category: "Workshop", title: "Figma at RIT", year: "2025", video: kpopCover },
+  { id: "iris", category: "Experience", title: "IRIS AI", year: "2024", video: irisCover, hasAudio: true },
+  { id: "dj-munson", category: "Installation", title: "DJ Munson's Last Spin", year: "2025", video: munsonVideo },
+  { id: "marc-jacobs", category: "Illustration", title: "Marc Jacobs Daisy Haze", year: "2023", image: marcCover },
+  { id: "beyond-fashion", category: "Motion", title: "Beyond Fashion", year: "2024", image: beyondDefault },
+  { id: "sg-stickers", category: "Illustration", title: "Popcorn Stickers", year: "2023", image: sgCover },
+  { id: "college-of-science", category: "Graphic", title: "College of Science", year: "2023", image: cosCover },
 ];
 
-function Divider() {
-  return <div className="w-full h-px bg-[rgba(255,255,255,0.12)] shrink-0" />;
-}
-
-function IrisCasestudyButton() {
-  const [hovered, setHovered] = useState(false);
+// Small pill overlay toggling a video's mute state — rendered as a <span>
+// with role="button" rather than a real <button> because LazyVideo is used
+// inside LabCard, which is itself a <button>; nesting real buttons is invalid
+// HTML. stopPropagation on both mousedown and click keeps a click here from
+// also opening the modal (LabCard) or starting a drag (ImageRow's scroller).
+function VolumeButton({ muted, onToggle }: { muted: boolean; onToggle: () => void }) {
+  const icon = muted ? icons.media["volume-off"] : icons.media["volume-on"];
   return (
-    <a
-      href="https://www.alexa-contreras.com/iris"
-      target="_blank"
-      rel="noopener noreferrer"
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
+    <span
+      role="button"
+      tabIndex={0}
+      aria-label={muted ? "Unmute video" : "Mute video"}
+      onMouseDown={(e) => e.stopPropagation()}
+      onClick={(e) => {
+        e.stopPropagation();
+        onToggle();
+      }}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.stopPropagation();
+          e.preventDefault();
+          onToggle();
+        }
+      }}
+      className="absolute bottom-[12px] right-[12px] z-10 flex items-center justify-center size-[32px] rounded-full border border-solid cursor-pointer"
       style={{
-        background: hovered ? "rgba(88,85,100,0.4)" : "rgba(88,85,100,0.2)",
-        borderRadius: 24,
-        padding: "8px 14px",
-        display: "flex",
-        alignItems: "center",
-        gap: 6,
-        flexShrink: 0,
-        transition: "background 0.15s ease",
+        background: "rgba(48,47,52,0.4)",
+        borderColor: "rgba(174,171,185,0.15)",
+        backdropFilter: "blur(12px)",
+        WebkitBackdropFilter: "blur(12px)",
       }}
     >
-      <span className="font-['Inter_Tight',sans-serif] font-light text-[12px] leading-none" style={{ color: "var(--color-text-primary)" }}>
-        read Alexa's full casestudy
-      </span>
-    </a>
-  );
-}
-
-function FigmaRitInstagramButton() {
-  const [hovered, setHovered] = useState(false);
-  const ig = icons.social.instagram;
-  return (
-    <a
-      href="https://www.instagram.com/figmaatrit/"
-      target="_blank"
-      rel="noopener noreferrer"
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      style={{
-        background: hovered ? "rgba(88,85,100,0.4)" : "rgba(88,85,100,0.2)",
-        borderRadius: 24,
-        padding: "8px 14px",
-        display: "flex",
-        alignItems: "center",
-        gap: 8,
-        flexShrink: 0,
-        transition: "background 0.15s ease",
-      }}
-    >
-      <svg width="16" height="16" viewBox="1 1 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-        {ig.paths.map((p, i) => (
-          <path key={i} d={p.d} fill="var(--color-text-primary)" />
-        ))}
+      <svg width="16" height="16" viewBox={icon.viewBox} fill="none">
+        <path d={icon.paths[0].d} stroke="var(--color-text-primary)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
-      <span className="font-['Inter_Tight',sans-serif] font-light text-[12px] leading-none" style={{ color: "var(--color-text-primary)" }}>
-        @figmaatrit
-      </span>
-    </a>
+    </span>
   );
 }
 
-function GalleryItem({
-  caption,
-  width,
-  children,
+function LazyVideo({
+  src,
+  className,
+  showVolumeToggle,
 }: {
-  caption: string;
-  width: number;
-  children: React.ReactNode;
+  src: string;
+  className?: string;
+  showVolumeToggle?: boolean;
 }) {
-  return (
-    <div className="flex flex-col gap-[16px] items-start shrink-0" style={{ width }}>
-      <p className="font-['Inter_Tight',sans-serif] font-light text-[12px] leading-[20px] tracking-[0.108px] text-[#908e99]">
-        {caption}
-      </p>
-      <div className="h-[303px] w-full rounded-[12px] overflow-hidden bg-[#2a2930]">
-        {children}
-      </div>
-    </div>
-  );
-}
-
-
-function LazyVideo({ src, className }: { src: string; className?: string }) {
   const ref = useRef<HTMLVideoElement>(null);
+  const isIntersecting = useRef(false);
+  const [muted, setMuted] = useState(true);
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
     const observer = new IntersectionObserver(
       ([entry]) => {
+        isIntersecting.current = entry.isIntersecting;
         if (entry.isIntersecting) {
           el.play().catch(() => { });
         } else {
@@ -168,181 +142,1074 @@ function LazyVideo({ src, className }: { src: string; className?: string }) {
     return () => observer.disconnect();
   }, []);
 
+  // Reload in place when the source changes (e.g. switching tabs) instead of
+  // forcing a full remount — lighter on the browser and lets a clip that was
+  // already fetched once come back from cache instead of re-downloading.
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || !isIntersecting.current) return;
+    el.load();
+    el.play().catch(() => { });
+  }, [src]);
+
+  const toggleMuted = () => {
+    const el = ref.current;
+    if (!el) return;
+    el.muted = !el.muted;
+    setMuted(el.muted);
+  };
+
   return (
-    <video
-      ref={ref}
-      loop
-      muted
-      playsInline
-      preload="none"
-      src={src}
-      className={className}
-    />
+    <>
+      <video
+        ref={ref}
+        loop
+        muted={muted}
+        playsInline
+        // "none" meant the browser had no idea of the video's natural
+        // dimensions until it actually started loading, so w-auto containers
+        // would pop from a 0/placeholder size to their real size right as
+        // playback kicked in — a visible jump. "metadata" fetches just enough
+        // to know real dimensions up front (cheap) without downloading the
+        // full clip until it's actually in view and play() is called.
+        preload="metadata"
+        src={src}
+        className={className}
+      />
+      {showVolumeToggle && <VolumeButton muted={muted} onToggle={toggleMuted} />}
+    </>
   );
 }
 
-function VimeoPlayer({ src, title }: { src: string; title: string }) {
-  const iframeRef = useRef<HTMLIFrameElement>(null);
-  const [muted, setMuted] = useState(true);
-
-  const toggleMute = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    const iframe = iframeRef.current;
-    if (!iframe?.contentWindow) return;
-    const next = !muted;
-    iframe.contentWindow.postMessage(
-      JSON.stringify({ method: "setVolume", value: next ? 0 : 1 }),
-      "https://player.vimeo.com"
-    );
-    setMuted(next);
-  };
-
-  const mutedSrc = `${src}&muted=1&api=1`;
-
+function LabCard({
+  category,
+  title,
+  year,
+  image,
+  video,
+  showVolumeToggle,
+  onClick,
+}: {
+  category: string;
+  title: string;
+  year: string;
+  image?: string;
+  video?: string;
+  showVolumeToggle?: boolean;
+  onClick?: () => void;
+}) {
   return (
-    <div className="relative w-full h-full">
-      <iframe
-        ref={iframeRef}
-        src={mutedSrc}
-        allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
-        style={{ border: "none" }}
-        referrerPolicy="strict-origin-when-cross-origin"
-        className="absolute inset-0 w-full h-full"
-        title={title}
-      />
-      <button
-        onClick={toggleMute}
-        className="absolute bottom-[8px] right-[8px] w-[28px] h-[28px] flex items-center justify-center rounded-[8px] text-white transition-all duration-200"
-        style={{ background: "rgba(88,85,100,0.55)", backdropFilter: "blur(8px)" }}
-        title={muted ? "Unmute" : "Mute"}
+    <button
+      onClick={onClick}
+      onMouseEnter={() => document.dispatchEvent(new CustomEvent("cursor:scale", { detail: 2.5 }))}
+      onMouseLeave={() => document.dispatchEvent(new CustomEvent("cursor:scale", { detail: 1 }))}
+      className="relative aspect-square rounded-[16px] overflow-hidden shrink-0 text-left border border-solid"
+      style={{ background: "var(--color-surface-fill4)", borderColor: "var(--color-border-default)" }}
+    >
+      {video ? (
+        <LazyVideo src={video} className="absolute inset-0 w-full h-full object-cover" showVolumeToggle={showVolumeToggle} />
+      ) : image ? (
+        <img src={image} alt={title} loading="lazy" decoding="async" className="absolute inset-0 w-full h-full object-cover" />
+      ) : null}
+      <div className="absolute bottom-0 left-0 flex flex-col items-start p-[16px]">
+        <div className="flex flex-col gap-[4px] items-start font-['Inter_Tight',sans-serif] font-light leading-[1.65]">
+          <p className="text-[12px] text-[#908e99]">
+            {category} {year}
+          </p>
+          <p className="text-[16px] text-[#faf9ff]">{title}</p>
+        </div>
+      </div>
+    </button>
+  );
+}
+
+function TianTabSlider({
+  tabs,
+  active,
+  onChange,
+}: {
+  tabs: string[];
+  active: number;
+  onChange: (index: number) => void;
+}) {
+  return (
+    <div className="relative bg-[rgba(48,47,52,0.4)] border border-[#302f34] p-[8px] rounded-[100px] flex gap-[10px] items-start shrink-0">
+      <div
+        className="absolute top-[8px] h-[32px] w-[100px] rounded-[24px] bg-[rgba(144,142,153,0.2)] transition-[left] duration-300 ease-in-out"
+        style={{ left: `${8 + active * 110}px` }}
       >
-        {muted ? (
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-            <path d="M2 5H4.5L7.5 2.5V11.5L4.5 9H2V5Z" stroke="currentColor" strokeWidth="1.25" strokeLinejoin="round" />
-            <path d="M10 4.5L12 6.5M12 4.5L10 6.5" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" />
-          </svg>
-        ) : (
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-            <path d="M2 5H4.5L7.5 2.5V11.5L4.5 9H2V5Z" stroke="currentColor" strokeWidth="1.25" strokeLinejoin="round" />
-            <path d="M9.5 4.5C10.5 5.2 11 6 11 7C11 8 10.5 8.8 9.5 9.5" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" />
-          </svg>
-        )}
+        <div className="absolute left-1/2 -translate-x-1/2 top-[39px] h-[2px] w-[48px] bg-[#d9d9d9] rounded-bl-[4px] rounded-br-[4px]" />
+      </div>
+      {tabs.map((label, i) => (
+        <button
+          key={label}
+          onClick={() => onChange(i)}
+          className="relative h-[32px] w-[100px] flex items-center justify-center rounded-[24px]"
+        >
+          <span
+            className={`font-['Inter_Tight',sans-serif] font-light leading-none text-[14px] transition-colors duration-200 ${active === i ? "text-[#faf9ff]" : "text-[#908e99]"
+              }`}
+          >
+            {label}
+          </span>
+        </button>
+      ))}
+    </div>
+  );
+}
+
+const TIAN_TABS = ["Booking", "Dates", "Tickets", "Forms", "Confirmed"];
+
+const TIAN_TAB_MEDIA: { type: "video" | "image"; src: string }[] = [
+  { type: "video", src: tianCover },
+  { type: "video", src: tianCalendar },
+  { type: "video", src: tianTickets },
+  { type: "video", src: tianForms },
+  { type: "video", src: tianConfirmed },
+];
+
+function CloseIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+      <path d="M3 3l10 10M13 3L3 13" stroke="var(--color-text-primary)" strokeWidth="1.5" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+// Same pill shape, size, blur, and hover state as HomeButton — the "esc"
+// keycap doubles as the actual keyboard shortcut that closes the modal.
+function ClosePill({ onClick }: { onClick: () => void }) {
+  const [hovered, setHovered] = useState(false);
+  return (
+    <button
+      onClick={onClick}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      className="flex gap-[6px] items-center pl-[10px] pr-[12px] py-[6px] rounded-[24px] border border-solid"
+      style={{
+        backdropFilter: "blur(12px)",
+        WebkitBackdropFilter: "blur(12px)",
+        background: hovered ? "var(--color-surface-fill2)" : "var(--color-button-default-fill)",
+        borderColor: "var(--color-border-default)",
+        transition: "background 0.15s ease",
+      }}
+    >
+      <CloseIcon />
+      <div
+        className="flex items-center justify-center h-[18px] px-[5px] rounded-[3px]"
+        style={{ background: "rgba(144,142,153,0.2)" }}
+      >
+        <p className="font-['Inter_Tight',sans-serif] text-[10px] text-[#908e99] leading-none">esc</p>
+      </div>
+    </button>
+  );
+}
+
+function ArrowIcon({ direction }: { direction: "left" | "right" }) {
+  return (
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 18 18"
+      fill="none"
+      style={direction === "left" ? { transform: "scaleX(-1)" } : undefined}
+    >
+      <path
+        d="M3.5 9h11M10 4.5L14.5 9 10 13.5"
+        stroke="var(--color-text-primary)"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+// Prev/next pill pair — replaces the old breadcrumb dots. Sits above the
+// gallery, directly under the section divider. Each side dims and stops
+// responding to clicks when there's nowhere left to go (non-looping rows).
+function GalleryNav({
+  onPrev,
+  onNext,
+  prevDisabled,
+  nextDisabled,
+}: {
+  onPrev: () => void;
+  onNext: () => void;
+  prevDisabled?: boolean;
+  nextDisabled?: boolean;
+}) {
+  const pillStyle = { background: "rgba(48,47,52,0.4)", borderColor: "rgba(174,171,185,0.15)" };
+  return (
+    <div className="flex items-center gap-[3px]">
+      <button
+        onClick={onPrev}
+        disabled={prevDisabled}
+        aria-label="Previous photo"
+        className="flex items-center justify-center size-[32px] rounded-tl-[24px] rounded-bl-[24px] rounded-tr-[4px] rounded-br-[4px] border border-solid disabled:opacity-30"
+        style={pillStyle}
+      >
+        <ArrowIcon direction="left" />
+      </button>
+      <button
+        onClick={onNext}
+        disabled={nextDisabled}
+        aria-label="Next photo"
+        className="flex items-center justify-center size-[32px] rounded-tr-[24px] rounded-br-[24px] rounded-tl-[4px] rounded-bl-[4px] border border-solid disabled:opacity-30"
+        style={pillStyle}
+      >
+        <ArrowIcon direction="right" />
       </button>
     </div>
   );
 }
 
-function ChevronLeft() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-      <path d="M9 3L5 7l4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
-
-function ChevronRight() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-      <path d="M5 3l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
-
-function Gallery({ children }: { children: React.ReactNode }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [canScrollLeft, setCanScrollLeft] = useState(false);
-  const [canScrollRight, setCanScrollRight] = useState(false);
+// A row of images/videos that share a height (so they line up) but keep their
+// own natural aspect ratio — width just follows from that, nothing is cropped.
+// Drag-to-scroll like the old Gallery component, plus a prev/next pill that
+// steps one item at a time via the browser's own scrollIntoView — no manual
+// width/offset measuring, no clones. `loop` (default true) controls whether
+// next/prev wrap around at the ends or just stop there.
+function ImageRow({
+  items,
+  height = 300,
+  layout = "auto",
+  loop = true,
+}: {
+  items: { src: string; alt: string; video?: boolean; hasAudio?: boolean }[];
+  height?: number;
+  // "fill": exactly 2 rectangular photos stretch to fill the width, no scroll.
+  // "auto" (default): photos keep their own aspect ratio; the row only
+  // becomes a scroller — with a prev/next pill — if it actually overflows.
+  layout?: "auto" | "fill";
+  loop?: boolean;
+}) {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const [overflowing, setOverflowing] = useState(false);
+  const [index, setIndex] = useState(0);
   const isDragging = useRef(false);
   const dragOrigin = useRef({ x: 0, scrollLeft: 0 });
   const [dragging, setDragging] = useState(false);
-  const updateArrows = () => {
-    const el = ref.current;
-    if (!el) return;
-    setCanScrollLeft(el.scrollLeft > 4);
-    setCanScrollRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 4);
-  };
+  const canNav = layout === "auto" && items.length > 1;
 
+  // Watching only the container was the bug behind "some modals don't have
+  // the buttons": images/videos have no intrinsic size until they load, so
+  // the row's scrollWidth is ~0 on first measure and never overflows. The
+  // container's own box doesn't resize when its content grows past it, so a
+  // ResizeObserver on just the container never fires again once the media
+  // finishes loading. Observing each item too means overflow gets
+  // re-checked as soon as any of them gains its real size.
   useEffect(() => {
-    const el = ref.current;
+    if (layout === "fill") return;
+    const el = scrollRef.current;
     if (!el) return;
-
-    updateArrows();
-    const ro = new ResizeObserver(updateArrows);
+    const update = () => setOverflowing(el.scrollWidth > el.clientWidth + 1);
+    update();
+    const ro = new ResizeObserver(update);
     ro.observe(el);
-
-    el.addEventListener("scroll", updateArrows);
-    return () => {
-      el.removeEventListener("scroll", updateArrows);
-      ro.disconnect();
-    };
-  }, []);
+    Array.from(el.children).forEach((child) => ro.observe(child));
+    return () => ro.disconnect();
+  }, [items.length, layout]);
 
   useEffect(() => {
     const onMove = (e: MouseEvent) => {
-      if (!isDragging.current || !ref.current) return;
-      ref.current.scrollLeft = dragOrigin.current.scrollLeft - (e.clientX - dragOrigin.current.x);
+      if (!isDragging.current || !scrollRef.current) return;
+      scrollRef.current.scrollLeft = dragOrigin.current.scrollLeft - (e.clientX - dragOrigin.current.x);
     };
-    const onUp = () => { isDragging.current = false; setDragging(false); };
+    const onUp = () => {
+      isDragging.current = false;
+      setDragging(false);
+    };
     window.addEventListener("mousemove", onMove);
     window.addEventListener("mouseup", onUp);
-    return () => { window.removeEventListener("mousemove", onMove); window.removeEventListener("mouseup", onUp); };
+    return () => {
+      window.removeEventListener("mousemove", onMove);
+      window.removeEventListener("mouseup", onUp);
+    };
   }, []);
 
   const onMouseDown = (e: React.MouseEvent) => {
     isDragging.current = true;
     setDragging(true);
-    dragOrigin.current = { x: e.clientX, scrollLeft: ref.current?.scrollLeft ?? 0 };
+    dragOrigin.current = { x: e.clientX, scrollLeft: scrollRef.current?.scrollLeft ?? 0 };
     e.preventDefault();
   };
 
-  const scrollBy = (dir: number) => {
-    const el = ref.current;
-    if (!el) return;
-    el.scrollBy({ left: dir * el.clientWidth * 0.8, behavior: "smooth" });
+  const goTo = (i: number) => {
+    setIndex(i);
+    itemRefs.current[i]?.scrollIntoView({ behavior: "smooth", inline: "start", block: "nearest" });
   };
 
+  const goNext = () => {
+    if (!canNav) return;
+    if (index + 1 < items.length) goTo(index + 1);
+    else if (loop) goTo(0);
+  };
+
+  const goPrev = () => {
+    if (!canNav) return;
+    if (index - 1 >= 0) goTo(index - 1);
+    else if (loop) goTo(items.length - 1);
+  };
+
+  const renderItem = (item: { src: string; alt: string; video?: boolean; hasAudio?: boolean }, i: number) => (
+    <div
+      key={i}
+      ref={(el) => { itemRefs.current[i] = el; }}
+      className="flex flex-col gap-[16px] items-start shrink-0"
+    >
+      <p className="font-['Inter_Tight',sans-serif] font-light text-[12px] leading-[1.5] text-[#908e99]">{item.alt}</p>
+      <div className="relative rounded-[12px] overflow-hidden bg-[#2c2c2c]" style={{ height }}>
+        {item.video ? (
+          <LazyVideo
+            src={item.src}
+            className="h-full w-auto object-contain pointer-events-none"
+            showVolumeToggle={item.hasAudio}
+          />
+        ) : (
+          <img src={item.src} alt={item.alt} loading="lazy" decoding="async" className="h-full w-auto object-contain pointer-events-none" />
+        )}
+      </div>
+    </div>
+  );
+
+  if (layout === "fill") {
+    return (
+      <div className="flex flex-col sm:flex-row gap-[16px] sm:gap-[24px] w-full">
+        {items.map((item, i) => (
+          <div key={i} className="flex flex-col gap-[16px] items-start flex-1 min-w-0">
+            <p className="font-['Inter_Tight',sans-serif] font-light text-[12px] leading-[1.5] text-[#908e99]">{item.alt}</p>
+            <div className="aspect-[1200/600] w-full rounded-[12px] overflow-hidden bg-[#2c2c2c]">
+              {item.video ? (
+                <LazyVideo src={item.src} className="w-full h-full object-cover" />
+              ) : (
+                <img src={item.src} alt={item.alt} loading="lazy" decoding="async" className="w-full h-full object-cover" />
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
   return (
-    <div className="flex flex-col gap-[12px] w-full">
-      {(canScrollLeft || canScrollRight) && (
-        <div className="flex gap-[8px] items-center py-[6px]">
-          <button
-            onMouseDown={e => e.stopPropagation()}
-            onClick={() => scrollBy(-1)}
-            disabled={!canScrollLeft}
-            className="w-[28px] h-[28px] flex items-center justify-center rounded-full text-white transition-all duration-200 disabled:opacity-25"
-            style={{ background: "rgba(88,85,100,0.35)", backdropFilter: "blur(8px)" }}
-          >
-            <ChevronLeft />
-          </button>
-          <button
-            onMouseDown={e => e.stopPropagation()}
-            onClick={() => scrollBy(1)}
-            disabled={!canScrollRight}
-            className="w-[28px] h-[28px] flex items-center justify-center rounded-full text-white transition-all duration-200 disabled:opacity-25"
-            style={{ background: "rgba(88,85,100,0.35)", backdropFilter: "blur(8px)" }}
-          >
-            <ChevronRight />
-          </button>
-        </div>
+    <div className="flex flex-col gap-[16px] w-full">
+      {overflowing && items.length > 1 && (
+        <GalleryNav
+          onPrev={goPrev}
+          onNext={goNext}
+          prevDisabled={!loop && index === 0}
+          nextDisabled={!loop && index === items.length - 1}
+        />
       )}
       <div
-        ref={ref}
+        ref={scrollRef}
         onMouseDown={onMouseDown}
-        className={`flex gap-[24px] items-start overflow-x-auto no-scrollbar w-full select-none ${dragging ? "cursor-grabbing" : "cursor-grab"}`}
+        className={`flex flex-nowrap items-start gap-[16px] sm:gap-[24px] w-full overflow-x-auto no-scrollbar select-none ${dragging ? "cursor-grabbing" : "cursor-grab"
+          }`}
       >
-        {children}
+        {items.map((item, i) => renderItem(item, i))}
       </div>
     </div>
   );
 }
 
+function ModalSection({
+  eyebrow,
+  title,
+  body,
+  children,
+}: {
+  eyebrow: string;
+  title: string;
+  // A plain string renders as a single paragraph (every existing caller).
+  // Passing multiple <p> elements (e.g. a fragment) instead renders them
+  // stacked with the same shared text styling, for bodies with more than
+  // one paragraph.
+  body?: React.ReactNode;
+  children?: React.ReactNode;
+}) {
+  return (
+    <div className="flex flex-col gap-[32px] items-start w-full">
+      <div className="flex flex-col gap-[16px] items-start w-full font-['Inter_Tight',sans-serif] not-italic">
+        <div className="flex flex-col gap-[8px] items-start w-full">
+          <p className="font-light text-[16px] leading-[1.65] text-[#908e99]">{eyebrow}</p>
+          <p className="font-normal text-[18px] leading-[1.45] text-[#faf9ff]">{title}</p>
+        </div>
+        {body && (typeof body === "string" ? (
+          <p className="font-light text-[16px] leading-[1.75] text-[#908e99] w-full">{body}</p>
+        ) : (
+          <div className="flex flex-col gap-[16px] font-light text-[16px] leading-[1.75] text-[#908e99] w-full">{body}</div>
+        ))}
+      </div>
+      {children && (
+        <>
+          <div className="w-full h-px bg-[rgba(174,171,185,0.15)]" />
+          {children}
+        </>
+      )}
+    </div>
+  );
+}
+
+// Shared shell for every project modal: its own Lenis instance (scrolling
+// feels identical to the rest of the site), wheel events that miss the
+// scroller get forwarded into it (so scrolling anywhere moves the modal, not
+// the page), and the close pill pinned top-right.
+function ModalFrame({
+  onClose,
+  overview,
+  expandBy = 150,
+  children,
+}: {
+  onClose: () => void;
+  overview: React.ReactNode;
+  // How much taller the modal grows once the user starts scrolling.
+  expandBy?: number;
+  children: React.ReactNode;
+}) {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const overviewRef = useRef<HTMLDivElement>(null);
+  const thumbRef = useRef<HTMLDivElement>(null);
+  const modalLenisRef = useRef<Lenis | null>(null);
+  const [overviewHeight, setOverviewHeight] = useState<number | null>(null);
+  const [expanded, setExpanded] = useState(false);
+  const expandedRef = useRef(false);
+  const modalHeightRef = useRef(0);
+
+  // Measure the overview block itself instead of hardcoding a height — the
+  // collapsed modal is always exactly 32px top + overview + 32px bottom,
+  // however tall the overview happens to render (with or without a tab
+  // menu, at any viewport width), and stays correct if that content ever
+  // changes.
+  useLayoutEffect(() => {
+    const el = overviewRef.current;
+    if (!el) return;
+    const update = () => setOverviewHeight(el.offsetHeight);
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
+  const baseHeight = (overviewHeight ?? 0) + 64;
+  const modalHeight = expanded ? baseHeight + expandBy : baseHeight;
+  const thumbHeight = 32;
+
+  // Keep a ref mirroring the latest modal height so the Lenis scroll handler
+  // below (registered once) can read it without needing to be recreated on
+  // every height change.
+  useEffect(() => {
+    modalHeightRef.current = modalHeight;
+  }, [modalHeight]);
+
+  useEffect(() => {
+    const wrapper = scrollRef.current;
+    const content = contentRef.current;
+    if (!wrapper || !content) return;
+    const instance = new Lenis({ wrapper, content, lerp: 0.12 });
+    modalLenisRef.current = instance;
+    instance.on("scroll", ({ scroll, limit }: { scroll: number; limit: number }) => {
+      // Lenis fires this roughly once per animation frame while scrolling.
+      // Routing both values through React state meant the whole modal
+      // subtree — every image and video in it — re-rendered at that rate,
+      // which is what made scrolling feel laggy. The expand toggle only
+      // actually changes twice per scroll session, so gate it to real
+      // transitions; the thumb position changes every frame by design, so
+      // it's pushed straight to the DOM instead of through state.
+      const isExpanded = scroll > 8;
+      if (isExpanded !== expandedRef.current) {
+        expandedRef.current = isExpanded;
+        setExpanded(isExpanded);
+      }
+      const progress = limit > 0 ? Math.min(1, Math.max(0, scroll / limit)) : 0;
+      const trackHeight = Math.max(0, modalHeightRef.current - 32);
+      const top = 16 + progress * Math.max(0, trackHeight - thumbHeight);
+      if (thumbRef.current) thumbRef.current.style.top = `${top}px`;
+    });
+    let rafId: number;
+    function raf(time: number) {
+      instance.raf(time);
+      rafId = requestAnimationFrame(raf);
+    }
+    rafId = requestAnimationFrame(raf);
+    return () => {
+      cancelAnimationFrame(rafId);
+      instance.destroy();
+      modalLenisRef.current = null;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    const handleWheel = (e: WheelEvent) => {
+      const scroller = scrollRef.current;
+      if (!scroller) return;
+      if (e.target instanceof Node && scroller.contains(e.target)) return;
+      e.preventDefault();
+      const delta = e.deltaMode === 1 ? e.deltaY * 32 : e.deltaY;
+      const lenis = modalLenisRef.current;
+      if (lenis) {
+        lenis.scrollTo(lenis.targetScroll + delta);
+      } else {
+        scroller.scrollTop += delta;
+      }
+    };
+    window.addEventListener("wheel", handleWheel, { passive: false });
+    return () => window.removeEventListener("wheel", handleWheel);
+  }, []);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.96 }}
+      animate={{ opacity: 1, scale: 1, height: modalHeight }}
+      exit={{ opacity: 0, scale: 0.96 }}
+      transition={{
+        duration: 0.25,
+        ease: "easeOut",
+        height: { duration: 0.5, ease: [0.33, 0, 0, 1] },
+      }}
+      className="relative bg-[#161617] border border-[rgba(174,171,185,0.15)] rounded-[12px] w-[min(1223px,92vw)] max-h-[90vh] overflow-hidden flex flex-col"
+      onClick={(e) => e.stopPropagation()}
+    >
+      <div className="absolute right-[32px] top-[32px] z-10">
+        <ClosePill onClick={onClose} />
+      </div>
+
+      {/* Scroll progress thumb — moves down the right side as you scroll.
+          Position is set directly on the DOM node (see the Lenis "scroll"
+          handler above) rather than through React state. */}
+      <div
+        ref={thumbRef}
+        className="absolute right-[7px] w-[8px] rounded-[12px] z-10 pointer-events-none"
+        style={{ height: thumbHeight, top: 16, background: "rgba(144,142,153,0.2)" }}
+      />
+
+      {/* One continuous scroll region driven by the modal's own Lenis instance.
+          Lenis needs a single content element to measure, hence the inner div. */}
+      <div
+        ref={scrollRef}
+        className="flex-1 min-h-0 overflow-y-auto no-scrollbar"
+        style={{ overscrollBehavior: "contain" }}
+      >
+        <div
+          ref={contentRef}
+          className="flex flex-col items-start gap-[150px] pt-[32px] px-[32px] pb-[80px]"
+        >
+          <div ref={overviewRef} className="w-full">
+            {overview}
+          </div>
+          {children}
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
+function TianModal({ onClose }: { onClose: () => void }) {
+  const [tab, setTab] = useState(0);
+  const active = TIAN_TAB_MEDIA[tab];
+
+  const overview = (
+    <div className="flex flex-col gap-[15px] w-full items-start">
+      <div className="flex flex-col lg:flex-row gap-[64px] items-center w-full pr-[32px]">
+        <div className="relative w-full lg:w-[700px] lg:h-[467px] rounded-[12px] overflow-hidden bg-white shrink-0">
+          <AnimatePresence>
+            <motion.div
+              key={active.src}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.4, ease: "easeInOut" }}
+              className="absolute inset-0"
+            >
+              {active.type === "video" ? (
+                <LazyVideo src={active.src} className="w-full h-full object-cover" />
+              ) : (
+                <img src={active.src} alt={TIAN_TABS[tab]} loading="lazy" decoding="async" className="w-full h-full object-cover" />
+              )}
+            </motion.div>
+          </AnimatePresence>
+        </div>
+        <div className="flex flex-col gap-[50px] justify-center w-full lg:flex-1 min-w-0">
+          <div className="flex flex-col gap-[16px] w-full">
+            <div className="flex flex-col gap-[8px] w-full font-['Inter_Tight',sans-serif] not-italic">
+              <p className="font-light text-[16px] leading-[1.65] text-[#908e99]">2025</p>
+              <p className="font-normal text-[18px] leading-[1.45] text-[#faf9ff]">Tian Design System</p>
+            </div>
+            <p className="font-['Inter_Tight',sans-serif] font-light text-[16px] leading-[1.75] text-[#908e99]">
+              Tian Airlines is a study on hi-fi prototyping and design systems within Figma. All flight information works, with proper checking of time and potential departure / arrivals.
+            </p>
+          </div>
+          <div className="flex flex-col gap-[16px] w-full font-['Inter_Tight',sans-serif] not-italic">
+            <p className="font-light text-[16px] leading-[1.65] text-[#c1becb]">Tools / Skills</p>
+            <p className="font-light text-[16px] leading-[1.75] text-[#908e99]">
+              Runs on calculator switches in Figma (like a mouse listener) Created Tian / Heaven alongside Nebula design system
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div className="w-full lg:w-[700px] flex justify-center shrink-0">
+        <TianTabSlider tabs={TIAN_TABS} active={tab} onChange={setTab} />
+      </div>
+    </div>
+  );
+
+  return (
+    <ModalFrame onClose={onClose} overview={overview}>
+      <div className="flex flex-col gap-[100px] items-start w-full px-[36px]">
+        <ModalSection
+          eyebrow="Figma"
+          title="Design System and Logic"
+          body="I used 5 different calculators full of if/else statements and a special collection of variables to keep this all running plus the regular design system collections"
+        >
+          <ImageRow
+            items={[
+              { src: tianVariables, alt: "Variables" },
+              { src: tianPrototyping, alt: "Prototyping" },
+              { src: tianMilitaryTime, alt: "Military time" },
+              { src: tianTokenSystem, alt: "Token system" },
+              { src: tianComponentSystem, alt: "Cards" },
+            ]}
+          />
+        </ModalSection>
+      </div>
+    </ModalFrame>
+  );
+}
+
+function DragonModal({ onClose }: { onClose: () => void }) {
+  const overview = (
+    <div className="flex flex-col lg:flex-row gap-[64px] items-center w-full pr-[32px]">
+      <div className="relative w-full aspect-[1200/800] flex-1 rounded-[12px] overflow-hidden bg-white shrink-0">
+        <LazyVideo src={dragonCover} className="absolute inset-0 w-full h-full object-cover" />
+      </div>
+      <div className="flex flex-col gap-[50px] justify-center w-full lg:w-[435px] shrink-0">
+        <div className="flex flex-col gap-[16px] w-full">
+          <div className="flex flex-col gap-[8px] w-full font-['Inter_Tight',sans-serif] not-italic">
+            <p className="font-light text-[16px] leading-[1.65] text-[#908e99]">2025</p>
+            <p className="font-normal text-[18px] leading-[1.45] text-[#faf9ff]">Dragon Doodle</p>
+          </div>
+          <div className="flex flex-col gap-[16px] w-full font-['Inter_Tight',sans-serif] not-italic">
+            <p className="font-light text-[16px] leading-[1.75] text-[#908e99]">
+              This dragon collects mooncakes based on your ability to sing the notes of "Twinkle, Twinkle, Little Star."
+            </p>
+            <p className="font-light text-[12px] leading-[1.5] text-[#908e99]">
+              It was later recreated in Figma Make, which you can see in the video!
+            </p>
+          </div>
+        </div>
+        <div className="flex flex-col gap-[16px] w-full font-['Inter_Tight',sans-serif] not-italic">
+          <p className="font-light text-[16px] leading-[1.65] text-[#c1becb]">Tools / Skills</p>
+          <p className="font-light text-[16px] leading-[1.75] text-[#908e99]">
+            Figma vectors, Rive animations, Claude generated logic
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+
+  return (
+    <ModalFrame onClose={onClose} overview={overview}>
+      <div className="flex flex-col gap-[100px] items-start w-full px-[36px]">
+        <ModalSection
+          eyebrow="The beginning"
+          title="Music, tempo, and frequency"
+          body="The problem with music is it's time based and frequency (Hz) changes between low tones (very little difference) and high (very high difference). There were issues with voices being at different octaves and tempo, making it a little jittery."
+        >
+          <ImageRow
+            items={[
+              { src: dragonTesting, alt: "Feedback Testing Note Sensitivity", video: true },
+              { src: dragonAssets, alt: "Dragon Assets" },
+              { src: dragonText, alt: "Feedback" },
+              { src: dragonBones, alt: "Dragon Bones" },
+              { src: dragonRiveTimeline, alt: "Rive State Machine" },
+              { src: dragonCode, alt: "Code" },
+            ]}
+          />
+        </ModalSection>
+      </div>
+    </ModalFrame>
+  );
+}
+
+// Credit line under a modal's overview media — prefix in text-secondary,
+// name in text-primary, whole thing linking out to the credited person.
+function CreditLine({ prefix, name, href }: { prefix: string; name: string; href: string }) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="font-['Inter_Tight',sans-serif] font-light text-[14px] leading-[1.5] no-underline"
+    >
+      <span style={{ color: "var(--color-text-secondary)" }}>{prefix} </span>
+      <span style={{ color: "var(--color-text-primary)" }}>{name}</span>
+    </a>
+  );
+}
+
+function BeyondFashionModal({ onClose }: { onClose: () => void }) {
+  const overview = (
+    <div className="flex flex-col gap-[8px] w-full">
+      <div className="flex flex-col lg:flex-row gap-[64px] items-center w-full pr-[32px]">
+        <div className="relative w-full aspect-[1200/800] flex-1 rounded-[12px] overflow-hidden bg-white shrink-0">
+          <img src={beyondDefault} alt="Beyond Fashion" loading="lazy" decoding="async" className="absolute inset-0 w-full h-full object-cover" />
+        </div>
+        <div className="flex flex-col gap-[50px] justify-center w-full lg:w-[435px] shrink-0">
+          <div className="flex flex-col gap-[16px] w-full">
+            <div className="flex flex-col gap-[8px] w-full font-['Inter_Tight',sans-serif] not-italic">
+              <p className="font-light text-[16px] leading-[1.65] text-[#908e99]">2025</p>
+              <p className="font-normal text-[18px] leading-[1.45] text-[#faf9ff]">Beyond Fashion : Off the Table</p>
+            </div>
+            <div className="flex flex-col gap-[16px] w-full font-['Inter_Tight',sans-serif] not-italic">
+              <p className="font-light text-[16px] leading-[1.75] text-[#908e99]">
+                A student-led fashion show supporting local artists, with each team creating visuals for a designer or club.
+              </p>
+              <p className="font-light text-[16px] leading-[1.75] text-[#908e99]">
+                The year's theme was Vignelli's dishware.
+              </p>
+            </div>
+          </div>
+          <div className="flex flex-col gap-[16px] w-full font-['Inter_Tight',sans-serif] not-italic">
+            <p className="font-light text-[16px] leading-[1.65] text-[#c1becb]">Tools / Skills</p>
+            <p className="font-light text-[16px] leading-[1.75] text-[#908e99]">
+              Cinema 4D, After Effects, Resolume Arena
+            </p>
+          </div>
+        </div>
+      </div>
+      <CreditLine prefix="Graphics by" name="Jackson Palmer" href="https://www.linkedin.com/in/jacksonpalmer04/" />
+    </div>
+  );
+
+  return (
+    <ModalFrame onClose={onClose} overview={overview}>
+      <div className="flex flex-col gap-[100px] items-start w-full px-[36px]">
+        <ModalSection
+          eyebrow="Side Quests"
+          title="Touch Designer experiments"
+          body="I also helped build a 20-foot interactive installation for the theme Off the Table: Vignelli, using TouchDesigner and a hidden camera to let hand movements control rotating Vignelli cups. When the event was short-staffed, I volunteered backstage to help run the final show."
+        >
+          <ImageRow
+            loop={false}
+            items={[
+              { src: beyondVolunteerTeam, alt: "Volunteer Team" },
+              { src: beyondRehearsal, alt: "Rehearsal" },
+              { src: beyondTest, alt: "Test" },
+              { src: beyondInstallation, alt: "Installation" },
+            ]}
+          />
+        </ModalSection>
+      </div>
+    </ModalFrame>
+  );
+}
+
+function MarcJacobsModal({ onClose }: { onClose: () => void }) {
+  const overview = (
+    <div className="flex flex-col lg:flex-row gap-[64px] items-center w-full pr-[32px]">
+      <div className="relative w-full aspect-[1200/800] flex-1 rounded-[12px] overflow-hidden bg-white shrink-0">
+        <img src={marcCover} alt="Marc Jacobs" loading="lazy" decoding="async" className="absolute inset-0 w-full h-full object-cover" />
+      </div>
+      <div className="flex flex-col gap-[50px] justify-center w-full lg:w-[435px] shrink-0">
+        <div className="flex flex-col gap-[16px] w-full">
+          <div className="flex flex-col gap-[8px] w-full font-['Inter_Tight',sans-serif] not-italic">
+            <p className="font-light text-[16px] leading-[1.65] text-[#908e99]">2025</p>
+            <p className="font-normal text-[18px] leading-[1.45] text-[#faf9ff]">Marc Jacobs</p>
+          </div>
+          <p className="font-['Inter_Tight',sans-serif] font-light text-[16px] leading-[1.65] text-[#908e99]">
+            An imaginary perfume joining the Marc Jacobs Daisy line.
+          </p>
+        </div>
+        <div className="flex flex-col gap-[16px] w-full font-['Inter_Tight',sans-serif] not-italic">
+          <p className="font-light text-[16px] leading-[1.65] text-[#c1becb]">Tools / Skills</p>
+          <p className="font-light text-[16px] leading-[1.75] text-[#908e99]">Cinema 4D, Photoshop</p>
+        </div>
+      </div>
+    </div>
+  );
+
+  return (
+    <ModalFrame onClose={onClose} overview={overview}>
+      <div className="flex flex-col gap-[100px] items-start w-full px-[36px]">
+        <ModalSection
+          eyebrow="3D"
+          title="Light"
+          body="I explored lighting environments, and caustics and learned so much about treating light as a medium. I spent so many nights figuring out the perfect balance of frosted glass and plastic."
+        >
+          <ImageRow
+            items={[
+              { src: marcShot, alt: "Shot" },
+              { src: marcNotes, alt: "Sketches" },
+              { src: marcNodes, alt: "Material Nodes" },
+              { src: marcModel1, alt: "Model 1" },
+              { src: marcModel2, alt: "Model 2" },
+              { src: marcLightingStudy, alt: "Lighting Study" },
+            ]}
+          />
+        </ModalSection>
+      </div>
+    </ModalFrame>
+  );
+}
+
+function SgModal({ onClose }: { onClose: () => void }) {
+  const overview = (
+    <div className="flex flex-col lg:flex-row gap-[64px] items-center w-full pr-[32px]">
+      <div className="relative w-full aspect-[1200/800] flex-1 rounded-[12px] overflow-hidden bg-white shrink-0">
+        <img src={sgCover} alt="Free Popcorn Truck" loading="lazy" decoding="async" className="absolute inset-0 w-full h-full object-cover" />
+      </div>
+      <div className="flex flex-col gap-[50px] justify-center w-full lg:w-[435px] shrink-0">
+        <div className="flex flex-col gap-[16px] w-full">
+          <div className="flex flex-col gap-[8px] w-full font-['Inter_Tight',sans-serif] not-italic">
+            <p className="font-light text-[16px] leading-[1.65] text-[#908e99]">2023</p>
+            <p className="font-normal text-[18px] leading-[1.45] text-[#faf9ff]">Free Popcorn Truck</p>
+          </div>
+          <p className="font-['Inter_Tight',sans-serif] font-light text-[16px] leading-[1.65] text-[#908e99]">
+            SG had a free popcorn truck
+          </p>
+        </div>
+        <div className="flex flex-col gap-[16px] w-full font-['Inter_Tight',sans-serif] not-italic">
+          <p className="font-light text-[16px] leading-[1.65] text-[#c1becb]">Tools / Skills</p>
+          <p className="font-light text-[16px] leading-[1.75] text-[#908e99]">Adobe Illustrator</p>
+        </div>
+      </div>
+    </div>
+  );
+
+  return (
+    <ModalFrame onClose={onClose} overview={overview}>
+      <div className="flex flex-col gap-[100px] items-start w-full px-[36px]">
+        <ModalSection
+          eyebrow="Through the years"
+          title="Found on campus"
+          body="It's been fun seeing people enjoy this sticker year after year!"
+        >
+          <ImageRow
+            loop={false}
+            items={[
+              { src: sgOlivia, alt: "Olivia's Macbook, 2025" },
+              { src: sgGaby, alt: "Gaby's Macbook, 2024" },
+              { src: sgPole, alt: "Phone pole, 2023" },
+            ]}
+          />
+        </ModalSection>
+      </div>
+    </ModalFrame>
+  );
+}
+
+function IrisModal({ onClose }: { onClose: () => void }) {
+  const overview = (
+    <div className="flex flex-col gap-[8px] w-full">
+      <div className="flex flex-col lg:flex-row gap-[64px] items-center w-full pr-[32px]">
+        <div className="relative w-full aspect-[1200/800] flex-1 rounded-[12px] overflow-hidden bg-white shrink-0">
+          <LazyVideo src={irisCover} className="absolute inset-0 w-full h-full object-cover" showVolumeToggle />
+        </div>
+        <div className="flex flex-col gap-[50px] justify-center w-full lg:w-[435px] shrink-0">
+          <div className="flex flex-col gap-[16px] w-full">
+            <div className="flex flex-col gap-[8px] w-full font-['Inter_Tight',sans-serif] not-italic">
+              <p className="font-light text-[16px] leading-[1.65] text-[#908e99]">2023</p>
+              <p className="font-normal text-[18px] leading-[1.45] text-[#faf9ff]">IRIS AI</p>
+            </div>
+            <p className="font-['Inter_Tight',sans-serif] font-light text-[16px] leading-[1.65] text-[#908e99]">
+              IRIS was 2024 Creative Collision, created and pushed to play in 2 short days. It was a huge success, with lines for all 5 hours. I was on the Product Team and 2D Team!
+            </p>
+          </div>
+          <div className="flex flex-col gap-[16px] w-full font-['Inter_Tight',sans-serif] not-italic">
+            <p className="font-light text-[16px] leading-[1.65] text-[#c1becb]">Tools / Skills</p>
+            <p className="font-light text-[16px] leading-[1.75] text-[#908e99]">Figma, Adobe</p>
+          </div>
+        </div>
+      </div>
+      <CreditLine prefix="3d by" name="Jackson Palmer" href="https://www.linkedin.com/in/jacksonpalmer04/" />
+    </div>
+  );
+
+  return (
+    <ModalFrame onClose={onClose} overview={overview}>
+      <div className="flex flex-col gap-[100px] items-start w-full px-[36px]">
+        <ModalSection
+          eyebrow="Prompt from 2024 Alumni: Phil Sierzoga @ BUCK"
+          title="“Opposing Forces, the intersection of conflict, synthesis of design, humanity, and AI”"
+          body="Our installation examined trust in machines, and what can happen when we rely on models that don't always have our best interests in mind, further exploring machines that have bias embedded in a funny way: the AI assistant thinks the user is lazy and useless the more the game continues!"
+        >
+          <ImageRow
+            items={[
+              { src: irisGroup, alt: "IRIS Group" },
+              { src: irisHover, alt: "Resolume testing", video: true },
+              { src: irisFeedback2, alt: "IRIS Feedback", video: true, hasAudio: true },
+              { src: irisNotes, alt: "Narrowing the scope down" },
+              { src: irisFlow1, alt: "Full flow" },
+              { src: irisFlow2, alt: "Full flow" },
+              { src: irisPrototype1, alt: "Prototype 1" },
+            ]}
+          />
+        </ModalSection>
+      </div>
+    </ModalFrame>
+  );
+}
+
+function CollegeOfScienceModal({ onClose }: { onClose: () => void }) {
+  const overview = (
+    <div className="flex flex-col lg:flex-row gap-[64px] items-center w-full pr-[32px]">
+      <div className="relative w-full aspect-[1200/800] flex-1 rounded-[12px] overflow-hidden bg-white shrink-0">
+        <img src={cosCover} alt="Bates Study Center" loading="lazy" decoding="async" className="absolute inset-0 w-full h-full object-cover" />
+      </div>
+      <div className="flex flex-col gap-[50px] justify-center w-full lg:w-[435px] shrink-0">
+        <div className="flex flex-col gap-[16px] w-full">
+          <div className="flex flex-col gap-[8px] w-full font-['Inter_Tight',sans-serif] not-italic">
+            <p className="font-light text-[16px] leading-[1.65] text-[#908e99]">2023</p>
+            <p className="font-normal text-[18px] leading-[1.45] text-[#faf9ff]">Bates Study Center</p>
+          </div>
+          <p className="font-['Inter_Tight',sans-serif] font-light text-[16px] leading-[1.65] text-[#908e99]">
+            Bates Study center needed a refresh to attract more students, and also spread awareness of the help!
+          </p>
+        </div>
+        <div className="flex flex-col gap-[16px] w-full font-['Inter_Tight',sans-serif] not-italic">
+          <p className="font-light text-[16px] leading-[1.65] text-[#c1becb]">Tools / Skills</p>
+          <p className="font-light text-[16px] leading-[1.75] text-[#908e99]">Illustrator, InDesign</p>
+        </div>
+      </div>
+    </div>
+  );
+
+  return (
+    <ModalFrame onClose={onClose} overview={overview}>
+      <div className="flex flex-col gap-[100px] items-start w-full px-[36px]">
+        <ModalSection eyebrow="Installed" title="As great in real life">
+          <ImageRow
+            loop={false}
+            items={[
+              { src: batesReal1, alt: "Window 1" },
+              { src: batesReal2, alt: "Door 1" },
+              { src: batesDean, alt: "Dean Hudson / Mr. Andre" },
+              { src: batesIllustrator, alt: "Illustrator Workspace" },
+              { src: batesIndesign, alt: "InDesign Layout" },
+            ]}
+          />
+        </ModalSection>
+      </div>
+    </ModalFrame>
+  );
+}
+
+function FigmaRitModal({ onClose }: { onClose: () => void }) {
+  const overview = (
+    <div className="flex flex-col lg:flex-row gap-[64px] items-center w-full pr-[32px]">
+      <div className="relative w-full aspect-[1200/800] flex-1 rounded-[12px] overflow-hidden bg-white shrink-0">
+        <LazyVideo src={kpopCover} className="absolute inset-0 w-full h-full object-cover" />
+      </div>
+      <div className="flex flex-col gap-[50px] justify-center w-full lg:w-[435px] shrink-0">
+        <div className="flex flex-col gap-[16px] w-full">
+          <div className="flex flex-col gap-[8px] w-full font-['Inter_Tight',sans-serif] not-italic">
+            <p className="font-light text-[16px] leading-[1.65] text-[#908e99]">2025</p>
+            <p className="font-normal text-[18px] leading-[1.45] text-[#faf9ff]">Figma at RIT</p>
+          </div>
+          <p className="font-['Inter_Tight',sans-serif] font-light text-[16px] leading-[1.65] text-[#908e99]">
+            Breaking Figma into new spaces like KPop and Fashion: strong communities driven by creativity.
+          </p>
+        </div>
+        <div className="flex flex-col gap-[16px] w-full font-['Inter_Tight',sans-serif] not-italic">
+          <p className="font-light text-[16px] leading-[1.65] text-[#c1becb]">Figma CL's</p>
+          <p className="font-light text-[16px] leading-[1.75] text-[#908e99]">Troy Ramiscal, Lasya Josyula, Charlotte Raith</p>
+        </div>
+      </div>
+    </div>
+  );
+
+  return (
+    <ModalFrame onClose={onClose} overview={overview}>
+      <div className="flex flex-col gap-[100px] items-start w-full px-[36px]">
+        <ModalSection
+          eyebrow="Workshops"
+          title="Custom workshops!"
+          body="I designed workshops for two of our events and coordinated with student photographer Leah Healy to photograph them!"
+        >
+          <ImageRow
+            items={[
+              { src: figmaRitFashion, alt: "Make Your Own Zine Workshop" },
+              { src: figmaRitKpop, alt: "Album Covers Workshop" },
+              { src: figmaRitLeaders, alt: "Figma at RIT Leaders" },
+            ]}
+          />
+        </ModalSection>
+      </div>
+    </ModalFrame>
+  );
+}
+
+function MunsonModal({ onClose }: { onClose: () => void }) {
+  const overview = (
+    <div className="flex flex-col lg:flex-row gap-[64px] items-center w-full pr-[32px]">
+      <div className="relative w-full aspect-[1200/800] flex-1 rounded-[12px] overflow-hidden bg-white shrink-0">
+        <LazyVideo src={munsonVideo} className="absolute inset-0 w-full h-full object-cover" />
+      </div>
+      <div className="flex flex-col gap-[50px] justify-center w-full lg:w-[435px] shrink-0">
+        <div className="flex flex-col gap-[16px] w-full">
+          <div className="flex flex-col gap-[8px] w-full font-['Inter_Tight',sans-serif] not-italic">
+            <p className="font-light text-[16px] leading-[1.65] text-[#908e99]">2025</p>
+            <p className="font-normal text-[18px] leading-[1.45] text-[#faf9ff]">DJ Munson's Last Spin</p>
+          </div>
+          <p className="font-['Inter_Tight',sans-serif] font-light text-[16px] leading-[1.65] text-[#908e99]">
+            Celebrating DJ Munson's career at RIT through a dance challenge festival and immersive experiences!
+          </p>
+        </div>
+        <div className="flex flex-col gap-[16px] w-full font-['Inter_Tight',sans-serif] not-italic">
+          <p className="font-light text-[16px] leading-[1.65] text-[#c1becb]">Tools / Skills</p>
+          <p className="font-light text-[16px] leading-[1.75] text-[#908e99]">Adobe</p>
+        </div>
+      </div>
+    </div>
+  );
+
+  return (
+    <ModalFrame onClose={onClose} overview={overview}>
+      <div className="flex flex-col gap-[100px] items-start w-full px-[36px]">
+        <ModalSection
+          eyebrow="Workshops"
+          title="Motion graphics and resolume"
+          body={
+            <>
+              <p>We transformed Munson's past four orientation videos and CAB assets into an immersive room where visitors could experience in a new way.</p>
+              <p>I kept our 4 AE files organized and managed 2 of DJ Munson's videos!</p>
+            </>
+          }
+        >
+          <ImageRow
+            items={[
+              { src: munsonDefault, alt: "Event Poster" },
+              { src: munsonInstallation, alt: "Immersive Installation" },
+              { src: munsonMe, alt: "Me at the event" },
+            ]}
+          />
+        </ModalSection>
+      </div>
+    </ModalFrame>
+  );
+}
+
+const LAB_MODALS: Record<string, (props: { onClose: () => void }) => React.ReactElement> = {
+  "dragon-doodle": DragonModal,
+  "tian-airlines": TianModal,
+  "beyond-fashion": BeyondFashionModal,
+  "marc-jacobs": MarcJacobsModal,
+  "sg-stickers": SgModal,
+  "iris": IrisModal,
+  "college-of-science": CollegeOfScienceModal,
+  "figma-rit": FigmaRitModal,
+  "dj-munson": MunsonModal,
+};
+
 export default function Booth() {
   const [scrolled, setScrolled] = useState(false);
-  const [activeId, setActiveId] = useState("dragon-doodle");
-  const [dragonExpanded, setDragonExpanded] = useState(false);
-  const [irisExpanded, setIrisExpanded] = useState(false);
-  const [figmaRitExpanded, setFigmaRitExpanded] = useState(false);
-  const [tianExpanded, setTianExpanded] = useState(false);
+  const [openLab, setOpenLab] = useState<string | null>(null);
+  const lenis = useLenis();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -354,67 +1221,35 @@ export default function Booth() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Lenis drives the page scroll manually, so CSS overflow:hidden alone can't
+  // stop it — lenis.stop() does the real work; the CSS is kept as a fallback
+  // for input Lenis doesn't intercept (see LenisContext). Hiding overflow also
+  // removes the scrollbar, which narrows the viewport and shifts everything
+  // left — compensating with matching padding keeps the page from jumping.
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) setActiveId(entry.target.id);
-        });
-      },
-      { rootMargin: "-20% 0px -60% 0px", threshold: 0 }
-    );
-    NAV_ITEMS.forEach(({ id }) => {
-      const el = document.getElementById(id);
-      if (el) observer.observe(el);
-    });
-    return () => observer.disconnect();
-  }, []);
-
-  const scrollToSection = (id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
-  };
+    if (!openLab) return;
+    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+    lenis?.stop();
+    document.documentElement.style.overflow = "hidden";
+    document.body.style.overflow = "hidden";
+    if (scrollbarWidth > 0) {
+      document.body.style.paddingRight = `${scrollbarWidth}px`;
+    }
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpenLab(null);
+    };
+    window.addEventListener("keydown", handleKey);
+    return () => {
+      lenis?.start();
+      document.documentElement.style.overflow = "";
+      document.body.style.overflow = "";
+      document.body.style.paddingRight = "";
+      window.removeEventListener("keydown", handleKey);
+    };
+  }, [openLab, lenis]);
 
   return (
     <div className="relative min-h-screen bg-background">
-
-      {/* Fixed sidebar */}
-      <aside
-        className="fixed left-0 top-0 h-full w-[228px] flex flex-col gap-[24px] p-[16px] z-[45] overflow-y-auto no-scrollbar"
-        style={{ background: "rgba(88,85,100,0.15)", backdropFilter: "blur(12px)" }}
-      >
-        <div className="flex flex-col gap-[16px]">
-          <p className="font-['Inter_Tight',sans-serif] font-light text-[16px] leading-[1.5] text-[#908e99]">
-            Lab / Booth 1303
-          </p>
-          <p className="font-['Inter_Tight',sans-serif] font-light text-[16px] leading-[1.5] text-[#908e99]">
-            The lab is where I made all my interactions, illustrations, and interfaces at RIT.
-          </p>
-        </div>
-
-        <Divider />
-
-        <div className="flex items-center gap-[8px]">
-          <p className="font-['Inter_Tight',sans-serif] font-light text-[14px] leading-[1.5] text-white">
-            Scroll to
-          </p>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="text-white">
-            <path d="M20.5 12.5L15.5 17.5L10.5 12.5M15.5 17.5V9.7002C15.5 8.58009 15.5 8.01962 15.282 7.5918C15.0903 7.21547 14.7845 6.90973 14.4082 6.71799C13.9804 6.5 13.4199 6.5 12.2998 6.5H2.49981" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </div>
-
-        <nav className="flex flex-col gap-[9px]">
-          {NAV_ITEMS.map(({ id, label }) => (
-            <button
-              key={id}
-              onClick={() => scrollToSection(id)}
-              className={`font-['Inter_Tight',sans-serif] font-light text-[12px] leading-[1.5] text-left w-full transition-colors duration-200 ${activeId === id ? "text-[#faf9ff]" : "text-[#908e99] hover:text-[#c5c3ce]"
-                }`}
-            >
-              {label}
-            </button>
-          ))}
-        </nav>
-      </aside>
 
       {/* Scroll gradient */}
       <AnimatePresence>
@@ -433,473 +1268,64 @@ export default function Booth() {
         )}
       </AnimatePresence>
 
-      {/* Main scrollable content */}
-      <main className="ml-[228px] pt-[160px] pb-[120px] pl-[54px] pr-[40px]">
-        <div className="flex flex-col gap-[61px]">
+      {/* Main scrollable content — recedes slightly when a modal is open so focus goes to it.
+          Animates marginTop rather than y/transform: a transform on this ancestor — even
+          translateY(0px) at rest — creates a new containing block and breaks position:sticky
+          on the filter/view row nested inside. */}
+      <motion.main
+        animate={{ marginTop: openLab ? 24 : 0 }}
+        transition={{ duration: 0.35, ease: [0.33, 0, 0, 1] }}
+        className="pt-[160px] pb-[120px] px-[40px] lg:px-[54px]"
+      >
+        <div className="max-w-[1296px] mx-auto flex flex-col gap-[61px]">
 
-          {/* Dragon Doodle */}
-          <section id="dragon-doodle" className="flex flex-col gap-[16px] items-start w-full scroll-mt-[120px]">
-            <div className="flex flex-col font-['Inter_Tight',sans-serif] leading-[1.45]">
-              <p className="font-light text-[20px] text-[#faf9ff]">Dragon Doodle</p>
-              <p className="font-light text-[20px]" style={{ color: "rgba(254,225,189,0.87)" }}>
-                Collect mooncakes and make music
-              </p>
-            </div>
-            <Divider />
-            <div className="flex flex-col gap-[12px] max-w-[925px]">
-              <p className="font-['Inter_Tight',sans-serif] font-light text-[14px] leading-[1.5] text-[#faf9ff]">
-                This dragon collects mooncakes based on your ability to sing the notes of "Twinkle, Twinkle, Little Star."
-                The workflow combined Figma vector assets, Rive animations, and Claude-generated logic to drive the
-                interactions. The two hardest parts were deciding how accurately and how quickly players had to match each
-                pitch before moving to the next note, and rigging the bones in Rive.
-              </p>
-              <p className="font-['Inter_Tight',sans-serif] font-light text-[14px] leading-[1.5] text-[#faf9ff]">
-                It was later recreated in Figma Make for a design-a-thon, with up/down keys, which is one of the videos below.
-              </p>
-              <button
-                onClick={() => setDragonExpanded(!dragonExpanded)}
-                className="flex items-center gap-[6px] text-[#908e99] hover:text-[#faf9ff] transition-colors duration-200 w-fit"
-              >
-                <span className="font-['Inter_Tight',sans-serif] font-light text-[12px] leading-[1.5]">How it works</span>
-                <svg
-                  width="14" height="14" viewBox="0 0 14 14" fill="none"
-                  className="transition-transform duration-300"
-                  style={{ transform: dragonExpanded ? "rotate(180deg)" : "rotate(0deg)" }}
-                >
-                  <path d="M3 5l4 4 4-4" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </button>
-              <AnimatePresence initial={false}>
-                {dragonExpanded && (
-                  <motion.div
-                    key="dragon-detail"
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                    exit={{ opacity: 0, height: 0 }}
-                    transition={{ duration: 0.3, ease: "easeOut" }}
-                    className="overflow-hidden flex flex-col gap-[12px]"
-                  >
-                    <p className="font-['Inter_Tight',sans-serif] font-light text-[14px] leading-[1.5] text-[#faf9ff]">
-                      The problem with music is it's time based and frequency (Hz) changes between low tones (very little
-                      difference) and high (very high difference). There were issues with voices being at different octaves
-                      and tempo, making it a little jittery.
-                    </p>
-                    <p className="font-['Inter_Tight',sans-serif] font-light text-[14px] leading-[1.5] text-[#faf9ff]">
-                      In Rive, I created 6 different timelines → 6 different "levels" on the Y-Axis for the dragon. Each
-                      timeline increments the Y-Axis by 200, starting from 250 and going to 1250. The animation is 300ms.
-                      There's 1 single numerical input: NoteSung, which is used for "if" statements between each noodle
-                      connection on the timelines. ChatGPT created an analyzer to sense what its frequency is, changes the
-                      math to convert it to Hz, then to notes I can read and compare through Strings. From there, I set if
-                      statements for notes C, C# – A, A#, and then sets the NoteSung value on a range of 1–6.
-                    </p>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-            <Divider />
-            <Gallery>
-              <GalleryItem caption="Figma Make" width={400}>
-                <LazyVideo src={dragonFigmaMake} className="w-full h-full object-cover" />
-              </GalleryItem>
-              <GalleryItem caption="Feedback" width={249}>
-                <img src={dragonText} alt="Feedback" loading="lazy" className="w-full h-full object-cover" />
-              </GalleryItem>
-              <GalleryItem caption="Feedback Testing Note Sensitivity" width={303}>
-                <LazyVideo src={dragonTesting} className="w-full h-full object-cover" />
-              </GalleryItem>
-              <GalleryItem caption="Rive State Machine" width={611}>
-                <img src={dragonRiveTimeline} alt="Rive Timeline" loading="lazy" className="w-full h-full object-cover" />
-              </GalleryItem>
-              <GalleryItem caption="Dragon Bones" width={471}>
-                <img src={dragonBones} alt="Dragon Bones" loading="lazy" className="w-full h-full object-cover" />
-              </GalleryItem>
-              <GalleryItem caption="Code" width={282}>
-                <img src={dragonCode} alt="Code" loading="lazy" className="w-full h-full object-cover" />
-              </GalleryItem>
-              <GalleryItem caption="Dragon Assets" width={730}>
-                <img src={dragonAssets} alt="Dragon Assets" loading="lazy" className="w-full h-full object-cover" />
-              </GalleryItem>
-            </Gallery>
-          </section>
-
-          {/* IRIS */}
-          <section id="iris" className="flex flex-col gap-[16px] items-start w-full scroll-mt-[120px]">
-            <div className="flex flex-row items-end justify-between w-full">
-              <div className="flex flex-col font-['Inter_Tight',sans-serif] leading-[1.45]">
-                <p className="font-light text-[20px] text-[#faf9ff]">IRIS</p>
-                <p className="font-light text-[20px]" style={{ color: "rgba(254,189,242,0.87)" }}>
-                  An AI planner turned mean
-                </p>
-              </div>
-              <IrisCasestudyButton />
-            </div>
-            <Divider />
-            <div className="flex flex-col gap-[12px] max-w-[925px]">
-              <p className="font-['Inter_Tight',sans-serif] font-light text-[14px] leading-[1.5] text-[#faf9ff]">
-                IRIS was 2024 Creative Collision, created and pushed to play in 2 short days. It was a huge success, with lines for all 5 hours. I was on the Product Team and Design Team, in charge of what our product would be, how to organize the team, the flow and interface.
-              </p>
-              <p className="font-['Inter_Tight',sans-serif] font-light text-[14px] leading-[1.5] text-[#faf9ff]">
-                From Phil Sierzega @ BUCK (RIT alum) came the theme "Opposing Forces — the intersection of conflict, synthesis of design, humanity, and AI". Our installation examined trust in machines, and what can happen when we rely on models that don't always have our best interests in mind, further exploring machines that have bias embedded in a funny way: the AI assistant thinks the user is lazy and useless the more the game continues!
-              </p>
-              <button
-                onClick={() => setIrisExpanded(!irisExpanded)}
-                className="flex items-center gap-[6px] text-[#908e99] hover:text-[#faf9ff] transition-colors duration-200 w-fit"
-              >
-                <span className="font-['Inter_Tight',sans-serif] font-light text-[12px] leading-[1.5]">BTS</span>
-                <svg
-                  width="14" height="14" viewBox="0 0 14 14" fill="none"
-                  className="transition-transform duration-300"
-                  style={{ transform: irisExpanded ? "rotate(180deg)" : "rotate(0deg)" }}
-                >
-                  <path d="M3 5l4 4 4-4" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </button>
-              <AnimatePresence initial={false}>
-                {irisExpanded && (
-                  <motion.div
-                    key="iris-detail"
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                    exit={{ opacity: 0, height: 0 }}
-                    transition={{ duration: 0.3, ease: "easeOut" }}
-                    className="overflow-hidden"
-                  >
-                    <p className="font-['Inter_Tight',sans-serif] font-light text-[14px] leading-[1.5] text-[#faf9ff]">
-                      Built with Cinema 4D, Figma, Resolume Arena, and audio, the project came together right up to the deadline. It was a true team effort, held together by a little magic: someone literally hiding behind the screen to troubleshoot during the event.
-                    </p>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-            <Divider />
-            <Gallery>
-
-              <div className="flex flex-col gap-[16px] items-start shrink-0">
-                <p className="font-['Inter_Tight',sans-serif] font-light text-[12px] leading-[20px] tracking-[0.108px] text-[#908e99]">IRIS Feedback</p>
-                <div className="h-[303px] rounded-[12px] overflow-hidden bg-[#2a2930]" style={{ aspectRatio: "4/5" }}>
-                  <VimeoPlayer
-                    src="https://player.vimeo.com/video/1206289226?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&loop=1"
-                    title="IRIS Feedback"
-                  />
-                </div>
-              </div>
-              <GalleryItem caption="IRIS Group" width={500}>
-                <img src={irisGroup} alt="IRIS group" loading="lazy" className="w-full h-full object-cover" />
-              </GalleryItem>
-              <GalleryItem caption="Resolume testing" width={170}>
-                <LazyVideo src={irisHover} className="w-full h-full object-cover" />
-              </GalleryItem>
-              <GalleryItem caption="Design poster" width={198}>
-                <img src={irisDefault} alt="IRIS poster" loading="lazy" className="w-full h-full object-cover" />
-              </GalleryItem>
-              <GalleryItem caption="Narrowing the scope down" width={440}>
-                <img src={irisNotes} alt="IRIS notes" loading="lazy" className="w-full h-full object-cover" />
-              </GalleryItem>
-              <GalleryItem caption="Full flow" width={733}>
-                <img src={irisFlow} alt="IRIS flow" loading="lazy" className="w-full h-full object-cover" />
-              </GalleryItem>
-              <GalleryItem caption="Prototype 1" width={409}>
-                <img src={irisPrototype1} alt="IRIS prototype 1" loading="lazy" className="w-full h-full object-cover" />
-              </GalleryItem>
-            </Gallery>
-          </section>
-
-          {/* Figma at RIT */}
-          <section id="figma-rit" className="flex flex-col gap-[16px] items-start w-full scroll-mt-[120px]">
-            <div className="flex flex-row items-end justify-between w-full">
-              <div className="flex flex-col font-['Inter_Tight',sans-serif] leading-[1.45]">
-                <p className="font-light text-[20px] text-[#faf9ff]">Figma at RIT</p>
-                <p className="font-light text-[20px]" style={{ color: "rgba(251,202,157,0.87)" }}>
-                  Designing workshops
-                </p>
-              </div>
-              <FigmaRitInstagramButton />
-            </div>
-            <Divider />
-            <div className="flex flex-col gap-[12px] max-w-[925px]">
-              <p className="font-['Inter_Tight',sans-serif] font-light text-[14px] leading-[1.5] text-[#faf9ff]">
-                With Figma at RIT, we connected creatively to new communities with KPop and Fashion clubs! I designed workshops for those clubs specifically.
-              </p>
-              <button
-                onClick={() => setFigmaRitExpanded(!figmaRitExpanded)}
-                className="flex items-center gap-[6px] text-[#908e99] hover:text-[#faf9ff] transition-colors duration-200 w-fit"
-              >
-                <span className="font-['Inter_Tight',sans-serif] font-light text-[12px] leading-[1.5]">Workshop details</span>
-                <svg
-                  width="14" height="14" viewBox="0 0 14 14" fill="none"
-                  className="transition-transform duration-300"
-                  style={{ transform: figmaRitExpanded ? "rotate(180deg)" : "rotate(0deg)" }}
-                >
-                  <path d="M3 5l4 4 4-4" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </button>
-              <AnimatePresence initial={false}>
-                {figmaRitExpanded && (
-                  <motion.div
-                    key="figmarit-detail"
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                    exit={{ opacity: 0, height: 0 }}
-                    transition={{ duration: 0.3, ease: "easeOut" }}
-                    className="overflow-hidden"
-                  >
-                    <p className="font-['Inter_Tight',sans-serif] font-light text-[14px] leading-[1.5] text-[#faf9ff]">
-                      With KPop Club, I created tutorials about how to create your own photo card, create a component that loops a spin with music in the background, charms in Figma Make, and provided lots of assets, showing the importance of plugins and Figma Community. With Fashion Club, we made zines people could use to focus on their interests!
-                    </p>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-            <Divider />
-            <Gallery>
-              <GalleryItem caption="Charlotte, Me, Troy, Lasya" width={455}>
-                <img src={figmaRitLeaders} alt="Figma at RIT leaders" loading="lazy" className="w-full h-full object-cover" />
-              </GalleryItem>
-              <GalleryItem caption="Fashion Club" width={338}>
-                <img src={figmaRitFashion} alt="Fashion club workshop" loading="lazy" className="w-full h-full object-cover" />
-              </GalleryItem>
-              <GalleryItem caption="Workshop" width={455}>
-                <img src={figmaRitWorkshop} alt="Workshop" loading="lazy" className="w-full h-full object-cover" />
-              </GalleryItem>
-              <GalleryItem caption="Record" width={561}>
-                <img src={figmaRitKpop} alt="Record" loading="lazy" className="w-full h-full object-cover" />
-              </GalleryItem>
-            </Gallery>
-          </section>
-
-          {/* DJ Munson */}
-          <section id="dj-munson" className="flex flex-col gap-[16px] items-start w-full scroll-mt-[120px]">
-            <div className="flex flex-col font-['Inter_Tight',sans-serif] leading-[1.45]">
-              <p className="font-light text-[20px] text-[#faf9ff]">DJ Munson's Last Spin</p>
-              <p className="font-light text-[20px]" style={{ color: "rgba(219,189,254,0.73)" }}>
-                A dance battle / party! 700+ attendees, 1500 votes
-              </p>
-            </div>
-            <Divider />
-            <div className="flex gap-[24px] items-start w-full">
-              <div className="flex flex-col gap-[16px] items-start shrink-0" style={{ width: 380 }}>
-                <p className="font-['Inter_Tight',sans-serif] font-light text-[12px] leading-[20px] tracking-[0.108px] text-[#908e99]">70 ft installation</p>
-                <div className="h-[303px] w-full rounded-[12px] overflow-hidden bg-[#2a2930]">
-                  <LazyVideo src={munsonVideo} className="w-full h-full object-cover" />
-                </div>
-              </div>
-              <div className="flex flex-col gap-[16px] items-start shrink-0" style={{ width: 656 }}>
-                <p className="font-['Inter_Tight',sans-serif] font-light text-[12px] leading-[20px] tracking-[0.108px] text-[#908e99]">Installation</p>
-                <div className="h-[303px] w-full rounded-[12px] overflow-hidden bg-[#2a2930]">
-                  <img src={munsonInstallation} alt="Munson installation" loading="lazy" className="w-full h-full object-cover" />
-                </div>
+          {/* Lab grid */}
+          <section className="flex flex-col gap-[64px] items-center w-full">
+            <div className="flex flex-col gap-[32px] items-center w-full">
+              <div className="flex flex-col items-center gap-0 text-center font-['Inter_Tight',sans-serif] font-normal text-[20px] leading-[1.45] text-[#faf9ff]">
+                <p>The Lab is Booth 1303 @ RIT.</p>
+                <p>It’s where I spent about 44% of my week for 4 years</p>
               </div>
             </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[16px] w-full max-w-[1296px] mx-auto">
+              {LAB_CARDS.map(({ id, category, title, year, image, video, hasAudio }) => (
+                <LabCard
+                  key={id}
+                  category={category}
+                  title={title}
+                  year={year}
+                  image={image}
+                  video={video}
+                  showVolumeToggle={hasAudio}
+                  onClick={() => setOpenLab(id)}
+                />
+              ))}
+            </div>
           </section>
-
-          {/* Marc Jacobs Daisy */}
-          <section id="marc-jacobs" className="flex flex-col gap-[16px] items-start w-full scroll-mt-[120px]">
-            <div className="flex flex-col font-['Inter_Tight',sans-serif] leading-[1.45]">
-              <p className="font-light text-[20px] text-[#faf9ff]">Marc Jacobs Daisy Haze</p>
-              <p className="font-light text-[20px]" style={{ color: "rgba(255,201,253,0.87)" }}>
-                A 3D based advertisement
-              </p>
-            </div>
-            <Divider />
-            <p className="font-['Inter_Tight',sans-serif] font-light text-[14px] leading-[1.5] text-[#faf9ff] max-w-[715px]">
-              Based on Marc Jacob's Daisy line, I used this opportunity to explore 3D, lighting environments, and caustics! I studied photographer youtube videos as well as tutorials to understand lighting. This was my first attempt at 3D and I spent so many nights figuring out the perfect balance of frosted glass and plastic.
-            </p>
-            <Divider />
-            <Gallery>
-              <GalleryItem caption="End Result" width={170}>
-                <img src={marcFinal} alt="Marc Jacobs final render" loading="lazy" className="w-full h-full object-cover" />
-              </GalleryItem>
-              <GalleryItem caption="End Result 2" width={170}>
-                <img src={marcFinal2} alt="Marc Jacobs final render 2" loading="lazy" className="w-full h-full object-cover" />
-              </GalleryItem>
-              <GalleryItem caption="Shot" width={539}>
-                <img src={marcShot} alt="Marc Jacobs shot" loading="lazy" className="w-full h-full object-cover" />
-              </GalleryItem>
-              <GalleryItem caption="Model 1: Still learning" width={539}>
-                <img src={marcModel1} alt="Marc Jacobs model angle 1" loading="lazy" className="w-full h-full object-cover" />
-              </GalleryItem>
-              <GalleryItem caption="Model 2: Much better!" width={539}>
-                <img src={marcModel2} alt="Marc Jacobs model angle 2" loading="lazy" className="w-full h-full object-cover" />
-              </GalleryItem>
-              <GalleryItem caption="Material Nodes: Playing around" width={404}>
-                <img src={marcNodes} alt="Marc Jacobs 3D nodes" loading="lazy" className="w-full h-full object-cover" />
-              </GalleryItem>
-              <GalleryItem caption="Sketches" width={373}>
-                <img src={marcNotes} alt="Marc Jacobs sketches" loading="lazy" className="w-full h-full object-cover" />
-              </GalleryItem>
-            </Gallery>
-          </section>
-
-          {/* Beyond Fashion */}
-          <section id="beyond-fashion" className="flex flex-col gap-[16px] items-start w-full scroll-mt-[120px]">
-            <div className="flex flex-col font-['Inter_Tight',sans-serif] leading-[1.45]">
-              <p className="font-light text-[20px] text-[#faf9ff]">Beyond Fashion 2025</p>
-              <p className="font-light text-[20px]" style={{ color: "rgba(189,240,254,0.87)" }}>
-                Fashion show interactive experience — Team 1
-              </p>
-            </div>
-            <Divider />
-            <div className="flex flex-col gap-[16px] max-w-[925px]">
-              <p className="font-['Inter_Tight',sans-serif] font-light text-[14px] leading-[1.5] text-[#faf9ff]">
-                Beyond Fashion is a student-led fashion show supporting local artists, with each team creating visuals for a designer or club. Our team partnered with Metals & Jewelry, using Cinema 4D, After Effects, and Resolume Arena to create motion visuals.
-              </p>
-              <p className="font-['Inter_Tight',sans-serif] font-light text-[14px] leading-[1.5] text-[#faf9ff]">
-                I also helped build a 20-foot interactive installation for the theme Off the Table: Vignelli, using TouchDesigner and a hidden camera to let hand movements control rotating Vignelli cups.
-              </p>
-              <p className="font-['Inter_Tight',sans-serif] font-light text-[14px] leading-[1.5] text-[#faf9ff]">
-                When the event was short-staffed, I volunteered backstage to help run the final show.
-              </p>
-            </div>
-            <Divider />
-            <Gallery>
-              <GalleryItem caption="Beyond Fashion Poster" width={170}>
-                <img src={beyondDefault} alt="Beyond Fashion default" loading="lazy" className="w-full h-full object-cover" />
-              </GalleryItem>
-              <GalleryItem caption="Volunteer Team" width={193}>
-                <img src={beyondHover} alt="Beyond Fashion hover" loading="lazy" className="w-full h-full object-cover" />
-              </GalleryItem>
-              <GalleryItem caption="Installation" width={450}>
-                <img src={beyondInstallation} alt="Beyond Fashion installation" loading="lazy" className="w-full h-full object-cover" />
-              </GalleryItem>
-              <GalleryItem caption="Test" width={171}>
-                <img src={beyondTest} alt="Beyond Fashion test" loading="lazy" className="w-full h-full object-cover" />
-              </GalleryItem>
-              <GalleryItem caption="Rehearsal" width={227}>
-                <img src={beyondRehearsal} alt="Beyond Fashion rehearsal" loading="lazy" className="w-full h-full object-cover" />
-              </GalleryItem>
-            </Gallery>
-          </section>
-
-          {/* Popcorn Stickers — SG */}
-          <section id="sg-stickers" className="flex flex-col gap-[16px] items-start w-full scroll-mt-[120px]">
-            <div className="flex flex-col font-['Inter_Tight',sans-serif] leading-[1.45]">
-              <p className="font-light text-[20px] text-[#faf9ff]">Popcorn Stickers</p>
-              <p className="font-light text-[20px]" style={{ color: "rgba(254,234,189,0.87)" }}>
-                Student Government — merch still in production :D
-              </p>
-            </div>
-            <Divider />
-            <Gallery>
-              <GalleryItem caption="Olivia's Macbook, 2025" width={400}>
-                <img src={sgOlivia} alt="Olivia's Macbook" loading="lazy" className="w-full h-full object-cover" />
-              </GalleryItem>
-              <GalleryItem caption="Gaby's Macbook, 2024" width={400}>
-                <img src={sgGaby} alt="Gaby's Macbook" loading="lazy" className="w-full h-full object-cover" />
-              </GalleryItem>
-              <GalleryItem caption="Phone pole, 2023" width={400}>
-                <img src={sgPole} alt="Phone pole" loading="lazy" className="w-full h-full object-cover" />
-              </GalleryItem>
-            </Gallery>
-          </section>
-
-
-          {/* Tian Airlines */}
-          <section id="tian-airlines" className="flex flex-col gap-[16px] items-start w-full scroll-mt-[120px]">
-            <div className="flex flex-col font-['Inter_Tight',sans-serif] leading-[1.45]">
-              <p className="font-light text-[20px] text-[#faf9ff]">Tian Airlines</p>
-              <p className="font-light text-[20px]" style={{ color: "rgba(189,210,254,0.87)" }}>
-                Figma interaction design
-              </p>
-            </div>
-            <Divider />
-            <div className="flex flex-col gap-[12px] max-w-[925px]">
-              <p className="font-['Inter_Tight',sans-serif] font-light text-[14px] leading-[1.5] text-[#faf9ff]">
-                Tian Airlines is a study on hi-fi prototyping and design systems within Figma. All the flight information works, with proper checking of time and potential departure / arrivals.
-              </p>
-              <button
-                onClick={() => setTianExpanded(!tianExpanded)}
-                className="flex items-center gap-[6px] text-[#908e99] hover:text-[#faf9ff] transition-colors duration-200 w-fit"
-              >
-                <span className="font-['Inter_Tight',sans-serif] font-light text-[12px] leading-[1.5]">How it works</span>
-                <svg
-                  width="14" height="14" viewBox="0 0 14 14" fill="none"
-                  className="transition-transform duration-300"
-                  style={{ transform: tianExpanded ? "rotate(180deg)" : "rotate(0deg)" }}
-                >
-                  <path d="M3 5l4 4 4-4" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </button>
-              <AnimatePresence initial={false}>
-                {tianExpanded && (
-                  <motion.div
-                    key="tian-detail"
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                    exit={{ opacity: 0, height: 0 }}
-                    transition={{ duration: 0.3, ease: "easeOut" }}
-                    className="overflow-hidden"
-                  >
-                    <p className="font-['Inter_Tight',sans-serif] font-light text-[14px] leading-[1.5] text-[#faf9ff]">
-                      The whole thing was built off of Figma "calculators", or frames switching back and forth to create a small listener. This was also a fun moment of play, and creating light / dark modes of colors and such. ChatGPT helped create a flight itinerary.
-                    </p>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-            <Divider />
-            <Gallery>
-              <GalleryItem caption="Booking flow" width={606}>
-                <LazyVideo src={tianBooking} className="w-full h-full object-cover" />
-              </GalleryItem>
-              <GalleryItem caption="Component system" width={606}>
-                <img src={tianComponentSystem} alt="Component system" loading="lazy" className="w-full h-full object-cover" />
-              </GalleryItem>
-              <GalleryItem caption="Calendar" width={606}>
-                <LazyVideo src={tianCalendar} className="w-full h-full object-cover" />
-              </GalleryItem>
-              <GalleryItem caption="Token system" width={606}>
-                <img src={tianTokenSystem} alt="Token system" loading="lazy" className="w-full h-full object-cover" />
-              </GalleryItem>
-              <GalleryItem caption="Forms" width={606}>
-                <LazyVideo src={tianForms} className="w-full h-full object-cover" />
-              </GalleryItem>
-              <GalleryItem caption="Military time" width={606}>
-                <img src={tianMilitaryTime} alt="Military time" loading="lazy" className="w-full h-full object-cover" />
-              </GalleryItem>
-              <GalleryItem caption="Prototyping" width={606}>
-                <img src={tianPrototyping} alt="Prototyping" loading="lazy" className="w-full h-full object-cover" />
-              </GalleryItem>
-              <GalleryItem caption="Variables" width={606}>
-                <img src={tianVariables} alt="Variables" loading="lazy" className="w-full h-full object-cover" />
-              </GalleryItem>
-            </Gallery>
-          </section>
-
-          {/* College of Science */}
-          <section id="college-of-science" className="flex flex-col gap-[16px] items-start w-full scroll-mt-[120px]">
-            <div className="flex flex-col font-['Inter_Tight',sans-serif] leading-[1.45]">
-              <p className="font-light text-[20px] text-[#faf9ff]">College of Science</p>
-              <p className="font-light text-[20px]" style={{ color: "rgba(189,254,210,0.87)" }}>
-                Multimedia work promoting COS — Print
-              </p>
-            </div>
-            <Divider />
-            <p className="font-['Inter_Tight',sans-serif] font-light text-[14px] leading-[1.5] text-[#faf9ff] max-w-[715px]">
-              Bates Study Center wanted a math-based logo and decals for the room to promote better resource awareness for students and math study habits. We did 3 windows and two doors, each with their own decal layouts.
-            </p>
-            <Divider />
-            <Gallery>
-              <GalleryItem caption="Window 1" width={447}>
-                <img src={batesReal1} alt="Bates installation 1" loading="lazy" className="w-full h-full object-cover" />
-              </GalleryItem>
-              <GalleryItem caption="Door 1" width={250}>
-                <img src={batesReal2} alt="Bates installation 2" loading="lazy" className="w-full h-full object-cover" />
-              </GalleryItem>
-              <GalleryItem caption="Dean Hudson / Mr. Andre" width={244}>
-                <img src={batesDean} alt="Bates dean card" loading="lazy" className="w-full h-full object-cover" />
-              </GalleryItem>
-              <GalleryItem caption="Illustrator file with annotations!" width={479}>
-                <img src={batesIllustrator} alt="Bates illustrator file" loading="lazy" className="w-full h-full object-cover" />
-              </GalleryItem>
-              <GalleryItem caption="InDesign file" width={241}>
-                <img src={batesIndesign} alt="Bates InDesign file" loading="lazy" className="w-full h-full object-cover" />
-              </GalleryItem>
-            </Gallery>
-          </section>
-
 
         </div>
-      </main>
+      </motion.main>
+
+      {/* z-47 sits below the fixed nav's z-50, so the nav stays fully opaque
+          and clickable (topmost hit-test wins) while the modal is open. */}
+      <AnimatePresence>
+        {openLab && LAB_MODALS[openLab] && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25, ease: "easeOut" }}
+            className="fixed inset-0 z-[47] flex items-center justify-center p-[24px]"
+            style={{ background: "rgba(0,0,0,0.7)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)", touchAction: "none" }}
+            onClick={() => setOpenLab(null)}
+          >
+            {(() => {
+              const Modal = LAB_MODALS[openLab];
+              return <Modal onClose={() => setOpenLab(null)} />;
+            })()}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

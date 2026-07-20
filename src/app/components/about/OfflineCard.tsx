@@ -1,4 +1,5 @@
 import { useState } from "react";
+import icons from "../../../assets/icons/icons.json";
 import star1 from "../../../assets/project/about/star_1.png";
 import star2 from "../../../assets/project/about/star_2.png";
 import star3 from "../../../assets/project/about/star_3.png";
@@ -79,22 +80,56 @@ export function OfflineMiniCard({ category, className }: { category: MiniCategor
   );
 }
 
-// All categories combined into a single click-through array — "I graduated!",
-// "I ran a marathon!", and "Picnic with professors" lead, per Figma order
+// All categories combined into a single click-through array — "Looking for
+// my next concert" leads, then "I graduated!", per user order
 const ORDERED_ITEMS: { src: string; title: string | null; isCafe?: boolean }[] = [
+  { src: eye1,   title: EYE_TITLES[0] },
   { src: star1,  title: STAR_TITLES[0] },
   { src: star2,  title: STAR_TITLES[1] },
   { src: heart1, title: HEART_TITLES[0] },
   { src: star3,  title: STAR_TITLES[2] },
   { src: heart2, title: HEART_TITLES[1] },
   { src: heart3, title: HEART_TITLES[2] },
-  { src: eye1,   title: EYE_TITLES[0] },
   { src: eye2,   title: EYE_TITLES[1] },
   { src: eye3,   title: EYE_TITLES[2], isCafe: true },
 ];
 const ALL_IMAGES = ORDERED_ITEMS.map((item) => item.src);
 const ALL_TITLES = ORDERED_ITEMS.map((item) => item.title);
 const CAFE_INDEX = ORDERED_ITEMS.findIndex((item) => item.isCafe);
+
+// Same pill treatment as SpotifyPlayer's skip-forward control — the whole
+// card is already click-through, but that wasn't obvious, so this makes the
+// affordance visible.
+function SkipButton({ onClick }: { onClick: () => void }) {
+  const [hovered, setHovered] = useState(false);
+  return (
+    <button
+      onClick={(e) => { e.stopPropagation(); onClick(); }}
+      onMouseEnter={(e) => { e.stopPropagation(); setHovered(true); }}
+      onMouseLeave={() => setHovered(false)}
+      className="absolute"
+      style={{
+        bottom: 12,
+        left: 12,
+        backdropFilter: "blur(3px)",
+        WebkitBackdropFilter: "blur(3px)",
+        background: hovered ? "rgba(218,216,227,0.75)" : "rgba(218,216,227,0.5)",
+        borderRadius: "100px",
+        padding: "10px",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        border: "none",
+        cursor: "pointer",
+        transition: "background 0.15s ease",
+      }}
+    >
+      <svg width="16" height="16" viewBox={icons.media["skip-forward"].viewBox} fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d={icons.media["skip-forward"].paths[0].d} stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    </button>
+  );
+}
 
 export default function OfflineCard() {
   const [hovered, setHovered]         = useState(false);
@@ -180,6 +215,8 @@ export default function OfflineCard() {
           {renderLabel()}
         </p>
       </div>
+
+      <SkipButton onClick={handleCardClick} />
     </div>
   );
 }

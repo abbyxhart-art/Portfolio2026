@@ -53,12 +53,11 @@ const linkColor = (isActive: boolean) => ({
   transition: "color 0.2s",
 });
 
-export default function MainNavigation({ scrolledDown }: { scrolledDown?: boolean }) {
+export default function MainNavigation() {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const isHome = pathname === "/";
   const home = icons.navigation.home;
-  void scrolledDown; // static design: no scroll variant
 
   const expanded = !isHome;
   const [homePillHovered, setHomePillHovered] = useState(false);

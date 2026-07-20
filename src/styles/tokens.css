@@ -104,7 +104,7 @@
   --spacing-layout-page-padding: 16px;
   --spacing-layout-section-gap: 80px;
   --typography-body-default-font-family: 'Inter Tight', sans-serif;
-  --typography-body-default-font-size: 17px;
+  --typography-body-default-font-size: 16px;
   --typography-body-default-font-weight: 380;
   --typography-body-default-line-height: 1.65;
   --typography-body-large-font-family: 'Inter Tight', sans-serif;
@@ -114,7 +114,7 @@
   --typography-body-small-font-family: 'Inter Tight', sans-serif;
   --typography-body-small-font-size: 14px;
   --typography-body-small-font-weight: 380;
-  --typography-body-small-line-height: 1.5;
+  --typography-body-small-line-height: 1.75;
   --typography-display-hero-font-family: 'Inter Tight', sans-serif;
   --typography-display-hero-font-size: 40px;
   --typography-display-hero-font-weight: 380;

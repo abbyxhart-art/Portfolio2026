@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavEntrance } from "../hooks/useNavEntrance";
 import { motion, useScroll, useTransform } from "@/lib/motion";
-import CasestudyNavigation from "../components/casestudy/CasestudyNavigation";
 import UpNext from "../components/casestudy/UpNext";
 import SectionNavigation from "../components/casestudy/SectionNavigation";
 import CasestudySectionHeader from "../components/casestudy/CasestudySectionHeader";
@@ -72,7 +71,6 @@ export default function CasestudyGentleMonster() {
 
   return (
     <div className="relative min-h-screen bg-background overflow-x-clip">
-      <CasestudyNavigation title="Gentle Monster" />
       <SectionNavigation sections={GM_SECTIONS} title="Gentle Monster Casestudy Navigation" />
 
       <motion.div

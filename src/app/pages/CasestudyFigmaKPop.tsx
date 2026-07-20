@@ -1,7 +1,6 @@
 import { useEffect, useRef } from "react";
 import { useNavEntrance } from "../hooks/useNavEntrance";
 import { motion, useScroll, useTransform, useMotionValue } from "@/lib/motion";
-import CasestudyNavigation from "../components/casestudy/CasestudyNavigation";
 import UpNext from "../components/casestudy/UpNext";
 import SectionNavigation from "../components/casestudy/SectionNavigation";
 import CasestudySectionHeader from "../components/casestudy/CasestudySectionHeader";
@@ -101,7 +100,6 @@ export default function CasestudyFigmaKPop() {
 
   return (
     <div className="relative min-h-screen bg-background overflow-x-clip">
-      <CasestudyNavigation title="Figma K-Pop" />
       <SectionNavigation sections={KPOP_SECTIONS} title="Figma K-Pop Casestudy Navigation" />
 
       <motion.div

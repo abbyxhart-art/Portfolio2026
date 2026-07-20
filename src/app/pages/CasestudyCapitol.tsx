@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavEntrance } from "../hooks/useNavEntrance";
 import { motion, useScroll, useTransform } from "@/lib/motion";
-import CasestudyNavigation from "../components/casestudy/CasestudyNavigation";
 import UpNext from "../components/casestudy/UpNext";
 import SectionNavigation from "../components/casestudy/SectionNavigation";
 import CasestudySectionHeader from "../components/casestudy/CasestudySectionHeader";
@@ -13,7 +12,8 @@ const imgTemplate1 = new URL("../../assets/project/capitol/5.5x8.5template_1.png
 const imgPrintPacket = new URL("../../assets/project/capitol/printpacket.png", import.meta.url).href;
 const imgBrochure = new URL("../../assets/project/capitol/8.5x22 brochure.png", import.meta.url).href;
 const imgTemplate2 = new URL("../../assets/project/capitol/5.5x8.5template_2.png", import.meta.url).href;
-const vidBranding = new URL("../../assets/project/capitol/branding_1200x600_30fps.mp4", import.meta.url).href;
+const imgBrandingBook = new URL("../../assets/project/capitol/branding-book.png", import.meta.url).href;
+const imgWebsite = new URL("../../assets/project/capitol/website.jpg", import.meta.url).href;
 const imgPostCards = new URL("../../assets/project/capitol/5x7postcards.png", import.meta.url).href;
 const imgPages8x11 = new URL("../../assets/project/capitol/8.5x11pages.png", import.meta.url).href;
 const imgLetterhead = new URL("../../assets/project/capitol/letterhead.png", import.meta.url).href;
@@ -64,7 +64,6 @@ export default function CasestudyCapitol() {
 
   return (
     <div className="relative min-h-screen bg-background overflow-x-clip" style={{ fontFamily: "'Inter Tight', sans-serif", color: "#FAF9FF" }}>
-      <CasestudyNavigation title="CAPITOL" />
       <SectionNavigation sections={CAPITOL_SECTIONS} title="CAPITOL Casestudy Navigation" />
 
 
@@ -148,23 +147,7 @@ export default function CasestudyCapitol() {
                 A full brand experience that's consistent at every touchpoint.
               </p>
 
-              {/* Flow 1 — Brand + Guidelines */}
-              <div className="flex flex-col gap-[24px] items-start w-full">
-                <div className="flex flex-col gap-[16px] items-start w-full">
-                  <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[20px] text-[#908e99] text-[14px]">Brand + Guidelines</p>
-                  <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.3] text-[#faf9ff] text-[24px]">The document</p>
-                  <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.65] text-[#908e99] text-[17px] w-full">
-                    The brand guidelines doc was the backbone of everything. It defined every decision — color, type, spacing — before a single layout was touched.
-                  </p>
-                </div>
-                <div className="aspect-[2/1] rounded-[4px] w-full overflow-hidden bg-[#2c2c2c]">
-                  <video
-                    autoPlay loop muted playsInline className="w-full h-full object-cover" src={vidBranding}
-                  />
-                </div>
-              </div>
-
-              {/* Flow 2 — Print */}
+              {/* Flow 1 — Print */}
               <div className="flex flex-col gap-[24px] items-start w-full">
                 <div className="flex flex-col gap-[16px] items-start w-full">
                   <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[20px] text-[#908e99] text-[14px]">Print</p>
@@ -178,7 +161,7 @@ export default function CasestudyCapitol() {
                 </div>
               </div>
 
-              {/* Flow 3 — Site */}
+              {/* Flow 2 — Site */}
               <div className="flex flex-col gap-[24px] items-start w-full">
                 <div className="flex flex-col gap-[16px] items-start w-full">
                   <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[20px] text-[#908e99] text-[14px]">Site</p>
@@ -187,7 +170,23 @@ export default function CasestudyCapitol() {
                     Designed over a span of 3 weeks.
                   </p>
                 </div>
-                <div className="aspect-[2/1] rounded-[4px] w-full overflow-hidden bg-[#2c2c2c]" />
+                <div className="aspect-[2/1] rounded-[4px] w-full overflow-hidden bg-[#2c2c2c]">
+                  <img src={imgWebsite} alt="Capitol website" className="w-full h-full object-cover" />
+                </div>
+              </div>
+
+              {/* Flow 3 — Brand + Guidelines */}
+              <div className="flex flex-col gap-[24px] items-start w-full">
+                <div className="flex flex-col gap-[16px] items-start w-full">
+                  <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[20px] text-[#908e99] text-[14px]">Brand + Guidelines</p>
+                  <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.3] text-[#faf9ff] text-[24px]">The document</p>
+                  <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.65] text-[#908e99] text-[17px] w-full">
+                    The brand guidelines doc was the backbone of everything. It defined every decision — color, type, spacing — before a single layout was touched.
+                  </p>
+                </div>
+                <div className="aspect-[2/1] rounded-[4px] w-full overflow-hidden bg-[#2c2c2c]">
+                  <img src={imgBrandingBook} alt="Brand guidelines document" className="w-full h-full object-cover" />
+                </div>
               </div>
             </div>
           </div>

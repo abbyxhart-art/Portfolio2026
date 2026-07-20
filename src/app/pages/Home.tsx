@@ -12,6 +12,7 @@ import capitolVideo from "../../assets/project/capitol/Demo_1920x960_V1.mp4";
 
 import { CASE_STUDIES } from "../data/casestudies";
 import MobileCasestudyNav from "../components/layout/MobileCasestudyNav";
+import { NAV_TOP_REST, NAV_TOP_SCROLLED } from "../navPosition";
 
 const VISITED_KEY = "visited_casestudies";
 
@@ -251,7 +252,7 @@ function AnimatedNamePlate({ size }: { size: number }) {
   );
 }
 
-function LinkedInButton({ show }: { show: boolean }) {
+function LinkedInButton({ show, navScrolled }: { show: boolean; navScrolled: boolean }) {
   const [hovered, setHovered] = useState(false);
 
   useEffect(() => {
@@ -288,7 +289,11 @@ function LinkedInButton({ show }: { show: boolean }) {
       animate={{ opacity: show ? 1 : 0, y: show ? 0 : -16 }}
       transition={{ duration: 1.6, ease: [0.33, 0, 0, 1], delay: show ? 0.1 : 0 }}
       className="hidden md:flex fixed right-[32px] z-[100] items-center gap-[4px]"
-      style={{ top: "calc(env(safe-area-inset-top) + 16px)", height: 40 }}
+      style={{
+        top: `calc(env(safe-area-inset-top) + ${navScrolled ? NAV_TOP_SCROLLED : NAV_TOP_REST}px)`,
+        height: 40,
+        transition: "top 0.4s cubic-bezier(0.33,0,0,1)",
+      }}
     >
       {/* Status ticker — 5402:1165 */}
       <div
@@ -612,6 +617,7 @@ export default function Home() {
   const [firstCardDone, setFirstCardDone] = useState(false);
   const [cardFullyDone, setCardFullyDone] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [navScrolled, setNavScrolled] = useState(false);
   const [cardShrunk, setCardShrunk] = useState(false);
   const [firstCardStaysHovered, setFirstCardStaysHovered] = useState(true);
 
@@ -620,6 +626,7 @@ export default function Home() {
     const handleScroll = () => {
       const y = window.scrollY;
       setScrolled(y > 10 && y > lastScrollY);
+      setNavScrolled(y > 10);
       setCardShrunk(y > 50);
       lastScrollY = y;
     };
@@ -674,7 +681,7 @@ export default function Home() {
         }}
       />
 
-      <LinkedInButton show={firstCardDone} />
+      <LinkedInButton show={firstCardDone} navScrolled={navScrolled} />
 
       {/* Name plate — desktop only: pinned top-left. On mobile it renders
           inline further down, scrolling with the rest of the page instead. */}
@@ -685,8 +692,13 @@ export default function Home() {
           y: firstCardDone ? 0 : -16,
         }}
         transition={{ duration: 1.6, ease: [0.33, 0, 0, 1], delay: firstCardDone ? 0.1 : 0 }}
-        className="hidden md:flex fixed md:left-[32px] md:top-[calc(env(safe-area-inset-top)+28px)] z-50 flex-row items-center pointer-events-none"
-        style={{ fontFamily: "var(--text-font/default, 'Inter Tight', sans-serif)", color: "var(--color-text-primary)" }}
+        className="hidden md:flex fixed md:left-[32px] z-50 flex-row items-center pointer-events-none"
+        style={{
+          top: `calc(env(safe-area-inset-top) + ${(navScrolled ? NAV_TOP_SCROLLED : NAV_TOP_REST) + 12}px)`,
+          fontFamily: "var(--text-font/default, 'Inter Tight', sans-serif)",
+          color: "var(--color-text-primary)",
+          transition: "top 0.4s cubic-bezier(0.33,0,0,1)",
+        }}
       >
         <AnimatedNamePlate size={14} />
       </motion.div>
