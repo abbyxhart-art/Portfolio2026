@@ -1,36 +1,18 @@
 import { useEffect, useRef, useState } from "react";
 
-type Point = { x: number; y: number; t: number };
-
-const FADE_MS = 500;
-const MAX_PTS = 50;
-const DOT_R   = 8;
-
-function hexToRGBA(hex: string, alpha: number): string {
-  const r = parseInt(hex.slice(1, 3), 16);
-  const g = parseInt(hex.slice(3, 5), 16);
-  const b = parseInt(hex.slice(5, 7), 16);
-  return `rgba(${r},${g},${b},${alpha})`;
-}
-
-function buildArrowImage(strokeColor: string): HTMLImageElement {
-  const safe = strokeColor.replace(/#/g, "%23");
-  const svg = `<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3.75 9H14.25M9 3.75L14.25 9L9 14.25" stroke="${safe}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
-  const img = new Image();
-  img.src = `data:image/svg+xml,${svg}`;
-  return img;
-}
+const DOT_R       = 5;
+const RING_R      = 15.5;
+const RING_STROKE = 1;
+const RING_EASE   = 0.15;
 
 export default function CustomCursor() {
-  const canvasRef          = useRef<HTMLCanvasElement>(null);
-  const pointsRef          = useRef<Point[]>([]);
-  const posRef             = useRef({ x: -100, y: -100 });
-  const visibleRef         = useRef(false);
-  const rafRef             = useRef(0);
-  const scaleRef           = useRef(1);
-  const targetScaleRef     = useRef(1);
-  const arrowImgRef        = useRef<HTMLImageElement | null>(null);
-  const lastArrowColorRef  = useRef<string>("");
+  const canvasRef      = useRef<HTMLCanvasElement>(null);
+  const posRef         = useRef({ x: -100, y: -100 });
+  const ringPosRef     = useRef({ x: -100, y: -100 });
+  const visibleRef     = useRef(false);
+  const rafRef         = useRef(0);
+  const scaleRef       = useRef(1);
+  const targetScaleRef = useRef(1);
 
   const [isMobile, setIsMobile] = useState(false);
 
@@ -60,15 +42,10 @@ export default function CustomCursor() {
     const onMove = (e: MouseEvent) => {
       posRef.current = { x: e.clientX, y: e.clientY };
       visibleRef.current = true;
-      const now = Date.now();
-      pointsRef.current.push({ x: e.clientX, y: e.clientY, t: now });
-      if (pointsRef.current.length > MAX_PTS) {
-        pointsRef.current = pointsRef.current.slice(-MAX_PTS);
-      }
     };
-    const onLeave  = () => { visibleRef.current = false; };
-    const onEnter  = () => { visibleRef.current = true; };
-    const onScale  = (e: Event) => { targetScaleRef.current = (e as CustomEvent<number>).detail; };
+    const onLeave = () => { visibleRef.current = false; };
+    const onEnter = () => { visibleRef.current = true; };
+    const onScale = (e: Event) => { targetScaleRef.current = (e as CustomEvent<number>).detail; };
 
     document.addEventListener("mousemove",    onMove);
     document.addEventListener("mouseleave",   onLeave);
@@ -76,67 +53,36 @@ export default function CustomCursor() {
     document.addEventListener("cursor:scale", onScale);
 
     const draw = () => {
-      const now   = Date.now();
       const style = getComputedStyle(document.documentElement);
+      const color = style.getPropertyValue("--color-text-primary").trim() || "#FAF9FF";
 
-      const dotColor   = style.getPropertyValue("--color-text-primary").trim()   || "#FAF9FF";
-      const arrowColor = style.getPropertyValue("--color-surface-primary").trim() || "#161617";
-
-      // Rebuild arrow SVG only when surface-primary changes (theme switch)
-      if (arrowColor !== lastArrowColorRef.current) {
-        lastArrowColorRef.current = arrowColor;
-        arrowImgRef.current = buildArrowImage(arrowColor);
-      }
-
-      pointsRef.current = pointsRef.current.filter(p => now - p.t < FADE_MS);
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      const pts = pointsRef.current;
-
-      // Tapered trail
-      if (pts.length >= 2) {
-        const n = pts.length;
-        ctx.lineCap  = "round";
-        ctx.lineJoin = "round";
-
-        for (let i = 1; i < n; i++) {
-          const t     = i / (n - 1);
-          const age   = (now - pts[i].t) / FADE_MS;
-          const alpha = Math.pow(Math.max(0, 1 - age), 2) * 0.65 * t;
-          const width = Math.max(0.5, DOT_R * 2 * t);
-
-          ctx.beginPath();
-          ctx.moveTo(pts[i - 1].x, pts[i - 1].y);
-          ctx.lineTo(pts[i].x,     pts[i].y);
-          ctx.strokeStyle = hexToRGBA(dotColor, alpha);
-          ctx.lineWidth   = width;
-          ctx.stroke();
-        }
-      }
-
       scaleRef.current += (targetScaleRef.current - scaleRef.current) * 0.12;
+      ringPosRef.current.x += (posRef.current.x - ringPosRef.current.x) * RING_EASE;
+      ringPosRef.current.y += (posRef.current.y - ringPosRef.current.y) * RING_EASE;
 
       if (visibleRef.current) {
         const { x, y } = posRef.current;
-        const r = DOT_R * scaleRef.current;
+        const { x: rx, y: ry } = ringPosRef.current;
+        const scale = scaleRef.current;
 
-        // Dot — text/primary
+        // Ring — floats behind the dot with an eased delay
         ctx.save();
         ctx.beginPath();
-        ctx.arc(x, y, r, 0, Math.PI * 2);
-        ctx.fillStyle = dotColor;
-        ctx.fill();
+        ctx.arc(rx, ry, RING_R * scale, 0, Math.PI * 2);
+        ctx.strokeStyle = color;
+        ctx.lineWidth   = RING_STROKE;
+        ctx.stroke();
         ctx.restore();
 
-        // Arrow icon — surface/primary, fades in as cursor grows
-        const arrowOpacity = Math.max(0, Math.min(1, (scaleRef.current - 1) / 1.5));
-        if (arrowOpacity > 0.01 && arrowImgRef.current?.complete) {
-          const size = r * 1.1;
-          ctx.save();
-          ctx.globalAlpha = arrowOpacity;
-          ctx.drawImage(arrowImgRef.current, x - size / 2, y - size / 2, size, size);
-          ctx.restore();
-        }
+        // Dot — tracks the cursor exactly
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(x, y, DOT_R * scale, 0, Math.PI * 2);
+        ctx.fillStyle = color;
+        ctx.fill();
+        ctx.restore();
       }
 
       rafRef.current = requestAnimationFrame(draw);
