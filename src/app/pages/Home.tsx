@@ -764,20 +764,15 @@ export default function Home() {
 
         {/* Text block */}
         <div className="flex flex-col items-center gap-[42px]" style={{ color: "var(--color-text-primary)" }}>
-          {/* <p className="text-[14px] font-[300] lowercase text-center" style={{ lineHeight: 0.7 }}>
-            creative technologist / product designer
-          </p>
-          <p className="text-[50px] font-[350] text-center" style={{ lineHeight: 0.7 }}>
-            Abby Hart
-          </p> */}
           <p className="text-[22px] md:text-[28px] font-[300] text-center" style={{ lineHeight: 1.5 }}>
-            A designer who engineers <br />My work is product design <br className="md:hidden" />and creative technology
+           Focused on craft and execution <br />My work is product design <br className="md:hidden" />and creative technology
           </p>
         </div>
 
         {/* Experience */}
         <div className="flex flex-col gap-[8px] items-center">
-          <p className="text-[15px] md:text-[17px] font-[300] text-center md:whitespace-nowrap" style={{ color: "var(--color-text-secondary)", lineHeight: 1.4 }}>
+         
+          <p className="text-[15px] md:text-[16px] font-[300] text-center md:whitespace-nowrap" style={{ color: "var(--color-text-secondary)", lineHeight: 1.4 }}>
             built community interfaces w/ <GlowLink path="/casestudy/figma-rit">Figma Edu</GlowLink><br className="md:hidden" /> + relaunched <GlowLink path="/casestudy/capitol-aluminum">Capitol</GlowLink>'s brand identity
           </p>
         </div>
