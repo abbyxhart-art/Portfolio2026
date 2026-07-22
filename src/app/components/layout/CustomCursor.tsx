@@ -90,7 +90,13 @@ function CursorViewHint({
       {/* Cursor — 5517:1721 */}
       <motion.div
         className="absolute top-0 left-0 overflow-clip"
-        style={{ borderStyle: "solid", borderColor: "rgba(174,171,185,0.15)", borderRadius: 24 }}
+        style={{
+          borderStyle: "solid",
+          borderColor: "rgba(174,171,185,0.15)",
+          borderRadius: 24,
+          backdropFilter: "blur(12px)",
+          WebkitBackdropFilter: "blur(12px)",
+        }}
         initial={{ borderWidth: 0, height: 16, width: 16, background: "#FAF9FF" }}
         animate={active ? PILL_OPEN_ANIMATE : PILL_CLOSE_ANIMATE}
         transition={active ? PILL_OPEN_TRANSITION : PILL_CLOSE_TRANSITION}
