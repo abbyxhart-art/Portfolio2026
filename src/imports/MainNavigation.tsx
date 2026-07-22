@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router";
 import { motion } from "@/lib/motion";
 import icons from "../assets/icons/icons.json";
@@ -53,6 +53,16 @@ const linkColor = (isActive: boolean) => ({
   transition: "color 0.2s",
 });
 
+// Lab/About sit in a flex row with this as both the gap between them and
+// the padding to the container's right edge, so those two gaps are exactly
+// equal by construction regardless of each label's actual glyph width (no
+// more guessing at per-label right-anchors). The pill-to-Lab gap is made to
+// match too by measuring the row's real rendered width and sizing the
+// expanded container around it (below), instead of a hardcoded magic width.
+const NAV_TRAILING_GAP = 16;
+// Pill Home's right edge when expanded: x: 6 + width: 96 (see below).
+const HOME_PILL_RIGHT_EDGE = 102;
+
 export default function MainNavigation() {
   const navigate = useNavigate();
   const { pathname } = useLocation();
@@ -70,6 +80,23 @@ export default function MainNavigation() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [navigate]);
 
+  // Real rendered width of the Lab/About row — lets the expanded container
+  // size itself around it so the pill-to-Lab gap comes out to
+  // NAV_TRAILING_GAP too, matching the other two exactly (see constants
+  // above), without hardcoding a width tuned to one specific pair of words.
+  const trailingRef = useRef<HTMLDivElement>(null);
+  const [trailingWidth, setTrailingWidth] = useState(90);
+  useLayoutEffect(() => {
+    const el = trailingRef.current;
+    if (!el) return;
+    const update = () => setTrailingWidth(el.getBoundingClientRect().width);
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+  const expandedWidth = HOME_PILL_RIGHT_EDGE + NAV_TRAILING_GAP * 2 + trailingWidth;
+
   return (
     <div className="hidden md:flex justify-center w-full">
       <motion.div
@@ -80,7 +107,7 @@ export default function MainNavigation() {
           border: "1px solid var(--color-border-default)",
         }}
         initial={false}
-        animate={{ width: expanded ? 209.72 : 159.72, height: expanded ? 44 : 40 }}
+        animate={{ width: expanded ? expandedWidth : 159.72, height: expanded ? 44 : 40 }}
         transition={{
           // Collapse (5420:3595): single full-duration ease, no hold —
           // unlike expand's hold-then-ease split. Figma's collapse track
@@ -263,45 +290,38 @@ export default function MainNavigation() {
           </NavLink>
         </motion.span>
 
-        {/* About — 5402:982, right-anchored: rides the container's width
-            animation exactly as in Figma (no motion track of its own).
-            right: 72.22 (was 112.5) — recomputed so About's absolute
-            position is unchanged from the "The Booth" layout. */}
-        <NavLink
-          to="/about"
-          className="absolute text-center whitespace-nowrap no-underline"
-          style={({ isActive }) => ({
-            ...LABEL,
-            right: 72.22,
-            top: "calc(50% - 10px)",
-            translate: "50% 0",
-            ...linkColor(isActive),
-          })}
-          onMouseEnter={e => { e.currentTarget.style.color = "var(--color-text-primary)"; }}
-          onMouseLeave={e => { e.currentTarget.style.color = linkColor(pathname === "/about").color; }}
+        {/* Lab/About — 5402:983/5402:982 (order: Home / Lab / About), laid
+            out as a flex row instead of individually right-anchored labels.
+            Each NavLink is a plain flex child sized to its own text (no more
+            fixed-width boxes wider than the label), and the shared `gap`
+            plus the row's own `right` padding make the Lab↔About gap and
+            the About↔edge gap exactly NAV_TRAILING_GAP each — the third
+            (pill↔Lab) gap is matched by sizing the container around this
+            row's measured width above. */}
+        <div
+          ref={trailingRef}
+          className="absolute flex items-center whitespace-nowrap"
+          style={{ right: NAV_TRAILING_GAP, top: "calc(50% - 10px)", gap: NAV_TRAILING_GAP }}
         >
-          About
-        </NavLink>
-
-        {/* Lab — 5402:983 (was "The Booth"), right-anchored like About.
-            right: 26.36 (was 46.5) — recomputed from the real glyph width of
-            "Lab" so it keeps the same ~16.56px gap from About and ~15.2px
-            gap from the container's right edge. */}
-        <NavLink
-          to="/lab"
-          className="absolute text-center whitespace-nowrap no-underline"
-          style={({ isActive }) => ({
-            ...LABEL,
-            right: 26.36,
-            top: "calc(50% - 10px)",
-            translate: "50% 0",
-            ...linkColor(isActive),
-          })}
-          onMouseEnter={e => { e.currentTarget.style.color = "var(--color-text-primary)"; }}
-          onMouseLeave={e => { e.currentTarget.style.color = linkColor(pathname === "/lab").color; }}
-        >
-          Lab
-        </NavLink>
+          <NavLink
+            to="/lab"
+            className="no-underline whitespace-nowrap"
+            style={({ isActive }) => ({ ...LABEL, ...linkColor(isActive) })}
+            onMouseEnter={e => (e.currentTarget.style.color = "var(--color-text-primary)")}
+            onMouseLeave={e => (e.currentTarget.style.color = linkColor(pathname === "/lab").color)}
+          >
+            Lab
+          </NavLink>
+          <NavLink
+            to="/about"
+            className="no-underline whitespace-nowrap"
+            style={({ isActive }) => ({ ...LABEL, ...linkColor(isActive) })}
+            onMouseEnter={e => (e.currentTarget.style.color = "var(--color-text-primary)")}
+            onMouseLeave={e => (e.currentTarget.style.color = linkColor(pathname === "/about").color)}
+          >
+            About
+          </NavLink>
+        </div>
       </motion.div>
     </div>
   );

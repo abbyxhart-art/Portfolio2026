@@ -203,8 +203,8 @@ function LabCard({
   return (
     <button
       onClick={onClick}
-      onMouseEnter={() => document.dispatchEvent(new CustomEvent("cursor:scale", { detail: 2.5 }))}
-      onMouseLeave={() => document.dispatchEvent(new CustomEvent("cursor:scale", { detail: 1 }))}
+      onMouseEnter={() => document.dispatchEvent(new CustomEvent("cursor:variant", { detail: "open" }))}
+      onMouseLeave={() => document.dispatchEvent(new CustomEvent("cursor:variant", { detail: "default" }))}
       className="relative aspect-square rounded-[16px] overflow-hidden shrink-0 text-left border border-solid"
       style={{ background: background ?? "var(--color-surface-fill4)", borderColor: "var(--color-border-default)" }}
     >

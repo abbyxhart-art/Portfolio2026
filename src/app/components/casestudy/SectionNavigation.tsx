@@ -67,6 +67,30 @@ const BACK_TO_TOP_X_EASE: [number, number, number, number] = [0.132, 0, 0.2, 1];
 // which ended up overlapping/covering the last row(s).
 const BACK_TO_TOP_CLEARANCE = 56;
 
+// Desktop toggle pill's mount entrance — keyframe times/eases lifted
+// verbatim from the Figma prototype "Menu" (node 5325:2805, inside frame
+// 5327:2981), a 2s loop Figma uses for demo purposes; here it plays once as
+// a normal initial→animate tween each time the pill mounts (AnimatePresence
+// remounts it whenever desktopVisible flips true).
+const TOGGLE_WIDTH_DELAY = 0.288;
+const TOGGLE_WIDTH_DURATION = 0.452;
+// Height (37 -> 42) has no hold segment in Figma's own track — it eases
+// linearly for the whole span from mount to the point width finishes, unlike
+// width/border which hold briefly first.
+const TOGGLE_HEIGHT_DURATION = 0.740;
+// Border can't be a Framer animate target (var(--color-border-default)
+// doesn't tween — see `entered`/`desktopBorderEntered`), so these numbers
+// drive a plain CSS transition instead.
+const TOGGLE_BORDER_DELAY = 0.173;
+const TOGGLE_BORDER_DURATION = 0.316;
+// Inline "Pill Back to Top" (node 5511:2086) — fades and scales in well
+// after the pill itself starts expanding, finishing at the same moment the
+// width tween does.
+const BACK_TO_TOP_SCALE_DELAY = 0.428;
+const BACK_TO_TOP_SCALE_DURATION = 0.312;
+const BACK_TO_TOP_OPACITY_DELAY = 0.530;
+const BACK_TO_TOP_OPACITY_DURATION = 0.210;
+
 const cssEase = ([x1, y1, x2, y2]: [number, number, number, number]) => `cubic-bezier(${x1},${y1},${x2},${y2})`;
 
 const RING_R = 10;
@@ -76,9 +100,16 @@ export default function SectionNavigation({ sections, title }: { sections: MiniM
   const isMobile = useIsMobile();
   const lenis = useLenis();
   const [visible, setVisible] = useState(false);
+  // Desktop's own visibility/position signal — kept separate from `visible`
+  // (which also gates the mobile sheet and, via the effect below, force-closes
+  // isOpen) so that scrolling near the page bottom doesn't close the open
+  // desktop dropdown. Instead of hiding, the pill lifts clear of the footer.
+  const [desktopVisible, setDesktopVisible] = useState(false);
+  const [desktopBottomLift, setDesktopBottomLift] = useState(0);
   const [activeIndex, setActiveIndex] = useState(0);
   const [progress, setProgress] = useState(0);
   const [hovered, setHovered] = useState(false);
+  const [backToTopHovered, setBackToTopHovered] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [hoveredRow, setHoveredRow] = useState<number | null>(null);
   // Theme-aware colors (CSS variables) can't be Framer `animate` targets —
@@ -88,6 +119,12 @@ export default function SectionNavigation({ sections, title }: { sections: MiniM
   // it's driven as a plain CSS transition instead, flipped on right after
   // mount to match Figma's delay/duration for that fade.
   const [entered, setEntered] = useState(false);
+  // Desktop-only mirror of `entered`, gated on `desktopVisible` instead of
+  // `visible` — the toggle pill's border can't be a Framer animate target
+  // (var(--color-border-default) doesn't tween, see note above), so it fades
+  // in via a plain CSS transition flipped on after the same delay Figma's
+  // "Menu" border-color track uses (see TOGGLE_BORDER_DELAY below).
+  const [desktopBorderEntered, setDesktopBorderEntered] = useState(false);
   // Width/radii on the mobile pill are driven by the one-shot mount entrance
   // (keyframe arrays) until it finishes, then handed over to plain isOpen-based
   // targets for the open/close sheet transition — both need that property.
@@ -102,7 +139,10 @@ export default function SectionNavigation({ sections, title }: { sections: MiniM
 
   useEffect(() => {
     if (!visible) {
-      setIsOpen(false);
+      // Only mobile's sheet should force-close on this signal — desktop's
+      // dropdown has its own visibility (desktopVisible) that stays true
+      // near the bottom of the page, so it never hits this branch while open.
+      if (isMobile) setIsOpen(false);
       setEntered(false);
       setEntranceDone(false);
       return;
@@ -110,7 +150,16 @@ export default function SectionNavigation({ sections, title }: { sections: MiniM
     setEntered(true);
     const t = setTimeout(() => setEntranceDone(true), ENTER_DURATION * 1000);
     return () => clearTimeout(t);
-  }, [visible]);
+  }, [visible, isMobile]);
+
+  useEffect(() => {
+    if (!desktopVisible) {
+      setDesktopBorderEntered(false);
+      return;
+    }
+    const t = setTimeout(() => setDesktopBorderEntered(true), TOGGLE_BORDER_DELAY * 1000);
+    return () => clearTimeout(t);
+  }, [desktopVisible]);
 
   // Full-bleed open sheet needs the real viewport size (Framer can't tween a
   // px value to "100vw"/"100vh" — units must match on both ends of the
@@ -148,8 +197,17 @@ export default function SectionNavigation({ sections, title }: { sections: MiniM
   useEffect(() => {
     const onScroll = () => {
       const scrollY = window.scrollY;
-      const nearBottom = scrollY + window.innerHeight >= document.documentElement.scrollHeight - 120;
+      const bottomMargin = 120;
+      const nearBottom = scrollY + window.innerHeight >= document.documentElement.scrollHeight - bottomMargin;
       setVisible(scrollY > 200 && !nearBottom);
+
+      // Desktop: never hide for being near the bottom (that would force-close
+      // an open dropdown) — instead lift the pill by however far past the
+      // nearBottom line the viewport has scrolled, so it clears the footer
+      // while staying mounted, visible, and open.
+      setDesktopVisible(scrollY > 200);
+      const overshoot = scrollY + window.innerHeight - (document.documentElement.scrollHeight - bottomMargin);
+      setDesktopBottomLift(Math.max(0, overshoot));
 
       for (let i = sections.length - 1; i >= 0; i--) {
         const el = document.getElementById(sections[i].id);
@@ -212,6 +270,18 @@ export default function SectionNavigation({ sections, title }: { sections: MiniM
     window.scrollTo({ top: 0, behavior: "smooth" });
     setIsOpen(false);
   };
+
+  // Desktop-only "Back to Top" outside button carries a Shift+E hint chip
+  // (Figma node 5511:1972) mirroring MainNavigation's real Shift+A shortcut —
+  // wired here so the hint isn't purely decorative.
+  useEffect(() => {
+    if (isMobile) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.shiftKey && e.key === "E") scrollToTop();
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isMobile]);
 
   const statusRing = (
     <div style={{ position: "relative", flexShrink: 0, width: 24, height: 24 }}>
@@ -694,202 +764,245 @@ export default function SectionNavigation({ sections, title }: { sections: MiniM
   }
 
   // ── Desktop ──────────────────────────────────────────────────────────────
+  // Popup nav (Figma node 5333:3511): a single horizontal pill-row of links,
+  // always centered above the toggle pill regardless of how many sections it
+  // holds — sized to its content (not a fixed Figma px width, since that was
+  // authored against one specific 4-link case study) and anchored via a
+  // constant -50% x offset rather than layout centering, so it never shifts
+  // the toggle pill's position as it opens/closes or grows/shrinks.
   const panelInner = (
     <>
-      <button
-        onClick={scrollToTop}
-        style={{
-          fontFamily: "'Inter Tight', sans-serif",
-          fontSize: 12,
-          fontWeight: 400,
-          color: "var(--color-text-secondary)",
-          background: "none",
-          border: "none",
-          cursor: "pointer",
-          padding: 0,
-          marginBottom: 16,
-          display: "block",
-          width: "100%",
-          textAlign: "left",
-          transition: "color 150ms ease",
-        }}
-        onMouseEnter={e => (e.currentTarget.style.color = "var(--color-text-primary)")}
-        onMouseLeave={e => (e.currentTarget.style.color = "var(--color-text-secondary)")}
-      >
-        Back To Top
-      </button>
-      <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-        {sections.map((s, i) => {
-          const isCurrent = i === activeIndex;
-          const isHov = hoveredRow === i;
-          return (
-            <button
-              key={s.id}
-              onClick={() => scrollToSection(s.id)}
-              onMouseEnter={() => setHoveredRow(i)}
-              onMouseLeave={() => setHoveredRow(null)}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 16,
-                padding: "6px 0",
-                width: "100%",
-                background: "none",
-                border: "none",
-                cursor: "pointer",
-                textAlign: "left",
-                fontFamily: "'Inter Tight', sans-serif",
-                fontSize: 12,
-                fontWeight: 400,
-              }}
-            >
-              <span style={{ color: isHov ? "var(--color-text-secondary)" : "var(--color-text-tertiary)", transition: "color 150ms ease", lineHeight: 1 }}>
-                {i + 1}
-              </span>
-              <span style={{ color: isCurrent || isHov ? "var(--color-text-primary)" : "var(--color-text-secondary)", transition: "color 150ms ease", lineHeight: 1, whiteSpace: "nowrap" }}>
-                {s.label}
-              </span>
-            </button>
-          );
-        })}
-      </div>
+      {sections.map((s, i) => {
+        const isCurrent = i === activeIndex;
+        const isHov = hoveredRow === i;
+        return (
+          <button
+            key={s.id}
+            onClick={() => scrollToSection(s.id)}
+            onMouseEnter={() => setHoveredRow(i)}
+            onMouseLeave={() => setHoveredRow(null)}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 8,
+              padding: "6px 8px",
+              borderRadius: 24,
+              background: isCurrent ? "var(--color-surface-fill2)" : "none",
+              border: "none",
+              cursor: "pointer",
+              fontFamily: "'Inter Tight', sans-serif",
+              fontWeight: 400,
+              whiteSpace: "nowrap",
+            }}
+          >
+            <span style={{ fontSize: 12, lineHeight: 1, color: isCurrent || isHov ? "var(--color-text-secondary)" : "var(--color-text-tertiary)", transition: "color 150ms ease" }}>
+              {i + 1}
+            </span>
+            <span style={{ fontSize: 14, lineHeight: 1, color: isCurrent || isHov ? "var(--color-text-primary)" : "var(--color-text-secondary)", transition: "color 150ms ease" }}>
+              {s.label}
+            </span>
+          </button>
+        );
+      })}
     </>
   );
 
+  // Entrance transition for the toggle/dropdown container — opacity + slide,
+  // separate from the toggle pill's own width/height/border keyframes below.
+  const entranceTransition = {
+    opacity: { duration: 0.2 },
+    y: { duration: 0.18, ease: [0.965, 0, 1, 1] as [number, number, number, number] },
+  };
+
   return (
     <AnimatePresence>
-      {visible && (
-        <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50">
+      {desktopVisible && (
+        <div className="fixed left-1/2 -translate-x-1/2 z-50" style={{ bottom: 16 + desktopBottomLift, transition: "bottom 200ms ease" }}>
         <motion.div
           ref={containerRef}
-          className="flex flex-col items-center gap-2"
+          className="relative"
           initial={{ opacity: 0, y: -28 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 12 }}
-          transition={{
-            opacity: { duration: 0.2 },
-            y: { duration: 0.18, ease: [0.965, 0, 1, 1] as [number, number, number, number] },
-          }}
+          transition={entranceTransition}
         >
-          <div
+          {/* Popup nav — centered on the toggle pill, same as before. */}
+          <AnimatePresence>
+            {isOpen && (
+              <motion.div
+                className="absolute left-1/2 flex items-center"
+                style={{
+                  bottom: "calc(100% + 8px)",
+                  gap: 18,
+                  height: 38,
+                  padding: "0 8px",
+                  background: "var(--color-surface-fill4)",
+                  border: "0.75px solid var(--color-border-default)",
+                  borderRadius: 999,
+                  boxShadow: "0px 2px 4px rgba(0,0,0,0.05)",
+                  backdropFilter: "blur(12px)",
+                  WebkitBackdropFilter: "blur(12px)",
+                  whiteSpace: "nowrap",
+                  boxSizing: "border-box",
+                  overflow: "hidden",
+                }}
+                initial={{ opacity: 0, x: "-50%", y: 13, width: 0 }}
+                animate={{ opacity: 1, x: "-50%", y: 0, width: "auto" }}
+                exit={{ opacity: 0, x: "-50%", y: 13, width: 0 }}
+                transition={{ duration: OPEN_DURATION, ease: EASE_SYM }}
+              >
+                {panelInner}
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Toggle pill — Figma node 5325:2805 ("Menu", inside frame
+              5327:2981): status ring + current-section label + an inline
+              "Pill Back to Top" (node 5511:2086) instead of a chevron. */}
+          <motion.div
+            onClick={() => setIsOpen(!isOpen)}
+            onMouseEnter={() => setHovered(true)}
+            onMouseLeave={() => setHovered(false)}
+            initial={{ width: 48, height: 37 }}
+            animate={{ width: 270, height: 42 }}
+            transition={{
+              width: { duration: TOGGLE_WIDTH_DURATION, delay: TOGGLE_WIDTH_DELAY, ease: EASE_SMOOTH },
+              height: { duration: TOGGLE_HEIGHT_DURATION, ease: "linear" },
+            }}
             style={{
-              background: "var(--color-surface-fill2)",
+              background: hovered ? "var(--color-surface-fill2)" : "var(--color-button-default-fill)",
               backdropFilter: "blur(12px)",
               WebkitBackdropFilter: "blur(12px)",
-              borderRadius: 4,
+              borderRadius: 24,
+              borderStyle: "solid",
+              borderWidth: 0.75,
+              // Border can't be a Framer animate target (var() doesn't
+              // tween) — faded in via plain CSS transition instead, gated on
+              // desktopBorderEntered so it starts at the same delay Figma's
+              // border-color track uses.
+              borderColor: desktopBorderEntered ? "var(--color-border-default)" : "transparent",
               overflow: "hidden",
-              maxHeight: isOpen ? 400 : 0,
-              opacity: isOpen ? 1 : 0,
-              padding: isOpen ? "16px" : "0 16px",
-              transition: "max-height 250ms ease, opacity 200ms ease, padding 250ms ease",
-              pointerEvents: isOpen ? "auto" : "none",
-              minWidth: 200,
-            }}
-          >
-            {panelInner}
-          </div>
-
-        <motion.div
-          onClick={() => setIsOpen(!isOpen)}
-          onMouseEnter={() => setHovered(true)}
-          onMouseLeave={() => setHovered(false)}
-          initial={{ width: 38 }}
-          animate={{ width: 200 }}
-          transition={{
-            width: { duration: 0.452, delay: 0.288, ease: EASE_SMOOTH },
-          }}
-          style={{
-            background: hovered ? "var(--color-button-default-hover-fill)" : "var(--color-button-default-fill)",
-            backdropFilter: "blur(12px)",
-            WebkitBackdropFilter: "blur(12px)",
-            borderRadius: 24,
-            height: 38,
-            overflow: "hidden",
-            cursor: "pointer",
-            userSelect: "none",
-            flexShrink: 0,
-            boxSizing: "border-box",
-            boxShadow: "0px 2px 4px rgba(0,0,0,0.05)",
-            transition: "background 0.15s ease",
-          }}
-        >
-          <div
-            style={{
-              width: 200,
-              height: "100%",
-              display: "flex",
-              alignItems: "center",
-              gap: 4,
-              padding: "0 10px 0 8px",
+              cursor: "pointer",
+              userSelect: "none",
+              flexShrink: 0,
               boxSizing: "border-box",
+              boxShadow: "0px 2px 4px rgba(0,0,0,0.05)",
+              transition: `background 0.15s ease, border-color ${TOGGLE_BORDER_DURATION}s ${cssEase(EASE_SYM)}`,
             }}
           >
-            {statusRing}
-
-            <motion.p
-              initial={{ opacity: 0, scaleX: 0.5, scaleY: 0.5, x: -24 }}
-              animate={{ opacity: 1, scaleX: 1, scaleY: 1, x: 0 }}
-              transition={{
-                opacity: { duration: 0.452, delay: 0.288, ease: EASE_SMOOTH },
-                scaleX:  { duration: 0.452, delay: 0.288, ease: EASE_SMOOTH },
-                scaleY:  { duration: 0.452, delay: 0.288, ease: EASE_SMOOTH },
-                x:       { duration: 0.452, delay: 0.288, ease: EASE_SMOOTH },
-              }}
+            <div
               style={{
-                transformOrigin: "0% 50%",
-                fontFamily: "'Inter Tight', sans-serif",
-                fontSize: 14,
-                fontWeight: 400,
-                lineHeight: 1,
-                color: "var(--color-text-primary)",
-                margin: 0,
-                flex: 1,
-                minWidth: 0,
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                whiteSpace: "nowrap",
-              }}
-            >
-              {sections[activeIndex]?.label}
-            </motion.p>
-
-            <motion.div
-              initial={{ opacity: 0, y: 7 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{
-                opacity: { duration: 0.206, delay: 0.534, ease: EASE_SYM },
-                y:       { duration: 0.206, delay: 0.534, ease: "linear" },
-              }}
-              style={{
+                width: 270,
+                height: "100%",
                 display: "flex",
                 alignItems: "center",
-                justifyContent: "center",
-                flexShrink: 0,
-                width: 24,
-                height: 24,
+                gap: 16,
+                padding: "0 12px",
+                boxSizing: "border-box",
               }}
             >
-              <svg
-                width="14"
-                height="14"
-                viewBox={icons.navigation.chevron.viewBox}
-                fill="none"
+              {statusRing}
+
+              <motion.p
+                initial={{ opacity: 0, scaleX: 0.5, scaleY: 0.5, x: -24 }}
+                animate={{ opacity: 1, scaleX: 1, scaleY: 1, x: 0 }}
+                transition={{
+                  opacity: { duration: 0.452, delay: 0.288, ease: EASE_SMOOTH },
+                  scaleX:  { duration: 0.452, delay: 0.288, ease: EASE_SMOOTH },
+                  scaleY:  { duration: 0.452, delay: 0.288, ease: EASE_SMOOTH },
+                  x:       { duration: 0.452, delay: 0.288, ease: EASE_SMOOTH },
+                }}
                 style={{
-                  transition: "transform 0.25s ease",
-                  transform: isOpen ? "rotate(0deg)" : "rotate(180deg)",
+                  transformOrigin: "0% 50%",
+                  fontFamily: "'Inter Tight', sans-serif",
+                  fontSize: 14,
+                  fontWeight: 400,
+                  lineHeight: 1,
+                  color: "var(--color-text-primary)",
+                  margin: 0,
+                  flex: 1,
+                  minWidth: 0,
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  whiteSpace: "nowrap",
                 }}
               >
-                <path
-                  d={icons.navigation.chevron.paths[0].d}
-                  stroke="var(--color-text-secondary)"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </motion.div>
-          </div>
-        </motion.div>
+                {sections[activeIndex]?.label}
+              </motion.p>
+
+              {/* Pill Back to Top — node 5511:2086: fades + scales in place
+                  (Figma's own translate track for it is constant, i.e. no
+                  positional motion), finishing right as the pill's width
+                  tween does. stopPropagation so it scrolls to top instead of
+                  also toggling the dropdown underneath it. */}
+              <motion.div
+                onClick={(e) => { e.stopPropagation(); scrollToTop(); }}
+                onMouseEnter={() => setBackToTopHovered(true)}
+                onMouseLeave={() => setBackToTopHovered(false)}
+                initial={{ opacity: 0, scale: 0.5 }}
+                animate={{
+                  opacity: 1,
+                  scale: 1,
+                  transition: {
+                    opacity: { duration: BACK_TO_TOP_OPACITY_DURATION, delay: BACK_TO_TOP_OPACITY_DELAY, ease: EASE_SYM },
+                    scale: { duration: BACK_TO_TOP_SCALE_DURATION, delay: BACK_TO_TOP_SCALE_DELAY, ease: EASE_SYM },
+                  },
+                }}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: 6,
+                  width: 94,
+                  height: 32,
+                  flexShrink: 0,
+                  borderRadius: 24,
+                  border: "0.75px solid var(--color-border-default)",
+                  boxSizing: "border-box",
+                  cursor: "pointer",
+                  // Same hover treatment as MainNavigation's "Pill Home":
+                  // transparent at rest, surface/fill-2 on hover.
+                  background: backToTopHovered ? "var(--color-surface-fill2)" : "transparent",
+                  transition: "background 0.15s ease",
+                }}
+              >
+                <svg width="18" height="18" viewBox={icons.navigation.arrowUp.viewBox} fill="none" style={{ flexShrink: 0 }}>
+                  <path
+                    d={icons.navigation.arrowUp.paths[0].d}
+                    stroke={backToTopHovered ? "var(--color-text-primary)" : "var(--color-text-secondary)"}
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    style={{ transition: "stroke 0.15s ease" }}
+                  />
+                </svg>
+                <span style={{ display: "flex", alignItems: "center", gap: 2 }}>
+                  <span
+                    style={{
+                      display: "flex", alignItems: "center", justifyContent: "center",
+                      width: 32, height: 18, borderRadius: 4,
+                      background: "var(--color-surface-fill2)",
+                      fontFamily: "'Inter Tight', sans-serif", fontSize: 12, lineHeight: 1,
+                      color: "var(--color-text-secondary)",
+                    }}
+                  >
+                    shift
+                  </span>
+                  <span
+                    style={{
+                      display: "flex", alignItems: "center", justifyContent: "center",
+                      width: 18, height: 18, borderRadius: 4,
+                      background: "var(--color-surface-fill2)",
+                      fontFamily: "'Inter Tight', sans-serif", fontSize: 12, lineHeight: 1,
+                      color: "var(--color-text-secondary)",
+                    }}
+                  >
+                    E
+                  </span>
+                </span>
+              </motion.div>
+            </div>
+          </motion.div>
         </motion.div>
         </div>
       )}

@@ -109,6 +109,7 @@ function RootLayout() {
 
   useEffect(() => {
     document.dispatchEvent(new CustomEvent("cursor:scale", { detail: 1 }));
+    document.dispatchEvent(new CustomEvent("cursor:variant", { detail: "default" }));
   }, [pathname]);
 
   const [isDesktop, setIsDesktop] = useState(

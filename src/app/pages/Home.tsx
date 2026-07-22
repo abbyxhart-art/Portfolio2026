@@ -79,7 +79,7 @@ function HomeCasestudyMenu({ show }: { show: boolean }) {
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          background: pillHovered ? "var(--color-button-default-fill)" : "var(--color-surface-fill4)",
+          background: pillHovered ? "var(--color-surface-fill2)" : "var(--color-surface-fill4)",
           border: "1px solid var(--color-border-default)",
           borderRadius: 20,
           padding: "6px 12px",
@@ -97,13 +97,13 @@ function HomeCasestudyMenu({ show }: { show: boolean }) {
         <svg
           width="18"
           height="18"
-          viewBox={icons.navigation["vertical-chevron"].viewBox}
+          viewBox={icons.navigation["chevron"].viewBox}
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
-          style={{ transition: "transform 0.2s ease", transform: isOpen ? "rotate(180deg)" : "rotate(0deg)" }}
+          style={{ transition: "transform 0.2s ease", transform: isOpen ? "rotate(0deg)" : "rotate(180deg)" }}
         >
           <path
-            d={icons.navigation["vertical-chevron"].paths[0].d}
+            d={icons.navigation["chevron"].paths[0].d}
             stroke="var(--color-text-secondary)"
             strokeWidth={1.5}
             strokeLinecap="round"
@@ -178,9 +178,9 @@ function GlowLink({ children, path }: { children: ReactNode; path: string }) {
   const navigate = useNavigate();
   return (
     <span
-      onMouseEnter={() => document.dispatchEvent(new CustomEvent("cursor:scale", { detail: 2.5 }))}
-      onMouseLeave={() => document.dispatchEvent(new CustomEvent("cursor:scale", { detail: 1 }))}
       onClick={() => navigate(path)}
+      onMouseEnter={() => document.dispatchEvent(new CustomEvent("cursor:variant", { detail: "open" }))}
+      onMouseLeave={() => document.dispatchEvent(new CustomEvent("cursor:variant", { detail: "default" }))}
       style={{ color: "var(--color-text-primary)", cursor: "pointer" }}
     >
       {children}
@@ -272,7 +272,7 @@ function LinkedInButton({ show, navScrolled }: { show: boolean; navScrolled: boo
   }, []);
 
   const pillStyle = {
-    backgroundColor: hovered ? "var(--color-surface-secondary-hover)" : "var(--color-surface-fill4)",
+    backgroundColor: hovered ? "var(--color-surface-fill2)" : "var(--color-surface-fill4)",
     border: "1px solid var(--color-border-default)",
     backdropFilter: "blur(12px)",
     WebkitBackdropFilter: "blur(12px)",
@@ -433,10 +433,13 @@ function StyledCard({ initialHovered = false, onInitialLeave, data, isMobile = f
   const navigate = useNavigate();
   return (
     <div
-      onMouseEnter={() => { setHovered(true); document.dispatchEvent(new CustomEvent("cursor:scale", { detail: 2.5 })); }}
+      onMouseEnter={() => {
+        setHovered(true);
+        if (!isMobile) document.dispatchEvent(new CustomEvent("cursor:variant", { detail: "open" }));
+      }}
       onMouseLeave={() => {
         setHovered(false);
-        document.dispatchEvent(new CustomEvent("cursor:scale", { detail: 1 }));
+        if (!isMobile) document.dispatchEvent(new CustomEvent("cursor:variant", { detail: "default" }));
         if (initialHoverActive.current) {
           initialHoverActive.current = false;
           onInitialLeave?.();
@@ -579,7 +582,7 @@ function FirstCardAnimation({ shouldStart, onDone, onFullyDone, contained = fals
       <AnimatePresence>
         {phase === "bar" && shouldStart && (
           <>
-            {/* Favicon + attribution — above the loading text/bar */}
+            {/* Favicon — above the loading text/bar */}
             <motion.div
               key="brand"
               initial={{ opacity: 0 }}
@@ -588,32 +591,12 @@ function FirstCardAnimation({ shouldStart, onDone, onFullyDone, contained = fals
               transition={{ duration: 0.4, ease: [0.33, 0, 0, 1] }}
               style={{
                 position: "absolute",
-                top: -93,
+                top: -37,
                 left: "50%",
                 transform: "translateX(-50%)",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                gap: 16,
               }}
             >
               <img src="/favicon.png" alt="" style={{ width: 24, height: 24 }} />
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  gap: 4,
-                  fontFamily: "'Inter Tight', sans-serif",
-                  fontWeight: 300,
-                  fontSize: 12,
-                  color: "#fff",
-                  textAlign: "center",
-                }}
-              >
-                <p style={{ margin: 0 }}>Abby Hart © 2026</p>
-                <p style={{ margin: 0, whiteSpace: "nowrap" }}>interdisciplinary design + craft</p>
-              </div>
             </motion.div>
 
             {/* Loading text below the bar */}
@@ -788,7 +771,7 @@ export default function Home() {
             Abby Hart
           </p> */}
           <p className="text-[22px] md:text-[28px] font-[300] text-center" style={{ lineHeight: 1.5 }}>
-            Unconstrained by tools, driven by craft <br />My work is product design <br className="md:hidden" />and creative technology
+            A designer who engineers <br />My work is product design <br className="md:hidden" />and creative technology
           </p>
         </div>
 
