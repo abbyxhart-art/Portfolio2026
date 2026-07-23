@@ -449,14 +449,14 @@ function StyledCard({ initialHovered = false, onInitialLeave, data, isMobile = f
         }
       }}
       onClick={() => navigate(data.path)}
-      style={{ position: "relative", width: "100%", borderRadius: 4, overflow: "hidden", cursor: "pointer", fontFamily: "'Inter Tight', sans-serif" }}
+      style={{ position: "relative", width: "100%", borderRadius: "var(--radius-component-card)", overflow: "hidden", cursor: "pointer", fontFamily: "'Inter Tight', sans-serif" }}
     >
       {/* Background frame — expands from 16px inset on hover */}
       <motion.div
         initial={false}
         animate={{ top: isSelected ? 0 : 16, right: isSelected ? 0 : 16, bottom: isSelected ? 0 : 16, left: isSelected ? 0 : 16, opacity: isSelected ? 1 : 0 }}
         transition={{ duration: 0.35, ease: [0.33, 0, 0, 1] }}
-        style={{ position: "absolute", background: "var(--color-button-default-fill)", border: "1px solid var(--color-border-dark)", borderRadius: 4, pointerEvents: "none" }}
+        style={{ position: "absolute", background: "var(--color-button-default-fill)", border: "1px solid var(--color-border-dark)", borderRadius: "var(--radius-component-card)", pointerEvents: "none" }}
       />
       {/* Content */}
       <div style={{ position: "relative", zIndex: 1, padding: isMobile ? "12px 12px 0 12px" : 16, display: "flex", flexDirection: "column", gap: 16, boxSizing: "border-box" }}>
@@ -497,7 +497,7 @@ function StyledCard({ initialHovered = false, onInitialLeave, data, isMobile = f
           </motion.p>
           )}
         </div>
-        <div style={{ width: isMobile ? "calc(100% + 24px)" : "100%", margin: isMobile ? "0 -12px" : undefined, aspectRatio: "2 / 1", backgroundColor: isSelected ? "var(--color-text-primary)" : "rgba(255,255,255,0.2)", borderRadius: isMobile ? 0 : 4, overflow: "hidden", transition: "background-color 0.35s cubic-bezier(0.33,0,0,1)" }}>
+        <div style={{ width: isMobile ? "calc(100% + 24px)" : "100%", margin: isMobile ? "0 -12px" : undefined, aspectRatio: "2 / 1", backgroundColor: isSelected ? "var(--color-text-primary)" : "rgba(255,255,255,0.2)", borderRadius: isMobile ? 0 : "var(--radius-component-card)", overflow: "hidden", transition: "background-color 0.35s cubic-bezier(0.33,0,0,1)" }}>
           {data.video && (
             <video src={data.video} autoPlay loop muted playsInline style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
           )}
@@ -527,7 +527,7 @@ function LabTeaserSection({ isMobile = false }: { isMobile?: boolean }) {
         boxSizing: "border-box",
         background: "var(--color-button-default-fill)",
         border: "1px solid var(--color-border-dark)",
-        borderRadius: 4,
+        borderRadius: "var(--radius-component-card)",
         padding: 24,
         fontFamily: "'Inter Tight', sans-serif",
       }}

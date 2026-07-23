@@ -280,17 +280,21 @@ export default function Footer() {
   return (
     <footer
       ref={footerRef}
-      className="fixed inset-x-0 bottom-0 z-40 h-screen bg-gradient-to-b from-[rgba(22,22,23,0.4)] via-[rgba(35,34,37,0.4)] to-[rgba(45,39,52,0.4)] backdrop-blur-[5px] flex flex-col items-start justify-end overflow-clip px-[16px] md:px-[50px] pb-[calc(110px+env(safe-area-inset-bottom)+16px)] md:pb-[16px] pt-[48px] md:pt-[50px] w-full gap-[20px] md:gap-[80px]"
+      className="fixed inset-x-0 bottom-0 z-40 h-screen bg-gradient-to-b from-[rgba(22,22,23,0.4)] via-[rgba(35,34,37,0.4)] to-[rgba(45,39,52,0.4)] flex flex-col items-start justify-end overflow-clip px-[16px] md:px-[50px] pb-[calc(110px+env(safe-area-inset-bottom)+16px)] md:pb-[16px] pt-[48px] md:pt-[50px] w-full gap-[20px] md:gap-[80px]"
       style={{
-        transform: open ? "translateY(0)" : "translateY(100%)",
-        transition: "transform 500ms cubic-bezier(0.33, 0, 0, 1)",
+        opacity: open ? 1 : 0,
+        backdropFilter: open ? "blur(5px)" : "blur(0px)",
+        WebkitBackdropFilter: open ? "blur(5px)" : "blur(0px)",
+        transition: open
+          ? "opacity 350ms ease-in-out, backdrop-filter 350ms ease-in-out, -webkit-backdrop-filter 350ms ease-in-out"
+          : "opacity 200ms ease-in-out, backdrop-filter 200ms ease-in-out, -webkit-backdrop-filter 200ms ease-in-out",
         pointerEvents: open ? "auto" : "none",
       }}
     >
 
       {/* Garden background — desktop only */}
       <div className="hidden md:block absolute inset-0">
-        <LSystemGarden ref={gardenRef} onHasFlowers={setHasFlowers} />
+        <LSystemGarden ref={gardenRef} onHasFlowers={setHasFlowers} active={open} />
       </div>
 
       {/* Purple Gradient — mobile: recentered further below the box's own
@@ -304,8 +308,8 @@ export default function Footer() {
         className="absolute inset-x-0 bottom-0 h-[600px] pointer-events-none"
         style={{
           background: isMobile
-            ? "radial-gradient(ellipse 70% 600px at 50% 130%, rgba(243, 155, 139, 0.18) 0%, rgba(220, 110, 190, 0.12) 28%, rgba(154, 71, 255, 0.06) 55%, transparent 100%)"
-            : "radial-gradient(ellipse 70% 420px at 50% 100%, rgba(243, 155, 139, 0.18) 0%, rgba(220, 110, 190, 0.12) 28%, rgba(154, 71, 255, 0.06) 55%, transparent 100%)",
+            ? "radial-gradient(ellipse 70% 600px at 50% 130%, rgba(210, 205, 230, 0.10) 0%, rgba(175, 150, 225, 0.07) 28%, rgba(140, 90, 220, 0.035) 55%, transparent 100%)"
+            : "radial-gradient(ellipse 70% 420px at 50% 100%, rgba(210, 205, 230, 0.10) 0%, rgba(175, 150, 225, 0.07) 28%, rgba(140, 90, 220, 0.035) 55%, transparent 100%)",
         }}
       />
 

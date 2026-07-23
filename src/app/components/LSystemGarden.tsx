@@ -3,6 +3,13 @@ import { useTheme } from "../context/ThemeContext"
 
 interface LSystemGardenProps {
     onHasFlowers?: (hasFlowers: boolean) => void
+    // Whether the garden is actually visible on screen right now (e.g. the
+    // footer panel is open). Gates mouse hit-testing so background cursor
+    // movement can't grow/interact with the garden while it's hidden, and
+    // forces a resize/redraw pass when it becomes visible again in case the
+    // canvas got measured at 0x0 while hidden (e.g. during a scrollbar-driven
+    // layout shift).
+    active?: boolean
 }
 
 export interface LSystemGardenHandle {
@@ -20,7 +27,7 @@ const NEUTRAL_10: Record<"light" | "dark", string> = { light: "#DAD8E3", dark: "
 const FADE_DISTANCE = 220
 
 const LSystemGarden = forwardRef<LSystemGardenHandle, LSystemGardenProps>(
-function LSystemGarden({ onHasFlowers }, ref) {
+function LSystemGarden({ onHasFlowers, active = true }, ref) {
     const { theme } = useTheme()
     const canvasRef = useRef(null)
     const [mouseX, setMouseX] = useState(0)
@@ -406,10 +413,15 @@ function LSystemGarden({ onHasFlowers }, ref) {
         })
 
         ctx.restore()
-    }, [plantGrowthLevels, plantRow, plantOpacities, theme])
+    }, [plantGrowthLevels, plantRow, plantOpacities, theme, active])
 
     // Track mouse via window so hover works even when content is layered above the canvas
     useEffect(() => {
+        if (!active) {
+            setIsMouseOver(false)
+            return
+        }
+
         const handleMouseMove = (e) => {
             const canvas = canvasRef.current
             if (!canvas) return
@@ -429,7 +441,7 @@ function LSystemGarden({ onHasFlowers }, ref) {
 
         window.addEventListener("mousemove", handleMouseMove)
         return () => window.removeEventListener("mousemove", handleMouseMove)
-    }, [])
+    }, [active])
 
     // Notify parent when any plant has flowers (growthProgress > 0.7)
     useEffect(() => {
