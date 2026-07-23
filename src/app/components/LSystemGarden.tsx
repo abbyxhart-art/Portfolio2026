@@ -1,22 +1,31 @@
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react"
+import { useTheme } from "../context/ThemeContext"
 
 interface LSystemGardenProps {
     onHasFlowers?: (hasFlowers: boolean) => void
-    minX?: number
 }
 
 export interface LSystemGardenHandle {
     reset: () => void
 }
 
+// Mirrors --color-text-primary and neutral/10's values (src/tokens/tokens.json)
+// — keep in sync if those tokens ever change. Duplicated as literals since
+// the canvas 2D context can't resolve a var() the way DOM styles can.
+const TEXT_PRIMARY: Record<"light" | "dark", string> = { light: "#24232A", dark: "#FAF9FF" }
+const NEUTRAL_10: Record<"light" | "dark", string> = { light: "#DAD8E3", dark: "#3F3E47" }
+
+// How far up from the bottom of the canvas (where the footer's text sits)
+// the plant color fades from NEUTRAL_10 to full TEXT_PRIMARY.
+const FADE_DISTANCE = 220
+
 const LSystemGarden = forwardRef<LSystemGardenHandle, LSystemGardenProps>(
-function LSystemGarden({ onHasFlowers, minX = 420 }, ref) {
+function LSystemGarden({ onHasFlowers }, ref) {
+    const { theme } = useTheme()
     const canvasRef = useRef(null)
     const [mouseX, setMouseX] = useState(0)
-    const [mouseY, setMouseY] = useState(0)
     const [isMouseOver, setIsMouseOver] = useState(false)
     const [plantRow, setPlantRow] = useState([])
-    const [flowerColors, setFlowerColors] = useState([])
     const [plantGrowthLevels, setPlantGrowthLevels] = useState([])
     const [plantStates, setPlantStates] = useState([])
     const [plantOpacities, setPlantOpacities] = useState([])
@@ -42,7 +51,6 @@ function LSystemGarden({ onHasFlowers, minX = 420 }, ref) {
     useEffect(() => {
         // "a" and "f" are common; "d" is rare
         const patternKeys = ["a", "f", "a", "f", "a", "a", "f", "d"]
-        const colors = ["#4F4C58", "#4F4C58"]
         const numPlants = 22
 
         // Generate plants ensuring no two of the same type are adjacent
@@ -60,12 +68,7 @@ function LSystemGarden({ onHasFlowers, minX = 420 }, ref) {
             lastPattern = selectedPattern
         }
 
-        const randomColors = Array.from(
-            { length: numPlants },
-            () => colors[Math.floor(Math.random() * colors.length)]
-        )
         setPlantRow(randomPlants)
-        setFlowerColors(randomColors)
         setPlantGrowthLevels(Array(numPlants).fill(0))
         setPlantStates(Array(numPlants).fill("idle"))
         setPlantOpacities(Array(numPlants).fill(1))
@@ -316,7 +319,7 @@ function LSystemGarden({ onHasFlowers, minX = 420 }, ref) {
         }, 10)
 
         return () => clearInterval(interval)
-    }, [mouseX, mouseY, isMouseOver, plantRow])
+    }, [mouseX, isMouseOver, plantRow])
 
     // Draw effect
     useEffect(() => {
@@ -346,15 +349,21 @@ function LSystemGarden({ onHasFlowers, minX = 420 }, ref) {
 
         const spacing = width / (plantRow.length + 1)
 
+        // Shared vertical fade: muted near the bottom (behind the footer's
+        // text) up to full text/primary higher up. Built once per draw pass
+        // since it only depends on canvas height, not per-plant position.
+        const plantGradient = ctx.createLinearGradient(0, height, 0, height - FADE_DISTANCE)
+        plantGradient.addColorStop(0, NEUTRAL_10[theme])
+        plantGradient.addColorStop(1, TEXT_PRIMARY[theme])
+
         plantRow.forEach((patternKey, index) => {
             const pattern = patterns[patternKey]
             const x = spacing * (index + 1)
-            const flowerColor = flowerColors[index] || "#DDFF00"
+            const flowerColor = plantGradient
 
             const growthLevel = plantGrowthLevels[index] || 0
 
             if (growthLevel < 0.1) return
-            if (x < minX) return
 
             const targetIteration = Math.max(1, growthLevel)
             const currentIter = Math.floor(targetIteration)
@@ -372,16 +381,10 @@ function LSystemGarden({ onHasFlowers, minX = 420 }, ref) {
                     ? lSystem.substring(0, charsToRender)
                     : lSystem
 
-            // Peak in center, ~100px at left edge, very short on right to clear nav
-            const centerProgress = 1 - Math.abs(x - width / 2) / (width / 2)
-            let heightMultiplier = 0.25 + 0.75 * Math.pow(centerProgress, 0.6)
-            if (x > width * 0.5) {
-                const rightProgress = (x - width * 0.5) / (width * 0.5)
-                heightMultiplier *= 1 - rightProgress * 0.8
-            }
-            const baseLength = (100 / Math.pow(2, currentIter - 1)) * heightMultiplier
+            // All plants grow to the same height.
+            const baseLength = 100 / Math.pow(2, currentIter - 1)
 
-            const stemColor = "#4F4C58"
+            const stemColor = plantGradient
             const growthProgress = growthLevel / pattern.n
 
             const plantOpacity = plantOpacities[index] || 0
@@ -403,7 +406,7 @@ function LSystemGarden({ onHasFlowers, minX = 420 }, ref) {
         })
 
         ctx.restore()
-    }, [plantGrowthLevels, plantRow, flowerColors, plantOpacities])
+    }, [plantGrowthLevels, plantRow, plantOpacities, theme])
 
     // Track mouse via window so hover works even when content is layered above the canvas
     useEffect(() => {
@@ -421,7 +424,6 @@ function LSystemGarden({ onHasFlowers, minX = 420 }, ref) {
             setIsMouseOver(inside)
             if (inside) {
                 setMouseX(x)
-                setMouseY(y)
             }
         }
 

@@ -53,7 +53,7 @@
   --color-button-secondary-hover-foreground: #161617;
   --color-interactive-focus-offset: #F2F2F6;
   --color-interactive-focus-ring: #995D7B;
-  --color-interactive-selection-background: rgba(233,203,216,0.15);
+  --color-interactive-selection-background: #6B5E9C;
   --color-interactive-selection-foreground: #161617;
   --color-surface-fill1: rgba(201,197,211,0.20);
   --color-surface-fill2: rgba(201,197,211,0.40);
@@ -192,7 +192,7 @@
   --color-button-secondary-hover-foreground: #FAF9FF;
   --color-interactive-focus-offset: #161617;
   --color-interactive-focus-ring: #D6A2B8;
-  --color-interactive-selection-background: rgba(214,162,184,0.15);
+  --color-interactive-selection-background: #6B5E9C;
   --color-interactive-selection-foreground: #FAF9FF;
   --color-surface-fill1: rgba(144,142,153,0.50);
   --color-surface-fill2: rgba(144,142,153,0.20);

@@ -9,6 +9,9 @@ import gmVideo from "../../assets/project/gentlemonster/GM_Teaser_2x1.mp4";
 import texasVideo from "../../assets/project/texasid/FullPrototype_1200x600_30fps.mp4";
 import figbuildVideo from "../../assets/project/figbuild/figbuild_macstudio_2x1.mp4";
 import capitolVideo from "../../assets/project/capitol/Demo_1920x960_V1.mp4";
+import dragonDoodleVideo from "../../assets/project/booth/dragondoodle-cover.mp4";
+import tianAirVideo from "../../assets/project/booth/tian-cover.mp4";
+import beyondFashionVideo from "../../assets/project/booth/beyondfashion-cover.mp4";
 
 import { CASE_STUDIES } from "../data/casestudies";
 import MobileCasestudyNav from "../components/layout/MobileCasestudyNav";
@@ -459,18 +462,16 @@ function StyledCard({ initialHovered = false, onInitialLeave, data, isMobile = f
       <div style={{ position: "relative", zIndex: 1, padding: isMobile ? "12px 12px 0 12px" : 16, display: "flex", flexDirection: "column", gap: 16, boxSizing: "border-box" }}>
         <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", width: "100%" }}>
           <div style={{ display: "flex", flexDirection: "column", gap: 8, width: isMobile ? "100%" : undefined }}>
-            <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
-              <p style={{ color: "var(--color-text-primary)", fontSize: "var(--text-size\\/card-title)", fontWeight: 400, lineHeight: 1.65, margin: 0 }}>{data.title}</p>
-              <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-                {data.tag3 && (
-                  <div style={{ background: "var(--color-accent2-background)", borderRadius: 2, padding: "0 8px", display: "flex", alignItems: "center", height: 18 }}>
-                    <span style={{ color: "var(--color-accent2-foreground)", fontSize: "var(--text-size\\/card-badge)", fontWeight: 400, lineHeight: 1, whiteSpace: "nowrap" }}>{data.tag3}</span>
-                  </div>
-                )}
-                <p style={{ color: "var(--color-text-secondary)", fontSize: "var(--text-size\\/card-tag)", fontWeight: 400, lineHeight: 1.2, margin: 0 }}>{data.tag1}</p>
-                <div style={{ width: 4, height: 4, borderRadius: "50%", backgroundColor: "var(--color-text-secondary)", flexShrink: 0 }} />
-                <p style={{ color: "var(--color-text-secondary)", fontSize: "var(--text-size\\/card-tag)", fontWeight: 400, lineHeight: 1.2, margin: 0 }}>{data.tag2}</p>
-              </div>
+            <p style={{ color: "var(--color-text-primary)", fontSize: "var(--text-size\\/card-title)", fontWeight: 400, lineHeight: 1.65, margin: 0 }}>{data.title}</p>
+            <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+              {data.tag3 && (
+                <div style={{ background: "var(--color-accent2-background)", borderRadius: 2, padding: "0 8px", display: "flex", alignItems: "center", height: 18 }}>
+                  <span style={{ color: "var(--color-accent2-foreground)", fontSize: "var(--text-size\\/card-badge)", fontWeight: 400, lineHeight: 1, whiteSpace: "nowrap" }}>{data.tag3}</span>
+                </div>
+              )}
+              <p style={{ color: "var(--color-text-secondary)", fontSize: "var(--text-size\\/card-tag)", fontWeight: 400, lineHeight: 1.2, margin: 0 }}>{data.tag1}</p>
+              <div style={{ width: 4, height: 4, borderRadius: "50%", backgroundColor: "var(--color-text-secondary)", flexShrink: 0 }} />
+              <p style={{ color: "var(--color-text-secondary)", fontSize: "var(--text-size\\/card-tag)", fontWeight: 400, lineHeight: 1.2, margin: 0 }}>{data.tag2}</p>
             </div>
             <p style={{ color: "var(--color-text-between)", fontSize: "var(--text-size\\/card-description)", fontWeight: 400, lineHeight: 1.65, margin: 0, maxWidth: 600 }}>{data.description}</p>
           </div>
@@ -501,6 +502,107 @@ function StyledCard({ initialHovered = false, onInitialLeave, data, isMobile = f
             <video src={data.video} autoPlay loop muted playsInline style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
           )}
         </div>
+      </div>
+    </div>
+  );
+}
+
+// Figma 5530:586 "Background Animation" — a teaser pointing at /lab. Not a
+// casestudy, so it lives outside CARD_DATA; clicking a box takes the visitor
+// to the lab and opens that item there rather than inline on the home page.
+const LAB_TEASER_ITEMS = [
+  { id: "dragon-doodle", category: "Interaction", year: "2025", title: "Dragon Doodle", video: dragonDoodleVideo },
+  { id: "beyond-fashion", category: "Motion", year: "2024", title: "Beyond Fashion", video: beyondFashionVideo },
+  { id: "tian-airlines", category: "Advanced Figma Logic", year: "2025", title: "Tian Air", video: tianAirVideo },
+];
+
+function LabTeaserSection({ isMobile = false }: { isMobile?: boolean }) {
+  const navigate = useNavigate();
+  const [buttonHovered, setButtonHovered] = useState(false);
+
+  return (
+    <div
+      style={{
+        width: "100%",
+        boxSizing: "border-box",
+        background: "var(--color-button-default-fill)",
+        border: "1px solid var(--color-border-dark)",
+        borderRadius: 4,
+        padding: 24,
+        fontFamily: "'Inter Tight', sans-serif",
+      }}
+    >
+      {/* Frame 1000002087 */}
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 16, width: 161 }}>
+        <p style={{ margin: 0, color: "var(--color-text-primary)", fontSize: "var(--text-size\\/card-title)", fontWeight: 400, lineHeight: 1.65 }}>
+          want to see more?
+        </p>
+        <button
+          onClick={() => navigate("/lab")}
+          onMouseEnter={() => setButtonHovered(true)}
+          onMouseLeave={() => setButtonHovered(false)}
+          style={{
+            width: 140,
+            height: 40,
+            borderRadius: 42,
+            background: buttonHovered ? "var(--color-surface-fill2)" : "var(--color-button-default-fill)",
+            border: "1px solid var(--color-border-default)",
+            cursor: "pointer",
+            fontSize: 14,
+            fontWeight: 400,
+            lineHeight: "20px",
+            color: "var(--color-text-secondary)",
+            transition: "background 0.15s cubic-bezier(0.33,0,0,1)",
+          }}
+        >
+          check out the lab
+        </button>
+      </div>
+
+      {/* Frame 1000002086 */}
+      <div
+        style={{
+          display: "flex",
+          flexDirection: isMobile ? "column" : "row",
+          alignItems: "stretch",
+          gap: 24,
+          marginTop: 44,
+          width: "100%",
+        }}
+      >
+        {LAB_TEASER_ITEMS.map(({ id, category, year, title, video }) => (
+          <div
+            key={id}
+            onClick={() => navigate("/lab", { state: { openLab: id } })}
+            onMouseEnter={() => document.dispatchEvent(new CustomEvent("cursor:variant", { detail: "open" }))}
+            onMouseLeave={() => document.dispatchEvent(new CustomEvent("cursor:variant", { detail: "default" }))}
+            style={{
+              flex: "1 0 0",
+              minWidth: 0,
+              aspectRatio: "1 / 1",
+              backgroundColor: "#141414",
+              cursor: "pointer",
+              overflow: "hidden",
+              position: "relative",
+              borderRadius: 16,
+            }}
+          >
+            <video
+              src={video}
+              autoPlay
+              loop
+              muted
+              playsInline
+              style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+            />
+            <div style={{ position: "absolute", bottom: 0, left: 0, display: "flex", flexDirection: "column", alignItems: "flex-start", padding: 16 }}>
+              <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "flex-start", fontWeight: 300, lineHeight: 1.65 }}>
+                <p style={{ margin: 0, fontSize: 12, color: "#908e99" }}>{category} {year}</p>
+                <p style={{ margin: 0, fontSize: 16, color: "#faf9ff" }}>{title}</p>
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );
@@ -826,6 +928,7 @@ export default function Home() {
             {CARD_DATA.slice(1).map((data) => (
               <StyledCard key={data.path} data={data} isMobile={isMobile} />
             ))}
+            <LabTeaserSection isMobile={isMobile} />
           </motion.div>
         </>
       )}
@@ -848,6 +951,7 @@ export default function Home() {
               isMobile={isMobile}
             />
           ))}
+          <LabTeaserSection isMobile={isMobile} />
         </div>
       )}
 

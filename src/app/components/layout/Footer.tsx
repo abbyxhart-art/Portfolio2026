@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Link } from "react-router";
 import icons from "../../../assets/icons/icons.json";
 import LSystemGarden, { LSystemGardenHandle } from "../LSystemGarden";
 import { useIsMobile } from "../ui/use-mobile";
@@ -13,11 +12,6 @@ const FOOTER_PHRASES = [
 ];
 
 const COPY_EMAIL = "abbyxhart@gmail.com";
-
-const navLinks = [
-  { label: "Work", to: "/" },
-  { label: "About", to: "/about" },
-];
 
 const socialLinks = [
   { key: "instagram", href: "https://instagram.com/abbyxhart.art", label: "Instagram", icon: icons.social.instagram, stroke: false, iconViewBox: "1 1 16 16" },
@@ -67,21 +61,6 @@ function SocialPill({ href, label, icon, stroke, iconViewBox }: { href: string; 
   );
 }
 
-function AnimatedNavLink({ label, to }: { label: string; to: string }) {
-  const [isHovered, setIsHovered] = useState(false);
-  return (
-    <Link
-      to={to}
-      className="relative shrink-0 w-full no-underline font-['Inter_Tight',sans-serif] font-[300] text-[14px] leading-none"
-      style={{ color: isHovered ? "var(--color-accent-default)" : "var(--color-text-primary)", transition: "color 100ms ease" }}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      {label}
-    </Link>
-  );
-}
-
 function ClearGardenButton({ onClick }: { onClick: () => void }) {
   const [hovered, setHovered] = useState(false);
   const icon = icons.navigation["arrow-undo-left"];
@@ -91,9 +70,9 @@ function ClearGardenButton({ onClick }: { onClick: () => void }) {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       aria-label="Clear garden"
-      className="hidden md:flex absolute bottom-[16px] right-[16px] items-center gap-[8px] cursor-pointer"
+      className="hidden md:flex absolute bottom-[64px] right-[16px] items-center gap-[8px] cursor-pointer"
       style={{
-        backgroundColor: hovered ? "var(--color-surface-secondary-hover)" : "var(--color-surface-fill3)",
+        backgroundColor: hovered ? "var(--color-surface-fill2)" : "var(--color-surface-fill3)",
         borderRadius: 24,
         padding: "6px 12px 6px 10px",
         border: "1px solid var(--color-border-default)",
@@ -222,8 +201,92 @@ export default function Footer() {
     });
   };
 
+  // Scroll-gated reveal: the footer is a fixed full-screen panel, off-screen
+  // by default. Page scrolling is blocked once it's open; scrolling down at
+  // the very bottom of the page opens it, scrolling back up while it's open
+  // closes it and hands normal scrolling back to the page.
+  const [open, setOpen] = useState(false);
+  const openRef = useRef(false);
+  const cooldownRef = useRef(false);
+
+  const openFooter = useCallback(() => {
+    if (openRef.current) return;
+    openRef.current = true;
+    setOpen(true);
+    document.body.style.overflow = "hidden";
+    cooldownRef.current = true;
+    setTimeout(() => { cooldownRef.current = false; }, 500);
+  }, []);
+
+  const closeFooter = useCallback(() => {
+    if (!openRef.current) return;
+    openRef.current = false;
+    setOpen(false);
+    document.body.style.overflow = "";
+    cooldownRef.current = true;
+    setTimeout(() => { cooldownRef.current = false; }, 500);
+  }, []);
+
+  useEffect(() => {
+    const AT_BOTTOM_EPS = 4;
+    const isAtBottom = () =>
+      window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - AT_BOTTOM_EPS;
+
+    const handleWheel = (e: WheelEvent) => {
+      if (cooldownRef.current) { e.preventDefault(); return; }
+      if (openRef.current) {
+        e.preventDefault();
+        if (e.deltaY < -8) closeFooter();
+        return;
+      }
+      if (e.deltaY > 0 && isAtBottom()) {
+        e.preventDefault();
+        openFooter();
+      }
+    };
+
+    let touchStartY = 0;
+    const handleTouchStart = (e: TouchEvent) => {
+      touchStartY = e.touches[0].clientY;
+    };
+    const handleTouchMove = (e: TouchEvent) => {
+      const currentY = e.touches[0].clientY;
+      const deltaY = touchStartY - currentY;
+      if (cooldownRef.current) { e.preventDefault(); return; }
+      if (openRef.current) {
+        e.preventDefault();
+        if (deltaY < -8) closeFooter();
+        touchStartY = currentY;
+        return;
+      }
+      if (deltaY > 8 && isAtBottom()) {
+        e.preventDefault();
+        openFooter();
+      }
+      touchStartY = currentY;
+    };
+
+    window.addEventListener("wheel", handleWheel, { passive: false });
+    window.addEventListener("touchstart", handleTouchStart, { passive: true });
+    window.addEventListener("touchmove", handleTouchMove, { passive: false });
+    return () => {
+      window.removeEventListener("wheel", handleWheel);
+      window.removeEventListener("touchstart", handleTouchStart);
+      window.removeEventListener("touchmove", handleTouchMove);
+      document.body.style.overflow = "";
+    };
+  }, [openFooter, closeFooter]);
+
   return (
-    <footer ref={footerRef} className="bg-[var(--color-surface-primary-default)] border-t border-[var(--color-border-default)] flex flex-col items-start overflow-clip px-[16px] md:px-[50px] pb-[calc(110px+env(safe-area-inset-bottom)+16px)] md:pb-[16px] pt-[48px] md:pt-[50px] relative w-full gap-[20px] md:gap-[80px]">
+    <footer
+      ref={footerRef}
+      className="fixed inset-x-0 bottom-0 z-40 h-screen bg-gradient-to-b from-[rgba(22,22,23,0.4)] via-[rgba(35,34,37,0.4)] to-[rgba(45,39,52,0.4)] backdrop-blur-[5px] flex flex-col items-start justify-end overflow-clip px-[16px] md:px-[50px] pb-[calc(110px+env(safe-area-inset-bottom)+16px)] md:pb-[16px] pt-[48px] md:pt-[50px] w-full gap-[20px] md:gap-[80px]"
+      style={{
+        transform: open ? "translateY(0)" : "translateY(100%)",
+        transition: "transform 500ms cubic-bezier(0.33, 0, 0, 1)",
+        pointerEvents: open ? "auto" : "none",
+      }}
+    >
 
       {/* Garden background — desktop only */}
       <div className="hidden md:block absolute inset-0">
@@ -246,78 +309,85 @@ export default function Footer() {
         }}
       />
 
-      {/* Top Row: Left side + Nav */}
-      <div className="flex flex-col md:flex-row items-start justify-between relative shrink-0 w-full gap-[32px] md:gap-0">
+      {/* Desktop: 4 columns in a row, bottom-aligned, evenly spaced —
+          matches the Figma frame's exact x-offsets (42 / 624 / 1119 / 1603
+          on a 1728px frame), which work out to a plain justify-between. */}
+      <div className="hidden md:flex flex-row items-end justify-between relative shrink-0 w-full">
 
-        {/* Left Side */}
-        <div className="flex flex-col gap-[42px] items-start shrink-0">
-
-          {/* Tagline */}
-          <div className="flex flex-col gap-[4px] items-start shrink-0 w-[235px]">
-            <p className="font-['Inter_Tight',sans-serif] font-[300] leading-none text-[17px] w-full" style={{ color: "var(--color-text-primary)" }}>
-              I design for connection
-            </p>
-            <div className="flex gap-[4px] items-center shrink-0 w-full">
-              <svg width="18" height="18" viewBox={icons.navigation.arrowUp.viewBox} fill="none" xmlns="http://www.w3.org/2000/svg" className="shrink-0">
-                <path d={icons.navigation.arrowUp.paths[0].d} stroke="var(--color-text-primary)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-              <p className="font-['Inter_Tight',sans-serif] font-[300] leading-none text-[17px] whitespace-nowrap" style={{ color: "var(--color-text-primary)" }}>
-                It was nice to meet you!
-              </p>
-            </div>
-          </div>
-
-          {/* Contact blurb + social pills */}
-          <div className="flex flex-col gap-[16px] items-start shrink-0">
-            <div className="flex flex-col gap-[8px] items-start font-['Inter_Tight',sans-serif] font-[300] leading-none text-[14px]">
-              {/* Animated cycling phrase */}
-              <p
-                className="cursor-none select-none"
-                style={{ color: "var(--color-text-primary)", minWidth: 200 }}
-                onMouseEnter={() => setPillHovered(true)}
-                onMouseLeave={() => setPillHovered(false)}
-                onMouseMove={e => setCursorPos({ x: e.clientX, y: e.clientY })}
-                onClick={handlePhraseClick}
-              >
-                {displayText}{isAnimating && <span style={{ opacity: 0.6 }}>|</span>}
-              </p>
-              <p style={{ color: "var(--color-text-secondary)" }}>I can be easily reached at your convenience!</p>
-            </div>
-            <div className="flex gap-[8px] items-center shrink-0">
-              {socialLinks.map((s) => (
-                <SocialPill key={s.key} href={s.href} label={s.label} icon={s.icon} stroke={s.stroke} iconViewBox={s.iconViewBox} />
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Right Side: Main nav */}
-        <div className="flex flex-col gap-[32px] items-start shrink-0">
-          <p className="font-['Inter_Tight',sans-serif] text-[12px] leading-none" style={{ color: "var(--color-text-secondary)" }}>Main</p>
-          <div className="flex flex-col gap-[16px] items-start shrink-0">
-            {navLinks.map(({ label, to }) => (
-              <AnimatedNavLink key={label} label={label} to={to} />
+        {/* Column 1: Social pills + contact phrase */}
+        <div className="flex flex-col gap-[16px] items-start shrink-0">
+          <div className="flex gap-[8px] items-center shrink-0">
+            {socialLinks.map((s) => (
+              <SocialPill key={s.key} href={s.href} label={s.label} icon={s.icon} stroke={s.stroke} iconViewBox={s.iconViewBox} />
             ))}
           </div>
-          {/* Theme toggle — desktop only, under the right nav column */}
-          <div className="hidden md:flex relative z-[1]">
-            <ThemeToggle />
+          <div className="flex flex-col gap-[8px] items-start font-['Inter_Tight',sans-serif] font-[300] leading-none text-[14px]">
+            {/* Animated cycling phrase */}
+            <p
+              className="cursor-none select-none"
+              style={{ color: "var(--color-text-primary)", minWidth: 200 }}
+              onMouseEnter={() => setPillHovered(true)}
+              onMouseLeave={() => setPillHovered(false)}
+              onMouseMove={e => setCursorPos({ x: e.clientX, y: e.clientY })}
+              onClick={handlePhraseClick}
+            >
+              {displayText}{isAnimating && <span style={{ opacity: 0.6 }}>|</span>}
+            </p>
+            <p style={{ color: "var(--color-text-secondary)" }}>I can be easily reached at your convenience!</p>
           </div>
+        </div>
+
+        {/* Column 2: Play around */}
+        <div className="flex flex-col gap-[4px] items-start shrink-0 font-['Inter_Tight',sans-serif] font-[300] leading-none text-[14px] whitespace-nowrap">
+          <p style={{ color: "var(--color-text-primary)" }}>Play around!</p>
+          <div className="flex gap-[4px] items-center shrink-0">
+            <svg width="18" height="18" viewBox={icons.navigation.arrowUp.viewBox} fill="none" xmlns="http://www.w3.org/2000/svg" className="shrink-0">
+              <path d={icons.navigation.arrowUp.paths[0].d} stroke="var(--color-text-secondary)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+            <p style={{ color: "var(--color-text-secondary)" }}>You never know what may grow</p>
+          </div>
+        </div>
+
+        {/* Column 3: Made with */}
+        <div className="flex flex-col gap-[4px] items-start shrink-0 font-['Inter_Tight',sans-serif] font-[300] leading-none text-[14px]">
+          <p style={{ color: "var(--color-text-primary)" }}>Made with</p>
+          <p style={{ color: "var(--color-text-secondary)" }}>
+            {'Figma {Design, Motion, MCP} → Claude → Git → Vercel'}
+          </p>
+        </div>
+
+        {/* Column 4: Mode toggle */}
+        <div className="flex relative z-[1] shrink-0">
+          <ThemeToggle />
         </div>
       </div>
 
-      {/* Hover Directions — desktop only, centered */}
-      <div className="hidden md:flex flex-col gap-[5px] items-center font-['Inter_Tight',sans-serif] font-[300] leading-none text-[14px] w-full whitespace-nowrap" style={{ color: "var(--color-text-secondary)" }}>
-        <p>Play around, you never know what may grow from it!</p>
-        <p>Hover based on the book: the algorithmic beauty of plants</p>
-      </div>
-
-      {/* Made with */}
-      <div className="mt-[12px] md:mt-0 md:absolute md:bottom-[15px] md:left-[50px] flex flex-col gap-[8px] items-start font-['Inter_Tight',sans-serif] font-[300] leading-none text-[14px]">
-        <p style={{ color: "var(--color-text-primary)" }}>Made with</p>
-        <p style={{ color: "var(--color-text-secondary)" }}>
-          {'Figma {Design, Motion, MCP} → Claude → Git → Vercel'}
-        </p>
+      {/* Mobile: columns 1 and 3 stacked (2 and 4 are desktop-only — no
+          hoverable garden or theme toggle on mobile). */}
+      <div className="flex md:hidden flex-col gap-[20px] items-start relative shrink-0 w-full">
+        <div className="flex flex-col gap-[16px] items-start shrink-0">
+          <div className="flex gap-[8px] items-center shrink-0">
+            {socialLinks.map((s) => (
+              <SocialPill key={`m-${s.key}`} href={s.href} label={s.label} icon={s.icon} stroke={s.stroke} iconViewBox={s.iconViewBox} />
+            ))}
+          </div>
+          <div className="flex flex-col gap-[8px] items-start font-['Inter_Tight',sans-serif] font-[300] leading-none text-[14px]">
+            <p
+              className="select-none"
+              style={{ color: "var(--color-text-primary)" }}
+              onClick={handlePhraseClick}
+            >
+              {displayText}{isAnimating && <span style={{ opacity: 0.6 }}>|</span>}
+            </p>
+            <p style={{ color: "var(--color-text-secondary)" }}>I can be easily reached at your convenience!</p>
+          </div>
+        </div>
+        <div className="flex flex-col gap-[4px] items-start font-['Inter_Tight',sans-serif] font-[300] leading-none text-[14px]">
+          <p style={{ color: "var(--color-text-primary)" }}>Made with</p>
+          <p style={{ color: "var(--color-text-secondary)" }}>
+            {'Figma {Design, Motion, MCP} → Claude → Git → Vercel'}
+          </p>
+        </div>
       </div>
 
       {hasFlowers && <ClearGardenButton onClick={clearGarden} />}

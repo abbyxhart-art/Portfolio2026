@@ -1,5 +1,6 @@
 import { useState, useEffect, useLayoutEffect, useRef } from "react";
 import { motion, AnimatePresence } from "@/lib/motion";
+import { useLocation, useNavigate } from "react-router";
 import Lenis from "lenis";
 import { useLenis } from "../context/LenisContext";
 import icons from "../../assets/icons/icons.json";
@@ -62,10 +63,10 @@ import dragonText from "../../assets/project/booth/dragondoodle-text.jpg";
 
 const LAB_CARDS = [
   { id: "dragon-doodle", category: "Interaction", title: "Dragon Doodle", year: "2025", video: dragonCover },
-  { id: "tian-airlines", category: "Advanced Figma Logic", title: "Tian Air", year: "2025", video: tianCover },
-  { id: "figma-rit", category: "Workshop", title: "Figma at RIT", year: "2025", video: kpopCover },
-  { id: "iris", category: "Experience", title: "IRIS AI", year: "2024", video: irisCover, hasAudio: true },
   { id: "beyond-fashion", category: "Motion", title: "Beyond Fashion", year: "2024", video: beyondCover },
+  { id: "tian-airlines", category: "Advanced Figma Logic", title: "Tian Air", year: "2025", video: tianCover },
+  { id: "iris", category: "Experience", title: "IRIS AI", year: "2024", video: irisCover, hasAudio: true },
+  { id: "figma-rit", category: "Workshop", title: "Figma at RIT", year: "2025", video: kpopCover },
   { id: "marc-jacobs", category: "Illustration", title: "Marc Jacobs Daisy Haze", year: "2023", image: marcCover },
   { id: "dj-munson", category: "Installation", title: "DJ Munson's Last Spin", year: "2025", video: munsonVideo },
   { id: "sg-stickers", category: "Illustration", title: "Popcorn Stickers", year: "2023", image: sgCover },
@@ -1212,9 +1213,23 @@ export default function Booth() {
   const [scrolled, setScrolled] = useState(false);
   const [openLab, setOpenLab] = useState<string | null>(null);
   const lenis = useLenis();
+  const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     window.scrollTo(0, 0);
+  }, []);
+
+  // Arriving here from the home page's "want to see more?" teaser passes the
+  // id of the lab item that was clicked so it opens directly, instead of
+  // opening it inline on the home page itself.
+  useEffect(() => {
+    const state = location.state as { openLab?: string } | null;
+    if (state?.openLab) {
+      setOpenLab(state.openLab);
+      navigate(".", { replace: true, state: null });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {

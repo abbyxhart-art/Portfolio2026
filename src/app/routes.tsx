@@ -156,6 +156,11 @@ function RootLayout() {
       <AnimatePresence initial={false}>
         <PageFade key={pathname} exitScrollY={exitScrollY}>
           {outlet}
+          {/* Extra scroll distance required before the footer reveal
+              triggers — Footer itself is `position: fixed` and doesn't
+              occupy flow space, so this is the only thing standing between
+              the page's real content and the bottom-of-document check. */}
+          <div aria-hidden="true" style={{ height: "40vh" }} />
           <Footer />
         </PageFade>
       </AnimatePresence>
