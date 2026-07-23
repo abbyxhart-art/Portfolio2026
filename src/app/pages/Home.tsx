@@ -608,12 +608,10 @@ function LabTeaserSection({ isMobile = false }: { isMobile?: boolean }) {
   );
 }
 
-// Card + bar are one unit. The bar sits at the card's top edge with identical scaleX/transformOrigin,
-// so they're always the same width at the same position. Bar fades as the card face rotates into view.
 const LOADING_PHRASES = ["hi welcome!!!", "you're awesome", ":D"];
 
-function FirstCardAnimation({ shouldStart, onDone, onFullyDone, contained = false }: { shouldStart: boolean; onDone: () => void; onFullyDone?: () => void; contained?: boolean }) {
-  const [phase, setPhase] = useState<"bar" | "open" | "done">("bar");
+function FirstCardAnimation({ shouldStart, onDone, contained = false }: { shouldStart: boolean; onDone: () => void; contained?: boolean }) {
+  const [phase, setPhase] = useState<"bar" | "open">("bar");
   const [phraseIdx, setPhraseIdx] = useState(0);
 
   useEffect(() => {
@@ -623,51 +621,27 @@ function FirstCardAnimation({ shouldStart, onDone, onFullyDone, contained = fals
     return () => clearInterval(id);
   }, [phase, shouldStart]);
 
-  // Both card and bar animate to this same scaleX so their widths always match
   const scaleX = !shouldStart ? 0 : phase === "bar" ? 0.5 : 1;
   const scaleTransition = { duration: phase === "bar" ? 0.8 : 1.2, ease: [0.4, 0, 0.2, 1] as const };
 
   return (
     <div style={{ position: "relative", width: "100%", ...(contained ? { height: "100%" } : { aspectRatio: "2 / 1" }) }}>
 
-      {/* Card — starts edge-on (rotateX -89), unfolds when phase opens */}
-      <div style={{ position: "absolute", inset: 0, perspective: "1200px", perspectiveOrigin: "50% 0%" }}>
-        <motion.div
-          initial={{ scaleX: 0, rotateX: -89 }}
-          animate={{
-            scaleX,
-            rotateX: phase === "bar" ? -89 : 0,
-            opacity: phase === "bar" ? 0 : 1,
-          }}
-          transition={{
-            scaleX: scaleTransition,
-            rotateX: { duration: 1.7, ease: [0.25, 0.46, 0.45, 0.94] },
-            opacity: { duration: 0.3, ease: "easeIn" },
-          }}
-          onAnimationComplete={() => {
-            if (shouldStart && phase === "bar") { setPhase("open"); onDone(); }
-            if (phase === "open") { setPhase("done"); onFullyDone?.(); }
-          }}
-          style={{
-            transformOrigin: "top center",
-            width: "100%",
-            height: "100%",
-            backgroundColor: "var(--color-border-dark)",
-            borderRadius: 8,
-          }}
-        />
-      </div>
-
-      {/* Progress bar — same scaleX + transformOrigin as the card, overlays its top edge */}
+      {/* Progress bar — the real card (rendered by the caller, beneath this
+          overlay) is what actually unfolds; this bar just tracks its width
+          while loading, then fades so only one element ever rotates open. */}
       <motion.div
         initial={{ scaleX: 0 }}
         animate={{
           scaleX,
-          opacity: phase === "open" || phase === "done" ? 0 : 1,
+          opacity: phase === "bar" ? 1 : 0,
         }}
         transition={{
           scaleX: scaleTransition,
           opacity: { duration: 0.4, ease: "easeOut" },
+        }}
+        onAnimationComplete={() => {
+          if (shouldStart && phase === "bar") { setPhase("open"); onDone(); }
         }}
         style={{
           position: "absolute",
@@ -893,7 +867,6 @@ export default function Home() {
                 <FirstCardAnimation
                   shouldStart={cardShouldStart}
                   onDone={() => setFirstCardDone(true)}
-                  onFullyDone={() => setCardFullyDone(true)}
                   contained
                 />
               </motion.div>
@@ -906,6 +879,7 @@ export default function Home() {
                     rotateX: { duration: 1.7, ease: [0.25, 0.46, 0.45, 0.94] },
                     opacity: { duration: 1.5, ease: [0.33, 0, 0, 1] },
                   }}
+                  onAnimationComplete={() => { if (firstCardDone) setCardFullyDone(true); }}
                   style={{ transformOrigin: "top center" }}
                 >
                   <StyledCard initialHovered={firstCardStaysHovered} onInitialLeave={() => setFirstCardStaysHovered(false)} data={CARD_DATA[0]} isMobile={isMobile} />
