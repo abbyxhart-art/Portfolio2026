@@ -2,13 +2,11 @@ import { useState, useEffect, useLayoutEffect, useRef } from "react";
 import { motion, AnimatePresence, useDragControls } from "@/lib/motion";
 import icons from "../../../assets/icons/icons.json";
 import { useIsMobile } from "../ui/use-mobile";
-import { RIGHT_CLUSTER_WIDTH, MOBILE_NAV_MARGIN, MAIN_NAV_ROW_CENTER, MOBILE_BORDER_LIGHT_20 } from "../layout/mobileNavLayout";
+import { RIGHT_CLUSTER_WIDTH, MOBILE_NAV_MARGIN, MAIN_NAV_ROW_CENTER } from "../layout/mobileNavLayout";
 import { useLenis } from "../../context/LenisContext";
 
 export type MiniMenuSection = { id: string; label: string };
 
-// Desktop pill open/close easing (unchanged from prior implementation)
-const EASE_SMOOTH: [number, number, number, number] = [0.5, 0, 0.2, 1];
 const EASE_SYM:   [number, number, number, number] = [0.5, 0, 0.5, 1];
 
 // Mobile entrance — keyframe times/eases lifted verbatim from the Figma
@@ -67,29 +65,17 @@ const BACK_TO_TOP_X_EASE: [number, number, number, number] = [0.132, 0, 0.2, 1];
 // which ended up overlapping/covering the last row(s).
 const BACK_TO_TOP_CLEARANCE = 56;
 
-// Desktop toggle pill's mount entrance — keyframe times/eases lifted
-// verbatim from the Figma prototype "Menu" (node 5325:2805, inside frame
-// 5327:2981), a 2s loop Figma uses for demo purposes; here it plays once as
-// a normal initial→animate tween each time the pill mounts (AnimatePresence
-// remounts it whenever desktopVisible flips true).
-const TOGGLE_WIDTH_DELAY = 0.288;
-const TOGGLE_WIDTH_DURATION = 0.452;
-// Height (37 -> 42) has no hold segment in Figma's own track — it eases
-// linearly for the whole span from mount to the point width finishes, unlike
-// width/border which hold briefly first.
-const TOGGLE_HEIGHT_DURATION = 0.740;
-// Border can't be a Framer animate target (var(--color-border-default)
-// doesn't tween — see `entered`/`desktopBorderEntered`), so these numbers
-// drive a plain CSS transition instead.
-const TOGGLE_BORDER_DELAY = 0.173;
-const TOGGLE_BORDER_DURATION = 0.316;
-// Inline "Pill Back to Top" (node 5511:2086) — fades and scales in well
-// after the pill itself starts expanding, finishing at the same moment the
-// width tween does.
-const BACK_TO_TOP_SCALE_DELAY = 0.428;
-const BACK_TO_TOP_SCALE_DURATION = 0.312;
-const BACK_TO_TOP_OPACITY_DELAY = 0.530;
-const BACK_TO_TOP_OPACITY_DURATION = 0.210;
+// Desktop side nav (Figma node 5708:763, "Casestudy Menu") — real
+// `position: fixed` (a JS-tracked `position: absolute` was tried and
+// visibly lagged a frame behind Lenis's own scroll interpolation, causing
+// a jitter/bounce; `fixed` is handled natively by the compositor instead).
+const SIDE_NAV_LEFT = "5vw";
+const SIDE_NAV_TOP_OFFSET = 81;
+
+// Fallback-only duration (no real completion event exists for native
+// scrollIntoView/scrollTo, used only on the rare frame before Lenis mounts)
+// for how long a jump is presumed to still be in flight — see runJumpScroll.
+const JUMP_FALLBACK_MS = 1000;
 
 const cssEase = ([x1, y1, x2, y2]: [number, number, number, number]) => `cubic-bezier(${x1},${y1},${x2},${y2})`;
 
@@ -102,34 +88,40 @@ export default function SectionNavigation({ sections, title }: { sections: MiniM
   const [visible, setVisible] = useState(false);
   // Desktop's own visibility/position signal — kept separate from `visible`
   // (which also gates the mobile sheet and, via the effect below, force-closes
-  // isOpen) so that scrolling near the page bottom doesn't close the open
-  // desktop dropdown. Instead of hiding, the pill lifts clear of the footer.
+  // isOpen) so that scrolling near the page bottom doesn't force-close it.
   const [desktopVisible, setDesktopVisible] = useState(false);
-  const [desktopBottomLift, setDesktopBottomLift] = useState(0);
   const [activeIndex, setActiveIndex] = useState(0);
   const [progress, setProgress] = useState(0);
-  const [hovered, setHovered] = useState(false);
+  // Per-section scroll progress (0-1 each), used to fill each row's ring —
+  // see growSectionProgress below for the update rules.
+  const [sectionProgress, setSectionProgress] = useState<number[]>(() => sections.map(() => 0));
   const [backToTopHovered, setBackToTopHovered] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [hoveredRow, setHoveredRow] = useState<number | null>(null);
   // Theme-aware colors (CSS variables) can't be Framer `animate` targets —
   // Framer's color interpolator only understands literal rgb/rgba/hex, so a
   // `var(--...)` target just snaps instead of fading. Anywhere the design
-  // fades in a themed color (mobile pill background, desktop pill border),
-  // it's driven as a plain CSS transition instead, flipped on right after
-  // mount to match Figma's delay/duration for that fade.
+  // fades in a themed color (mobile pill background), it's driven as a plain
+  // CSS transition instead, flipped on right after mount to match Figma's
+  // delay/duration for that fade.
   const [entered, setEntered] = useState(false);
-  // Desktop-only mirror of `entered`, gated on `desktopVisible` instead of
-  // `visible` — the toggle pill's border can't be a Framer animate target
-  // (var(--color-border-default) doesn't tween, see note above), so it fades
-  // in via a plain CSS transition flipped on after the same delay Figma's
-  // "Menu" border-color track uses (see TOGGLE_BORDER_DELAY below).
-  const [desktopBorderEntered, setDesktopBorderEntered] = useState(false);
   // Width/radii on the mobile pill are driven by the one-shot mount entrance
   // (keyframe arrays) until it finishes, then handed over to plain isOpen-based
   // targets for the open/close sheet transition — both need that property.
   const [entranceDone, setEntranceDone] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  // True for the duration of a click-triggered scrollTo (section row or
+  // "back to top"). While true, onScroll below still updates activeIndex
+  // for highlighting, but skips writing to sectionProgress — otherwise a
+  // jump from section 1 to section 3 would fly straight through section
+  // 2's DOM range and mark it (and the rest of section 1) fully read
+  // along the way, when the user never actually scrolled through it.
+  const isJumpingRef = useRef(false);
+  // Bumped on every jump and closed over by that jump's own completion
+  // callback, so if a second jump starts before the first one's callback
+  // fires (rapid clicks on two different rows), the stale first callback
+  // can't clear isJumpingRef out from under the second jump still in flight.
+  const jumpTokenRef = useRef(0);
   // Explicit start (rather than Framer's default dragListener) so a
   // pointerdown anywhere on the open sheet — not just its handle — begins
   // the drag-to-collapse gesture. A plain tap on a nested button still
@@ -151,15 +143,6 @@ export default function SectionNavigation({ sections, title }: { sections: MiniM
     const t = setTimeout(() => setEntranceDone(true), ENTER_DURATION * 1000);
     return () => clearTimeout(t);
   }, [visible, isMobile]);
-
-  useEffect(() => {
-    if (!desktopVisible) {
-      setDesktopBorderEntered(false);
-      return;
-    }
-    const t = setTimeout(() => setDesktopBorderEntered(true), TOGGLE_BORDER_DELAY * 1000);
-    return () => clearTimeout(t);
-  }, [desktopVisible]);
 
   // Full-bleed open sheet needs the real viewport size (Framer can't tween a
   // px value to "100vw"/"100vh" — units must match on both ends of the
@@ -195,19 +178,40 @@ export default function SectionNavigation({ sections, title }: { sections: MiniM
   }, [isMobile, sections, title]);
 
   useEffect(() => {
+    // Monotonic: a section's stored progress only ever grows toward 1, never
+    // drops back down if the user scrolls back up through it — it should
+    // read as "furthest point reached", not "current scroll position within
+    // this section". The only way it goes back to 0 is a fresh mount (i.e.
+    // leaving the page and coming back), which sectionProgress's initial
+    // state already gives for free. Suppressed entirely during a
+    // click-triggered jump (isJumpingRef) so flying through an intermediate
+    // section's DOM range on the way to a farther one doesn't mark it read.
+    const growSectionProgress = (i: number, value: number) => {
+      if (isJumpingRef.current) return;
+      setSectionProgress((prev) => {
+        const next = Math.max(prev[i] ?? 0, value);
+        return next === prev[i] ? prev : prev.map((v, idx) => (idx === i ? next : v));
+      });
+    };
+
     const onScroll = () => {
-      const scrollY = window.scrollY;
+      // Read Lenis's own interpolated scroll value rather than window.scrollY:
+      // Lenis animates the real scroll position across rAF frames, but the
+      // native 'scroll' event it triggers can be coalesced/throttled by the
+      // browser, so window.scrollY occasionally lags a frame behind — enough
+      // to make the progress ring visibly stutter. lenis.scroll is the exact
+      // value driving the current frame, so reading it directly (when
+      // available) keeps the ring's progress perfectly in step with the
+      // motion the user actually sees.
+      const scrollY = lenis?.scroll ?? window.scrollY;
       const bottomMargin = 120;
       const nearBottom = scrollY + window.innerHeight >= document.documentElement.scrollHeight - bottomMargin;
       setVisible(scrollY > 200 && !nearBottom);
 
-      // Desktop: never hide for being near the bottom (that would force-close
-      // an open dropdown) — instead lift the pill by however far past the
-      // nearBottom line the viewport has scrolled, so it clears the footer
-      // while staying mounted, visible, and open.
+      // Desktop: pinned near the top of the viewport via real `position:
+      // fixed`, so it never needs to dodge the footer the way the old
+      // bottom-anchored pill did.
       setDesktopVisible(scrollY > 200);
-      const overshoot = scrollY + window.innerHeight - (document.documentElement.scrollHeight - bottomMargin);
-      setDesktopBottomLift(Math.max(0, overshoot));
 
       for (let i = sections.length - 1; i >= 0; i--) {
         const el = document.getElementById(sections[i].id);
@@ -217,6 +221,7 @@ export default function SectionNavigation({ sections, title }: { sections: MiniM
           setActiveIndex(i);
           const p = Math.min(Math.max((scrollY - top + window.innerHeight * 0.5) / el.offsetHeight, 0), 1);
           setProgress(p);
+          growSectionProgress(i, p);
           return;
         }
       }
@@ -224,10 +229,19 @@ export default function SectionNavigation({ sections, title }: { sections: MiniM
       setProgress(0);
     };
 
+    // Prefer Lenis's own scroll event — it fires once per rAF tick in exact
+    // sync with the frame Lenis renders, whereas the native 'scroll' event
+    // (used as a fallback before Lenis has mounted) can fire at an uneven
+    // cadence and cause the progress ring to jitter.
+    if (lenis) {
+      lenis.on("scroll", onScroll);
+      onScroll();
+      return () => { lenis.off("scroll", onScroll); };
+    }
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
     return () => window.removeEventListener("scroll", onScroll);
-  }, [sections]);
+  }, [sections, lenis]);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -261,13 +275,32 @@ export default function SectionNavigation({ sections, title }: { sections: MiniM
     };
   }, [isMobile, isOpen, lenis]);
 
+  // Routed through Lenis (when mounted) rather than the native
+  // scrollIntoView/scrollTo — calling the native APIs directly fights
+  // Lenis's own rAF-driven scroll loop, which is what caused the visible
+  // bounce/jitter during a click-triggered jump. Shared by scrollToSection
+  // and scrollToTop below so the isJumpingRef/jumpTokenRef bookkeeping
+  // (see their declarations above) lives in exactly one place.
+  const runJumpScroll = (target: number | string) => {
+    isJumpingRef.current = true;
+    const token = ++jumpTokenRef.current;
+    const endJump = () => { if (jumpTokenRef.current === token) isJumpingRef.current = false; };
+    if (lenis) {
+      lenis.scrollTo(target, { onComplete: endJump });
+    } else {
+      if (typeof target === "number") window.scrollTo({ top: target, behavior: "smooth" });
+      else document.querySelector(target)?.scrollIntoView({ behavior: "smooth" });
+      window.setTimeout(endJump, JUMP_FALLBACK_MS);
+    }
+  };
+
   const scrollToSection = (id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+    runJumpScroll(`#${id}`);
     setIsOpen(false);
   };
 
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    runJumpScroll(0);
     setIsOpen(false);
   };
 
@@ -315,7 +348,6 @@ export default function SectionNavigation({ sections, title }: { sections: MiniM
           strokeLinecap="round"
           strokeDasharray={RING_C}
           strokeDashoffset={RING_C * (1 - progress)}
-          style={{ transition: "stroke-dashoffset 80ms linear" }}
         />
       </svg>
       <span
@@ -455,8 +487,8 @@ export default function SectionNavigation({ sections, title }: { sections: MiniM
                 background: !entered
                   ? "transparent"
                   : isOpen
-                    ? "linear-gradient(to bottom, var(--color-surface-fill4) 0%, var(--color-surface-primary) 100%)"
-                    : "var(--color-surface-fill4)",
+                    ? "linear-gradient(to bottom, var(--color-surface-layer1) 0%, var(--color-surface-primary) 100%)"
+                    : "var(--color-surface-layer1)",
                 transition: isOpen
                   ? `background ${OPEN_DURATION}s ${cssEase(ENTER_STANDARD)}, border-color ${OPEN_DURATION}s ${cssEase(ENTER_STANDARD)}, border-width ${OPEN_DURATION}s ${cssEase(ENTER_STANDARD)}`
                   : `background-color 200ms cubic-bezier(0.5,0,0.5,1) 200ms, border-color 200ms cubic-bezier(0.5,0,0.5,1) 200ms, border-width ${OPEN_DURATION}s ${cssEase(ENTER_STANDARD)}`,
@@ -467,17 +499,6 @@ export default function SectionNavigation({ sections, title }: { sections: MiniM
                 cursor: isOpen ? "default" : "pointer",
                 userSelect: "none",
                 boxSizing: "border-box",
-                // Full stroke as a closed pill; once expanded, only the top
-                // edge keeps a border since the sheet runs edge-to-edge. Color
-                // fades in lockstep with the fill (both gated on `entered`,
-                // both on the same transition) rather than being visible
-                // before the background has finished fading in.
-                borderStyle: "solid",
-                borderColor: !entered ? "transparent" : MOBILE_BORDER_LIGHT_20,
-                borderTopWidth: 0.75,
-                borderRightWidth: isOpen ? 0 : 0.75,
-                borderBottomWidth: isOpen ? 0 : 0.75,
-                borderLeftWidth: isOpen ? 0 : 0.75,
               }}
             >
               {/* Header — status ring, current section label, chevron.
@@ -672,7 +693,6 @@ export default function SectionNavigation({ sections, title }: { sections: MiniM
                   height: 40,
                   borderRadius: 24,
                   background: "var(--color-button-default-fill)",
-                  border: `0.75px solid ${MOBILE_BORDER_LIGHT_20}`,
                   boxSizing: "border-box",
                   cursor: "pointer",
                   pointerEvents: isOpen ? "auto" : "none",
@@ -724,11 +744,10 @@ export default function SectionNavigation({ sections, title }: { sections: MiniM
                 height: 34,
                 borderTopRightRadius: 24,
                 borderBottomRightRadius: 24,
-                background: "var(--color-surface-fill4)",
+                background: "var(--color-surface-layer1)",
                 backdropFilter: "blur(4px)",
                 WebkitBackdropFilter: "blur(4px)",
                 overflow: "hidden",
-                border: `0.75px solid ${MOBILE_BORDER_LIGHT_20}`,
                 cursor: "pointer",
                 userSelect: "none",
                 boxSizing: "border-box",
@@ -764,247 +783,159 @@ export default function SectionNavigation({ sections, title }: { sections: MiniM
   }
 
   // ── Desktop ──────────────────────────────────────────────────────────────
-  // Popup nav (Figma node 5333:3511): a single horizontal pill-row of links,
-  // always centered above the toggle pill regardless of how many sections it
-  // holds — sized to its content (not a fixed Figma px width, since that was
-  // authored against one specific 4-link case study) and anchored via a
-  // constant -50% x offset rather than layout centering, so it never shifts
-  // the toggle pill's position as it opens/closes or grows/shrinks.
-  const panelInner = (
-    <>
-      {sections.map((s, i) => {
-        const isCurrent = i === activeIndex;
-        const isHov = hoveredRow === i;
-        return (
-          <button
-            key={s.id}
-            onClick={() => scrollToSection(s.id)}
-            onMouseEnter={() => setHoveredRow(i)}
-            onMouseLeave={() => setHoveredRow(null)}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 8,
-              padding: "6px 8px",
-              borderRadius: 24,
-              background: isCurrent ? "var(--color-surface-fill2)" : "none",
-              border: "none",
-              cursor: "pointer",
-              fontFamily: "'Inter Tight', sans-serif",
-              fontWeight: 400,
-              whiteSpace: "nowrap",
-            }}
-          >
-            <span style={{ fontSize: 12, lineHeight: 1, color: isCurrent || isHov ? "var(--color-text-secondary)" : "var(--color-text-tertiary)", transition: "color 150ms ease" }}>
-              {i + 1}
-            </span>
-            <span style={{ fontSize: 14, lineHeight: 1, color: isCurrent || isHov ? "var(--color-text-primary)" : "var(--color-text-secondary)", transition: "color 150ms ease" }}>
-              {s.label}
-            </span>
-          </button>
-        );
-      })}
-    </>
-  );
+  // Side nav (Figma node 5708:763, "Casestudy Menu"): a fixed vertical list
+  // of section rows that pops up once the page scrolls past the same
+  // threshold as before — the list itself IS the nav now, no more
+  // toggle/dropdown pill to open first.
+  const SIDE_NAV_RISE = 12;
+  const SIDE_NAV_STAGGER = 0.05;
 
-  // Entrance transition for the toggle/dropdown container — opacity + slide,
-  // separate from the toggle pill's own width/height/border keyframes below.
-  const entranceTransition = {
-    opacity: { duration: 0.2 },
-    y: { duration: 0.18, ease: [0.965, 0, 1, 1] as [number, number, number, number] },
-  };
+  // Ring geometry for each row's number badge (Figma's "Progress Bar" node,
+  // a 24px circle, r≈10.6) — same dasharray/dashoffset technique as the
+  // mobile `statusRing` above, just driven per-row by sectionProgress[i]
+  // instead of a single shared `progress` value.
+  const SIDE_RING_R = 10.6;
+  const SIDE_RING_C = 2 * Math.PI * SIDE_RING_R;
 
   return (
     <AnimatePresence>
       {desktopVisible && (
-        <div className="fixed left-1/2 -translate-x-1/2 z-50" style={{ bottom: 16 + desktopBottomLift, transition: "bottom 200ms ease" }}>
         <motion.div
           ref={containerRef}
-          className="relative"
-          initial={{ opacity: 0, y: -28 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 12 }}
-          transition={entranceTransition}
+          className="fixed z-50 flex flex-col gap-[16px]"
+          style={{ left: SIDE_NAV_LEFT, top: SIDE_NAV_TOP_OFFSET }}
+          initial={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.2 }}
         >
-          {/* Popup nav — centered on the toggle pill, same as before. */}
-          <AnimatePresence>
-            {isOpen && (
-              <motion.div
-                className="absolute left-1/2 flex items-center"
-                style={{
-                  bottom: "calc(100% + 8px)",
-                  gap: 18,
-                  height: 38,
-                  padding: "0 8px",
-                  background: "var(--color-surface-fill4)",
-                  border: "0.75px solid var(--color-border-default)",
-                  borderRadius: 999,
-                  boxShadow: "0px 2px 4px rgba(0,0,0,0.05)",
-                  backdropFilter: "blur(12px)",
-                  WebkitBackdropFilter: "blur(12px)",
-                  whiteSpace: "nowrap",
-                  boxSizing: "border-box",
-                  overflow: "hidden",
-                }}
-                initial={{ opacity: 0, x: "-50%", y: 13, width: 0 }}
-                animate={{ opacity: 1, x: "-50%", y: 0, width: "auto" }}
-                exit={{ opacity: 0, x: "-50%", y: 13, width: 0 }}
-                transition={{ duration: OPEN_DURATION, ease: EASE_SYM }}
-              >
-                {panelInner}
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          {/* Toggle pill — Figma node 5325:2805 ("Menu", inside frame
-              5327:2981): status ring + current-section label + an inline
-              "Pill Back to Top" (node 5511:2086) instead of a chevron. */}
-          <motion.div
-            onClick={() => setIsOpen(!isOpen)}
-            onMouseEnter={() => setHovered(true)}
-            onMouseLeave={() => setHovered(false)}
-            initial={{ width: 48, height: 37 }}
-            animate={{ width: 270, height: 42 }}
-            transition={{
-              width: { duration: TOGGLE_WIDTH_DURATION, delay: TOGGLE_WIDTH_DELAY, ease: EASE_SMOOTH },
-              height: { duration: TOGGLE_HEIGHT_DURATION, ease: "linear" },
-            }}
+          {/* Back to top — pinned to the top of the list (per request),
+              rather than living inline inside the old toggle pill. */}
+          <motion.button
+            onClick={scrollToTop}
+            onMouseEnter={() => setBackToTopHovered(true)}
+            onMouseLeave={() => setBackToTopHovered(false)}
+            initial={{ opacity: 0, y: SIDE_NAV_RISE }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, ease: EASE_SYM }}
             style={{
-              background: hovered ? "var(--color-surface-fill2)" : "var(--color-button-default-fill)",
-              backdropFilter: "blur(12px)",
-              WebkitBackdropFilter: "blur(12px)",
-              borderRadius: 24,
-              borderStyle: "solid",
-              borderWidth: 0.75,
-              // Border can't be a Framer animate target (var() doesn't
-              // tween) — faded in via plain CSS transition instead, gated on
-              // desktopBorderEntered so it starts at the same delay Figma's
-              // border-color track uses.
-              borderColor: desktopBorderEntered ? "var(--color-border-default)" : "transparent",
-              overflow: "hidden",
+              display: "flex",
+              alignItems: "center",
+              gap: 8,
+              padding: 0,
+              background: "none",
+              border: "none",
               cursor: "pointer",
-              userSelect: "none",
-              flexShrink: 0,
-              boxSizing: "border-box",
-              boxShadow: "0px 2px 4px rgba(0,0,0,0.05)",
-              transition: `background 0.15s ease, border-color ${TOGGLE_BORDER_DURATION}s ${cssEase(EASE_SYM)}`,
+              fontFamily: "'Inter Tight', sans-serif",
             }}
           >
-            <div
-              style={{
-                width: 270,
-                height: "100%",
-                display: "flex",
-                alignItems: "center",
-                gap: 16,
-                padding: "0 12px",
-                boxSizing: "border-box",
-              }}
-            >
-              {statusRing}
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", width: 24, height: 24, flexShrink: 0 }}>
+              <svg width="18" height="18" viewBox={icons.navigation.arrowUp.viewBox} fill="none">
+                <path
+                  d={icons.navigation.arrowUp.paths[0].d}
+                  stroke={backToTopHovered ? "var(--color-text-primary)" : "var(--color-text-secondary)"}
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  style={{ transition: "stroke 0.15s ease" }}
+                />
+              </svg>
+            </div>
+            <span style={{ fontSize: 14, lineHeight: 1, color: backToTopHovered ? "var(--color-text-primary)" : "var(--color-text-secondary)", transition: "color 0.15s ease" }}>
+              Back to top
+            </span>
+            <span style={{ display: "flex", alignItems: "center", gap: 2 }}>
+              <span style={{ display: "flex", alignItems: "center", justifyContent: "center", width: 32, height: 18, borderRadius: 4, background: "var(--color-surface-fill2)", fontFamily: "'Inter Tight', sans-serif", fontSize: 12, lineHeight: 1, color: backToTopHovered ? "var(--color-text-primary)" : "var(--color-text-secondary)", transition: "color 0.15s ease" }}>
+                shift
+              </span>
+              <span style={{ display: "flex", alignItems: "center", justifyContent: "center", width: 18, height: 18, borderRadius: 4, background: "var(--color-surface-fill2)", fontFamily: "'Inter Tight', sans-serif", fontSize: 12, lineHeight: 1, color: backToTopHovered ? "var(--color-text-primary)" : "var(--color-text-secondary)", transition: "color 0.15s ease" }}>
+                E
+              </span>
+            </span>
+          </motion.button>
 
-              <motion.p
-                initial={{ opacity: 0, scaleX: 0.5, scaleY: 0.5, x: -24 }}
-                animate={{ opacity: 1, scaleX: 1, scaleY: 1, x: 0 }}
-                transition={{
-                  opacity: { duration: 0.452, delay: 0.288, ease: EASE_SMOOTH },
-                  scaleX:  { duration: 0.452, delay: 0.288, ease: EASE_SMOOTH },
-                  scaleY:  { duration: 0.452, delay: 0.288, ease: EASE_SMOOTH },
-                  x:       { duration: 0.452, delay: 0.288, ease: EASE_SMOOTH },
-                }}
-                style={{
-                  transformOrigin: "0% 50%",
-                  fontFamily: "'Inter Tight', sans-serif",
-                  fontSize: 14,
-                  fontWeight: 400,
-                  lineHeight: 1,
-                  color: "var(--color-text-primary)",
-                  margin: 0,
-                  flex: 1,
-                  minWidth: 0,
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                  whiteSpace: "nowrap",
-                }}
-              >
-                {sections[activeIndex]?.label}
-              </motion.p>
-
-              {/* Pill Back to Top — node 5511:2086: fades + scales in place
-                  (Figma's own translate track for it is constant, i.e. no
-                  positional motion), finishing right as the pill's width
-                  tween does. stopPropagation so it scrolls to top instead of
-                  also toggling the dropdown underneath it. */}
-              <motion.div
-                onClick={(e) => { e.stopPropagation(); scrollToTop(); }}
-                onMouseEnter={() => setBackToTopHovered(true)}
-                onMouseLeave={() => setBackToTopHovered(false)}
-                initial={{ opacity: 0, scale: 0.5 }}
-                animate={{
-                  opacity: 1,
-                  scale: 1,
-                  transition: {
-                    opacity: { duration: BACK_TO_TOP_OPACITY_DURATION, delay: BACK_TO_TOP_OPACITY_DELAY, ease: EASE_SYM },
-                    scale: { duration: BACK_TO_TOP_SCALE_DURATION, delay: BACK_TO_TOP_SCALE_DELAY, ease: EASE_SYM },
-                  },
-                }}
+          {/* Section rows — each ring fills 0% -> 100% as the user scrolls
+              through that section (sectionProgress[i], monotonically grown
+              by growSectionProgress in onScroll above — never decreases if
+              they scroll back up, only resets on a fresh mount). A section
+              that gets skipped entirely (e.g. clicking straight from
+              "Overview" to "Heuristics") simply stays at 0 instead of being
+              marked complete. Numbers stay visible in every state; only the
+              ring fill and the text colors change. */}
+          {sections.map((s, i) => {
+            const isCurrent = i === activeIndex;
+            const rowProgress = sectionProgress[i] ?? 0;
+            const isReached = isCurrent || rowProgress > 0;
+            const isHov = hoveredRow === i;
+            return (
+              <motion.button
+                key={s.id}
+                onClick={() => scrollToSection(s.id)}
+                onMouseEnter={() => setHoveredRow(i)}
+                onMouseLeave={() => setHoveredRow(null)}
+                initial={{ opacity: 0, y: SIDE_NAV_RISE }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: (i + 1) * SIDE_NAV_STAGGER, ease: EASE_SYM }}
                 style={{
                   display: "flex",
                   alignItems: "center",
-                  justifyContent: "center",
-                  gap: 6,
-                  width: 94,
-                  height: 32,
-                  flexShrink: 0,
-                  borderRadius: 24,
-                  border: "0.75px solid var(--color-border-default)",
-                  boxSizing: "border-box",
+                  gap: 8,
+                  width: 174,
+                  padding: 0,
+                  background: "none",
+                  border: "none",
                   cursor: "pointer",
-                  // Same hover treatment as MainNavigation's "Pill Home":
-                  // transparent at rest, surface/fill-2 on hover.
-                  background: backToTopHovered ? "var(--color-surface-fill2)" : "transparent",
-                  transition: "background 0.15s ease",
+                  textAlign: "left",
+                  fontFamily: "'Inter Tight', sans-serif",
                 }}
               >
-                <svg width="18" height="18" viewBox={icons.navigation.arrowUp.viewBox} fill="none" style={{ flexShrink: 0 }}>
-                  <path
-                    d={icons.navigation.arrowUp.paths[0].d}
-                    stroke={backToTopHovered ? "var(--color-text-primary)" : "var(--color-text-secondary)"}
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    style={{ transition: "stroke 0.15s ease" }}
-                  />
-                </svg>
-                <span style={{ display: "flex", alignItems: "center", gap: 2 }}>
+                <div style={{ position: "relative", flexShrink: 0, width: 24, height: 24 }}>
+                  <svg width="24" height="24" viewBox="0 0 24 24" style={{ position: "absolute", inset: 0, transform: "rotate(-90deg)" }}>
+                    <circle
+                      cx="12" cy="12" r={SIDE_RING_R}
+                      fill="none"
+                      stroke="var(--color-surface-tertiary)"
+                      strokeWidth="1.3"
+                      opacity={isReached ? 0.3 : 0}
+                      style={{ transition: "opacity 0.2s ease" }}
+                    />
+                    <circle
+                      cx="12" cy="12" r={SIDE_RING_R}
+                      fill="none"
+                      stroke={isCurrent ? "var(--color-text-primary)" : "var(--color-text-secondary)"}
+                      strokeWidth="1.3"
+                      strokeLinecap="round"
+                      strokeDasharray={SIDE_RING_C}
+                      strokeDashoffset={SIDE_RING_C * (1 - rowProgress)}
+                      opacity={isReached ? 1 : 0}
+                      style={{ transition: "opacity 0.2s ease, stroke 0.15s ease" }}
+                    />
+                  </svg>
                   <span
                     style={{
+                      position: "absolute", inset: 0,
                       display: "flex", alignItems: "center", justifyContent: "center",
-                      width: 32, height: 18, borderRadius: 4,
-                      background: "var(--color-surface-fill2)",
-                      fontFamily: "'Inter Tight', sans-serif", fontSize: 12, lineHeight: 1,
-                      color: "var(--color-text-secondary)",
+                      fontSize: 10.5, lineHeight: 1,
+                      color: isCurrent ? "var(--color-text-primary)" : "var(--color-text-tertiary)",
+                      transition: "color 0.15s ease",
                     }}
                   >
-                    shift
+                    {i + 1}
                   </span>
-                  <span
-                    style={{
-                      display: "flex", alignItems: "center", justifyContent: "center",
-                      width: 18, height: 18, borderRadius: 4,
-                      background: "var(--color-surface-fill2)",
-                      fontFamily: "'Inter Tight', sans-serif", fontSize: 12, lineHeight: 1,
-                      color: "var(--color-text-secondary)",
-                    }}
-                  >
-                    E
-                  </span>
+                </div>
+                <span
+                  style={{
+                    fontSize: 14, lineHeight: 1, width: 130,
+                    overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap",
+                    color: isCurrent || isHov ? "var(--color-text-primary)" : "var(--color-text-secondary)",
+                    transition: "color 0.15s ease",
+                  }}
+                >
+                  {s.label}
                 </span>
-              </motion.div>
-            </div>
-          </motion.div>
+              </motion.button>
+            );
+          })}
         </motion.div>
-        </div>
       )}
     </AnimatePresence>
   );

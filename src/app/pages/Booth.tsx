@@ -44,6 +44,15 @@ import tianConfirmed from "../../assets/project/booth/tian-confirmed.mp4";
 import tianTokenSystem from "../../assets/project/booth/tian-tokensystem.png";
 import tianVariables from "../../assets/project/booth/tian-variables.png";
 import kpopCover from "../../assets/project/booth/kpop-cover.mp4";
+import kpopWorkshopCover from "../../assets/project/kpop/kpop_cover2.png";
+import kpopRecord1 from "../../assets/project/kpop/record_1.mov";
+import kpopRecord2 from "../../assets/project/kpop/record_2.png";
+import kpopPhotocard1 from "../../assets/project/kpop/photocard_1.mov";
+import kpopPhotocard2 from "../../assets/project/kpop/photocard_2.png";
+import kpopCharms1 from "../../assets/project/kpop/charms_1.mov";
+import kpopCharms2 from "../../assets/project/kpop/charms_2.png";
+import kpopPoster1 from "../../assets/project/kpop/poster_1.png";
+import kpopPoster2 from "../../assets/project/kpop/poster_2.png";
 import figmaRitFashion from "../../assets/project/booth/figmarit-fashion.png";
 import figmaRitKpop from "../../assets/project/booth/figmarit-kpop.png";
 import figmaRitLeaders from "../../assets/project/booth/figmarit-leaders.jpg";
@@ -67,11 +76,17 @@ const LAB_CARDS = [
   { id: "tian-airlines", category: "Advanced Figma Logic", title: "Tian Air", year: "2025", video: tianCover },
   { id: "iris", category: "Experience", title: "IRIS AI", year: "2024", video: irisCover, hasAudio: true },
   { id: "figma-rit", category: "Workshop", title: "Figma at RIT", year: "2025", video: kpopCover },
+  { id: "figma-kpop", category: "Workshop", title: "KPop Club Workshop", year: "2025", image: kpopWorkshopCover },
   { id: "marc-jacobs", category: "Illustration", title: "Marc Jacobs Daisy Haze", year: "2023", image: marcCover },
   { id: "dj-munson", category: "Installation", title: "DJ Munson's Last Spin", year: "2025", video: munsonVideo },
   { id: "sg-stickers", category: "Illustration", title: "Popcorn Stickers", year: "2023", image: sgCover },
   { id: "college-of-science", category: "Graphic", title: "College of Science", year: "2023", image: cosCover },
 ];
+
+// Read by MainNavigation for the Lab nav item's count badge — kept as a
+// separate export (rather than importing LAB_CARDS itself) so the nav only
+// pulls in a number, not this file's identity.
+export const LAB_CARD_COUNT = LAB_CARDS.length;
 
 // Small pill overlay toggling a video's mute state — rendered as a <span>
 // with role="button" rather than a real <button> because LazyVideo is used
@@ -204,10 +219,8 @@ function LabCard({
   return (
     <button
       onClick={onClick}
-      onMouseEnter={() => document.dispatchEvent(new CustomEvent("cursor:variant", { detail: "open" }))}
-      onMouseLeave={() => document.dispatchEvent(new CustomEvent("cursor:variant", { detail: "default" }))}
       className="relative aspect-square rounded-[16px] overflow-hidden shrink-0 text-left border border-solid"
-      style={{ background: background ?? "var(--color-surface-fill4)", borderColor: "var(--color-border-default)" }}
+      style={{ background: background ?? "var(--color-surface-layer1)", borderColor: "var(--color-border-dark)" }}
     >
       {video ? (
         <LazyVideo src={video} className="absolute inset-0 w-full h-full object-cover" showVolumeToggle={showVolumeToggle} />
@@ -215,11 +228,11 @@ function LabCard({
         <img src={image} alt={title} loading="lazy" decoding="async" className="absolute inset-0 w-full h-full object-cover" />
       ) : null}
       <div className="absolute bottom-0 left-0 flex flex-col items-start p-[16px]">
-        <div className="flex flex-col gap-[4px] items-start font-['Inter_Tight',sans-serif] font-light leading-[1.65]">
+        <div className="flex flex-col gap-[4px] items-start font-['Inter_Tight',sans-serif] font-normal leading-[1.65]">
           <p className="text-[12px] text-[#908e99]">
             {category} {year}
           </p>
-          <p className="text-[16px] text-[#faf9ff]">{title}</p>
+          <p className="text-[length:var(--typography-body-default-font-size)] text-[#faf9ff]">{title}</p>
         </div>
       </div>
     </button>
@@ -250,7 +263,7 @@ function TianTabSlider({
           className="relative h-[32px] w-[100px] flex items-center justify-center rounded-[24px]"
         >
           <span
-            className={`font-['Inter_Tight',sans-serif] font-light leading-none text-[14px] transition-colors duration-200 ${active === i ? "text-[#faf9ff]" : "text-[#908e99]"
+            className={`font-['Inter_Tight',sans-serif] font-normal leading-none text-[14px] transition-colors duration-200 ${active === i ? "text-[#faf9ff]" : "text-[#908e99]"
               }`}
           >
             {label}
@@ -292,7 +305,7 @@ function ClosePill({ onClick }: { onClick: () => void }) {
       style={{
         backdropFilter: "blur(12px)",
         WebkitBackdropFilter: "blur(12px)",
-        background: hovered ? "var(--color-surface-fill2)" : "var(--color-button-default-fill)",
+        background: hovered ? "var(--color-surface-fill3)" : "var(--color-button-default-fill)",
         borderColor: "var(--color-border-default)",
         transition: "background 0.15s ease",
       }}
@@ -302,7 +315,7 @@ function ClosePill({ onClick }: { onClick: () => void }) {
         className="flex items-center justify-center h-[18px] px-[5px] rounded-[3px]"
         style={{ background: "rgba(144,142,153,0.2)" }}
       >
-        <p className="font-['Inter_Tight',sans-serif] text-[10px] text-[#908e99] leading-none">esc</p>
+        <p className="font-['Inter_Tight',sans-serif] text-[10px] leading-none" style={{ color: hovered ? "var(--color-text-primary)" : "#908e99", transition: "color 0.15s ease" }}>esc</p>
       </div>
     </button>
   );
@@ -462,7 +475,7 @@ function ImageRow({
       ref={(el) => { itemRefs.current[i] = el; }}
       className="flex flex-col gap-[16px] items-start shrink-0"
     >
-      <p className="font-['Inter_Tight',sans-serif] font-light text-[12px] leading-[1.5] text-[#908e99]">{item.alt}</p>
+      <p className="font-['Inter_Tight',sans-serif] font-normal text-[12px] leading-[1.5] text-[#908e99]">{item.alt}</p>
       <div className="relative rounded-[12px] overflow-hidden bg-[#2c2c2c]" style={{ height }}>
         {item.video ? (
           <LazyVideo
@@ -482,7 +495,7 @@ function ImageRow({
       <div className="flex flex-col sm:flex-row gap-[16px] sm:gap-[24px] w-full">
         {items.map((item, i) => (
           <div key={i} className="flex flex-col gap-[16px] items-start flex-1 min-w-0">
-            <p className="font-['Inter_Tight',sans-serif] font-light text-[12px] leading-[1.5] text-[#908e99]">{item.alt}</p>
+            <p className="font-['Inter_Tight',sans-serif] font-normal text-[12px] leading-[1.5] text-[#908e99]">{item.alt}</p>
             <div className="aspect-[1200/600] w-full rounded-[12px] overflow-hidden bg-[#2c2c2c]">
               {item.video ? (
                 <LazyVideo src={item.src} className="w-full h-full object-cover" />
@@ -537,13 +550,13 @@ function ModalSection({
     <div className="flex flex-col gap-[32px] items-start w-full">
       <div className="flex flex-col gap-[16px] items-start w-full font-['Inter_Tight',sans-serif] not-italic">
         <div className="flex flex-col gap-[8px] items-start w-full">
-          <p className="font-light text-[16px] leading-[1.65] text-[#908e99]">{eyebrow}</p>
-          <p className="font-normal text-[18px] leading-[1.45] text-[#faf9ff]">{title}</p>
+          <p className="font-normal text-[length:var(--typography-body-default-font-size)] leading-[1.65] text-[#908e99]">{eyebrow}</p>
+          <p className="font-normal text-[length:var(--typography-body-default-font-size)] leading-[1.45] text-[#faf9ff]">{title}</p>
         </div>
         {body && (typeof body === "string" ? (
-          <p className="font-light text-[16px] leading-[1.75] text-[#908e99] w-full">{body}</p>
+          <p className="font-normal text-[length:var(--typography-body-default-font-size)] leading-[1.75] text-[#908e99] w-full">{body}</p>
         ) : (
-          <div className="flex flex-col gap-[16px] font-light text-[16px] leading-[1.75] text-[#908e99] w-full">{body}</div>
+          <div className="flex flex-col gap-[16px] font-normal text-[length:var(--typography-body-default-font-size)] leading-[1.75] text-[#908e99] w-full">{body}</div>
         ))}
       </div>
       {children && (
@@ -739,16 +752,16 @@ function TianModal({ onClose }: { onClose: () => void }) {
         <div className="flex flex-col gap-[50px] justify-center w-full lg:flex-1 min-w-0">
           <div className="flex flex-col gap-[16px] w-full">
             <div className="flex flex-col gap-[8px] w-full font-['Inter_Tight',sans-serif] not-italic">
-              <p className="font-light text-[16px] leading-[1.65] text-[#908e99]">2025</p>
-              <p className="font-normal text-[18px] leading-[1.45] text-[#faf9ff]">Tian Design System</p>
+              <p className="font-normal text-[length:var(--typography-body-default-font-size)] leading-[1.65] text-[#908e99]">2025</p>
+              <p className="font-normal text-[length:var(--typography-body-default-font-size)] leading-[1.45] text-[#faf9ff]">Tian Design System</p>
             </div>
-            <p className="font-['Inter_Tight',sans-serif] font-light text-[16px] leading-[1.75] text-[#908e99]">
+            <p className="font-['Inter_Tight',sans-serif] font-normal text-[length:var(--typography-body-default-font-size)] leading-[1.75] text-[#908e99]">
               Tian Airlines is a study on hi-fi prototyping and design systems within Figma. All flight information works, with proper checking of time and potential departure / arrivals.
             </p>
           </div>
           <div className="flex flex-col gap-[16px] w-full font-['Inter_Tight',sans-serif] not-italic">
-            <p className="font-light text-[16px] leading-[1.65] text-[#c1becb]">Tools / Skills</p>
-            <p className="font-light text-[16px] leading-[1.75] text-[#908e99]">
+            <p className="font-normal text-[length:var(--typography-body-default-font-size)] leading-[1.65] text-[#c1becb]">Tools / Skills</p>
+            <p className="font-normal text-[length:var(--typography-body-default-font-size)] leading-[1.75] text-[#908e99]">
               Runs on calculator switches in Figma (like a mouse listener) Created Tian / Heaven alongside Nebula design system
             </p>
           </div>
@@ -784,6 +797,86 @@ function TianModal({ onClose }: { onClose: () => void }) {
   );
 }
 
+function KpopModal({ onClose }: { onClose: () => void }) {
+  const overview = (
+    <div className="flex flex-col lg:flex-row gap-[64px] items-center w-full pr-[32px]">
+      <div className="relative w-full aspect-[1200/800] flex-1 rounded-[12px] overflow-hidden bg-white shrink-0">
+        <img src={kpopWorkshopCover} alt="KPop Club Workshop" className="absolute inset-0 w-full h-full object-cover" />
+      </div>
+      <div className="flex flex-col gap-[50px] justify-center w-full lg:w-[435px] shrink-0">
+        <div className="flex flex-col gap-[16px] w-full">
+          <div className="flex flex-col gap-[8px] w-full font-['Inter_Tight',sans-serif] not-italic">
+            <p className="font-normal text-[length:var(--typography-body-default-font-size)] leading-[1.65] text-[#908e99]">2025</p>
+            <p className="font-normal text-[length:var(--typography-body-default-font-size)] leading-[1.45] text-[#faf9ff]">Figma at RIT x KPop Club</p>
+          </div>
+          <p className="font-['Inter_Tight',sans-serif] font-normal text-[length:var(--typography-body-default-font-size)] leading-[1.75] text-[#908e99]">
+            A custom Figma workshop for RIT's KPop Club, built around the culture of album inclusions — photocards, charms, posters, and records.
+          </p>
+        </div>
+        <div className="flex flex-col gap-[16px] w-full font-['Inter_Tight',sans-serif] not-italic">
+          <p className="font-normal text-[length:var(--typography-body-default-font-size)] leading-[1.65] text-[#c1becb]">Tools / Skills</p>
+          <p className="font-normal text-[length:var(--typography-body-default-font-size)] leading-[1.75] text-[#908e99]">Figma, Figma Make</p>
+        </div>
+      </div>
+    </div>
+  );
+
+  return (
+    <ModalFrame onClose={onClose} overview={overview}>
+      <div className="flex flex-col gap-[100px] items-start w-full px-[36px]">
+        <ModalSection
+          eyebrow="Video + Audio"
+          title="CDs and Records"
+          body="A big asset with Figma is you can add sound to prototypes! I wanted students to know how much they could mess around with sound and add it to their own records."
+        >
+          <ImageRow
+            items={[
+              { src: kpopRecord1, alt: "Record prototype", video: true },
+              { src: kpopRecord2, alt: "Record component" },
+            ]}
+          />
+        </ModalSection>
+        <ModalSection
+          eyebrow="Components"
+          title="Photocards"
+          body="I wanted to give students the ability to create their own photocards! Photocards also have little cases for their photos, and it was a super fun way to introduce layering, animations, and nested components."
+        >
+          <ImageRow
+            items={[
+              { src: kpopPhotocard1, alt: "Photocard prototype", video: true },
+              { src: kpopPhotocard2, alt: "Photocard component" },
+            ]}
+          />
+        </ModalSection>
+        <ModalSection
+          eyebrow="Figma Make"
+          title="Charms"
+          body="Sometimes charms represent an idol's concept, or fans use charms to decorate. I made sure to provide prompts to students to get them started!"
+        >
+          <ImageRow
+            items={[
+              { src: kpopCharms1, alt: "Charms prototype", video: true },
+              { src: kpopCharms2, alt: "Charms component" },
+            ]}
+          />
+        </ModalSection>
+        <ModalSection
+          eyebrow="Figma Community + Plugins"
+          title="Posters"
+          body="The wealth of Figma lies in community. I used posters to showcase textures, cloners, etc. It was by far the most popular, and here's some of the student work!"
+        >
+          <ImageRow
+            items={[
+              { src: kpopPoster1, alt: "Poster example" },
+              { src: kpopPoster2, alt: "Student poster work" },
+            ]}
+          />
+        </ModalSection>
+      </div>
+    </ModalFrame>
+  );
+}
+
 function DragonModal({ onClose }: { onClose: () => void }) {
   const overview = (
     <div className="flex flex-col lg:flex-row gap-[64px] items-center w-full pr-[32px]">
@@ -793,21 +886,21 @@ function DragonModal({ onClose }: { onClose: () => void }) {
       <div className="flex flex-col gap-[50px] justify-center w-full lg:w-[435px] shrink-0">
         <div className="flex flex-col gap-[16px] w-full">
           <div className="flex flex-col gap-[8px] w-full font-['Inter_Tight',sans-serif] not-italic">
-            <p className="font-light text-[16px] leading-[1.65] text-[#908e99]">2025</p>
-            <p className="font-normal text-[18px] leading-[1.45] text-[#faf9ff]">Dragon Doodle</p>
+            <p className="font-normal text-[length:var(--typography-body-default-font-size)] leading-[1.65] text-[#908e99]">2025</p>
+            <p className="font-normal text-[length:var(--typography-body-default-font-size)] leading-[1.45] text-[#faf9ff]">Dragon Doodle</p>
           </div>
           <div className="flex flex-col gap-[16px] w-full font-['Inter_Tight',sans-serif] not-italic">
-            <p className="font-light text-[16px] leading-[1.75] text-[#908e99]">
+            <p className="font-normal text-[length:var(--typography-body-default-font-size)] leading-[1.75] text-[#908e99]">
               This dragon collects mooncakes based on your ability to sing the notes of "Twinkle, Twinkle, Little Star."
             </p>
-            <p className="font-light text-[12px] leading-[1.5] text-[#908e99]">
+            <p className="font-normal text-[12px] leading-[1.5] text-[#908e99]">
               It was later recreated in Figma Make, which you can see in the video!
             </p>
           </div>
         </div>
         <div className="flex flex-col gap-[16px] w-full font-['Inter_Tight',sans-serif] not-italic">
-          <p className="font-light text-[16px] leading-[1.65] text-[#c1becb]">Tools / Skills</p>
-          <p className="font-light text-[16px] leading-[1.75] text-[#908e99]">
+          <p className="font-normal text-[length:var(--typography-body-default-font-size)] leading-[1.65] text-[#c1becb]">Tools / Skills</p>
+          <p className="font-normal text-[length:var(--typography-body-default-font-size)] leading-[1.75] text-[#908e99]">
             Figma vectors, Rive animations, Claude generated logic
           </p>
         </div>
@@ -847,7 +940,7 @@ function CreditLine({ prefix, name, href }: { prefix: string; name: string; href
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="font-['Inter_Tight',sans-serif] font-light text-[14px] leading-[1.5] no-underline"
+      className="font-['Inter_Tight',sans-serif] font-normal text-[14px] leading-[1.5] no-underline"
     >
       <span style={{ color: "var(--color-text-secondary)" }}>{prefix} </span>
       <span style={{ color: "var(--color-text-primary)" }}>{name}</span>
@@ -865,21 +958,21 @@ function BeyondFashionModal({ onClose }: { onClose: () => void }) {
         <div className="flex flex-col gap-[50px] justify-center w-full lg:w-[435px] shrink-0">
           <div className="flex flex-col gap-[16px] w-full">
             <div className="flex flex-col gap-[8px] w-full font-['Inter_Tight',sans-serif] not-italic">
-              <p className="font-light text-[16px] leading-[1.65] text-[#908e99]">2025</p>
-              <p className="font-normal text-[18px] leading-[1.45] text-[#faf9ff]">Beyond Fashion : Off the Table</p>
+              <p className="font-normal text-[length:var(--typography-body-default-font-size)] leading-[1.65] text-[#908e99]">2025</p>
+              <p className="font-normal text-[length:var(--typography-body-default-font-size)] leading-[1.45] text-[#faf9ff]">Beyond Fashion : Off the Table</p>
             </div>
             <div className="flex flex-col gap-[16px] w-full font-['Inter_Tight',sans-serif] not-italic">
-              <p className="font-light text-[16px] leading-[1.75] text-[#908e99]">
+              <p className="font-normal text-[length:var(--typography-body-default-font-size)] leading-[1.75] text-[#908e99]">
                 A student-led fashion show supporting local artists, with each team creating visuals for a designer or club.
               </p>
-              <p className="font-light text-[16px] leading-[1.75] text-[#908e99]">
+              <p className="font-normal text-[length:var(--typography-body-default-font-size)] leading-[1.75] text-[#908e99]">
                 The year's theme was Vignelli's dishware.
               </p>
             </div>
           </div>
           <div className="flex flex-col gap-[16px] w-full font-['Inter_Tight',sans-serif] not-italic">
-            <p className="font-light text-[16px] leading-[1.65] text-[#c1becb]">Tools / Skills</p>
-            <p className="font-light text-[16px] leading-[1.75] text-[#908e99]">
+            <p className="font-normal text-[length:var(--typography-body-default-font-size)] leading-[1.65] text-[#c1becb]">Tools / Skills</p>
+            <p className="font-normal text-[length:var(--typography-body-default-font-size)] leading-[1.75] text-[#908e99]">
               Cinema 4D, After Effects, Resolume Arena
             </p>
           </div>
@@ -921,16 +1014,16 @@ function MarcJacobsModal({ onClose }: { onClose: () => void }) {
       <div className="flex flex-col gap-[50px] justify-center w-full lg:w-[435px] shrink-0">
         <div className="flex flex-col gap-[16px] w-full">
           <div className="flex flex-col gap-[8px] w-full font-['Inter_Tight',sans-serif] not-italic">
-            <p className="font-light text-[16px] leading-[1.65] text-[#908e99]">2025</p>
-            <p className="font-normal text-[18px] leading-[1.45] text-[#faf9ff]">Marc Jacobs</p>
+            <p className="font-normal text-[length:var(--typography-body-default-font-size)] leading-[1.65] text-[#908e99]">2025</p>
+            <p className="font-normal text-[length:var(--typography-body-default-font-size)] leading-[1.45] text-[#faf9ff]">Marc Jacobs</p>
           </div>
-          <p className="font-['Inter_Tight',sans-serif] font-light text-[16px] leading-[1.65] text-[#908e99]">
+          <p className="font-['Inter_Tight',sans-serif] font-normal text-[length:var(--typography-body-default-font-size)] leading-[1.65] text-[#908e99]">
             An imaginary perfume joining the Marc Jacobs Daisy line.
           </p>
         </div>
         <div className="flex flex-col gap-[16px] w-full font-['Inter_Tight',sans-serif] not-italic">
-          <p className="font-light text-[16px] leading-[1.65] text-[#c1becb]">Tools / Skills</p>
-          <p className="font-light text-[16px] leading-[1.75] text-[#908e99]">Cinema 4D, Photoshop</p>
+          <p className="font-normal text-[length:var(--typography-body-default-font-size)] leading-[1.65] text-[#c1becb]">Tools / Skills</p>
+          <p className="font-normal text-[length:var(--typography-body-default-font-size)] leading-[1.75] text-[#908e99]">Cinema 4D, Photoshop</p>
         </div>
       </div>
     </div>
@@ -969,16 +1062,16 @@ function SgModal({ onClose }: { onClose: () => void }) {
       <div className="flex flex-col gap-[50px] justify-center w-full lg:w-[435px] shrink-0">
         <div className="flex flex-col gap-[16px] w-full">
           <div className="flex flex-col gap-[8px] w-full font-['Inter_Tight',sans-serif] not-italic">
-            <p className="font-light text-[16px] leading-[1.65] text-[#908e99]">2023</p>
-            <p className="font-normal text-[18px] leading-[1.45] text-[#faf9ff]">Free Popcorn Truck</p>
+            <p className="font-normal text-[length:var(--typography-body-default-font-size)] leading-[1.65] text-[#908e99]">2023</p>
+            <p className="font-normal text-[length:var(--typography-body-default-font-size)] leading-[1.45] text-[#faf9ff]">Free Popcorn Truck</p>
           </div>
-          <p className="font-['Inter_Tight',sans-serif] font-light text-[16px] leading-[1.65] text-[#908e99]">
+          <p className="font-['Inter_Tight',sans-serif] font-normal text-[length:var(--typography-body-default-font-size)] leading-[1.65] text-[#908e99]">
             SG had a free popcorn truck
           </p>
         </div>
         <div className="flex flex-col gap-[16px] w-full font-['Inter_Tight',sans-serif] not-italic">
-          <p className="font-light text-[16px] leading-[1.65] text-[#c1becb]">Tools / Skills</p>
-          <p className="font-light text-[16px] leading-[1.75] text-[#908e99]">Adobe Illustrator</p>
+          <p className="font-normal text-[length:var(--typography-body-default-font-size)] leading-[1.65] text-[#c1becb]">Tools / Skills</p>
+          <p className="font-normal text-[length:var(--typography-body-default-font-size)] leading-[1.75] text-[#908e99]">Adobe Illustrator</p>
         </div>
       </div>
     </div>
@@ -1016,16 +1109,16 @@ function IrisModal({ onClose }: { onClose: () => void }) {
         <div className="flex flex-col gap-[50px] justify-center w-full lg:w-[435px] shrink-0">
           <div className="flex flex-col gap-[16px] w-full">
             <div className="flex flex-col gap-[8px] w-full font-['Inter_Tight',sans-serif] not-italic">
-              <p className="font-light text-[16px] leading-[1.65] text-[#908e99]">2023</p>
-              <p className="font-normal text-[18px] leading-[1.45] text-[#faf9ff]">IRIS AI</p>
+              <p className="font-normal text-[length:var(--typography-body-default-font-size)] leading-[1.65] text-[#908e99]">2023</p>
+              <p className="font-normal text-[length:var(--typography-body-default-font-size)] leading-[1.45] text-[#faf9ff]">IRIS AI</p>
             </div>
-            <p className="font-['Inter_Tight',sans-serif] font-light text-[16px] leading-[1.65] text-[#908e99]">
+            <p className="font-['Inter_Tight',sans-serif] font-normal text-[length:var(--typography-body-default-font-size)] leading-[1.65] text-[#908e99]">
               IRIS was 2024 Creative Collision, created and pushed to play in 2 short days. It was a huge success, with lines for all 5 hours. I was on the Product Team and 2D Team!
             </p>
           </div>
           <div className="flex flex-col gap-[16px] w-full font-['Inter_Tight',sans-serif] not-italic">
-            <p className="font-light text-[16px] leading-[1.65] text-[#c1becb]">Tools / Skills</p>
-            <p className="font-light text-[16px] leading-[1.75] text-[#908e99]">Figma, Adobe</p>
+            <p className="font-normal text-[length:var(--typography-body-default-font-size)] leading-[1.65] text-[#c1becb]">Tools / Skills</p>
+            <p className="font-normal text-[length:var(--typography-body-default-font-size)] leading-[1.75] text-[#908e99]">Figma, Adobe</p>
           </div>
         </div>
       </div>
@@ -1067,16 +1160,16 @@ function CollegeOfScienceModal({ onClose }: { onClose: () => void }) {
       <div className="flex flex-col gap-[50px] justify-center w-full lg:w-[435px] shrink-0">
         <div className="flex flex-col gap-[16px] w-full">
           <div className="flex flex-col gap-[8px] w-full font-['Inter_Tight',sans-serif] not-italic">
-            <p className="font-light text-[16px] leading-[1.65] text-[#908e99]">2023</p>
-            <p className="font-normal text-[18px] leading-[1.45] text-[#faf9ff]">Bates Study Center</p>
+            <p className="font-normal text-[length:var(--typography-body-default-font-size)] leading-[1.65] text-[#908e99]">2023</p>
+            <p className="font-normal text-[length:var(--typography-body-default-font-size)] leading-[1.45] text-[#faf9ff]">Bates Study Center</p>
           </div>
-          <p className="font-['Inter_Tight',sans-serif] font-light text-[16px] leading-[1.65] text-[#908e99]">
+          <p className="font-['Inter_Tight',sans-serif] font-normal text-[length:var(--typography-body-default-font-size)] leading-[1.65] text-[#908e99]">
             Bates Study center needed a refresh to attract more students, and also spread awareness of the help!
           </p>
         </div>
         <div className="flex flex-col gap-[16px] w-full font-['Inter_Tight',sans-serif] not-italic">
-          <p className="font-light text-[16px] leading-[1.65] text-[#c1becb]">Tools / Skills</p>
-          <p className="font-light text-[16px] leading-[1.75] text-[#908e99]">Illustrator, InDesign</p>
+          <p className="font-normal text-[length:var(--typography-body-default-font-size)] leading-[1.65] text-[#c1becb]">Tools / Skills</p>
+          <p className="font-normal text-[length:var(--typography-body-default-font-size)] leading-[1.75] text-[#908e99]">Illustrator, InDesign</p>
         </div>
       </div>
     </div>
@@ -1111,16 +1204,16 @@ function FigmaRitModal({ onClose }: { onClose: () => void }) {
       <div className="flex flex-col gap-[50px] justify-center w-full lg:w-[435px] shrink-0">
         <div className="flex flex-col gap-[16px] w-full">
           <div className="flex flex-col gap-[8px] w-full font-['Inter_Tight',sans-serif] not-italic">
-            <p className="font-light text-[16px] leading-[1.65] text-[#908e99]">2025</p>
-            <p className="font-normal text-[18px] leading-[1.45] text-[#faf9ff]">Figma at RIT</p>
+            <p className="font-normal text-[length:var(--typography-body-default-font-size)] leading-[1.65] text-[#908e99]">2025</p>
+            <p className="font-normal text-[length:var(--typography-body-default-font-size)] leading-[1.45] text-[#faf9ff]">Figma at RIT</p>
           </div>
-          <p className="font-['Inter_Tight',sans-serif] font-light text-[16px] leading-[1.65] text-[#908e99]">
+          <p className="font-['Inter_Tight',sans-serif] font-normal text-[length:var(--typography-body-default-font-size)] leading-[1.65] text-[#908e99]">
             Breaking Figma into new spaces like KPop and Fashion: strong communities driven by creativity.
           </p>
         </div>
         <div className="flex flex-col gap-[16px] w-full font-['Inter_Tight',sans-serif] not-italic">
-          <p className="font-light text-[16px] leading-[1.65] text-[#c1becb]">Figma CL's</p>
-          <p className="font-light text-[16px] leading-[1.75] text-[#908e99]">Troy Ramiscal, Lasya Josyula, Charlotte Raith</p>
+          <p className="font-normal text-[length:var(--typography-body-default-font-size)] leading-[1.65] text-[#c1becb]">Figma CL's</p>
+          <p className="font-normal text-[length:var(--typography-body-default-font-size)] leading-[1.75] text-[#908e99]">Troy Ramiscal, Lasya Josyula, Charlotte Raith</p>
         </div>
       </div>
     </div>
@@ -1156,16 +1249,16 @@ function MunsonModal({ onClose }: { onClose: () => void }) {
       <div className="flex flex-col gap-[50px] justify-center w-full lg:w-[435px] shrink-0">
         <div className="flex flex-col gap-[16px] w-full">
           <div className="flex flex-col gap-[8px] w-full font-['Inter_Tight',sans-serif] not-italic">
-            <p className="font-light text-[16px] leading-[1.65] text-[#908e99]">2025</p>
-            <p className="font-normal text-[18px] leading-[1.45] text-[#faf9ff]">DJ Munson's Last Spin</p>
+            <p className="font-normal text-[length:var(--typography-body-default-font-size)] leading-[1.65] text-[#908e99]">2025</p>
+            <p className="font-normal text-[length:var(--typography-body-default-font-size)] leading-[1.45] text-[#faf9ff]">DJ Munson's Last Spin</p>
           </div>
-          <p className="font-['Inter_Tight',sans-serif] font-light text-[16px] leading-[1.65] text-[#908e99]">
+          <p className="font-['Inter_Tight',sans-serif] font-normal text-[length:var(--typography-body-default-font-size)] leading-[1.65] text-[#908e99]">
             Celebrating DJ Munson's career at RIT through a dance challenge festival and immersive experiences!
           </p>
         </div>
         <div className="flex flex-col gap-[16px] w-full font-['Inter_Tight',sans-serif] not-italic">
-          <p className="font-light text-[16px] leading-[1.65] text-[#c1becb]">Tools / Skills</p>
-          <p className="font-light text-[16px] leading-[1.75] text-[#908e99]">Adobe</p>
+          <p className="font-normal text-[length:var(--typography-body-default-font-size)] leading-[1.65] text-[#c1becb]">Tools / Skills</p>
+          <p className="font-normal text-[length:var(--typography-body-default-font-size)] leading-[1.75] text-[#908e99]">Adobe</p>
         </div>
       </div>
     </div>
@@ -1206,11 +1299,11 @@ const LAB_MODALS: Record<string, (props: { onClose: () => void }) => React.React
   "iris": IrisModal,
   "college-of-science": CollegeOfScienceModal,
   "figma-rit": FigmaRitModal,
+  "figma-kpop": KpopModal,
   "dj-munson": MunsonModal,
 };
 
 export default function Booth() {
-  const [scrolled, setScrolled] = useState(false);
   const [openLab, setOpenLab] = useState<string | null>(null);
   const lenis = useLenis();
   const location = useLocation();
@@ -1230,12 +1323,6 @@ export default function Booth() {
       navigate(".", { replace: true, state: null });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 10);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   // Lenis drives the page scroll manually, so CSS overflow:hidden alone can't
@@ -1268,23 +1355,6 @@ export default function Booth() {
   return (
     <div className="relative min-h-screen bg-background">
 
-      {/* Scroll gradient */}
-      <AnimatePresence>
-        {scrolled && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.4, ease: "easeOut" }}
-            className="fixed inset-x-0 top-0 z-40 h-[10vh] pointer-events-none"
-            style={{
-              background:
-                "linear-gradient(to bottom, rgba(23,23,23,0.98) 0%, rgba(23,23,23,0.85) 25%, rgba(23,23,23,0.35) 55%, rgba(23,23,23,0) 100%)",
-            }}
-          />
-        )}
-      </AnimatePresence>
-
       {/* Main scrollable content — recedes slightly when a modal is open so focus goes to it.
           Animates marginTop rather than y/transform: a transform on this ancestor — even
           translateY(0px) at rest — creates a new containing block and breaks position:sticky
@@ -1299,7 +1369,7 @@ export default function Booth() {
           {/* Lab grid */}
           <section className="flex flex-col gap-[64px] items-center w-full">
             <div className="flex flex-col gap-[32px] items-center w-full">
-              <div className="flex flex-col items-center gap-0 text-center font-['Inter_Tight',sans-serif] font-normal text-[20px] leading-[1.45] text-[#faf9ff]">
+              <div className="flex flex-col items-center gap-0 text-center font-['Inter_Tight',sans-serif] font-normal text-[length:var(--typography-display-title-smallest-font-size)] leading-[1.45] text-[#faf9ff]">
                 <p>The Lab is Booth 1303 @ RIT.</p>
                 <p>It’s where I spent about 44% of my week for 4 years</p>
               </div>

@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router";
 import aixelsMeImg from "../../../assets/project/aixels/me.JPG";
 import gmTeaserVideo from "../../../assets/project/gentlemonster/GM_Teaser_2x1.mp4";
+import VideoControls from "../VideoControls";
 
 const figbuildVideo  = new URL("../../../assets/project/figbuild/figbuild_macstudio_2x1.mp4", import.meta.url).href;
 const capitolVideo   = new URL("../../../assets/project/capitol/capitol_fullflow.mp4", import.meta.url).href;
-const texasVideo     = new URL("../../../assets/project/texasid/FullPrototype_1200x600_30fps.mp4", import.meta.url).href;
 
 type CasestudyEntry = {
   id: string;
@@ -18,7 +18,6 @@ type CasestudyEntry = {
 const ALL: CasestudyEntry[] = [
   { id: "gentle-monster",    title: "Gentle Monster Kiosk", path: "/casestudy/gentle-monster",    mediaType: "video", mediaSrc: gmTeaserVideo },
   { id: "capitol-aluminum",  title: "Capitol Aluminum",     path: "/casestudy/capitol-aluminum",  mediaType: "video", mediaSrc: capitolVideo },
-  { id: "texas-mobile",      title: "Texas Mobile",         path: "/casestudy/texas-mobile",      mediaType: "video", mediaSrc: texasVideo },
   { id: "figma-rit",         title: "FigBuild 2026",        path: "/casestudy/figma-rit",         mediaType: "video", mediaSrc: figbuildVideo },
   { id: "aixels",            title: "AIXELS",               path: "/casestudy/aixels",            mediaType: "image", mediaSrc: aixelsMeImg },
 ];
@@ -28,6 +27,7 @@ const VISITED_KEY = (id: string) => `visited_${id}`;
 export default function UpNext({ currentId }: { currentId: string }) {
   const [next, setNext] = useState<CasestudyEntry | null>(null);
   const [isHover, setIsHover] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
     localStorage.setItem(VISITED_KEY(currentId), "true");
@@ -49,7 +49,7 @@ export default function UpNext({ currentId }: { currentId: string }) {
       >
         {/* Label */}
         <div className="flex items-center px-[16px]">
-          <p className="font-['Inter_Tight',sans-serif] leading-none text-[#908e99] text-[16px] whitespace-nowrap">
+          <p className="font-['Inter_Tight',sans-serif] leading-none text-[#908e99] text-[length:var(--typography-body-default-font-size)] whitespace-nowrap">
             Up next
           </p>
         </div>
@@ -67,16 +67,19 @@ export default function UpNext({ currentId }: { currentId: string }) {
 
           {/* Title */}
           <p
-            className="font-['Inter_Tight',sans-serif] font-normal leading-[1.25] text-[20px] whitespace-nowrap transition-colors duration-300 ease-out"
+            className={`font-['Inter_Tight',sans-serif] leading-[1.25] text-[length:var(--typography-display-title-smallest-font-size)] whitespace-nowrap transition-colors duration-300 ease-out ${isHover ? "font-medium" : "font-normal"}`}
             style={{ color: isHover ? "var(--text\\/primary, #faf9ff)" : "#585564" }}
           >
             {next.title}
           </p>
 
           {/* Image */}
-          <div className="aspect-[2/1] rounded-[8px] w-full overflow-hidden bg-[#d9d9d9]">
+          <div className="relative aspect-[2/1] rounded-[8px] w-full overflow-hidden bg-[#d9d9d9]">
             {next.mediaType === "video" && next.mediaSrc && (
-              <video autoPlay loop muted playsInline className="w-full h-full object-cover" src={next.mediaSrc} />
+              <>
+                <video ref={videoRef} autoPlay loop muted playsInline className="w-full h-full object-cover" src={next.mediaSrc} />
+                <VideoControls videoRef={videoRef} />
+              </>
             )}
             {next.mediaType === "image" && next.mediaSrc && (
               <img src={next.mediaSrc} className="w-full h-full object-cover" alt={next.title} />

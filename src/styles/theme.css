@@ -19,12 +19,6 @@
   --text-size\/card-tag: 14px;
   --text-size\/card-badge: 11px;
 
-  /* Font weights */
-  --text-weight\/medium: 500;
-  --text-weight\/middle: 450;
-  --font-weight-medium: 500;
-
-
   /* Card hover accent colors (portfolio-specific, not in tokens) */
   --card\/hover\/accent-1: #f3e9ff;
   --card\/hover\/accent-2: #ffd7f9;
@@ -92,12 +86,17 @@
 /* ─── Tailwind theme mapping ─────────────────────────────────────────────── */
 
 @theme inline {
-  --font-weight-thin: 400;
-  --font-weight-extralight: 400;
-  --font-weight-light: 400;
-  --font-weight-normal: 400;
-  --font-weight-regular: 400;
-  --font-weight-medium: 500;
+  /* Sourced from tokens.json's typography.weight.{regular,medium,bold} (see
+     tokens.css) — every lighter alias in Tailwind's default weight scale
+     collapses onto the same "regular" token, since this site only uses
+     three weights. */
+  --font-weight-thin: var(--typography-weight-regular);
+  --font-weight-extralight: var(--typography-weight-regular);
+  --font-weight-light: var(--typography-weight-regular);
+  --font-weight-normal: var(--typography-weight-regular);
+  --font-weight-regular: var(--typography-weight-regular);
+  --font-weight-medium: var(--typography-weight-medium);
+  --font-weight-bold: var(--typography-weight-bold);
   --color-background:               var(--background);
   --color-foreground:               var(--foreground);
   --color-card:                     var(--card);
@@ -176,7 +175,6 @@
     @apply text-foreground;
     font-family: var(--text-font\/default);
     font-weight: 400;
-    font-variation-settings: 'wght' 400;
   }
 
   /* Force all text elements to inherit from body — no accidental override */
@@ -188,55 +186,47 @@
   h1 {
     font-size: var(--text-2xl);
     font-weight: 400;
-    font-variation-settings: 'wght' 400;
     line-height: 1.5;
   }
 
   h2 {
     font-size: var(--text-xl);
     font-weight: 400;
-    font-variation-settings: 'wght' 400;
     line-height: 1.5;
   }
 
   h3 {
     font-size: var(--text-lg);
     font-weight: 400;
-    font-variation-settings: 'wght' 400;
     line-height: 1.5;
   }
 
   h4 {
     font-size: var(--text-base);
     font-weight: 400;
-    font-variation-settings: 'wght' 400;
     line-height: 1.5;
   }
 
   h5, h6 {
     font-weight: 400;
-    font-variation-settings: 'wght' 400;
     line-height: 1.5;
   }
 
   label {
     font-size: var(--text-base);
     font-weight: 400;
-    font-variation-settings: 'wght' 400;
     line-height: 1.5;
   }
 
   button {
     font-size: var(--text-base);
     font-weight: 400;
-    font-variation-settings: 'wght' 400;
     line-height: 1.5;
   }
 
   input {
     font-size: var(--text-base);
     font-weight: 400;
-    font-variation-settings: 'wght' 400;
     line-height: 1.5;
   }
 

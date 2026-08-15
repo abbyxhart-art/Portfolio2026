@@ -2,7 +2,6 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import icons from "../../../assets/icons/icons.json";
 import LSystemGarden, { LSystemGardenHandle } from "../LSystemGarden";
 import { useIsMobile } from "../ui/use-mobile";
-import ThemeToggle from "./ThemeToggle";
 
 const FOOTER_PHRASES = [
   "Got a cool project?",
@@ -72,7 +71,7 @@ function ClearGardenButton({ onClick }: { onClick: () => void }) {
       aria-label="Clear garden"
       className="hidden md:flex absolute bottom-[64px] right-[16px] items-center gap-[8px] cursor-pointer"
       style={{
-        backgroundColor: hovered ? "var(--color-surface-fill2)" : "var(--color-surface-fill3)",
+        backgroundColor: hovered ? "var(--color-surface-fill3)" : "var(--color-surface-fill2)",
         borderRadius: 24,
         padding: "6px 12px 6px 10px",
         border: "1px solid var(--color-border-default)",
@@ -92,7 +91,7 @@ function ClearGardenButton({ onClick }: { onClick: () => void }) {
       <div className="flex gap-[2px] items-center">
         {["shift", "X"].map((key) => (
           <div key={key} className={`h-[20px] rounded-[4px] flex items-center justify-center ${key === "shift" ? "px-[6px]" : "w-[20px]"}`} style={{ backgroundColor: "var(--color-surface-fill2)" }}>
-            <span className="font-['Inter_Tight',sans-serif] text-[11px]" style={{ color: "var(--color-text-secondary)" }}>{key}</span>
+            <span className="font-['Inter_Tight',sans-serif] text-[11px]" style={{ color: hovered ? "var(--color-text-primary)" : "var(--color-text-secondary)", transition: "color 0.15s ease" }}>{key}</span>
           </div>
         ))}
       </div>
@@ -325,7 +324,7 @@ export default function Footer() {
               <SocialPill key={s.key} href={s.href} label={s.label} icon={s.icon} stroke={s.stroke} iconViewBox={s.iconViewBox} />
             ))}
           </div>
-          <div className="flex flex-col gap-[8px] items-start font-['Inter_Tight',sans-serif] font-[300] leading-none text-[14px]">
+          <div className="flex flex-col gap-[8px] items-start font-['Inter_Tight',sans-serif] font-regular leading-none text-[14px]">
             {/* Animated cycling phrase */}
             <p
               className="cursor-none select-none"
@@ -342,7 +341,7 @@ export default function Footer() {
         </div>
 
         {/* Column 2: Play around */}
-        <div className="flex flex-col gap-[4px] items-start shrink-0 font-['Inter_Tight',sans-serif] font-[300] leading-none text-[14px] whitespace-nowrap">
+        <div className="flex flex-col gap-[4px] items-start shrink-0 font-['Inter_Tight',sans-serif] font-regular leading-none text-[14px] whitespace-nowrap">
           <p style={{ color: "var(--color-text-primary)" }}>Play around!</p>
           <div className="flex gap-[4px] items-center shrink-0">
             <svg width="18" height="18" viewBox={icons.navigation.arrowUp.viewBox} fill="none" xmlns="http://www.w3.org/2000/svg" className="shrink-0">
@@ -353,16 +352,11 @@ export default function Footer() {
         </div>
 
         {/* Column 3: Made with */}
-        <div className="flex flex-col gap-[4px] items-start shrink-0 font-['Inter_Tight',sans-serif] font-[300] leading-none text-[14px]">
+        <div className="flex flex-col gap-[4px] items-start shrink-0 font-['Inter_Tight',sans-serif] font-regular leading-none text-[14px]">
           <p style={{ color: "var(--color-text-primary)" }}>Made with</p>
           <p style={{ color: "var(--color-text-secondary)" }}>
             {'Figma {Design, Motion, MCP} → Claude → Git → Vercel'}
           </p>
-        </div>
-
-        {/* Column 4: Mode toggle */}
-        <div className="flex relative z-[1] shrink-0">
-          <ThemeToggle />
         </div>
       </div>
 
@@ -375,7 +369,7 @@ export default function Footer() {
               <SocialPill key={`m-${s.key}`} href={s.href} label={s.label} icon={s.icon} stroke={s.stroke} iconViewBox={s.iconViewBox} />
             ))}
           </div>
-          <div className="flex flex-col gap-[8px] items-start font-['Inter_Tight',sans-serif] font-[300] leading-none text-[14px]">
+          <div className="flex flex-col gap-[8px] items-start font-['Inter_Tight',sans-serif] font-regular leading-none text-[14px]">
             <p
               className="select-none"
               style={{ color: "var(--color-text-primary)" }}
@@ -386,7 +380,7 @@ export default function Footer() {
             <p style={{ color: "var(--color-text-secondary)" }}>I can be easily reached at your convenience!</p>
           </div>
         </div>
-        <div className="flex flex-col gap-[4px] items-start font-['Inter_Tight',sans-serif] font-[300] leading-none text-[14px]">
+        <div className="flex flex-col gap-[4px] items-start font-['Inter_Tight',sans-serif] font-regular leading-none text-[14px]">
           <p style={{ color: "var(--color-text-primary)" }}>Made with</p>
           <p style={{ color: "var(--color-text-secondary)" }}>
             {'Figma {Design, Motion, MCP} → Claude → Git → Vercel'}

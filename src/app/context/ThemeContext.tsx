@@ -19,11 +19,11 @@ const ThemeContext = createContext<ThemeContextValue>({
 const SURFACE_PRIMARY: Record<Theme, string> = { light: "#F2F2F6", dark: "#161617" };
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setTheme] = useState<Theme>(() => {
-    const stored = localStorage.getItem("theme") as Theme | null;
-    if (stored === "light" || stored === "dark") return stored;
-    return "dark";
-  });
+  // Light mode's toggle is temporarily removed from the UI (it looked bad),
+  // so always start dark now — ignoring any "light" a visitor's browser may
+  // still have stored from before, which would otherwise leave them stuck
+  // there with no way back.
+  const [theme, setTheme] = useState<Theme>("dark");
 
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);

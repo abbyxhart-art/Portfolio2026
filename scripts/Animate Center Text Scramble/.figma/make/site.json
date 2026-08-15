@@ -1,0 +1,10 @@
+{
+  "description": "Create captivating animated text effects that emerge from the center and scramble as they expand, perfect for enhancing presentations and digital content.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}

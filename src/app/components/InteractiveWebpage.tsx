@@ -127,9 +127,9 @@ export default function InteractiveWebpage() {
                 </div>
               </div>
             </Frame1000001344Helper>
-            <p className="absolute font-['Inter_Tight:Regular',sans-serif] font-normal leading-none left-[calc(50%-3px)] text-[#3d384e] text-[16px] top-[calc(50%-8px)] whitespace-nowrap transition-all duration-75 ease-in-out">{currentSection}</p>
+            <p className="absolute font-['Inter_Tight:Regular',sans-serif] font-normal leading-none left-[calc(50%-3px)] text-[#3d384e] text-[length:var(--typography-body-default-font-size)] top-[calc(50%-8px)] whitespace-nowrap transition-all duration-75 ease-in-out">{currentSection}</p>
           </div>
-          <p className="flex-[1_0_0] font-['Inter_Tight:Regular',sans-serif] font-normal leading-[normal] min-h-px min-w-px relative text-[#3d384e] text-[16px] text-left transition-all duration-75 ease-in-out">
+          <p className="flex-[1_0_0] font-['Inter_Tight:Regular',sans-serif] font-normal leading-[normal] min-h-px min-w-px relative text-[#3d384e] text-[length:var(--typography-body-default-font-size)] text-left transition-all duration-75 ease-in-out">
             Section {currentSection}
           </p>
           <div 

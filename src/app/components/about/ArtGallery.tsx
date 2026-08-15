@@ -72,10 +72,10 @@ export default function ArtGallery() {
               transition: "color 0.2s ease",
             }}
           >
-            <span className="font-['Inter_Tight',sans-serif] font-light text-[14px] leading-[1.65] uppercase">
+            <span className="font-['Inter_Tight',sans-serif] font-normal text-[14px] leading-[1.65] uppercase">
               {cat.label}
             </span>
-            <span className="font-['Inter_Tight',sans-serif] font-light text-[12px] leading-[1.5]">
+            <span className="font-['Inter_Tight',sans-serif] font-normal text-[12px] leading-[1.5]">
               {cat.year}
             </span>
           </button>
@@ -86,10 +86,10 @@ export default function ArtGallery() {
 
   const SectionTitle = () => (
     <div className="flex flex-col gap-[8px] items-center text-center">
-      <p className="font-['Inter_Tight',sans-serif] font-light text-[14px] leading-[1.5]" style={{ color: "var(--color-text-secondary)" }}>
+      <p className="font-['Inter_Tight',sans-serif] font-normal text-[14px] leading-[1.5]" style={{ color: "var(--color-text-secondary)" }}>
         {GALLERY_SECTION_LABEL}
       </p>
-      <p className="font-['Inter_Tight',sans-serif] font-light text-[14px] leading-[1.5]" style={{ color: "var(--color-text-secondary)" }}>
+      <p className="font-['Inter_Tight',sans-serif] font-normal text-[14px] leading-[1.5]" style={{ color: "var(--color-text-secondary)" }}>
         {GALLERY_SECTION_SUBTITLE}
       </p>
     </div>
@@ -106,13 +106,13 @@ export default function ArtGallery() {
 
   const PhotoCaption = ({ tag, title, subtitle }: { tag: string; title?: string; subtitle: string }) => (
     <div className="flex flex-col gap-[4px] items-center text-center">
-      <p className="font-['Inter_Tight',sans-serif] font-light text-[11px] leading-[1.5] tracking-[0.06em] uppercase" style={{ color: "var(--color-text-secondary)" }}>
+      <p className="font-['Inter_Tight',sans-serif] font-normal text-[11px] leading-[1.5] tracking-[0.06em] uppercase" style={{ color: "var(--color-text-secondary)" }}>
         {tag}
       </p>
-      <p className="font-['Inter_Tight',sans-serif] font-light text-[17px] leading-[1.65]" style={{ color: "var(--color-text-primary)", visibility: title ? "visible" : "hidden" }}>
+      <p className="font-['Inter_Tight',sans-serif] font-normal text-[length:var(--typography-body-default-font-size)] leading-[1.65]" style={{ color: "var(--color-text-primary)", visibility: title ? "visible" : "hidden" }}>
         {title ?? " "}
       </p>
-      <p className="font-['Inter_Tight',sans-serif] font-light text-[14px] leading-[1.5]" style={{ color: "var(--color-text-secondary)" }}>
+      <p className="font-['Inter_Tight',sans-serif] font-normal text-[14px] leading-[1.5]" style={{ color: "var(--color-text-secondary)" }}>
         {subtitle}
       </p>
     </div>

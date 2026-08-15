@@ -164,7 +164,7 @@ export default function MobileMainNav() {
                   padding: `0 ${SOCIAL_CHIP_PADDING_X}px`,
                   height: 34,
                   borderRadius: 4,
-                  background: "var(--color-surface-fill4)",
+                  background: "var(--color-surface-layer1)",
                   border: `0.75px solid ${MOBILE_BORDER_LIGHT_20}`,
                   boxSizing: "border-box",
                 }}

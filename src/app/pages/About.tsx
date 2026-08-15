@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "@/lib/motion";
+import { motion } from "@/lib/motion";
 import OfflineCard, { OfflineMiniCard } from "../components/about/OfflineCard";
 import EthosMiniCard from "../components/about/EthosMiniCard";
 import DrinkCard from "../components/drinks/DrinkCard";
@@ -45,7 +45,6 @@ function MobileDrinkPlaylistRow() {
 export default function About() {
   const { theme } = useTheme();
   const isDark = theme === "dark";
-  const [scrolled, setScrolled] = useState(false);
   const [resumeCollapsed, setResumeCollapsed] = useState(true);
   const [stackPeek, setStackPeek] = useState(false);
   const [footerVisible, setFooterVisible] = useState(false);
@@ -69,13 +68,10 @@ export default function About() {
   }, []);
 
   useEffect(() => {
-    let lastScrollY = window.scrollY;
     const handleScroll = () => {
       const y = window.scrollY;
-      setScrolled(y > 10 && y > lastScrollY);
       if (y > 60) setResumeCollapsed(true);
       if (y > 60) setStackPeek(true);
-      lastScrollY = y;
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
@@ -83,27 +79,6 @@ export default function About() {
 
   return (
     <div className="relative min-h-screen bg-background overflow-x-clip" style={getDotBackground(isDark)}>
-
-      <AnimatePresence>
-        {scrolled && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.4, ease: "easeOut" }}
-            className="fixed inset-x-0 top-0 z-40 h-[10vh] pointer-events-none"
-          >
-            <div style={{ position: "absolute", inset: 0, backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)", maskImage: "linear-gradient(to bottom, black 0%, transparent 20%)", WebkitMaskImage: "linear-gradient(to bottom, black 0%, transparent 20%)" }} />
-            <div style={{ position: "absolute", inset: 0, backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)", maskImage: "linear-gradient(to bottom, black 0%, transparent 35%)", WebkitMaskImage: "linear-gradient(to bottom, black 0%, transparent 35%)" }} />
-            <div style={{ position: "absolute", inset: 0, backdropFilter: "blur(4px)", WebkitBackdropFilter: "blur(4px)", maskImage: "linear-gradient(to bottom, black 0%, transparent 55%)", WebkitMaskImage: "linear-gradient(to bottom, black 0%, transparent 55%)" }} />
-            <div style={{ position: "absolute", inset: 0, backdropFilter: "blur(2px)", WebkitBackdropFilter: "blur(2px)", maskImage: "linear-gradient(to bottom, black 0%, transparent 75%)", WebkitMaskImage: "linear-gradient(to bottom, black 0%, transparent 75%)" }} />
-            <div style={{ position: "absolute", inset: 0, backdropFilter: "blur(0.5px)", WebkitBackdropFilter: "blur(0.5px)", maskImage: "linear-gradient(to bottom, black 0%, transparent 100%)", WebkitMaskImage: "linear-gradient(to bottom, black 0%, transparent 100%)" }} />
-            <div style={{ position: "absolute", inset: 0, background: isDark
-                ? "linear-gradient(to bottom, rgba(22,22,23,0.85) 0%, rgba(22,22,23,0.55) 30%, rgba(22,22,23,0.2) 65%, rgba(22,22,23,0) 100%)"
-                : "linear-gradient(to bottom, rgba(242,242,246,0.75) 0%, rgba(242,242,246,0.48) 30%, rgba(242,242,246,0.18) 65%, rgba(242,242,246,0) 100%)" }} />
-          </motion.div>
-        )}
-      </AnimatePresence>
 
       {/* ══ Section 1: 100vh — bio, side panels, DrinkCard ══ */}
       <div className="relative px-[16px] md:px-[2vw] pt-[56px] md:pt-[140px]" style={{ minHeight: "100vh" }}>
@@ -167,14 +142,14 @@ export default function About() {
               <div className="flex flex-col gap-[40px]">
                   <div className="flex flex-col gap-[24px] items-start">
                     <div className="flex flex-col gap-[4px] items-start w-full">
-                      <p className="font-['Inter_Tight',sans-serif] text-foreground text-[20px] leading-[1.45]">
+                      <p className="font-['Inter_Tight',sans-serif] text-foreground text-[length:var(--typography-display-title-smallest-font-size)] leading-[1.45]">
                         Hey, I'm Abby!
                       </p>
-                      <p className="font-['Inter_Tight',sans-serif] text-muted-foreground text-[16px] leading-[1.65]">
+                      <p className="font-['Inter_Tight',sans-serif] text-muted-foreground text-[length:var(--typography-body-default-font-size)] leading-[1.65]">
                         product designer / creative technologist
                       </p>
                     </div>
-                    <div className="font-['Inter_Tight',sans-serif] font-regular text-foreground text-[16px]">
+                    <div className="font-['Inter_Tight',sans-serif] font-regular text-foreground text-[length:var(--typography-body-default-font-size)]">
                       <p className="leading-[1.65] mb-[16px]">
                         The work I'm most proud of is at the intersection of design, technology, and human connection.
                         I love creating things to help people navigate and explore tools, products, and worlds.
@@ -233,14 +208,14 @@ export default function About() {
               <div className="flex flex-col gap-[40px]">
                 <div className="flex flex-col gap-[24px] items-start">
                   <div className="flex flex-col gap-[4px] items-start w-full">
-                    <p className="font-['Inter_Tight',sans-serif] text-foreground text-[20px] leading-[1.45]">
+                    <p className="font-['Inter_Tight',sans-serif] text-foreground text-[length:var(--typography-display-title-smallest-font-size)] leading-[1.45]">
                       Hey, I'm Abby!
                     </p>
-                    <p className="font-['Inter_Tight',sans-serif] text-muted-foreground text-[16px] leading-[1.65]">
+                    <p className="font-['Inter_Tight',sans-serif] text-muted-foreground text-[length:var(--typography-body-default-font-size)] leading-[1.65]">
                       product designer / creative technologist
                     </p>
                   </div>
-                  <div className="font-['Inter_Tight',sans-serif] font-regular text-foreground text-[16px]">
+                  <div className="font-['Inter_Tight',sans-serif] font-regular text-foreground text-[length:var(--typography-body-default-font-size)]">
                     <p className="leading-[1.65] mb-[16px]">
                       The work I'm most proud of is at the intersection of design, technology, and human connection.
                       I love creating things to help people navigate and explore tools, products, and worlds.
@@ -277,14 +252,14 @@ export default function About() {
         <div className="flex flex-col gap-[40px] md:hidden pt-[20px] pb-[40px]">
           <div className="flex flex-col gap-[24px] items-start">
             <div className="flex flex-col gap-[4px] items-start w-full">
-              <p className="font-['Inter_Tight',sans-serif] text-foreground text-[20px] leading-[1.45]">
+              <p className="font-['Inter_Tight',sans-serif] text-foreground text-[length:var(--typography-display-title-smallest-font-size)] leading-[1.45]">
                 Hey, I'm Abby!
               </p>
-              <p className="font-['Inter_Tight',sans-serif] text-muted-foreground text-[16px] leading-[1.65]">
+              <p className="font-['Inter_Tight',sans-serif] text-muted-foreground text-[length:var(--typography-body-default-font-size)] leading-[1.65]">
                 product designer / creative technologist
               </p>
             </div>
-            <div className="font-['Inter_Tight',sans-serif] font-regular text-foreground text-[16px]">
+            <div className="font-['Inter_Tight',sans-serif] font-regular text-foreground text-[length:var(--typography-body-default-font-size)]">
               <p className="leading-[1.65] mb-[16px]">
                 The work I'm most proud of is at the intersection of design, technology, and human connection.
                 I love creating things to help people navigate and explore tools, products, and worlds.

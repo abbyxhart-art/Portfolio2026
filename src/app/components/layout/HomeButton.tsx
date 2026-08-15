@@ -42,13 +42,13 @@ export default function HomeButton() {
             className="flex items-center justify-center h-[18px] px-[5px] rounded-[3px]"
             style={{ background: "rgba(144,142,153,0.2)" }}
           >
-            <p className="font-['Inter_Tight',sans-serif] text-[10px] text-[#908e99] leading-none">shift</p>
+            <p className="font-['Inter_Tight',sans-serif] text-[10px] leading-none" style={{ color: hovered ? "var(--color-text-primary)" : "#908e99", transition: "color 0.15s ease" }}>shift</p>
           </div>
           <div
             className="flex items-center justify-center size-[18px] rounded-[3px]"
             style={{ background: "rgba(144,142,153,0.2)" }}
           >
-            <p className="font-['Inter_Tight',sans-serif] text-[10px] text-[#908e99] leading-none">A</p>
+            <p className="font-['Inter_Tight',sans-serif] text-[10px] leading-none" style={{ color: hovered ? "var(--color-text-primary)" : "#908e99", transition: "color 0.15s ease" }}>A</p>
           </div>
         </div>
       </Link>

@@ -78,38 +78,26 @@ function collectVars(
 }
 
 // ─── Main ─────────────────────────────────────────────────────────────────────
+// Site is dark-only — there is no separate light-mode token set anymore, so
+// everything just collects into one flat :root block.
 
 const SKIP_KEYS = new Set(["primitive", "_meta"]);
-const DARK_KEY = "colorDark";
 
 const tokens = JSON.parse(readFileSync(TOKENS_PATH, "utf-8")) as Record<string, TokenNode>;
 
 const vars = new Map<string, string>();
 
 for (const [key, section] of Object.entries(tokens)) {
-  if (SKIP_KEYS.has(key) || key === DARK_KEY) continue;
+  if (SKIP_KEYS.has(key)) continue;
   collectVars(section as Record<string, TokenNode>, [key], tokens as Record<string, unknown>, vars);
 }
 
-// Collect dark-mode overrides — emitted under the "color" prefix to match light vars
-const darkVars = new Map<string, string>();
-if (tokens[DARK_KEY]) {
-  collectVars(
-    tokens[DARK_KEY] as Record<string, TokenNode>,
-    ["color"],
-    tokens as Record<string, unknown>,
-    darkVars
-  );
-}
-
 // Sort alphabetically by variable name
-const sorted     = [...vars.entries()].sort(([a], [b]) => a.localeCompare(b));
-const darkSorted = [...darkVars.entries()].sort(([a], [b]) => a.localeCompare(b));
+const sorted = [...vars.entries()].sort(([a], [b]) => a.localeCompare(b));
 
 // ─── Emit CSS ─────────────────────────────────────────────────────────────────
 
-const lines     = sorted.map(([name, value]) => `  ${name}: ${value};`);
-const darkLines = darkSorted.map(([name, value]) => `  ${name}: ${value};`);
+const lines = sorted.map(([name, value]) => `  ${name}: ${value};`);
 
 const css = [
   "/* Auto-generated — do not edit by hand */",
@@ -119,13 +107,9 @@ const css = [
   ...lines,
   "}",
   "",
-  '[data-theme="dark"] {',
-  ...darkLines,
-  "}",
-  "",
 ].join("\n");
 
 mkdirSync(dirname(OUTPUT_PATH), { recursive: true });
 writeFileSync(OUTPUT_PATH, css, "utf-8");
 
-console.log(`✓  ${sorted.length} light + ${darkSorted.length} dark variables → ${OUTPUT_PATH}`);
+console.log(`✓  ${sorted.length} variables → ${OUTPUT_PATH}`);

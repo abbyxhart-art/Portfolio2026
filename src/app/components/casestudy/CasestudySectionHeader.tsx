@@ -5,16 +5,17 @@ type Props = {
   subtitle?: string;
   accentColor?: string;
   dividerGap?: number;
+  divider?: boolean;
 };
 
-export default function CasestudySectionHeader({ id, eyebrow, headline, subtitle, accentColor, dividerGap = 100 }: Props) {
+export default function CasestudySectionHeader({ id, eyebrow, headline, subtitle, accentColor, dividerGap = 100, divider = true }: Props) {
   return (
-    <div id={id} style={{ position: "relative", width: "100%", paddingTop: 60, paddingBottom: 32 }}>
+    <div id={id} style={{ position: "relative", width: "100%", paddingTop: divider ? 60 : 0, paddingBottom: divider ? 32 : 0 }}>
       {/* Divider */}
-      <div style={{ width: "100%", height: 1, background: "#302f34" }} />
+      {divider && <div style={{ width: "100%", height: 1, background: "#302f34" }} />}
 
       {/* Content */}
-      <div style={{ position: "relative", display: "flex", flexDirection: "column", gap: 40, alignItems: "center", paddingTop: dividerGap }}>
+      <div style={{ position: "relative", display: "flex", flexDirection: "column", gap: 40, alignItems: "center", paddingTop: divider ? dividerGap : 0 }}>
         {accentColor && (
           <div style={{
             position: "absolute",
@@ -45,7 +46,7 @@ export default function CasestudySectionHeader({ id, eyebrow, headline, subtitle
         <p style={{
           fontFamily: "'Inter Tight', sans-serif",
           fontSize: "clamp(28px, 4vw, 40px)",
-          fontWeight: 400,
+          fontWeight: "var(--typography-weight-medium)",
           color: "#faf9ff",
           lineHeight: 1.2,
           textAlign: "center",

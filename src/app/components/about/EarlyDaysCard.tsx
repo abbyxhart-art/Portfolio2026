@@ -91,10 +91,10 @@ export default function EarlyDaysCard() {
     >
       {/* Header */}
       <div className="flex flex-col items-center text-center gap-[4px]" style={{ padding: "15px 34px 0" }}>
-        <p className="font-['Inter_Tight',sans-serif] font-light text-[12px] leading-[1.5]" style={{ color: "var(--color-text-primary)" }}>
+        <p className="font-['Inter_Tight',sans-serif] font-normal text-[12px] leading-[1.5]" style={{ color: "var(--color-text-primary)" }}>
           {GALLERY_SECTION_LABEL}
         </p>
-        <p className="font-['Inter_Tight',sans-serif] font-light text-[12px] leading-[1.5]" style={{ color: "var(--color-text-secondary)" }}>
+        <p className="font-['Inter_Tight',sans-serif] font-normal text-[12px] leading-[1.5]" style={{ color: "var(--color-text-secondary)" }}>
           {GALLERY_SECTION_SUBTITLE}
         </p>
       </div>
@@ -111,8 +111,8 @@ export default function EarlyDaysCard() {
               className="flex flex-col items-start gap-[4px] bg-transparent border-0 p-0 cursor-pointer text-left"
               style={{ color: activeIdx === i ? "var(--color-text-primary)" : "var(--color-text-secondary)", transition: "color 0.2s ease" }}
             >
-              <span className="font-['Inter_Tight',sans-serif] font-light text-[12px] leading-[1.5] uppercase">{cat.label}</span>
-              <span className="font-['Inter_Tight',sans-serif] font-light text-[10px] leading-[1.65] uppercase tracking-[0.09px]">{cat.year}</span>
+              <span className="font-['Inter_Tight',sans-serif] font-normal text-[12px] leading-[1.5] uppercase">{cat.label}</span>
+              <span className="font-['Inter_Tight',sans-serif] font-normal text-[10px] leading-[1.65] uppercase tracking-[0.09px]">{cat.year}</span>
             </button>
           ))}
         </div>
@@ -140,9 +140,9 @@ export default function EarlyDaysCard() {
                       {photo.image && <img src={photo.image} alt={photo.title} loading="lazy" className="w-full h-full object-cover" />}
                     </div>
                     <div className="flex flex-col items-center text-center gap-[4px]">
-                      <p className="font-['Inter_Tight',sans-serif] font-light text-[10px] leading-none" style={{ color: "var(--color-text-secondary)" }}>{photo.tag}</p>
-                      <p className="font-['Inter_Tight',sans-serif] font-light text-[12px] leading-[1.5]" style={{ color: "var(--color-text-primary)", visibility: photo.title ? "visible" : "hidden" }}>{photo.title ?? " "}</p>
-                      <p className="font-['Inter_Tight',sans-serif] font-light text-[10px] leading-none" style={{ color: "var(--color-text-secondary)" }}>{photo.subtitle}</p>
+                      <p className="font-['Inter_Tight',sans-serif] font-normal text-[10px] leading-none" style={{ color: "var(--color-text-secondary)" }}>{photo.tag}</p>
+                      <p className="font-['Inter_Tight',sans-serif] font-normal text-[12px] leading-[1.5]" style={{ color: "var(--color-text-primary)", visibility: photo.title ? "visible" : "hidden" }}>{photo.title ?? " "}</p>
+                      <p className="font-['Inter_Tight',sans-serif] font-normal text-[10px] leading-none" style={{ color: "var(--color-text-secondary)" }}>{photo.subtitle}</p>
                     </div>
                   </div>
                 ))}

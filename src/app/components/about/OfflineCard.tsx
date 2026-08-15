@@ -209,7 +209,7 @@ export default function OfflineCard() {
       {/* Caption — single line, crossfades between "Offline" and the image caption */}
       <div className="absolute top-[16px] left-[16px]">
         <p
-          className="font-['Inter_Tight',sans-serif] font-[300] text-[#faf9ff] text-[14px] leading-none"
+          className="font-['Inter_Tight',sans-serif] font-regular text-[#faf9ff] text-[14px] leading-none"
           style={{ transition: "opacity 0.25s ease" }}
         >
           {renderLabel()}

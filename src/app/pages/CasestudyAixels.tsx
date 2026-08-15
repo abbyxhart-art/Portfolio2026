@@ -1,9 +1,9 @@
 import { useEffect, useRef } from "react";
 import { useNavEntrance } from "../hooks/useNavEntrance";
-import { motion, useScroll, useTransform, useMotionValue, useInView, useAnimationControls } from "@/lib/motion";
+import { motion, useScroll, useTransform, useMotionValue } from "@/lib/motion";
 import UpNext from "../components/casestudy/UpNext";
 import SectionNavigation from "../components/casestudy/SectionNavigation";
-import CasestudySectionHeader from "../components/casestudy/CasestudySectionHeader";
+import VideoControls from "../components/VideoControls";
 
 const AIXELS_SECTIONS = [
   { id: "cs-overview", label: "Overview" },
@@ -35,9 +35,7 @@ export default function CasestudyAixels() {
   const heroRef = useRef<HTMLDivElement>(null);
   const heroExtraHeight = useMotionValue(0);
 
-  const cardRef = useRef<HTMLDivElement>(null);
-  const cardControls = useAnimationControls();
-  const cardInView = useInView(cardRef, { amount: 0.5 });
+  const heroVideoRef = useRef<HTMLVideoElement>(null);
 
   const heroScale = useTransform(scrollY, (latest) => {
     if (heroCompleted.current) return 1;
@@ -45,9 +43,14 @@ export default function CasestudyAixels() {
     if (progress >= 1) heroCompleted.current = true;
     return 1.35 - 0.35 * progress;
   });
+  // Title row width — tracks the hero's scale as real layout width rather
+  // than a transform, so text never scales. The two columns keep their
+  // fixed widths, so as the row narrows/widens, the gap between them
+  // (produced by justify-between) narrows/widens with it for free.
+  const titleWidth = useTransform(heroScale, (s) => `${s * 100}%`);
   const heroBorderRadius = useTransform(scrollY, (latest) => {
-    if (heroCompleted.current) return 8;
-    return 8 * Math.min(latest / 400, 1);
+    if (heroCompleted.current) return 12;
+    return 12 * Math.min(latest / 400, 1);
   });
   const contentY = useTransform(() => {
     if (heroCompleted.current) return 0;
@@ -68,25 +71,6 @@ export default function CasestudyAixels() {
     return () => window.removeEventListener("resize", measure);
   }, [heroExtraHeight]);
 
-  useEffect(() => {
-    if (cardInView) {
-      cardControls.start({
-        x:      [0, -4,  4,  -3,  3,  -1.5, 0],
-        rotate: [0, -2,  2,  -1.5, 1.5, -0.5, 0],
-        transition: {
-          duration: 0.7,
-          times: [0, 0.15, 0.3, 0.48, 0.64, 0.82, 1],
-          ease: "easeInOut",
-          repeat: Infinity,
-          repeatDelay: 3.5,
-        },
-      });
-    } else {
-      cardControls.stop();
-      cardControls.set({ x: 0, rotate: 0 });
-    }
-  }, [cardInView]);
-
   return (
     <div className="relative min-h-screen overflow-x-clip" style={{ backgroundColor: "#161617" }}>
       <SectionNavigation sections={AIXELS_SECTIONS} title="AIXELS Casestudy Navigation" />
@@ -96,333 +80,305 @@ export default function CasestudyAixels() {
         initial={shouldAnimate ? { opacity: 0, y: 24 } : false}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: "easeOut" }}
-        className="flex flex-col items-center px-[16px] md:px-[20vw] pt-[15vh] pb-[15vh] relative z-[1]"
+        className="flex flex-col items-center px-[16px] md:px-[24vw] pt-[20vh] pb-[15vh] relative z-[1]"
       >
-        <div className="flex flex-col gap-[150px] items-center w-full">
+        <div className="flex flex-col gap-[var(--gap-section)] items-center w-full">
 
-          {/* ── Section: Overview ── */}
-          <div id="cs-overview" className="flex flex-col gap-[150px] items-center w-full">
+          {/* ── Title + Hero — fixed 32px between them regardless of scale. ── */}
+          <div className="flex flex-col gap-[32px] items-center w-full">
+
+            {/* Title — text stays at its normal size; only the row's own
+                layout width tracks the hero's scale below, so justify-between
+                narrows/widens the gap between the two columns with it. */}
+            <motion.div
+              className="flex flex-col md:flex-row items-start justify-between md:gap-[24px] w-full font-['Inter_Tight',sans-serif]"
+              style={{ width: titleWidth }}
+            >
+              {/* Left side */}
+              <div className="flex flex-col gap-[16px] items-start w-full md:w-[565px] shrink-0">
+                <p className="font-medium leading-[1.65] text-[#faf9ff] text-[length:var(--typography-body-default-font-size)] w-full">
+                  Aixels
+                </p>
+                <div className="font-regular text-[#908e99] text-[length:var(--typography-body-default-font-size)] w-full">
+                  <p className="leading-[1.65] mb-[16px]">RIT hosts a creative collision every year.</p>
+                  <p className="leading-[1.65]">In just two days we created an installation that checks all the boxes: art, a line of people dancing, screaming, clapping for all 5 hours, and a working product.</p>
+                </div>
+              </div>
+
+              {/* Right side */}
+              <div className="flex items-center gap-[32px] self-stretch shrink-0 font-regular text-[length:var(--typography-body-default-font-size)]">
+                <div className="flex flex-col gap-[16px] items-start h-full">
+                  <p className="leading-[1.65] font-medium text-[#faf9ff]">Team</p>
+                  <div className="text-[#908e99] leading-none">
+                    <p className="mb-[12px]">4 New Media Designers</p>
+                    <p>2 Visual Communication</p>
+                  </div>
+                </div>
+                <div className="flex flex-col gap-[32px] items-start h-full">
+                  <div className="flex flex-col gap-[16px] items-start">
+                    <p className="leading-[1.65] font-medium text-[#faf9ff]">Scope</p>
+                    <p className="text-[#908e99] leading-none">Agentic Design</p>
+                  </div>
+                  <p className="text-[#908e99] leading-none">2026</p>
+                </div>
+              </div>
+            </motion.div>
 
             {/* Hero video */}
             <motion.div
               ref={heroRef}
-              className="aspect-[2/1] bg-[#505050] w-full overflow-hidden"
+              className="aspect-[2/1] bg-[#505050] w-full overflow-hidden relative"
               style={{ scale: heroScale, borderRadius: heroBorderRadius, transformOrigin: "top center" }}
             >
               <video
+                ref={heroVideoRef}
                 autoPlay loop muted playsInline preload="auto"
                 className="w-full h-full object-cover"
                 src={vidHero}
               />
+              <VideoControls videoRef={heroVideoRef} />
             </motion.div>
 
-            {/* Overview text */}
-            <motion.div style={{ y: contentY }} className="flex flex-col gap-[32px] items-start w-full">
+          </div>
 
-              {/* Title */}
-              <div className="border-b border-[#302f34] flex flex-col gap-[8px] items-start pb-[32px] w-full">
-                <p className="font-['Inter_Tight',sans-serif] font-[350] leading-[1.3] text-[color:var(--text\/primary,#faf9ff)] text-[18px] md:text-[24px] w-full">
-                  AIXELS
+          {/* ── Section: Overview — remaining content below the hero (moves with it) ── */}
+          <motion.div id="cs-overview" style={{ y: contentY }} className="flex flex-col gap-[var(--gap-section)] items-center w-full">
+
+            {/* The result — 5 hours of nonstop fun */}
+            <div className="flex flex-col gap-[24px] items-start w-full">
+              <div className="flex flex-col gap-[16px] items-start w-full">
+                <p className="font-['Inter_Tight',sans-serif] font-regular leading-none text-[color:var(--text\/secondary,#908e99)] text-[15px]">
+                  The result
                 </p>
-                <div className="font-['Inter_Tight',sans-serif] font-[300] leading-[0] text-[color:var(--text\/secondary,#908e99)] text-[16px] md:text-[20px] w-full">
-                  <p className="leading-[1.25] mb-0">Designathon winner;</p>
-                  <p className="leading-[1.25]">Poke the bear: Explore with AI</p>
-                </div>
-              </div>
-
-              {/* Metadata */}
-              <div className="flex font-['Inter_Tight',sans-serif] gap-[57px] items-start w-full">
-
-                {/* Left: My role + Team + Timeline */}
-                <div className="flex flex-col gap-[32px] items-start shrink-0 w-[159px]">
-                  <div className="flex flex-col gap-[16px] items-start leading-none">
-                    <p className="text-[color:var(--text\/secondary,#908e99)] text-[15px] md:text-[16px] w-full">My role</p>
-                    <p className="text-[color:var(--text\/primary,#faf9ff)] text-[15px] md:text-[17px] w-full">Team Lead</p>
-                  </div>
-                  <div className="flex flex-col gap-[16px] items-start">
-                    <p className="leading-none text-[color:var(--text\/secondary,#908e99)] text-[15px] md:text-[16px] w-full">Team</p>
-                    <div className="leading-[0] text-[color:var(--text\/primary,#faf9ff)] text-[15px] md:text-[17px] w-full">
-                      <p className="leading-none mb-[12px]">Mars Cazer</p>
-                      <p className="leading-none mb-[12px]">Hannah Lewis</p>
-                      <p className="leading-none mb-[12px]">Isabella Byabato</p>
-                      <p className="leading-none">Srushti Dabir</p>
-                    </div>
-                  </div>
-                  <div className="flex flex-col gap-[16px] items-start leading-none">
-                    <p className="text-[color:var(--text\/secondary,#908e99)] text-[15px] md:text-[16px] w-full">Timeline</p>
-                    <p className="text-[color:var(--text\/primary,#faf9ff)] text-[15px] md:text-[17px] w-full">2 Days</p>
-                  </div>
-                </div>
-
-                {/* Right: Context */}
-                <div className="flex flex-1 flex-col gap-[16px] items-start min-w-0">
-                  <p className="leading-none text-[color:var(--text\/secondary,#908e99)] text-[15px] md:text-[16px] w-full">Context</p>
-                  <div className="font-[300] leading-[0] text-[color:var(--text\/secondary,#908e99)] text-[15px] md:text-[17px] w-full">
-                    <p className="font-['Inter_Tight',sans-serif] leading-[1.65] mb-[16px]">Teams in Creative Collision have a mix of 1 - 4th years to combine skills and mentorship! Our team was mostly sick, and I scaled the project back to fit two people.</p>
-                    <p className="font-['Inter_Tight',sans-serif] leading-[1.65] mb-[16px]">During the final day, College of Art and Design students, faculty, and alumni are invited to explore the projects New Media Design have been developing.</p>
-                    <p className="font-['Inter_Tight',sans-serif] leading-[1.65]">Our designathon this year was sponsored by Sogni.AI, a startup designed to democratize AI by Mauvis Ledford.</p>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* 5 hours of nonstop fun — separate, static container (no card wiggle) */}
-            <div
-              className="flex gap-[24px] items-start p-[32px] rounded-[4px] w-full"
-              style={{ backgroundColor: "#161617" }}
-            >
-              <div className="flex-1 min-w-0">
-                <div className="aspect-square w-full overflow-hidden rounded-[4px] bg-[#1c1b1f] border border-[#302f34]">
-                  <img src={imgFeedback} className="w-full h-full object-cover" alt="5 hours of nonstop fun at the booth" />
-                </div>
-              </div>
-              <div className="flex flex-1 flex-col gap-[16px] items-start min-w-0">
-                <p className="font-['Inter_Tight',sans-serif] font-[300] leading-none text-[color:var(--text\/secondary,#908e99)] text-[15px]">
-                  The results
-                </p>
-                <p className="font-['Inter_Tight',sans-serif] font-[350] leading-[1.3] text-[color:var(--text\/primary,#faf9ff)] text-[18px] md:text-[24px]">
+                <p className="font-['Inter_Tight',sans-serif] font-[350] leading-[var(--typography-display-title-smallest-line-height)] font-medium text-[color:var(--text\/primary,#faf9ff)] text-[length:var(--typography-display-title-smallest-font-size)]">
                   5 hours of nonstop fun
                 </p>
-                <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.65] text-[color:var(--text\/secondary,#908e99)] text-[15px] md:text-[17px] w-full">
+                <p className="font-['Inter_Tight',sans-serif] font-regular leading-[var(--typography-body-default-line-height)] text-[color:var(--text\/secondary,#908e99)] text-[length:var(--typography-body-default-font-size)] w-full">
                   Our booth was never without a crowd of people. Everyone had something fun and nice to say about our project, even a potential promise to come back to the project later.
                 </p>
               </div>
+              <div className="aspect-[2/1] w-full overflow-hidden rounded-[var(--radius-component-image)] bg-[#242326] p-[16px]">
+                <img src={imgFeedback} className="w-full h-full object-cover rounded-[var(--radius-component-image)]" alt="5 hours of nonstop fun at the booth" />
+              </div>
             </div>
 
-            {/* Section Overview card — pushback + response combined */}
-            <motion.div
-              ref={cardRef}
-              className="border border-[#302f34] flex flex-col gap-[32px] items-start overflow-clip p-[32px] relative rounded-[4px] w-full"
-              style={{ backgroundColor: "#161617" }}
-              animate={cardControls}
+            {/* Section Overview — creative collision quote card */}
+            <div
+              className="flex gap-[24px] items-start p-[24px] rounded-[8px] w-full h-[132px]"
+              style={{ backgroundColor: "#242326" }}
             >
-              {/* The pushback */}
-              <div className="flex flex-col gap-[16px] items-start relative w-full">
-                <p className="font-['Inter_Tight',sans-serif] font-[300] leading-none text-[color:var(--text\/secondary,#908e99)] text-[15px] w-full">
-                  The pushback
+              <img
+                src={imgMe}
+                className="h-full aspect-square rounded-[8px] object-cover shrink-0 bg-[#242326]"
+                style={{ objectPosition: "85% 35%" }}
+                alt="Presenting Aixels at the creative collision showcase"
+              />
+              <div className="flex flex-col items-start flex-1 min-w-0 font-['Inter_Tight',sans-serif] text-[length:var(--typography-body-default-font-size)]">
+                <p className="font-[var(--typography-body-default-intense-font-weight)] leading-[var(--typography-body-default-intense-line-height)] text-[color:var(--text\/secondary,#D1CEDC)] w-full">
+                  Poke the bear: AI  →  this was the first year students were mixed in their opinion with the prompt
                 </p>
-                <p className="font-['Inter_Tight',sans-serif] font-[350] leading-[1.3] text-[color:var(--text\/primary,#faf9ff)] text-[18px] md:text-[24px] w-full">
-                  Wait..a creative collision has AI??
-                </p>
-                <div className="font-['Inter_Tight',sans-serif] font-[300] leading-[0] text-[color:var(--text\/secondary,#908e99)] text-[15px] md:text-[17px] w-full">
-                  <p className="leading-[1.65] mb-[16px] text-[#faf9ff]">This was the first year students were mixed in their opinion with the prompt.</p>
-                  <p className="leading-[1.65]">While other teams had people interact with AI, we strayed away from interactions with filters, generated content, or chatbots and rather used Claude and Figma Make in our workflow to make something cool.</p>
-                </div>
-              </div>
-
-              {/* The response */}
-              <div className="flex flex-col gap-[16px] items-start relative w-full">
-                <div className="flex flex-col gap-[16px] items-start w-full">
-                  <p className="font-['Inter_Tight',sans-serif] font-[300] leading-none text-[color:var(--text\/secondary,#908e99)] text-[15px] w-full">
-                    The response
-                  </p>
-                  <p className="font-['Inter_Tight',sans-serif] font-[350] leading-[1.3] text-[color:var(--text\/primary,#faf9ff)] text-[18px] md:text-[24px] w-full">
-                    AI is a mirror
-                  </p>
-                </div>
-                <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.65] text-[color:var(--text\/secondary,#908e99)] text-[15px] md:text-[17px] w-full">
-                  Our professors believe that AI is nothing without taste. My fellow team lead, Mars, responded with AI is a mirror. We took that concept and ran with it, conceptualizing different ideas the first few hours until we landed on a grid of color and pixel art.
+                <p className="font-regular leading-[var(--typography-body-default-line-height)] text-[color:var(--text\/secondary,#908e99)] w-full">
+                  Student debate greatly narrowed our scope. We stayed away from interactions with filters, generated content, or chatbots! Mars, my teammate, said AI was a mirror to craft and we ran with that concept.
                 </p>
               </div>
-            </motion.div>
-          </div>
+            </div>
+          </motion.div>
 
           {/* ── Section: Process Work ── */}
-          <div id="cs-process" className="flex flex-col gap-[100px] items-start w-full">
+          <div id="cs-process" className="flex flex-col gap-[var(--gap-section)] items-start w-full">
 
-            <CasestudySectionHeader
-              eyebrow="Process Work"
-              headline="Four layers of pixels that shift based on sound"
-              subtitle="We wanted noise for users to shout at AI, to scream, to laugh, to feel large emotions"
-            />
+            <div className="flex flex-col gap-[16px] items-center w-full font-['Inter_Tight',sans-serif]">
+              <p className="font-regular text-[12px] tracking-[0.08em] leading-[16.5px] uppercase text-[#908e99] text-center">
+                Process Work
+              </p>
+              <p className="font-medium text-[clamp(28px,4vw,40px)] leading-[1.2] text-[#faf9ff] text-center">
+                Four layers of pixels that shift based on sound
+              </p>
+              <p className="font-regular text-[length:var(--typography-body-default-font-size)] leading-[1.65] text-[#908e99] text-center">
+                We wanted noise for users to shout at AI, to scream, to laugh, to feel large emotions
+              </p>
+            </div>
 
-            {/* Section Flows — bordered gradient card */}
-            <div
-              className="border border-[#302f34] flex flex-col gap-[75px] items-start p-[24px] relative rounded-[8px] w-full"
-              style={{
-                background: "linear-gradient(to bottom, rgba(88,85,100,0.15) 0%, rgba(22,22,23,0.1) 50%)",
-              }}
-            >
-              {/* Card header text */}
-              <div className="flex flex-col gap-[16px] items-start pb-[42px] w-full">
-                <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.65] text-[color:var(--text\/secondary,#908e99)] text-[15px] md:text-[17px] w-full">
-                  We wanted noise for users to shout at AI, to scream, to laugh, to feel large emotions, which affected the pixels.
+            <div className="flex flex-col gap-[var(--gap-section)] items-start w-full">
+
+              {/* Container: Pixels + Interactions */}
+              <div
+                className="border border-[#302f34] flex flex-col gap-[var(--gap-section)] items-start p-[24px] relative rounded-[8px] w-full"
+                style={{ background: "linear-gradient(to bottom, rgba(55,54,61,0.1) 0%, rgba(22,22,23,0.1) 50%)" }}
+              >
+                <p className="font-['Inter_Tight',sans-serif] font-[350] leading-[var(--typography-display-title-smallest-line-height)] font-medium text-[color:var(--text\/primary,#faf9ff)] text-[length:var(--typography-display-title-smallest-font-size)] w-full">
+                  Pixels + Interactions
                 </p>
-              </div>
 
-              {/* Flow 1 — Pixel size and color */}
-              <div className="flex flex-col gap-[24px] items-start w-full">
-                <div className="flex flex-col gap-[16px] items-start w-full">
-                  <p className="font-['Inter_Tight',sans-serif] font-[300] leading-none text-[color:var(--text\/secondary,#908e99)] text-[15px]">
-                    Pixel size and color
-                  </p>
-                  <p className="font-['Inter_Tight',sans-serif] font-[350] leading-[1.3] text-[color:var(--text\/primary,#faf9ff)] text-[18px] md:text-[24px]">
-                    Pixels are based on the tone of the room, and shift with sharp noises
-                  </p>
-                </div>
-                {/* Two square images side by side */}
+                {/* Pixel color + Pixel size — two independent columns, each with its own header above its own media */}
                 <div className="flex gap-[24px] items-start w-full">
-                  <div className="flex flex-col gap-[8px] items-start flex-1 min-w-0">
-                    <div className="aspect-square w-full overflow-hidden rounded-[4px] bg-[#1c1b1f]">
+                  <div className="flex flex-col gap-[24px] items-start flex-1 min-w-0">
+                    <div className="flex flex-col gap-[16px] items-start w-full">
+                      <p className="font-['Inter_Tight',sans-serif] font-regular leading-none text-[color:var(--text\/secondary,#908e99)] text-[15px]">
+                        Pixel color
+                      </p>
+                      <p className="font-['Inter_Tight',sans-serif] font-[350] leading-[var(--typography-display-title-smallest-line-height)] font-medium text-[color:var(--text\/primary,#faf9ff)] text-[length:var(--typography-display-title-smallest-font-size)]">
+                        Color is mapped to the tone of the room
+                      </p>
+                    </div>
+                    <div className="aspect-square w-full overflow-hidden rounded-[var(--radius-component-image)] bg-[#1c1b1f]">
                       <video autoPlay loop muted playsInline preload="auto" className="w-full h-full object-cover" src={vidPixelLayer} />
                     </div>
-                    <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.5] text-[color:var(--text\/secondary,#908e99)] text-[12px] md:text-[15px] w-full">
-                      Color — 4 layers with so much possibility
-                    </p>
                   </div>
-                  <div className="flex flex-col gap-[8px] items-start flex-1 min-w-0">
-                    <div className="aspect-square w-full overflow-hidden rounded-[4px] bg-[#1c1b1f]">
+                  <div className="flex flex-col gap-[24px] items-start flex-1 min-w-0">
+                    <div className="flex flex-col gap-[16px] items-start w-full">
+                      <p className="font-['Inter_Tight',sans-serif] font-regular leading-none text-[color:var(--text\/secondary,#908e99)] text-[15px]">
+                        Pixel size
+                      </p>
+                      <p className="font-['Inter_Tight',sans-serif] font-[350] leading-[var(--typography-display-title-smallest-line-height)] font-medium text-[color:var(--text\/primary,#faf9ff)] text-[length:var(--typography-display-title-smallest-font-size)]">
+                        Size is mapped to volume
+                      </p>
+                    </div>
+                    <div className="aspect-square w-full overflow-hidden rounded-[var(--radius-component-image)] bg-[#1c1b1f]">
                       <video autoPlay loop muted playsInline preload="auto" className="w-full h-full object-cover" src={vidSoundGrid} />
                     </div>
-                    <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.5] text-[color:var(--text\/secondary,#908e99)] text-[12px] md:text-[15px] w-full">
-                      Scale — 4 levels of scale
+                  </div>
+                </div>
+
+                {/* User inputs */}
+                <div className="flex flex-col gap-[24px] items-start w-full">
+                  <div className="flex flex-col gap-[16px] items-start w-full">
+                    <p className="font-['Inter_Tight',sans-serif] font-regular leading-none text-[color:var(--text\/secondary,#908e99)] text-[15px]">
+                      User inputs
+                    </p>
+                    <p className="font-['Inter_Tight',sans-serif] font-[350] leading-[var(--typography-display-title-smallest-line-height)] font-medium text-[color:var(--text\/primary,#faf9ff)] text-[length:var(--typography-display-title-smallest-font-size)]">
+                      Screenshot and delightful sound
+                    </p>
+                    <p className="font-['Inter_Tight',sans-serif] font-regular leading-[1.65] text-[color:var(--text\/secondary,#908e99)] text-[15px] md:text-[length:var(--typography-body-default-font-size)] w-full">
+                      Using Mediapipe, I mapped common hand signals, the most common being a screenshot for people to share later
                     </p>
                   </div>
-                </div>
-              </div>
-
-              {/* Flow 2 — Delighting with sound + screenshots */}
-              <div className="flex gap-[24px] items-start w-full">
-                <div className="flex flex-1 flex-col gap-[16px] items-start min-w-0">
-                  <p className="font-['Inter_Tight',sans-serif] font-[300] leading-none text-[color:var(--text\/secondary,#908e99)] text-[15px]">
-                    User Inputs
-                  </p>
-                  <p className="font-['Inter_Tight',sans-serif] font-[350] leading-[1.3] text-[color:var(--text\/primary,#faf9ff)] text-[18px] md:text-[24px]">
-                    Delighting with sound + screenshots
-                  </p>
-                  <div className="font-['Inter_Tight',sans-serif] font-[300] leading-[0] text-[color:var(--text\/secondary,#908e99)] text-[15px] md:text-[17px] w-full">
-                    <p className="leading-[1.65] mb-[16px]">I noticed people typically wanted to put their palms out in the beginning, and included digital sounds to surprise and delight users.</p>
-                    <p className="leading-[1.65]">We also gave them the option to screenshot, and share the images later to print out</p>
+                  <div className="w-full overflow-hidden rounded-[var(--radius-component-image)] bg-[#242326]">
+                    <img src={imgUserInputs} className="w-full h-auto object-contain" alt="Hand signal inputs mapped to sounds" />
                   </div>
                 </div>
-                <div className="flex-1 min-w-0">
-                  <div className="aspect-square w-full overflow-hidden rounded-[4px] bg-[#1c1b1f] border border-[#302f34]">
-                    <img src={imgUserInputs} className="w-full h-full object-cover" alt="User interaction at the booth" />
+
+                {/* Layers */}
+                <div className="flex flex-col gap-[24px] items-start w-full">
+                  <div className="flex flex-col gap-[16px] items-start w-full">
+                    <p className="font-['Inter_Tight',sans-serif] font-regular leading-none text-[color:var(--text\/secondary,#908e99)] text-[15px]">
+                      Layers
+                    </p>
+                    <p className="font-['Inter_Tight',sans-serif] font-[350] leading-[var(--typography-display-title-smallest-line-height)] font-medium text-[color:var(--text\/primary,#faf9ff)] text-[length:var(--typography-display-title-smallest-font-size)]">
+                      AI icons
+                    </p>
+                    <p className="font-['Inter_Tight',sans-serif] font-regular leading-[1.65] text-[color:var(--text\/secondary,#908e99)] text-[15px] md:text-[length:var(--typography-body-default-font-size)] w-full">
+                      Icons were chosen based on clarity of size, with Claude, Gemini, and ChatGPT going from light to dark
+                    </p>
+                  </div>
+                  <div className="aspect-[2/1] w-full overflow-hidden rounded-[var(--radius-component-image)] bg-[#242326]">
+                    <img src={imgStructure} className="w-full h-full object-cover" alt="Four layers of the pixel system, from base color to AI icon overlay" />
                   </div>
                 </div>
               </div>
 
-              {/* Flow 3 — Color Choices */}
-              <div className="flex flex-col gap-[24px] items-start w-full">
-                <div className="flex flex-col gap-[16px] items-start w-full">
-                  <p className="font-['Inter_Tight',sans-serif] font-[300] leading-none text-[color:var(--text\/secondary,#908e99)] text-[15px]">
-                    Color Choices
-                  </p>
-                  <p className="font-['Inter_Tight',sans-serif] font-[350] leading-[1.3] text-[color:var(--text\/primary,#faf9ff)] text-[18px] md:text-[24px]">
-                    Color Options
-                  </p>
-                  <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.65] text-[color:var(--text\/secondary,#908e99)] text-[15px] md:text-[17px] w-full">
-                    Using lots of if/else switches, I also studied top booking sites peers enjoyed (we all love AirBnB)
-                  </p>
-                </div>
-                <div className="aspect-[2/1] w-full overflow-hidden rounded-[4px] bg-[#1c1b1f] border border-[#302f34]">
-                  <img src={imgStructure} className="w-full h-full object-cover" alt="Color options" />
-                </div>
-              </div>
+              {/* Container: Testing the grid */}
+              <div
+                className="border border-[#302f34] flex flex-col gap-[var(--gap-section)] items-start p-[24px] relative rounded-[8px] w-full"
+                style={{ background: "linear-gradient(to bottom, rgba(55,54,61,0.1) 0%, rgba(22,22,23,0.1) 50%)" }}
+              >
+                <p className="font-['Inter_Tight',sans-serif] font-[350] leading-[var(--typography-display-title-smallest-line-height)] font-medium text-[color:var(--text\/primary,#faf9ff)] text-[length:var(--typography-display-title-smallest-font-size)] w-full">
+                  Testing the grid
+                </p>
 
-              {/* Day 1 — Testing the grid, 2×2 */}
-              <div className="flex flex-col gap-[36px] items-start w-full">
-                <div className="flex flex-col gap-[16px] items-start w-full">
-                  <p className="font-['Inter_Tight',sans-serif] font-[300] leading-none text-[color:var(--text\/secondary,#908e99)] text-[15px] w-full">
-                    Day 1
-                  </p>
-                  <p className="font-['Inter_Tight',sans-serif] font-[350] leading-[1.3] text-[color:var(--text\/primary,#faf9ff)] text-[18px] md:text-[24px] w-full">
-                    Testing the grid
-                  </p>
-                </div>
                 <div className="grid grid-cols-2 gap-x-[16px] gap-y-[75px] w-full">
                   {[
-                    { caption: "Pass 1 — Layering and shape tests; weak background–foreground contrast", media: "pass1" },
-                    { caption: "Pass 2 — Introducing AI logos and removing midtones to isolate darks and lights", media: "pass2" },
-                    { caption: "Pass 3 — Reintroducing midtones and control layering with thicker shapes", media: "pass3" },
-                    { caption: "Pass 4 — Testing colors; evaluating light vs. dark backgrounds w/ Prof Mike", media: "pass4" },
-                  ].map(({ caption, media }, i) => (
-                    <div key={i} className="flex flex-col gap-[4px] items-start">
+                    { time: "10:00 AM Thursday", caption: "Pixels and maps", media: "pass1" },
+                    { time: "2:00 PM Thursday", caption: "Layers and shapes", media: "pass2" },
+                    { time: "1:00 AM Thursday", caption: "Midtones and sound", media: "pass3" },
+                    { time: "8:00 AM Friday", caption: "Colors and logos ft. (prof) Mike", media: "pass4" },
+                  ].map(({ time, caption, media }, i) => (
+                    <div key={i} className="flex flex-col gap-[24px] items-start">
+                      <div className="flex flex-col gap-[16px] items-start w-full">
+                        <p className="font-['Inter_Tight',sans-serif] font-regular leading-none text-[color:var(--text\/secondary,#908e99)] text-[15px]">
+                          {time}
+                        </p>
+                        <p className="font-['Inter_Tight',sans-serif] font-[350] leading-[var(--typography-display-title-smallest-line-height)] font-medium text-[color:var(--text\/primary,#faf9ff)] text-[length:var(--typography-display-title-smallest-font-size)]">
+                          {caption}
+                        </p>
+                      </div>
                       {media === "pass1" ? (
-                        <video autoPlay loop muted playsInline className="aspect-[485.5/242.75] rounded-[4px] w-full object-cover" src={vidPass1} />
-                      ) : media === "pass2" ? (
-                        <img src={imgPass2} className="aspect-[485.5/242.75] rounded-[4px] w-full object-cover" alt={caption} />
-                      ) : media === "pass3" ? (
-                        <img src={imgPass3} className="aspect-[485.5/242.75] rounded-[4px] w-full object-cover" alt={caption} />
+                        <div className="aspect-[2/1] w-full overflow-hidden rounded-[var(--radius-component-image)] bg-[#242326]">
+                          <video autoPlay loop muted playsInline className="w-full h-full object-cover" src={vidPass1} />
+                        </div>
                       ) : (
-                        <img src={imgPass4} className="aspect-[485.5/242.75] rounded-[4px] w-full object-cover" alt={caption} />
+                        <img
+                          src={media === "pass2" ? imgPass2 : media === "pass3" ? imgPass3 : imgPass4}
+                          className="aspect-[2/1] rounded-[var(--radius-component-image)] w-full object-cover bg-[#242326]"
+                          alt={caption}
+                        />
                       )}
-                      <p className="font-['Inter_Tight',sans-serif] font-[300] leading-none text-[color:var(--text\/secondary,#908e99)] text-[12px] md:text-[14px] w-full pt-[12px]">
-                        {caption}
-                      </p>
                     </div>
                   ))}
                 </div>
               </div>
 
-              {/* Final Setup */}
+              {/* Final Setup — sits directly in the flow, no card wrapper */}
               <div className="flex flex-col gap-[24px] items-start w-full">
                 <div className="flex flex-col gap-[16px] items-start w-full">
-                  <p className="font-['Inter_Tight',sans-serif] font-[300] leading-none text-[color:var(--text\/secondary,#908e99)] text-[15px]">
+                  <p className="font-['Inter_Tight',sans-serif] font-regular leading-none text-[color:var(--text\/secondary,#908e99)] text-[15px]">
                     Final Setup
                   </p>
-                  <p className="font-['Inter_Tight',sans-serif] font-[350] leading-[1.3] text-[color:var(--text\/primary,#faf9ff)] text-[18px] md:text-[24px]">
+                  <p className="font-['Inter_Tight',sans-serif] font-[350] leading-[var(--typography-display-title-smallest-line-height)] font-medium text-[color:var(--text\/primary,#faf9ff)] text-[length:var(--typography-display-title-smallest-font-size)]">
                     A macbook and a dream
                   </p>
-                  <p className="font-['Inter_Tight',sans-serif] font-[300] leading-[1.65] text-[color:var(--text\/secondary,#908e99)] text-[15px] md:text-[17px] w-full">
+                  <p className="font-['Inter_Tight',sans-serif] font-regular leading-[1.65] text-[color:var(--text\/secondary,#908e99)] text-[15px] md:text-[length:var(--typography-body-default-font-size)] w-full">
                     The whole experience ran off my macbook and a chrome browser!
                   </p>
                 </div>
-                <div className="aspect-[2/1] w-full overflow-hidden rounded-[4px] bg-[#1c1b1f] border border-[#302f34]">
-                  <img src={imgSetup} className="w-full h-full object-cover" alt="Final setup" />
+                <div className="aspect-[2/1] w-full overflow-hidden rounded-[var(--radius-component-image)] bg-[#242326] p-[16px]">
+                  <img src={imgSetup} className="w-full h-full object-cover rounded-[var(--radius-component-image)]" alt="Final setup" />
                 </div>
               </div>
+
             </div>
 
           </div>
 
           {/* ── Section: Results + Reflections ── */}
-          <div id="cs-review" className="flex flex-col gap-[100px] items-start w-full">
+          <div id="cs-review" className="flex flex-col gap-[16px] items-start w-full">
 
-            <CasestudySectionHeader
-              eyebrow="Results + Reflections"
-              headline="5 hours of nonstop fun"
-              subtitle="Building something people wanted to stay at"
-            />
+            <p className="font-['Inter_Tight',sans-serif] font-regular text-[12px] tracking-[0.08em] leading-[16.5px] uppercase text-[#908e99] text-center w-full">
+              Results + Reflections
+            </p>
 
             {/* Replay */}
             <div className="flex flex-col gap-[16px] items-start w-full">
-              <p className="font-['Inter_Tight',sans-serif] font-[300] leading-none text-[color:var(--text\/secondary,#908e99)] text-[15px]">
-                Replay
-              </p>
-              <p className="font-['Inter_Tight',sans-serif] font-[350] leading-[1.3] text-[color:var(--text\/primary,#faf9ff)] text-[18px] md:text-[24px]">
-                First time using Claude!
-              </p>
 
               {/* Point 1 */}
-              <div className="bg-[rgba(235,250,213,0.03)] border border-[#302f34] flex gap-[16px] items-start p-[16px] rounded-[8px] w-full">
-                <p className="font-['Inter_Tight',sans-serif] leading-[2.05] text-[color:var(--text\/secondary,#908e99)] text-[12px] md:text-[15px] shrink-0">1</p>
-                <div className="flex flex-col gap-[8px] items-start flex-1">
-                  <p className="font-['Inter_Tight',sans-serif] font-[350] leading-[1.65] text-[color:var(--text\/primary,#faf9ff)] text-[15px] md:text-[17px]">Simplicity &gt; Complexity</p>
-                  <p className="font-['Inter',sans-serif] font-[300] leading-[1.65] text-[color:var(--text\/secondary,#908e99)] text-[15px] md:text-[16px] tracking-[-0.32px] w-full">
+              <div className="bg-[#242326] flex gap-[16px] items-start p-[16px] rounded-[8px] w-full">
+                <p className="font-['Inter_Tight',sans-serif] leading-[2.05] text-[color:var(--text\/tertiary,#585564)] text-[14px] w-[10px] shrink-0">1</p>
+                <div className="flex flex-col items-start flex-1 min-w-0">
+                  <p className="font-['Inter_Tight',sans-serif] font-[var(--typography-body-default-intense-font-weight)] leading-[var(--typography-body-default-intense-line-height)] text-[color:var(--text\/between,#d1cedc)] text-[length:var(--typography-body-default-intense-font-size)] whitespace-nowrap">Simplicity &gt; Complexity</p>
+                  <p className="font-['Inter_Tight',sans-serif] font-regular leading-[var(--typography-body-default-line-height)] text-[color:var(--text\/secondary,#908e99)] text-[length:var(--typography-body-default-font-size)] w-full">
                     The response was incredible! Our work ended up being the lightest project in the showcase, with other teams having lots of touch points and long flows to work with over two days
                   </p>
                 </div>
               </div>
 
               {/* Point 2 */}
-              <div className="bg-[rgba(235,250,213,0.03)] border border-[#302f34] flex gap-[16px] items-start p-[16px] rounded-[8px] w-full">
-                <p className="font-['Inter_Tight',sans-serif] leading-[2.05] text-[color:var(--text\/secondary,#908e99)] text-[12px] md:text-[15px] shrink-0">2</p>
-                <div className="flex flex-col gap-[8px] items-start flex-1">
-                  <p className="font-['Inter_Tight',sans-serif] font-[350] leading-[1.65] text-[color:var(--text\/primary,#faf9ff)] text-[15px] md:text-[17px]">Winning T-Shirts!</p>
-                  <p className="font-['Inter',sans-serif] font-[300] leading-[1.65] text-[color:var(--text\/secondary,#908e99)] text-[15px] md:text-[16px] tracking-[-0.32px] w-full">
+              <div className="bg-[#242326] flex gap-[16px] items-start p-[16px] rounded-[8px] w-full">
+                <p className="font-['Inter_Tight',sans-serif] leading-[2.05] text-[color:var(--text\/tertiary,#585564)] text-[14px] w-[10px] shrink-0">2</p>
+                <div className="flex flex-col items-start flex-1 min-w-0">
+                  <p className="font-['Inter_Tight',sans-serif] font-[var(--typography-body-default-intense-font-weight)] leading-[var(--typography-body-default-intense-line-height)] text-[color:var(--text\/between,#d1cedc)] text-[length:var(--typography-body-default-intense-font-size)] whitespace-nowrap">Winning T-Shirts!</p>
+                  <p className="font-['Inter_Tight',sans-serif] font-regular leading-[var(--typography-body-default-line-height)] text-[color:var(--text\/secondary,#908e99)] text-[length:var(--typography-body-default-font-size)] w-full">
                     THANK YOU Mauvis and Grace @ Sogni.AI! I really learned a lot from Mauvis especially sharing his personal story and motivation to start Sogni.AI!
                   </p>
-                  <img src={imgSogniai} className="aspect-[2/1] rounded-[4px] object-cover w-[255px]" alt="Sogni.AI" />
+                  <img src={imgSogniai} className="aspect-[2/1] rounded-[var(--radius-component-image)] object-cover w-[255px] bg-[#242326] mt-[16px]" alt="Sogni.AI" />
                 </div>
               </div>
 
               {/* Point 3 */}
-              <div className="bg-[rgba(235,250,213,0.03)] border border-[#302f34] flex gap-[16px] items-start p-[16px] rounded-[8px] w-full">
-                <p className="font-['Inter_Tight',sans-serif] leading-[2.05] text-[color:var(--text\/tertiary,#585564)] text-[12px] md:text-[15px] shrink-0">3</p>
-                <div className="flex flex-col gap-[8px] items-start flex-1">
-                  <p className="font-['Inter_Tight',sans-serif] font-[350] leading-[1.65] text-[color:var(--text\/primary,#faf9ff)] text-[15px] md:text-[17px]">Side questing music beats with Strudel</p>
-                  <p className="font-['Inter',sans-serif] font-[300] leading-[1.65] text-[color:var(--text\/secondary,#908e99)] text-[15px] md:text-[16px] tracking-[-0.32px] w-full">
+              <div className="bg-[#242326] flex gap-[16px] items-start p-[16px] rounded-[8px] w-full">
+                <p className="font-['Inter_Tight',sans-serif] leading-[2.05] text-[color:var(--text\/tertiary,#585564)] text-[14px] w-[10px] shrink-0">3</p>
+                <div className="flex flex-col items-start flex-1 min-w-0">
+                  <p className="font-['Inter_Tight',sans-serif] font-[var(--typography-body-default-intense-font-weight)] leading-[var(--typography-body-default-intense-line-height)] text-[color:var(--text\/between,#d1cedc)] text-[length:var(--typography-body-default-intense-font-size)] whitespace-nowrap">Side questing music beats with Strudel</p>
+                  <p className="font-['Inter_Tight',sans-serif] font-regular leading-[var(--typography-body-default-line-height)] text-[color:var(--text\/secondary,#908e99)] text-[length:var(--typography-body-default-font-size)] w-full">
                     I also made a custom beat for our experience! It was so fun being able to experiment, though music producer will never be in my future LOL
                   </p>
                 </div>
