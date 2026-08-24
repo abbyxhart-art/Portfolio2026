@@ -744,7 +744,7 @@ function HeroHeadline({ isMobile, onExpandStart }: { isMobile: boolean; onExpand
           </AnimatePresence>
           <BlobSprite />
         </motion.span>
-        <span>who engineers</span>
+        <span>who tests ideas</span>
       </motion.div>
       <p className="text-center font-[475]" style={{ margin: 0, fontSize, color: "var(--color-text-primary)", lineHeight: 1.4 }}>
         focused on systems and execution
@@ -887,6 +887,16 @@ export default function Home() {
           style={{ color: "var(--color-text-secondary)", lineHeight: 1.4 }}
         >
           built community interfaces w/ <GlowLink path="/casestudy/figma-rit">Figma Edu</GlowLink><br className="md:hidden" /> + relaunched <GlowLink path="/casestudy/capitol-aluminum">Capitol</GlowLink>'s brand identity
+        </motion.p>
+
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: introReady ? 1 : 0 }}
+          transition={{ duration: CARD_REVEAL_DURATION, ease: CARD_REVEAL_EASE }}
+          className="text-[15px] md:text-[length:var(--typography-body-default-font-size)] font-regular text-center"
+          style={{ margin: 0, marginTop: -24, color: "var(--color-text-secondary)", lineHeight: 1.4 }}
+        >
+          Site under renovation. Things may look awful.
         </motion.p>
       </div>
 
