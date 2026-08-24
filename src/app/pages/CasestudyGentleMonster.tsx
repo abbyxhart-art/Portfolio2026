@@ -27,7 +27,7 @@ const imgUserResearch = new URL("../../assets/project/gentlemonster/user-researc
 const vidFlowBestmatch = new URL("../../assets/project/gentlemonster/flow_bestmatch.mp4", import.meta.url).href;
 const vidFlowBestMatchHero = new URL("../../assets/project/gentlemonster/flow-best-match.mp4", import.meta.url).href;
 const imgUserFlow1 = new URL("../../assets/project/gentlemonster/user-flow-1.png", import.meta.url).href;
-const vidFlowMymatch = new URL("../../assets/project/gentlemonster/flow_mymatch.mp4", import.meta.url).href;
+const vidFlowMymatch = new URL("../../assets/project/gentlemonster/flow-my-match.mp4", import.meta.url).href;
 const vidFlowLenses = new URL("../../assets/project/gentlemonster/flow_lenses.mp4", import.meta.url).href;
 const vidFlowFourmatches = new URL("../../assets/project/gentlemonster/flow_fourmatches.mp4", import.meta.url).href;
 const vidFlowGlasses = new URL("../../assets/project/gentlemonster/flow_glasses.mp4", import.meta.url).href;
@@ -184,12 +184,12 @@ export default function CasestudyGentleMonster() {
               {/* Flow 2/5 */}
               <div className="flex flex-col gap-[40px] items-start w-full">
                 <div className="flex flex-col gap-[24px] items-start w-full">
-                  <p className="font-regular leading-[1.5] text-[#908e99] text-[14px]">Flow 2/5</p>
+                  <p className="font-regular leading-[1.5] text-[#908e99] text-[14px]">Flow 1/4 : The Profile</p>
                   <p className="font-medium leading-[1.25] text-[#faf9ff] text-[length:var(--typography-display-title-smallest-font-size)]">
-                    Use smaller filters as matches.
+                    Share filters as matches
                   </p>
                   <p className="font-regular leading-[1.65] text-[#b8b4c5] text-[length:var(--typography-body-default-font-size)] max-w-[65ch] w-full">
-                    This feature replaces filters by presenting personalized, pre-matched options instead of requiring people to sort through presets themselves (although the filter button still exists should people want to use it!).
+                   Right after scanning their face, users see a personalized profile with pre-matched materials and lens tints. The profile uses complimentary, open-ended language to help users explore without feeling locked into recommendations that don’t resonate with them.
                   </p>
                 </div>
                 <div className="aspect-[3/2] bg-[#d9d9d9] rounded-[var(--radius-component-image)] w-full overflow-hidden relative">
@@ -204,12 +204,12 @@ export default function CasestudyGentleMonster() {
               {/* Flow 3/5 */}
               <div className="flex flex-col gap-[40px] items-start w-full">
                 <div className="flex flex-col gap-[24px] items-start w-full">
-                  <p className="font-regular leading-none text-[#908e99] text-[14px] tracking-[0.126px]">Flow 3/5</p>
+                  <p className="font-regular leading-none text-[#908e99] text-[14px] tracking-[0.126px]">Flow 2/4</p>
                   <p className="font-medium leading-[1.25] text-[#faf9ff] text-[length:var(--typography-display-title-smallest-font-size)]">
-                    Don't overload people.
+                    Displaying only four matches at a time
                   </p>
                   <p className="font-regular leading-[1.65] text-[#b8b4c5] text-[length:var(--typography-body-default-font-size)] max-w-[65ch] w-full">
-                    Initially display five glasses to reduce decision paralysis! Users can scroll to explore lower-ranked matches, maintaining momentum without overwhelming them. Navigation is positioned at the bottom to minimize hand movement/fatigue.
+                    Four matches were seen as the most optimal, with three feeling limiting, and five feeling cramped. Navigation is positioned at the bottom to minimize hand movement/fatigue.
                   </p>
                 </div>
                 <div className="aspect-[3/2] bg-[#d9d9d9] rounded-[var(--radius-component-image)] w-full overflow-hidden relative">
@@ -224,12 +224,12 @@ export default function CasestudyGentleMonster() {
               {/* Flow 4/5 */}
               <div className="flex flex-col gap-[40px] items-start w-full">
                 <div className="flex flex-col gap-[24px] items-start w-full">
-                  <p className="font-regular leading-none text-[#908e99] text-[14px] tracking-[0.126px]">Flow 4/5</p>
+                  <p className="font-regular leading-none text-[#908e99] text-[14px] tracking-[0.126px]">Flow 3/4</p>
                   <p className="font-medium leading-[1.25] text-[#faf9ff] text-[length:var(--typography-display-title-smallest-font-size)]">
-                    Show people how it matches.
+                    Bring professional language to the user
                   </p>
                   <p className="font-regular leading-[1.65] text-[#b8b4c5] text-[length:var(--typography-body-default-font-size)] max-w-[65ch] w-full">
-                    Users can interpret the match percentage through four familiar criteria commonly used by lens specialists to distinguish a good fit from a poor one. Lower matches are considerate; higher matches are framed to feel confidence-boosting!
+                    Users can interpret the match percentage through four familiar criteria commonly used by lens specialists to distinguish a good fit from a poor one. Lower matches are considerately worded; higher matches are framed to feel confidence-boosting!
                   </p>
                 </div>
                 <div className="aspect-[3/2] bg-[#d9d9d9] rounded-[var(--radius-component-image)] w-full overflow-hidden relative">
