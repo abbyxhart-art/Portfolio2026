@@ -1,6 +1,6 @@
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { useNavEntrance } from "../hooks/useNavEntrance";
-import { motion, useScroll, useTransform, useMotionValue } from "@/lib/motion";
+import { motion } from "@/lib/motion";
 import UpNext from "../components/casestudy/UpNext";
 import SectionNavigation from "../components/casestudy/SectionNavigation";
 import CasestudySectionHeader from "../components/casestudy/CasestudySectionHeader";
@@ -24,37 +24,7 @@ const FRAG_SECTIONS = [
 export default function CasestudyFragrantica() {
   const shouldAnimate = useNavEntrance();
 
-  const { scrollY } = useScroll();
-  const heroCompleted = useRef(false);
-  const heroRef = useRef<HTMLDivElement>(null);
-  const heroExtraHeight = useMotionValue(0);
-
-  const heroScale = useTransform(scrollY, (latest) => {
-    if (heroCompleted.current) return 1;
-    const progress = Math.min(latest / 400, 1);
-    if (progress >= 1) heroCompleted.current = true;
-    return 1.35 - 0.35 * progress;
-  });
-  const heroBorderRadius = useTransform(scrollY, (latest) => {
-    if (heroCompleted.current) return 24;
-    return 24 * Math.min(latest / 400, 1);
-  });
-  const contentY = useTransform(() => {
-    if (heroCompleted.current) return 0;
-    const progress = Math.min(scrollY.get() / 400, 1);
-    return heroExtraHeight.get() * (1 - progress);
-  });
-
   useEffect(() => { window.scrollTo(0, 0); }, []);
-
-  useEffect(() => {
-    const measure = () => {
-      if (heroRef.current) heroExtraHeight.set(heroRef.current.offsetHeight * 0.35);
-    };
-    measure();
-    window.addEventListener("resize", measure);
-    return () => window.removeEventListener("resize", measure);
-  }, [heroExtraHeight]);
 
   return (
     <div className="relative min-h-screen bg-background overflow-x-clip">
@@ -64,7 +34,7 @@ export default function CasestudyFragrantica() {
         initial={shouldAnimate ? { opacity: 0, y: 24 } : false}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: "easeOut" }}
-        className="flex flex-col items-center px-[16px] md:px-[24vw] pt-[15vh] pb-[15vh] relative z-[1]"
+        className="flex flex-col items-center px-[16px] md:px-[16vw] pt-[15vh] pb-[15vh] relative z-[1]"
       >
         <div className="flex flex-col gap-[110px] items-center w-full">
 
@@ -72,24 +42,23 @@ export default function CasestudyFragrantica() {
           <div id="cs-overview" className="flex flex-col gap-[75px] items-start w-full">
 
             {/* Hero */}
-            <motion.div
-              ref={heroRef}
-              className="aspect-[2/1] bg-[#1c1b1f] w-full overflow-hidden"
-              style={{ scale: heroScale, borderRadius: heroBorderRadius, transformOrigin: "top center" }}
+            <div
+              className="aspect-[3/2] bg-[#1c1b1f] w-full overflow-hidden"
+              style={{ borderRadius: "24px" }}
             />
 
             {/* Title + metadata */}
-            <motion.div style={{ y: contentY }} className="flex flex-col gap-[32px] items-start w-full">
+            <div className="flex flex-col gap-[32px] items-start w-full">
               <div className="border-b border-[#302f34] flex flex-col gap-[8px] items-start pb-[32px] w-full">
-                <p className="font-['Inter_Tight',sans-serif] font-medium leading-[1.3] text-[color:var(--text\/primary,#faf9ff)] text-[length:var(--typography-body-default-font-size)] md:text-[24px] w-full">
+                <p className="font-['SF_Pro_Display',sans-serif] font-medium leading-[1.3] text-[color:var(--text\/primary,#faf9ff)] text-[length:var(--typography-body-default-font-size)] md:text-[24px] max-w-[65ch] w-full">
                   Fragrantica
                 </p>
-                <p className="font-['Inter_Tight',sans-serif] font-regular leading-[1.25] text-[color:var(--text\/secondary,#908e99)] text-[length:var(--typography-body-default-font-size)] md:text-[length:var(--typography-display-title-smallest-font-size)] w-full">
+                <p className="font-['SF_Pro_Display',sans-serif] font-regular leading-[1.25] text-[color:var(--text\/secondary,#908e99)] text-[length:var(--typography-body-default-font-size)] md:text-[length:var(--typography-display-title-smallest-font-size)] max-w-[65ch] w-full">
                   Refreshing a site with 22 million users
                 </p>
               </div>
 
-              <div className="flex font-['Inter_Tight',sans-serif] gap-[57px] items-start w-full">
+              <div className="flex font-['SF_Pro_Display',sans-serif] gap-[57px] items-start w-full">
                 {/* Left: Tools + Timeline */}
                 <div className="flex flex-col gap-[32px] items-start shrink-0">
                   <div className="flex flex-col gap-[12px] items-start">
@@ -108,18 +77,18 @@ export default function CasestudyFragrantica() {
                 {/* Right: Problem */}
                 <div className="flex flex-1 flex-col gap-[12px] items-start min-w-0">
                   <p className="leading-none text-[color:var(--text\/tertiary,#585564)] text-[12px] md:text-[14px]">Problem</p>
-                  <div className="font-regular leading-[1.65] text-[color:var(--text\/secondary,#908e99)] text-[14px] md:text-[length:var(--typography-body-default-font-size)] w-full">
-                    <p className="font-['Inter_Tight',sans-serif] mb-[16px]">
+                  <div className="font-regular leading-[1.65] text-[color:var(--text\/secondary,#908e99)] text-[14px] md:text-[length:var(--typography-body-default-font-size)] max-w-[65ch] w-full">
+                    <p className="font-['SF_Pro_Display',sans-serif] mb-[16px]">
                       My friend Gaby loves niche fragrances and uses this site to save perfumes she wants to try someday. While showing me her favorite scents, she said, “Ugh, I hate how ugly this is.”
 
                     </p>
-                    <p className="font-['Inter_Tight',sans-serif]">
+                    <p className="font-['SF_Pro_Display',sans-serif]">
 We laughed and I wondered how the experience could feel more curated, expressive, and enjoyable for people who love scent.
                     </p>
                   </div>
                 </div>
               </div>
-            </motion.div>
+            </div>
           </div>
 
           {/* ── Checkpoint: Redesign ── */}
@@ -135,10 +104,10 @@ We laughed and I wondered how the experience could feel more curated, expressive
             {/* Before / Afters */}
             <div className="bg-gradient-to-b from-[rgba(88,85,100,0.15)] to-[rgba(22,22,23,0.1)] border border-[#302f34] flex flex-col gap-[75px] items-start p-[24px] rounded-[8px] w-full">
               <div className="flex flex-col gap-[8px] items-start pb-[18px] w-full">
-                <p className="font-['Inter_Tight',sans-serif] font-medium leading-[1.3] text-[color:var(--text\/primary,#faf9ff)] text-[length:var(--typography-body-default-font-size)] md:text-[24px] w-full">
+                <p className="font-['SF_Pro_Display',sans-serif] font-medium leading-[1.3] text-[color:var(--text\/primary,#faf9ff)] text-[length:var(--typography-body-default-font-size)] md:text-[24px] max-w-[65ch] w-full">
                   Before / Afters
                 </p>
-                <p className="font-['Inter_Tight',sans-serif] font-regular leading-[1.65] text-[color:var(--text\/secondary,#908e99)] text-[14px] md:text-[length:var(--typography-body-default-font-size)] w-full">
+                <p className="font-['SF_Pro_Display',sans-serif] font-regular leading-[1.65] text-[color:var(--text\/secondary,#908e99)] text-[14px] md:text-[length:var(--typography-body-default-font-size)] max-w-[65ch] w-full">
                   Some of Fragrantica had to be repackaged to redesign
                 </p>
               </div>
@@ -149,10 +118,10 @@ We laughed and I wondered how the experience could feel more curated, expressive
                   title: "All pages aren't the same...",
                   body: (
                     <>
-                      <p className="font-['Inter_Tight',sans-serif] font-regular leading-[1.65] mb-[16px]">
+                      <p className="font-['SF_Pro_Display',sans-serif] font-regular leading-[1.65] mb-[16px]">
                         There are 2 types of pages: recommendations by Fragrantica and opinion pieces/stories written by any user (like Substack). They were both styled the same.
                       </p>
-                      <p className="font-['Inter_Tight',sans-serif] font-regular leading-[1.65]">
+                      <p className="font-['SF_Pro_Display',sans-serif] font-regular leading-[1.65]">
                         Now, they're distinct: recommendations → "collections" and pieces → "articles", improving content recognition.
                       </p>
                     </>
@@ -164,10 +133,10 @@ We laughed and I wondered how the experience could feel more curated, expressive
                   title: "Wait...these are buttons?",
                   body: (
                     <>
-                      <p className="font-['Inter_Tight',sans-serif] font-regular leading-[1.65] mb-[16px]">
+                      <p className="font-['SF_Pro_Display',sans-serif] font-regular leading-[1.65] mb-[16px]">
                         Notes are spaced and grouped by their respective note categories helping users understand scent structure at a glance.
                       </p>
-                      <p className="font-['Inter_Tight',sans-serif] font-regular leading-[1.65]">
+                      <p className="font-['SF_Pro_Display',sans-serif] font-regular leading-[1.65]">
                         Each note is styled as a clearly recognizable button and make interactions more understandable.
                       </p>
                     </>
@@ -179,10 +148,10 @@ We laughed and I wondered how the experience could feel more curated, expressive
                   title: "Ratings are up!",
                   body: (
                     <>
-                      <p className="font-['Inter_Tight',sans-serif] font-regular leading-[1.65] mb-[16px]">
+                      <p className="font-['SF_Pro_Display',sans-serif] font-regular leading-[1.65] mb-[16px]">
                         Puts each pro into cards for better scanning, and keeps the original green / red for pro / con.
                       </p>
-                      <p className="font-['Inter_Tight',sans-serif] font-regular leading-[1.65]">
+                      <p className="font-['SF_Pro_Display',sans-serif] font-regular leading-[1.65]">
                         You can also see numbers and scale to better understand rating!
                       </p>
                     </>
@@ -192,9 +161,9 @@ We laughed and I wondered how the experience could feel more curated, expressive
               ].map(({ label, title, body, img }, i) => (
                 <div key={i} className="flex gap-[24px] items-start w-full">
                   <div className="flex flex-1 flex-col gap-[16px] items-start min-w-0">
-                    <p className="font-['Inter_Tight',sans-serif] font-regular leading-none text-[color:var(--text\/secondary,#908e99)] text-[14px] md:text-[length:var(--typography-body-default-font-size)]">{label}</p>
-                    <p className="font-['Inter_Tight',sans-serif] font-medium leading-[1.3] text-[color:var(--text\/primary,#faf9ff)] text-[length:var(--typography-body-default-font-size)] md:text-[24px]">{title}</p>
-                    <div className="font-medium text-[color:var(--text\/primary,#faf9ff)] text-[14px] md:text-[length:var(--typography-body-default-font-size)] w-full">{body}</div>
+                    <p className="font-['SF_Pro_Display',sans-serif] font-regular leading-none text-[color:var(--text\/secondary,#908e99)] text-[14px] md:text-[length:var(--typography-body-default-font-size)]">{label}</p>
+                    <p className="font-['SF_Pro_Display',sans-serif] font-medium leading-[1.3] text-[color:var(--text\/primary,#faf9ff)] text-[length:var(--typography-body-default-font-size)] md:text-[24px]">{title}</p>
+                    <div className="font-medium text-[color:var(--text\/primary,#faf9ff)] text-[14px] md:text-[length:var(--typography-body-default-font-size)] max-w-[65ch] w-full">{body}</div>
                   </div>
                   <div className="flex flex-1 min-w-0">
                     {img ? (
@@ -209,14 +178,14 @@ We laughed and I wondered how the experience could feel more curated, expressive
 
             {/* Redesigning the two main pages */}
             <div className="bg-gradient-to-b from-[rgba(88,85,100,0.15)] to-[rgba(22,22,23,0.1)] border border-[#302f34] flex flex-col gap-[75px] items-start p-[24px] rounded-[8px] w-full">
-              <p className="font-['Inter_Tight',sans-serif] font-medium leading-[1.3] text-[color:var(--text\/primary,#faf9ff)] text-[length:var(--typography-body-default-font-size)] md:text-[24px] pb-[18px] w-full">
+              <p className="font-['SF_Pro_Display',sans-serif] font-medium leading-[1.3] text-[color:var(--text\/primary,#faf9ff)] text-[length:var(--typography-body-default-font-size)] md:text-[24px] pb-[18px] max-w-[65ch] w-full">
                 Redesigning the two main pages
               </p>
 
               <div className="flex flex-col gap-[24px] items-start w-full">
-                <p className="font-['Inter_Tight',sans-serif] font-regular leading-none text-[color:var(--text\/secondary,#908e99)] text-[14px] md:text-[length:var(--typography-body-default-font-size)]">Home Page</p>
-                <p className="font-['Inter_Tight',sans-serif] font-medium leading-[1.3] text-[color:var(--text\/primary,#faf9ff)] text-[length:var(--typography-body-default-font-size)] md:text-[24px]">Giving the user more control</p>
-                <p className="font-['Inter_Tight',sans-serif] font-regular leading-[1.65] text-[color:var(--text\/secondary,#908e99)] text-[14px] md:text-[length:var(--typography-body-default-font-size)] w-full">
+                <p className="font-['SF_Pro_Display',sans-serif] font-regular leading-none text-[color:var(--text\/secondary,#908e99)] text-[14px] md:text-[length:var(--typography-body-default-font-size)]">Home Page</p>
+                <p className="font-['SF_Pro_Display',sans-serif] font-medium leading-[1.3] text-[color:var(--text\/primary,#faf9ff)] text-[length:var(--typography-body-default-font-size)] md:text-[24px]">Giving the user more control</p>
+                <p className="font-['SF_Pro_Display',sans-serif] font-regular leading-[1.65] text-[color:var(--text\/secondary,#908e99)] text-[14px] md:text-[length:var(--typography-body-default-font-size)] max-w-[65ch] w-full">
                   New ability to organize different types of content, distills product details to what matters most, and leverages color as a navigational and organizational tool.
                 </p>
                 <div className="grid grid-cols-3 gap-[24px] w-full">
@@ -227,9 +196,9 @@ We laughed and I wondered how the experience could feel more curated, expressive
               </div>
 
               <div className="flex flex-col gap-[24px] items-start w-full">
-                <p className="font-['Inter_Tight',sans-serif] font-regular leading-none text-[color:var(--text\/secondary,#908e99)] text-[14px] md:text-[length:var(--typography-body-default-font-size)]">Scent Page</p>
-                <p className="font-['Inter_Tight',sans-serif] font-medium leading-[1.3] text-[color:var(--text\/primary,#faf9ff)] text-[length:var(--typography-body-default-font-size)] md:text-[24px]">Clarify user choices</p>
-                <p className="font-['Inter_Tight',sans-serif] font-regular leading-[1.65] text-[color:var(--text\/secondary,#908e99)] text-[14px] md:text-[length:var(--typography-body-default-font-size)] w-full">
+                <p className="font-['SF_Pro_Display',sans-serif] font-regular leading-none text-[color:var(--text\/secondary,#908e99)] text-[14px] md:text-[length:var(--typography-body-default-font-size)]">Scent Page</p>
+                <p className="font-['SF_Pro_Display',sans-serif] font-medium leading-[1.3] text-[color:var(--text\/primary,#faf9ff)] text-[length:var(--typography-body-default-font-size)] md:text-[24px]">Clarify user choices</p>
+                <p className="font-['SF_Pro_Display',sans-serif] font-regular leading-[1.65] text-[color:var(--text\/secondary,#908e99)] text-[14px] md:text-[length:var(--typography-body-default-font-size)] max-w-[65ch] w-full">
                   Groups content into clearer categories (scent, scent education, with ratings presented last), reduces visual noise with standardized buttons and clearer affordances for interactions!
                 </p>
                 <div className="grid grid-cols-3 gap-[24px] w-full">
@@ -254,14 +223,14 @@ We laughed and I wondered how the experience could feel more curated, expressive
             {/* Discovery */}
             <div className="flex flex-col gap-[24px] items-start w-full">
               <div className="flex flex-col gap-[16px] items-start w-full">
-                <p className="font-['Inter_Tight',sans-serif] font-regular leading-none text-[color:var(--text\/secondary,#908e99)] text-[14px] md:text-[length:var(--typography-body-default-font-size)]">Discovery</p>
-                <div className="font-['Inter_Tight',sans-serif] font-medium leading-[1.3] text-[color:var(--text\/primary,#faf9ff)] text-[length:var(--typography-body-default-font-size)] md:text-[24px] w-full">
+                <p className="font-['SF_Pro_Display',sans-serif] font-regular leading-none text-[color:var(--text\/secondary,#908e99)] text-[14px] md:text-[length:var(--typography-body-default-font-size)]">Discovery</p>
+                <div className="font-['SF_Pro_Display',sans-serif] font-medium leading-[1.3] text-[color:var(--text\/primary,#faf9ff)] text-[length:var(--typography-body-default-font-size)] md:text-[24px] max-w-[65ch] w-full">
                   <p className="mb-0">How do fashion sites organize different categories?</p>
                   <p className="mb-0">How do other sites organize different forms of media or products?</p>
                   <p className="mb-0">What's the best flow for organized discovery?</p>
                 </div>
               </div>
-              <p className="font-['Inter_Tight',sans-serif] font-regular leading-[1.65] text-[color:var(--text\/secondary,#908e99)] text-[14px] md:text-[length:var(--typography-body-default-font-size)] w-full">
+              <p className="font-['SF_Pro_Display',sans-serif] font-regular leading-[1.65] text-[color:var(--text\/secondary,#908e99)] text-[14px] md:text-[length:var(--typography-body-default-font-size)] max-w-[65ch] w-full">
                 I looked at multiple sites to see how other sites are answering these questions. Studying these helped my discovery a lot!
               </p>
             </div>
@@ -269,15 +238,15 @@ We laughed and I wondered how the experience could feel more curated, expressive
             {/* Simplify */}
             <div className="flex flex-col gap-[24px] items-start w-full">
               <div className="flex flex-col gap-[16px] items-start w-full">
-                <p className="font-['Inter_Tight',sans-serif] font-regular leading-none text-[color:var(--text\/secondary,#908e99)] text-[14px] md:text-[length:var(--typography-body-default-font-size)]">The overall takeaway</p>
-                <p className="font-['Inter_Tight',sans-serif] font-medium leading-[1.3] text-[color:var(--text\/primary,#faf9ff)] text-[length:var(--typography-body-default-font-size)] md:text-[24px]">Simplify</p>
+                <p className="font-['SF_Pro_Display',sans-serif] font-regular leading-none text-[color:var(--text\/secondary,#908e99)] text-[14px] md:text-[length:var(--typography-body-default-font-size)]">The overall takeaway</p>
+                <p className="font-['SF_Pro_Display',sans-serif] font-medium leading-[1.3] text-[color:var(--text\/primary,#faf9ff)] text-[length:var(--typography-body-default-font-size)] md:text-[24px]">Simplify</p>
               </div>
 
               <div className="bg-[rgba(219,189,254,0.05)] border border-[#302f34] flex gap-[16px] items-start p-[16px] rounded-[8px] w-full">
-                <p className="font-['Inter_Tight',sans-serif] font-regular leading-[2.05] text-[color:var(--text\/secondary,#908e99)] text-[12px] md:text-[14px] shrink-0">1</p>
+                <p className="font-['SF_Pro_Display',sans-serif] font-regular leading-[2.05] text-[color:var(--text\/secondary,#908e99)] text-[12px] md:text-[14px] shrink-0">1</p>
                 <div className="flex flex-col gap-[8px] items-start flex-1">
-                  <p className="font-['Inter_Tight',sans-serif] font-medium leading-[1.65] text-[color:var(--text\/primary,#faf9ff)] text-[14px] md:text-[length:var(--typography-body-default-font-size)]">Take notes</p>
-                  <p className="font-['Inter_Tight',sans-serif] font-regular leading-[1.65] text-[color:var(--text\/secondary,#b8b4c5)] text-[14px] md:text-[length:var(--typography-body-default-font-size)] tracking-[-0.32px] w-full">
+                  <p className="font-['SF_Pro_Display',sans-serif] font-medium leading-[1.65] text-[color:var(--text\/primary,#faf9ff)] text-[14px] md:text-[length:var(--typography-body-default-font-size)]">Take notes</p>
+                  <p className="font-['SF_Pro_Display',sans-serif] font-regular leading-[1.65] text-[color:var(--text\/secondary,#b8b4c5)] text-[14px] md:text-[length:var(--typography-body-default-font-size)] tracking-[-0.32px] max-w-[65ch] w-full">
                     I asked my peers what they liked/disliked, what they thought was confusing! Super helpful and reinforced my design path and decisions as the right ones!
                   </p>
                 </div>

@@ -40,6 +40,7 @@ function PillButton({ onClick, ariaLabel, children }: { onClick: (e: React.Mouse
 // driven by this button, autoplay, or an IntersectionObserver elsewhere.
 export default function VideoControls({ videoRef }: { videoRef: RefObject<HTMLVideoElement | null> }) {
   const [playing, setPlaying] = useState(true);
+  const [hovered, setHovered] = useState(false);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -74,29 +75,46 @@ export default function VideoControls({ videoRef }: { videoRef: RefObject<HTMLVi
   };
 
   return (
+    // Covers the whole video (its parent is always the video's own relative
+    // wrapper) purely to detect hover — the button cluster below is what's
+    // actually visible/positioned, this layer itself has no visuals.
     <div
-      className="absolute flex items-center"
-      style={{ bottom: 12, right: 12, gap: 8, zIndex: 2 }}
-      onClick={stop}
+      className="absolute inset-0"
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
     >
-      <PillButton onClick={togglePlay} ariaLabel={playing ? "Pause video" : "Play video"}>
-        {playing ? (
-          <svg width="14" height="14" viewBox={icons.media.pause.viewBox} fill="none" xmlns="http://www.w3.org/2000/svg">
-            {icons.media.pause.paths.map((p, i) => (
-              <path key={i} d={p.d} stroke="white" strokeLinecap="round" strokeLinejoin="round" />
-            ))}
+      <div
+        className="absolute flex items-center"
+        style={{
+          bottom: 12,
+          right: 12,
+          gap: 8,
+          zIndex: 2,
+          opacity: hovered ? 1 : 0,
+          pointerEvents: hovered ? "auto" : "none",
+          transition: "opacity 0.15s ease",
+        }}
+        onClick={stop}
+      >
+        <PillButton onClick={togglePlay} ariaLabel={playing ? "Pause video" : "Play video"}>
+          {playing ? (
+            <svg width="14" height="14" viewBox={icons.media.pause.viewBox} fill="none" xmlns="http://www.w3.org/2000/svg">
+              {icons.media.pause.paths.map((p, i) => (
+                <path key={i} d={p.d} stroke="white" strokeLinecap="round" strokeLinejoin="round" />
+              ))}
+            </svg>
+          ) : (
+            <svg width="14" height="14" viewBox={icons.media.play.viewBox} fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d={icons.media.play.paths[0].d} fill="white" />
+            </svg>
+          )}
+        </PillButton>
+        <PillButton onClick={restart} ariaLabel="Restart video from the beginning">
+          <svg width="14" height="14" viewBox={icons.media["reverse-play"].viewBox} fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d={icons.media["reverse-play"].paths[0].d} stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
-        ) : (
-          <svg width="14" height="14" viewBox={icons.media.play.viewBox} fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d={icons.media.play.paths[0].d} fill="white" />
-          </svg>
-        )}
-      </PillButton>
-      <PillButton onClick={restart} ariaLabel="Restart video from the beginning">
-        <svg width="14" height="14" viewBox={icons.media["reverse-play"].viewBox} fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d={icons.media["reverse-play"].paths[0].d} stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-      </PillButton>
+        </PillButton>
+      </div>
     </div>
   );
 }

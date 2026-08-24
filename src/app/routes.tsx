@@ -2,6 +2,7 @@ import { useEffect, useLayoutEffect, useRef, useState, type ReactNode, type Muta
 import { createBrowserRouter, useLocation, useOutlet } from "react-router";
 import { motion, AnimatePresence, useIsPresent } from "@/lib/motion";
 import Home from "./pages/Home";
+import HomeTest from "./pages/HomeTest";
 import InteractiveWebpage from "./components/InteractiveWebpage";
 import CasestudyFigmaRIT from "./pages/CasestudyFigmaRIT";
 import CasestudyAixels from "./pages/CasestudyAixels";
@@ -172,6 +173,10 @@ export const router = createBrowserRouter([
       {
         path: "/",
         Component: Home,
+      },
+      {
+        path: "/home-test",
+        Component: HomeTest,
       },
       {
         path: "/project",

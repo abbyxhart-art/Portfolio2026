@@ -51,6 +51,7 @@ export default function CasestudySectionHeader({ id, eyebrow, headline, subtitle
           lineHeight: 1.2,
           textAlign: "center",
           margin: 0,
+          maxWidth: "65ch",
           position: "relative",
         }}>
           {headline}
@@ -64,6 +65,7 @@ export default function CasestudySectionHeader({ id, eyebrow, headline, subtitle
             lineHeight: 1.65,
             textAlign: "center",
             margin: 0,
+            maxWidth: "65ch",
             position: "relative",
           }}>
             {subtitle}

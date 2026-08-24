@@ -75,6 +75,7 @@
   --color-text-inverse: #161617;
   --color-text-light: #424147;
   --color-text-primary: #FCFBFF;
+  --color-text-primary-80: rgba(252, 251, 255, 0.8);
   --color-text-secondary: #818087;
   --color-text-tertiary: #5C5A64;
   --gap-section: 8svh;
@@ -138,8 +139,8 @@
   --typography-display-title-smallest-font-size: 1.25rem;
   --typography-display-title-smallest-font-weight: 450;
   --typography-display-title-smallest-line-height: 1.45;
-  --typography-label-caption-font-family: 'Inter Tight', sans-serif;
-  --typography-label-caption-font-size: 0.625rem;
+  --typography-label-caption-font-family: 'SF Pro Display', sans-serif;
+  --typography-label-caption-font-size: 0.75rem;
   --typography-label-caption-font-weight: 380;
   --typography-label-caption-line-height: 1.4;
   --typography-label-default-font-family: 'Inter Tight', sans-serif;

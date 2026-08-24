@@ -4,10 +4,11 @@
 
 :root {
   --font-size: 16px;
-  --text-font\/default: 'Inter Tight', 'Helvetica Neue', Arial, sans-serif;
+  --text-font\/default: 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
 
   /* Text size scale */
   --text-size\/largest: 50px;
+  --text-size\/body-large: 1.0625rem; /* 17px @ 16px root, in rem per web best practice */
   --text-size\/default: 18px;
   --text-size\/small: 16px;
   --text-size\/extra-small: 14px;

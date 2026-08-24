@@ -4,274 +4,18 @@ import { useIsMobile } from "../components/ui/use-mobile";
 import icons from "../../assets/icons/icons.json";
 import { useNavigate } from "react-router";
 import aixelsVideo from "../../assets/project/aixels/Aixels_1920x960_29.99fps.mp4";
-import gmVideo from "../../assets/project/gentlemonster/GM_Teaser_2x1.mp4";
-import figbuildVideo from "../../assets/project/figbuild/figbuild_macstudio_2x1.mp4";
+import gmVideo from "../../assets/project/gentlemonster/gentlemonster-cover-01.mp4";
+import figbuildVideo from "../../assets/project/figbuild/figbuild-cover-01.mp4";
 import capitolVideo from "../../assets/project/capitol/Demo_1920x960_V1.mp4";
+import texasIdVideo from "../../assets/project/texasid/FullPrototype_1200x600_30fps.mp4";
 import gentlemonsterCover from "../../assets/project/gentlemonster/gentlemonster-cover.jpg";
 import capitolCover from "../../assets/project/capitol/captiol-cover.jpg";
 import figbuildCover from "../../assets/project/figbuild/figbuild-cover.jpg";
 import aixelsCover from "../../assets/project/aixels/aixels-cover.jpg";
+import texasIdCover from "../../assets/project/texasid/texid-cover.jpg";
 
 import MobileCasestudyNav from "../components/layout/MobileCasestudyNav";
 import { NAV_TOP_REST, NAV_TOP_SCROLLED } from "../navPosition";
-import VideoControls from "../components/VideoControls";
-
-// Bottom-center "N of total" pill tracking which casestudy card is currently
-// in view — desktop only (Figma node 5556:1870, "Mini Casestudy Key").
-// Keyframe track lifted verbatim from Figma node 5556:1870 ("Mini Casestudy
-// Key"): a 34px circle expands to a 64px pill over the first 75% of 0.4s,
-// then holds. Horizontal recentering (Figma's own x: -15) is handled for
-// free here by the flex-centered wrapper instead of a matching x track.
-const INDEX_PILL_EASE: [number, number, number, number] = [0.5, 0, 0.5, 1];
-const INDEX_PILL_DURATION = 0.4;
-const INDEX_PILL_TIMES: [number, number, number] = [0, 0.75, 1];
-// Drop distance: pill settles 16px above the viewport bottom, dropping in
-// from 24px higher than that resting spot.
-const INDEX_PILL_DROP = 24;
-
-// Popup casestudy menu, opened by clicking the index pill above — Figma
-// "Menu Option" (node 5600:3020, no divider yet; node 5574:597 once
-// something's been visited, which splits the row with a divider instead of
-// an "Already Visited" label). Its motion track (node 5600:3020) loops
-// opacity 0->1 + scaleX/scaleY 0.9->1 over the first 15% of a 2s demo loop;
-// real one-shot duration is 2 * 0.15 = 0.3s against the same ease curve.
-const CASESTUDY_MENU_EASE: [number, number, number, number] = [0.5, 0, 0.5, 1];
-const CASESTUDY_MENU_DURATION = 0.3;
-// Same localStorage key MobileCasestudyNav reads/writes, so "Already
-// Visited" stays in sync between the mobile and desktop menus.
-const CASESTUDY_VISITED_KEY = "visited_casestudies";
-
-// Each cover row's own gap widens as it mounts (Figma node 5600:3024,
-// "Menu"): column-gap 2px -> 2px (hold) -> 8px over the same 15%-of-2s
-// window as the panel's own entrance above, rescaled to real seconds
-// (0.0329/0.15 = 0.2193 of CASESTUDY_MENU_DURATION).
-const ROW_GAP_EASE: [number, number, number, number] = [0.802, 0, 0.656, 1];
-const ROW_GAP_TIMES: [number, number, number] = [0, 0.2193, 1];
-
-// Figma "cover" tag (node 5600:3243): a small dark label that appears above
-// a cover on hover, since the covers themselves carry no text anymore.
-function CasestudyMenuCover({ title, path, cover, tagGap, onSelect }: { title: string; path: string; cover: string; tagGap: number; onSelect: (path: string) => void }) {
-  const [hovered, setHovered] = useState(false);
-  return (
-    <div style={{ position: "relative", flexShrink: 0 }}>
-      {/* Tag — sits tagGap px above this cover's own top edge, centered on
-          it. Top-row covers use a taller gap so the tag clears the panel's
-          own top edge instead of crowding it (the panel allows overflow so
-          it isn't clipped there); bottom-row covers use the tighter default
-          since they land in the gap the divider frees up. */}
-      <AnimatePresence>
-        {hovered && (
-          <motion.div
-            className="absolute left-1/2"
-            initial={{ opacity: 0, x: "-50%" }}
-            animate={{ opacity: 1, x: "-50%" }}
-            exit={{ opacity: 0, x: "-50%" }}
-            transition={{ duration: 0.15, ease: CASESTUDY_MENU_EASE }}
-            style={{
-              bottom: `calc(100% + ${tagGap}px)`,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              padding: "0 4px",
-              borderRadius: 2,
-              background: "var(--color-surface-primary)",
-              whiteSpace: "nowrap",
-              pointerEvents: "none",
-            }}
-          >
-            <span style={{ fontFamily: "'SF Pro Display', sans-serif", fontSize: 12, lineHeight: "20px", color: "#fff", textTransform: "lowercase" }}>
-              {title}
-            </span>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      <button
-        onClick={() => onSelect(path)}
-        onMouseEnter={() => setHovered(true)}
-        onMouseLeave={() => setHovered(false)}
-        style={{
-          display: "block",
-          width: 46,
-          height: 46,
-          borderRadius: 8,
-          border: "none",
-          padding: 0,
-          overflow: "hidden",
-          cursor: "pointer",
-        }}
-      >
-        <img src={cover} alt={title} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
-      </button>
-    </div>
-  );
-}
-
-function CasestudyMenuRow({ items, tagGap = 8, onSelect }: { items: CardData[]; tagGap?: number; onSelect: (path: string) => void }) {
-  return (
-    <motion.div
-      initial={{ columnGap: "4px" }}
-      animate={{ columnGap: ["4px", "4px", "8px"] }}
-      transition={{ duration: CASESTUDY_MENU_DURATION, times: ROW_GAP_TIMES, ease: ["linear", ROW_GAP_EASE] }}
-      style={{ display: "flex", alignItems: "flex-start", width: "100%" }}
-    >
-      {items.map(item => (
-        <CasestudyMenuCover key={item.path} title={item.title} path={item.path} cover={item.cover} tagGap={tagGap} onSelect={onSelect} />
-      ))}
-    </motion.div>
-  );
-}
-
-function CasestudyIndexPill({ activeIndex, total, show }: { activeIndex: number; total: number; show: boolean }) {
-  const navigate = useNavigate();
-  const [isOpen, setIsOpen] = useState(false);
-  const [visited, setVisited] = useState<string[]>([]);
-  const [hovered, setHovered] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    try {
-      const stored = localStorage.getItem(CASESTUDY_VISITED_KEY);
-      if (stored) setVisited(JSON.parse(stored));
-    } catch {}
-  }, [isOpen]);
-
-  useEffect(() => {
-    if (!show) setIsOpen(false);
-  }, [show]);
-
-  useEffect(() => {
-    if (!isOpen) return;
-    const onPointerDown = (e: PointerEvent) => {
-      if (containerRef.current && !containerRef.current.contains(e.target as Node)) setIsOpen(false);
-    };
-    document.addEventListener("pointerdown", onPointerDown);
-    return () => document.removeEventListener("pointerdown", onPointerDown);
-  }, [isOpen]);
-
-  const handleSelect = (path: string) => {
-    setIsOpen(false);
-    navigate(path);
-  };
-
-  const rawUnvisited = CARD_DATA.filter(c => !visited.includes(c.path));
-  const rawAlreadyVisited = CARD_DATA.filter(c => visited.includes(c.path));
-  // Once every casestudy has been visited, "Already Visited" vs "Casestudies"
-  // stops meaning anything — fall back to the same single unified row the
-  // menu shows before anything's been visited, instead of a lone "Already
-  // Visited" row with nothing to divide it from.
-  const allVisited = rawUnvisited.length === 0 && rawAlreadyVisited.length > 0;
-  const unvisited = allVisited ? CARD_DATA : rawUnvisited;
-  const alreadyVisited = allVisited ? [] : rawAlreadyVisited;
-  // A divider only makes sense once the row is actually split in two.
-  const hasDivider = unvisited.length > 0 && alreadyVisited.length > 0;
-
-  return (
-    <div className="fixed inset-x-0 z-50 hidden md:flex justify-center pointer-events-none" style={{ bottom: 16 }}>
-      <div ref={containerRef} className="relative">
-        {/* Popup menu — sits 8px above the pill (Figma node 5574:597 once
-            something's been visited, adding a divider in place of an
-            "Already Visited" label; single-row 5600:3020 otherwise).
-            overflow left visible so a hover tag on a top-row cover (which
-            has no divider gap to sit in) can float above the panel itself. */}
-        <AnimatePresence>
-          {isOpen && (
-            <motion.div
-              className="absolute left-1/2"
-              initial={{ opacity: 0, scaleX: 0.9, scaleY: 0.9, x: "-50%" }}
-              animate={{ opacity: 1, scaleX: 1, scaleY: 1, x: "-50%" }}
-              exit={{ opacity: 0, scaleX: 0.9, scaleY: 0.9, x: "-50%" }}
-              transition={{ duration: CASESTUDY_MENU_DURATION, ease: CASESTUDY_MENU_EASE }}
-              style={{
-                bottom: "calc(100% + 8px)",
-                transformOrigin: "50% 100%",
-                display: "flex",
-                flexDirection: "column",
-                gap: 16,
-                padding: 16,
-                borderRadius: "var(--radius-component-card)",
-                background: "var(--color-surface-layer1)",
-                border: "0.5px solid var(--color-border-default)",
-                boxShadow: "0px 2px 4px rgba(0,0,0,0.05)",
-                backdropFilter: "blur(12px)",
-                WebkitBackdropFilter: "blur(12px)",
-                boxSizing: "border-box",
-                pointerEvents: "auto",
-              }}
-            >
-              {unvisited.length > 0 && <CasestudyMenuRow items={unvisited} tagGap={24} onSelect={handleSelect} />}
-              {hasDivider && <div style={{ width: "100%", height: 1, background: "var(--color-border-default)", flexShrink: 0 }} />}
-              {alreadyVisited.length > 0 && <CasestudyMenuRow items={alreadyVisited} onSelect={handleSelect} />}
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        <AnimatePresence>
-          {show && (
-            <motion.div
-              onClick={() => setIsOpen(o => !o)}
-              // The wrapper is pointer-events:none so empty space beside the
-              // pill still passes hover through to the casestudy card behind
-              // it; this shape re-enables hit-testing just over its own
-              // visible bounds.
-              onMouseEnter={() => setHovered(true)}
-              onMouseLeave={() => setHovered(false)}
-              initial={{ width: 34, y: -INDEX_PILL_DROP }}
-              animate={{ width: [34, 72, 72], y: [-INDEX_PILL_DROP, 0, 0] }}
-              // Faster, decoupled exit: the default `transition` above (built
-              // for the entrance) would otherwise carry its full 0.4s width
-              // tween into the exit too, leaving an empty shrinking "dot"
-              // on screen well after the label's already faded out.
-              exit={{ width: 34, y: -INDEX_PILL_DROP, transition: { duration: 0.15, ease: INDEX_PILL_EASE } }}
-              transition={{
-                width: { duration: INDEX_PILL_DURATION, times: INDEX_PILL_TIMES, ease: [INDEX_PILL_EASE, "linear"] },
-                y: { duration: INDEX_PILL_DURATION, times: INDEX_PILL_TIMES, ease: [INDEX_PILL_EASE, "linear"] },
-              }}
-              style={{
-                height: 34,
-                overflow: "hidden",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                borderRadius: 20,
-                // Same hover treatment as LinkedInButton's pills.
-                background: hovered ? "var(--color-surface-fill3)" : "var(--color-button-default-fill)",
-                border: "none",
-                backdropFilter: "blur(12px)",
-                WebkitBackdropFilter: "blur(12px)",
-                pointerEvents: "auto",
-                cursor: "pointer",
-                transition: "background-color 0.15s ease",
-              }}
-            >
-              <motion.p
-                initial={{ opacity: 0 }}
-                // Text fade is deliberately decoupled from the box's own
-                // width/y timing: it appears later on the way in (waits until
-                // the box is mostly expanded) and disappears faster on the
-                // way out (gone well before the box finishes shrinking).
-                animate={{ opacity: 1, transition: { duration: 0.15, delay: 0.25, ease: INDEX_PILL_EASE } }}
-                exit={{ opacity: 0, transition: { duration: 0.1, ease: INDEX_PILL_EASE } }}
-                style={{
-                  margin: 0,
-                  padding: "0 16px",
-                  fontFamily: "'SF Pro Display', sans-serif",
-                  fontSize: 14,
-                  fontWeight: 400,
-                  lineHeight: 1,
-                  color: "var(--color-text-primary)",
-                  whiteSpace: "nowrap",
-                }}
-              >
-                {activeIndex + 1} of {total}
-              </motion.p>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
-    </div>
-  );
-}
 
 function GlowLink({ children, path }: { children: ReactNode; path: string }) {
   const navigate = useNavigate();
@@ -442,7 +186,7 @@ const CARD_DATA: CardData[] = [
     tag1: "Brand Activation",
     tag2: "Design Lead",
     tag3: "shipped",
-    description: "Building a digital playground for students in 2 days",
+    description: "Building a playground for student expression",
     readTime: "3 min read",
     path: "/casestudy/figma-rit",
     video: figbuildVideo,
@@ -459,43 +203,117 @@ const CARD_DATA: CardData[] = [
     video: aixelsVideo,
     cover: aixelsCover,
   },
+  {
+    title: "Texas Mobile",
+    tag1: "Product Design",
+    tag2: "2024",
+    description: "Replacing fragmented tools into one responsive interface",
+    readTime: "4 min read",
+    path: "/casestudy/texas-mobile",
+    video: texasIdVideo,
+    cover: texasIdCover,
+  },
 ];
 
 // Shared "title lives inside the card" header -- Figma node 5745:642
-// ("Image"): a small logo-tile slot (reserved for a future per-project
-// mark -- no asset exists for any casestudy yet) beside a title/description
-// column, both 24px inset from the card's top-left corner, plus the
-// hover-fade read-time in the opposite top-right corner, in line with the
-// title. Used by every card in the grid (StyledCard's Gentle Monster hero
-// card and every EditorialGridTile) so the title treatment -- and the
-// read-time animation -- is identical everywhere. Title and description
-// share one size (the body/description size, not the larger card-title
-// size) and are told apart by weight instead: title is SF Pro Display
-// Medium ("Intense"), description is Regular and text/secondary.
-function CardTitleBlock({ title, description, readTime, hovered }: { title: string; description?: string; readTime?: string; hovered?: boolean }) {
+// ("Image"): a logo-tile slot beside a title/description column, both 24px
+// inset from the card's top-left corner. `showFigmaLogo` swaps the empty
+// reserved-slot placeholder for a fixed 40x40 black tile with the Figma
+// brand mark -- on for every real casestudy card, off for row 3's blank
+// placeholder tiles (nothing to mark yet). Used by every
+// card in the grid (StyledCard's Gentle Monster hero card and every
+// EditorialGridTile) so the title treatment -- and the read-time animation
+// -- is identical everywhere. Title and description share the body/default
+// text style (size and weight both), told apart only by color -- title is
+// #fff, description sits at 80% opacity. Both description and the
+// hover-fade read-time below it are
+// text/primary at 80% opacity (not a flat text/secondary color) -- read-time
+// keeps its own smaller size and sits left-aligned with title/description
+// as a third stacked line in the same column, rather than an indented row
+// offset to clear the logo tile beside them.
+function CardTitleBlock({ title, description, readTime, hovered, showFigmaLogo = false, brandIcon }: { title: string; description?: string; readTime?: string; hovered?: boolean; showFigmaLogo?: boolean; brandIcon?: { viewBox?: string; d?: string; background: string; transform?: string; letter?: string } }) {
+  const secondaryTextColor = "rgba(252, 251, 255, 0.8)"; // --color-text-primary at 80%
   return (
-    <div style={{ position: "absolute", top: 16, left: 16, right: 16, display: "flex", flexDirection: "column", gap: 4 }}>
-      <div style={{ display: "flex", alignItems: "stretch", gap: 16 }}>
-        {/* Logo tile -- reserved slot for a per-project mark, not wired up
-            yet. Square (aspect-ratio: 1/1), height stretched to match the
-            title+description pair's own height (align-items: stretch
-            above) with width following from that via the aspect ratio --
-            scoped to just those two lines, not the read-time below, since
-            that's a separate row outside this stretch context. */}
-        <div style={{ aspectRatio: "1 / 1", borderRadius: 8, background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.16)", flexShrink: 0 }} />
-        <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", gap: 2, minWidth: 0, maxWidth: "min(480px, 100%)" }}>
-          <p style={{ margin: 0, color: "#fff", fontSize: "var(--text-size\\/body-large)", fontWeight: 500, lineHeight: 1.4 }}>{title}</p>
+    <div style={{ position: "absolute", top: 16, left: 16, right: 16, display: "flex", flexDirection: "column", gap: 2 }}>
+      {/* This row holds only the logo + title/description -- read-time
+          (when the logo is the fixed-size Figma tile) renders as a separate
+          line below instead of a third child in the column here, so the
+          tile centers (alignItems: "center") against just title+description
+          instead of stretching to match a taller column that includes
+          read-time too. Non-figma cards keep the original single-row
+          layout (alignItems: "stretch") since their placeholder tile relies
+          on stretching to the full column, read-time included. */}
+      <div style={{ display: "flex", alignItems: showFigmaLogo ? "center" : "stretch", gap: 16 }}>
+        {showFigmaLogo ? (
+          /* Figma brand mark -- a fixed 40x40 surface/primary tile.
+             Uses icons.json's own viewBox (0 0 24 24) unmodified -- the
+             glyph itself just sits off-center within that box (bounding
+             box x:[0.75,14.75], y:[0.75,21.75], not symmetric around the
+             24x24 center), so instead of cropping the viewBox, the path's
+             own transform recenters its bounding-box center (7.75, 11.25)
+             onto the viewBox's actual center (12, 12) -- a (4.25, 0.75)
+             shift. */
+          <div style={{ width: 40, height: 40, borderRadius: 8, background: brandIcon ? brandIcon.background : "#4E4AFD", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+            {brandIcon ? (
+              brandIcon.letter ? (
+                <span style={{ fontFamily: "'SF Pro Display', sans-serif", fontSize: 18, fontWeight: 600, lineHeight: 1, color: "#fff" }}>
+                  {brandIcon.letter}
+                </span>
+              ) : brandIcon.d ? (
+                <svg width="60%" height="60%" viewBox={brandIcon.viewBox} xmlns="http://www.w3.org/2000/svg">
+                  <path d={brandIcon.d} fill="#fff" transform={brandIcon.transform} />
+                </svg>
+              ) : null
+            ) : (
+              <svg width="60%" height="60%" viewBox={icons.brands.figma.viewBox} xmlns="http://www.w3.org/2000/svg">
+                <path transform="translate(4.25, 0.75)" d={icons.brands.figma.paths[0].d} stroke="#fff" strokeWidth="1.85" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+              </svg>
+            )}
+          </div>
+        ) : (
+          /* Logo tile -- reserved slot for a future per-project mark, not
+             wired up yet. Square (aspect-ratio: 1/1), height stretched to
+             match the title+description+read-time column's own height
+             (align-items: stretch above) with width following from that
+             via the aspect ratio. */
+          <div style={{ aspectRatio: "1 / 1", borderRadius: 8, background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.16)", flexShrink: 0 }} />
+        )}
+        <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", gap: 0, minWidth: 0, maxWidth: "min(480px, 100%)" }}>
+          <p style={{ margin: 0, color: "#fff", fontSize: "var(--typography-body-default-font-size)", fontWeight: "var(--typography-body-default-font-weight)", lineHeight: 1.4 }}>{title}</p>
           {description && (
-            <p style={{ margin: 0, color: "var(--color-text-secondary)", fontSize: "var(--text-size\\/body-large)", fontWeight: 400, lineHeight: 1.4 }}>{description}</p>
+            <p style={{ margin: 0, marginTop: -2, color: secondaryTextColor, fontSize: "var(--typography-body-default-font-size)", fontWeight: 400, lineHeight: 1.4 }}>
+              {description}
+            </p>
+          )}
+          {!showFigmaLogo && readTime && (
+            <motion.p
+              animate={hovered ? "visible" : "hidden"}
+              initial="hidden"
+              variants={{ visible: { transition: { staggerChildren: 0.03 } }, hidden: {} }}
+              style={{ margin: 0, color: secondaryTextColor, fontSize: 12, fontWeight: 400, lineHeight: 1.4, whiteSpace: "nowrap" }}
+            >
+              {readTime.split("").map((char, i) => (
+                <motion.span
+                  key={i}
+                  variants={{ hidden: { opacity: 0 }, visible: { opacity: 1, transition: { duration: 0.075, ease: "easeIn" } } }}
+                  style={{ display: "inline-block" }}
+                >
+                  {char === " " ? " " : char}
+                </motion.span>
+              ))}
+            </motion.p>
           )}
         </div>
       </div>
-      {readTime && (
+      {/* Read-time, Figma-tile cards only -- a separate line below the row
+          above, marginLeft matched to that row's fixed 40px tile + 16px gap
+          so it still lands flush under title/description's left edge. */}
+      {showFigmaLogo && readTime && (
         <motion.p
           animate={hovered ? "visible" : "hidden"}
           initial="hidden"
           variants={{ visible: { transition: { staggerChildren: 0.03 } }, hidden: {} }}
-          style={{ margin: 0, marginLeft: 56, color: "var(--color-text-secondary)", fontSize: 12, fontWeight: 400, lineHeight: 1.4, whiteSpace: "nowrap" }}
+          style={{ margin: 0, marginLeft: 56, color: secondaryTextColor, fontSize: 12, fontWeight: 400, lineHeight: 1.4, whiteSpace: "nowrap" }}
         >
           {readTime.split("").map((char, i) => (
             <motion.span
@@ -512,20 +330,22 @@ function CardTitleBlock({ title, description, readTime, hovered }: { title: stri
   );
 }
 
-// StyledCard is only ever used for CARD_DATA[0] (Gentle Monster) now, as
-// row 1's full-width hero card -- a little taller (HERO_ROW_HEIGHT, below)
-// than a single grid cell's own 300x400-derived height, since at that
-// height the full-width hero reads as too flat a strip for its own video's
-// real proportions. On mobile there's no `height` at all: the video renders at its
-// own natural size (position: static, height: auto) instead of being
-// cover-cropped into a fixed box, so it keeps its real aspect ratio rather
-// than being forced into a shape tuned for desktop's 3-column grid.
-function StyledCard({ initialHovered = false, onInitialLeave, data, isMobile = false }: { initialHovered?: boolean; onInitialLeave?: () => void; data: CardData; isMobile?: boolean }) {
+// StyledCard is only ever used for CARD_DATA[0] (Gentle Monster) now, as the
+// 2/3-width cell beside IntroCard's secondCard. Like Capitol's 2/3 cell in
+// the row below, it gets no fixed height of its own -- it stretches
+// (height: 100%) to match whatever height the row's 1/3 cell (secondCard's
+// 3:4 aspect-ratio box) establishes, via the grid's own default
+// align-items: stretch, so Gentle Monster's video always fills the row's
+// full height instead of being capped at its own fixed value. On mobile
+// there's no `height` at all: the video renders at its own natural size
+// (position: static, height: auto) instead of being cover-cropped into a
+// fixed box, so it keeps its real aspect ratio rather than being forced
+// into a shape tuned for desktop's 3-column grid.
+function StyledCard({ initialHovered = false, onInitialLeave, data, isMobile = false, showFigmaLogo, brandIcon }: { initialHovered?: boolean; onInitialLeave?: () => void; data: CardData; isMobile?: boolean; showFigmaLogo?: boolean; brandIcon?: { viewBox?: string; d?: string; background: string; transform?: string; letter?: string } }) {
   const [hovered, setHovered] = useState(initialHovered);
   const initialHoverActive = useRef(initialHovered);
-  const videoRef = useRef<HTMLVideoElement>(null);
   const navigate = useNavigate();
-  const height = isMobile ? undefined : HERO_ROW_HEIGHT;
+  const height = isMobile ? undefined : "100%";
   return (
     <div
       onMouseEnter={() => setHovered(true)}
@@ -549,20 +369,16 @@ function StyledCard({ initialHovered = false, onInitialLeave, data, isMobile = f
       }}
     >
       {data.video && (
-        <>
-          <video
-            ref={videoRef}
-            src={data.video}
-            autoPlay
-            loop
-            muted
-            playsInline
-            style={height ? { position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", display: "block" } : { position: "static", width: "100%", height: "auto", display: "block" }}
-          />
-          <VideoControls videoRef={videoRef} />
-        </>
+        <video
+          src={data.video}
+          autoPlay
+          loop
+          muted
+          playsInline
+          style={height ? { position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", display: "block" } : { position: "static", width: "100%", height: "auto", display: "block" }}
+        />
       )}
-      <CardTitleBlock title={data.title} description={data.description} readTime={data.readTime} hovered={hovered} />
+      <CardTitleBlock title={data.title} description={data.description} readTime={data.readTime} hovered={hovered} showFigmaLogo={showFigmaLogo} brandIcon={brandIcon} />
     </div>
   );
 }
@@ -571,10 +387,6 @@ function StyledCard({ initialHovered = false, onInitialLeave, data, isMobile = f
 // column) so every gap in the system — vertical and horizontal — matches.
 const GRID_GUTTER = 16;
 
-// Row 1 (Gentle Monster) is deliberately taller than a single grid "cell":
-// at the same height as a 1/3-width column, the full-width hero read as too
-// flat/long a strip for its own video's real proportions.
-const HERO_ROW_HEIGHT = "clamp(320px, 34vw, 560px)";
 
 // Base unit for rows 2/3's grid: every 1/3-width cell is exactly a 300x400
 // (3:4) box. A 2/3-width cell (Capitol) gets no aspect-ratio of its own --
@@ -598,9 +410,8 @@ const GRID_CELL_ASPECT_RATIO = "3 / 4";
 // media at all (Row 3's blank cells), a fixed 3:4 placeholder ratio, since
 // there's no intrinsic ratio to fall back to. `video`/`cover`/`onSelect`
 // are all optional so the same component can render those blank cells too.
-function EditorialGridTile({ video, cover, title, description, readTime, aspectRatio, isMobile, onSelect }: { video?: string; cover?: string; title: string; description?: string; readTime?: string; aspectRatio?: string; isMobile?: boolean; onSelect?: () => void }) {
+function EditorialGridTile({ video, cover, title, description, readTime, aspectRatio, isMobile, onSelect, showFigmaLogo, brandIcon }: { video?: string; cover?: string; title: string; description?: string; readTime?: string; aspectRatio?: string; isMobile?: boolean; onSelect?: () => void; showFigmaLogo?: boolean; brandIcon?: { viewBox?: string; d?: string; background: string; transform?: string; letter?: string } }) {
   const [hovered, setHovered] = useState(false);
-  const videoRef = useRef<HTMLVideoElement>(null);
   const mediaStyle = !isMobile
     ? { position: "absolute" as const, inset: 0, width: "100%", height: "100%", objectFit: "cover" as const, display: "block" }
     : { position: "static" as const, width: "100%", height: "auto", display: "block" };
@@ -622,30 +433,20 @@ function EditorialGridTile({ video, cover, title, description, readTime, aspectR
         height: !isMobile && !aspectRatio ? "100%" : undefined,
         aspectRatio: !isMobile ? aspectRatio : (!video && !cover ? GRID_CELL_ASPECT_RATIO : undefined),
         backgroundColor: "#35353b",
-        border: "1px solid var(--color-border-default)",
         borderRadius: "var(--radius-component-card)",
         overflow: "hidden",
         cursor: onSelect ? "pointer" : "default",
       }}
     >
       {video ? (
-        <>
-          <video ref={videoRef} src={video} autoPlay loop muted playsInline style={mediaStyle} />
-          <VideoControls videoRef={videoRef} />
-        </>
+        <video src={video} autoPlay loop muted playsInline style={mediaStyle} />
       ) : (
         cover && <img src={cover} alt={title} style={mediaStyle} />
       )}
-      <CardTitleBlock title={title} description={description} readTime={readTime} hovered={hovered} />
+      <CardTitleBlock title={title} description={description} readTime={readTime} hovered={hovered} showFigmaLogo={showFigmaLogo} brandIcon={brandIcon} />
     </div>
   );
 }
-
-// Row 3's two intentionally-empty cells (see the render below) -- just a
-// title placeholder and the shared logo-tile slot, no video/click. Kept as
-// data (not hardcoded JSX) so it stays obvious these are meant to be
-// swapped for real casestudies later, not permanent copy.
-const GRID_BLANK_TILES = ["Title", "Title"];
 
 // Bar fades from white to the same gray as the card's own hover-frame
 // background (--color-surface-layer1) as it dissolves. Hardcoded rather than
@@ -681,10 +482,10 @@ const HEADLINE_ICON_ASPECT = 13.333 / 8;
 const HEADLINE_ICON_LARGE_H = 40;
 const HEADLINE_GAP_REST = 4;
 const HEADLINE_GAP_EXPANDED = 16;
-const HEADLINE_FADE_DURATION = 0.8;
+const HEADLINE_FADE_DURATION = 0.6;
 // Icon expand and the card's own loading bar share this duration and start
 // at the same moment, so the two land their ends together.
-const HEADLINE_EXPAND_DURATION = 0.6;
+const HEADLINE_EXPAND_DURATION = 0.5;
 // The card's own reveal (rotateX unfold, below) takes this long. Nav/name
 // plate/subtext/LinkedIn all start fading in the moment it begins and fade
 // over this same duration, landing together with the reveal's own end.
@@ -706,8 +507,9 @@ const CARD_REVEAL_EASE: [number, number, number, number] = [0.65, 0, 0.35, 1];
 // time, and which one is just a function of the same rotation both share —
 // so the bar isn't handing off to the card, it's the same box the whole
 // time, seen from a different side.
-function IntroCard({ data, isMobile, start, onReveal }: { data: CardData; isMobile: boolean; start: boolean; onReveal: () => void }) {
+function IntroCard({ data, secondCard, isMobile, start, onReveal }: { data: CardData; secondCard: CardData; isMobile: boolean; start: boolean; onReveal: () => void }) {
   const [staysHovered, setStaysHovered] = useState(true);
+  const navigate = useNavigate();
   // True once the unfold (rotateX) actually begins — HEADLINE_EXPAND_DURATION
   // after `start`, matching where the single continuous scaleX/rotateX track
   // below crosses from "still a flat bar" into "now visibly opening". Driven
@@ -766,7 +568,36 @@ function IntroCard({ data, isMobile, start, onReveal }: { data: CardData; isMobi
             transition={{ duration: 1.2, delay: revealed ? 0.4 : 0, ease: [0.33, 0, 0, 1] }}
             style={{ transform: `translateZ(${CARD_EDGE_THICKNESS / 2}px)`, backfaceVisibility: "hidden" }}
           >
-            <StyledCard initialHovered={staysHovered} onInitialLeave={() => setStaysHovered(false)} data={data} isMobile={isMobile} />
+            {/* Both cards share this single face -- one flip reveals the
+                pair together instead of each having its own bar. Gentle
+                Monster keeps its 2/3-width hero card; the second card takes
+                the remaining 1/3 column at the same 3:4 ratio every other
+                grid cell uses. */}
+            <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "repeat(3, 1fr)", gap: GRID_GUTTER }}>
+              <div style={{ gridColumn: !isMobile ? "span 2" : undefined }}>
+                <StyledCard
+                  initialHovered={staysHovered}
+                  onInitialLeave={() => setStaysHovered(false)}
+                  data={data}
+                  isMobile={isMobile}
+                  showFigmaLogo
+                  brandIcon={{ viewBox: icons.brands.gentlemonster.viewBox, d: icons.brands.gentlemonster.paths[0].d, background: "var(--color-surface-primary)" }}
+                />
+              </div>
+              <div>
+                <EditorialGridTile
+                  video={secondCard.video}
+                  cover={secondCard.cover}
+                  title={secondCard.title}
+                  description={secondCard.description}
+                  readTime={secondCard.readTime}
+                  aspectRatio={GRID_CELL_ASPECT_RATIO}
+                  isMobile={isMobile}
+                  showFigmaLogo
+                  onSelect={() => navigate(secondCard.path)}
+                />
+              </div>
+            </div>
           </motion.div>
 
           {/* Edge face — the box's actual top edge, a real flat surface
@@ -835,8 +666,15 @@ function HeroHeadline({ isMobile, onExpandStart }: { isMobile: boolean; onExpand
   const [phase, setPhase] = useState<"idle" | "compact" | "expanding">("idle");
   const [blobHovered, setBlobHovered] = useState(false);
 
+  // Still needs a real idle -> compact state change (not starting straight
+  // at "compact") for Framer Motion's mount animation to actually run and
+  // fire onAnimationComplete below -- if `animate` never changes across
+  // renders, that callback never fires and `phase` gets stuck, which
+  // silently stalls onExpandStart (and everything gated behind it: nav,
+  // name plate, subtext, the card grid). 0ms still defers to the next tick,
+  // which is enough for that, without the old 50ms's perceptible delay.
   useEffect(() => {
-    const t = setTimeout(() => setPhase("compact"), 50);
+    const t = setTimeout(() => setPhase("compact"), 0);
     return () => clearTimeout(t);
   }, []);
 
@@ -876,9 +714,8 @@ function HeroHeadline({ isMobile, onExpandStart }: { isMobile: boolean; onExpand
           onMouseLeave={() => setBlobHovered(false)}
           style={{ display: "inline-block", flexShrink: 0, position: "relative" }}
         >
-          {/* Hover tag — same treatment as the casestudy nav's cover tags
-              (CasestudyMenuCover above): small dark label floating just
-              above whatever it names. */}
+          {/* Hover tag — small dark label floating just above whatever it
+              names. */}
           <AnimatePresence>
             {blobHovered && (
               <motion.div
@@ -923,16 +760,13 @@ function HeroHeadline({ isMobile, onExpandStart }: { isMobile: boolean; onExpand
 const HERO_TOP_GAP = 160;
 const HERO_BOTTOM_GAP = 128;
 
-export default function HomeTest() {
+export default function Home() {
   const isMobile = useIsMobile();
   const [headlineExpanding, setHeadlineExpanding] = useState(false);
   const [introReady, setIntroReady] = useState(false);
   const [navScrolled, setNavScrolled] = useState(false);
   const [cardShrunk, setCardShrunk] = useState(false);
-  const [activeCardIndex, setActiveCardIndex] = useState(0);
-  const [showIndexPill, setShowIndexPill] = useState(false);
   const navigate = useNavigate();
-  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const heroGroupRef = useRef<HTMLDivElement>(null);
   const heroTextRef = useRef<HTMLDivElement>(null);
   const [groupOffset, setGroupOffset] = useState(0);
@@ -974,28 +808,11 @@ export default function HomeTest() {
       const y = window.scrollY;
       setNavScrolled(y > 10);
       setCardShrunk(y > 50);
-
-      // Active card = the last one whose top has crossed the viewport's
-      // vertical midpoint — same "crossed the halfway line" convention
-      // SectionNavigation uses for its own scroll-driven active index.
-      const viewportMid = window.innerHeight * 0.5;
-      let active = 0;
-      let lastBottom = -Infinity;
-      cardRefs.current.forEach((el, i) => {
-        if (!el) return;
-        const rect = el.getBoundingClientRect();
-        if (rect.top <= viewportMid) active = i;
-        lastBottom = Math.max(lastBottom, rect.bottom);
-      });
-      setActiveCardIndex(active);
-      // Hidden once the page has scrolled past every card (into the lab
-      // teaser/footer) — this pill only tracks the casestudy cards.
-      setShowIndexPill(y > 50 && lastBottom > 0);
     };
     window.addEventListener("scroll", handleScroll);
     handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [introReady]);
+  }, []);
 
   // Nav's own ball-into-pill morph (MainNavigation's `ballExpand`) plays in
   // lockstep with the headline's icon growing and the card's loading bar —
@@ -1015,9 +832,8 @@ export default function HomeTest() {
       {/* Casestudy menu — mobile only; appears as soon as the page loads
           (introReady), matching the rest of the fixed mobile chrome
           (LinkedIn button, name plate) instead of waiting on a scroll
-          gesture. Desktop's equivalent is the CasestudyIndexPill below. */}
+          gesture. */}
       <MobileCasestudyNav show={introReady} />
-      <CasestudyIndexPill activeIndex={activeCardIndex} total={CARD_DATA.length} show={showIndexPill} />
 
       {/* Scrollable content */}
       <div style={{ position: "relative", zIndex: 1 }}>
@@ -1078,14 +894,14 @@ export default function HomeTest() {
           group below, unaffected by its centering/rise. */}
       <div
         style={{
-          paddingLeft: !isMobile && cardShrunk ? "10vw" : "4.5vw",
-          paddingRight: !isMobile && cardShrunk ? "10vw" : "4.5vw",
+          paddingLeft: !isMobile && cardShrunk ? "6vw" : "32px",
+          paddingRight: !isMobile && cardShrunk ? "6vw" : "32px",
           transition: "padding 0.5s cubic-bezier(0.33,0,0,1)",
           marginTop: isMobile ? 0 : HERO_BOTTOM_GAP,
         }}
       >
-        <div ref={(el) => { cardRefs.current[0] = el; }} style={{ position: "relative", width: "100%" }}>
-          <IntroCard data={CARD_DATA[0]} isMobile={isMobile} start={headlineExpanding} onReveal={() => setIntroReady(true)} />
+        <div style={{ position: "relative", width: "100%" }}>
+          <IntroCard data={CARD_DATA[0]} secondCard={CARD_DATA[2]} isMobile={isMobile} start={headlineExpanding} onReveal={() => setIntroReady(true)} />
         </div>
       </div>
       </motion.div>
@@ -1106,57 +922,42 @@ export default function HomeTest() {
           the "2/3 is more prominent" hierarchy still reads even stacked. */}
       <div
         style={{
-          paddingLeft: !isMobile && cardShrunk ? "10vw" : "4.5vw",
-          paddingRight: !isMobile && cardShrunk ? "10vw" : "4.5vw",
+          paddingLeft: !isMobile && cardShrunk ? "6vw" : "32px",
+          paddingRight: !isMobile && cardShrunk ? "6vw" : "32px",
           transition: "padding 0.5s cubic-bezier(0.33,0,0,1)",
           marginTop: GRID_GUTTER,
           marginBottom: 100,
         }}
       >
-        {/* One locked grid for every cell below the hero -- Capitol
-            (2/3), FigBuild (1/3), Aixels (1/3), and 2 blank cells (1/3
-            each), in that order. CSS Grid auto-flows them into two rows
-            (2/3+1/3, then 1/3+1/3+1/3) on its own, since they add up to
-            exactly 3 columns per row. This used to be two separate grid
-            containers -- one "2fr 1fr", one "1fr 1fr 1fr" -- which looks
-            equivalent but isn't: with the same GRID_GUTTER, a 2-column
-            template only subtracts one gap from the usable width before
-            splitting it 2:1, while a 3-column template subtracts two, so
-            the same visual "2/3" boundary landed at a different x position
-            in each row. One grid with `repeat(3, 1fr)` and Capitol spanning
-            2 columns doesn't have that seam -- every row divides the exact
-            same tracks. Collapses to a single "1fr" column at the mobile
-            breakpoint, stacking every cell full-width in the same order. */}
+        {/* One locked grid, a single row of 3: Capitol, Aixels, and Texas
+            Mobile, each the same 1/3-width 3:4 tile -- no span-2 exception,
+            no leftover blank row. Collapses to a single "1fr" column at the
+            mobile breakpoint, stacking every cell full-width in the same
+            order. */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: introReady ? 1 : 0 }}
           transition={{ duration: 0.6, ease: [0.33, 0, 0, 1], delay: introReady ? 0.5 : 0 }}
           style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "repeat(3, 1fr)", gap: GRID_GUTTER }}
         >
-          <div ref={(el) => { cardRefs.current[1] = el; }} style={{ gridColumn: !isMobile ? "span 2" : undefined }}>
+          <div>
             <EditorialGridTile
               video={CARD_DATA[1].video}
               cover={CARD_DATA[1].cover}
               title={CARD_DATA[1].title}
               description={CARD_DATA[1].description}
               readTime={CARD_DATA[1].readTime}
+              aspectRatio={GRID_CELL_ASPECT_RATIO}
               isMobile={isMobile}
+              showFigmaLogo
+              brandIcon={{ background: "var(--color-surface-primary)", letter: "C" }}
               onSelect={() => navigate(CARD_DATA[1].path)}
             />
           </div>
-          <div ref={(el) => { cardRefs.current[2] = el; }}>
-            <EditorialGridTile
-              video={CARD_DATA[2].video}
-              cover={CARD_DATA[2].cover}
-              title={CARD_DATA[2].title}
-              description={CARD_DATA[2].description}
-              readTime={CARD_DATA[2].readTime}
-              aspectRatio={GRID_CELL_ASPECT_RATIO}
-              isMobile={isMobile}
-              onSelect={() => navigate(CARD_DATA[2].path)}
-            />
-          </div>
-          <div ref={(el) => { cardRefs.current[3] = el; }}>
+          {/* FigBuild (CARD_DATA[2]) now lives up in the hero row, beside
+              Gentle Monster (see IntroCard's secondCard) -- Aixels moves up
+              into its old spot here so row 2 stays a full row of 3. */}
+          <div>
             <EditorialGridTile
               video={CARD_DATA[3].video}
               cover={CARD_DATA[3].cover}
@@ -1165,15 +966,29 @@ export default function HomeTest() {
               readTime={CARD_DATA[3].readTime}
               aspectRatio={GRID_CELL_ASPECT_RATIO}
               isMobile={isMobile}
+              showFigmaLogo
+              // No icon exists for Aixels -- pass a brandIcon with no
+              // d/letter so the tile renders blank instead of falling back
+              // to the generic Figma mark (which the other two do only
+              // because they have no brandIcon at all).
+              brandIcon={{ background: "var(--color-surface-primary)" }}
               onSelect={() => navigate(CARD_DATA[3].path)}
             />
           </div>
-          {/* Aixels is the only real casestudy left for row 3; these two
-              stay intentionally blank (title + logo tile, no video/click)
-              instead of being filled with unrelated lab work. */}
-          {GRID_BLANK_TILES.map((title, i) => (
-            <EditorialGridTile key={`blank-${i}`} title={title} aspectRatio={GRID_CELL_ASPECT_RATIO} isMobile={isMobile} />
-          ))}
+          <div>
+            <EditorialGridTile
+              video={CARD_DATA[4].video}
+              cover={CARD_DATA[4].cover}
+              title={CARD_DATA[4].title}
+              description={CARD_DATA[4].description}
+              readTime={CARD_DATA[4].readTime}
+              aspectRatio={GRID_CELL_ASPECT_RATIO}
+              isMobile={isMobile}
+              showFigmaLogo
+              brandIcon={{ viewBox: icons.brands.texid.viewBox, d: icons.brands.texid.paths[0].d, background: "var(--color-surface-primary)" }}
+              onSelect={() => navigate(CARD_DATA[4].path)}
+            />
+          </div>
         </motion.div>
       </div>
 

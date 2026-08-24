@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { useNavEntrance } from "../hooks/useNavEntrance";
-import { motion, useScroll, useTransform, useMotionValue } from "@/lib/motion";
+import { motion } from "@/lib/motion";
 import UpNext from "../components/casestudy/UpNext";
 import SectionNavigation from "../components/casestudy/SectionNavigation";
 import VideoControls from "../components/VideoControls";
@@ -30,46 +30,11 @@ const blobAIX = "radial-gradient(ellipse at center, rgba(255,130,80,0.06) 0%, rg
 export default function CasestudyAixels() {
   const shouldAnimate = useNavEntrance();
 
-  const { scrollY } = useScroll();
-  const heroCompleted = useRef(false);
-  const heroRef = useRef<HTMLDivElement>(null);
-  const heroExtraHeight = useMotionValue(0);
-
   const heroVideoRef = useRef<HTMLVideoElement>(null);
-
-  const heroScale = useTransform(scrollY, (latest) => {
-    if (heroCompleted.current) return 1;
-    const progress = Math.min(latest / 400, 1);
-    if (progress >= 1) heroCompleted.current = true;
-    return 1.35 - 0.35 * progress;
-  });
-  // Title row width — tracks the hero's scale as real layout width rather
-  // than a transform, so text never scales. The two columns keep their
-  // fixed widths, so as the row narrows/widens, the gap between them
-  // (produced by justify-between) narrows/widens with it for free.
-  const titleWidth = useTransform(heroScale, (s) => `${s * 100}%`);
-  const heroBorderRadius = useTransform(scrollY, (latest) => {
-    if (heroCompleted.current) return 12;
-    return 12 * Math.min(latest / 400, 1);
-  });
-  const contentY = useTransform(() => {
-    if (heroCompleted.current) return 0;
-    const progress = Math.min(scrollY.get() / 400, 1);
-    return heroExtraHeight.get() * (1 - progress);
-  });
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-
-  useEffect(() => {
-    const measure = () => {
-      if (heroRef.current) heroExtraHeight.set(heroRef.current.offsetHeight * 0.35);
-    };
-    measure();
-    window.addEventListener("resize", measure);
-    return () => window.removeEventListener("resize", measure);
-  }, [heroExtraHeight]);
 
   return (
     <div className="relative min-h-screen overflow-x-clip" style={{ backgroundColor: "#161617" }}>
@@ -80,26 +45,22 @@ export default function CasestudyAixels() {
         initial={shouldAnimate ? { opacity: 0, y: 24 } : false}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: "easeOut" }}
-        className="flex flex-col items-center px-[16px] md:px-[24vw] pt-[20vh] pb-[15vh] relative z-[1]"
+        className="flex flex-col items-center px-[16px] md:px-[16vw] pt-[20vh] pb-[15vh] relative z-[1]"
       >
         <div className="flex flex-col gap-[var(--gap-section)] items-center w-full">
 
           {/* ── Title + Hero — fixed 32px between them regardless of scale. ── */}
           <div className="flex flex-col gap-[32px] items-center w-full">
 
-            {/* Title — text stays at its normal size; only the row's own
-                layout width tracks the hero's scale below, so justify-between
-                narrows/widens the gap between the two columns with it. */}
             <motion.div
-              className="flex flex-col md:flex-row items-start justify-between md:gap-[24px] w-full font-['Inter_Tight',sans-serif]"
-              style={{ width: titleWidth }}
+              className="flex flex-col md:flex-row items-start justify-between md:gap-[24px] w-full font-['SF_Pro_Display',sans-serif]"
             >
               {/* Left side */}
               <div className="flex flex-col gap-[16px] items-start w-full md:w-[565px] shrink-0">
-                <p className="font-medium leading-[1.65] text-[#faf9ff] text-[length:var(--typography-body-default-font-size)] w-full">
+                <p className="font-medium leading-[1.65] text-[#faf9ff] text-[length:var(--typography-body-default-font-size)] max-w-[65ch] w-full">
                   Aixels
                 </p>
-                <div className="font-regular text-[#908e99] text-[length:var(--typography-body-default-font-size)] w-full">
+                <div className="font-regular text-[#908e99] text-[length:var(--typography-body-default-font-size)] max-w-[65ch] w-full">
                   <p className="leading-[1.65] mb-[16px]">RIT hosts a creative collision every year.</p>
                   <p className="leading-[1.65]">In just two days we created an installation that checks all the boxes: art, a line of people dancing, screaming, clapping for all 5 hours, and a working product.</p>
                 </div>
@@ -125,10 +86,9 @@ export default function CasestudyAixels() {
             </motion.div>
 
             {/* Hero video */}
-            <motion.div
-              ref={heroRef}
-              className="aspect-[2/1] bg-[#505050] w-full overflow-hidden relative"
-              style={{ scale: heroScale, borderRadius: heroBorderRadius, transformOrigin: "top center" }}
+            <div
+              className="aspect-[3/2] bg-[#505050] w-full overflow-hidden relative"
+              style={{ borderRadius: "var(--radius-component-image)" }}
             >
               <video
                 ref={heroVideoRef}
@@ -137,27 +97,27 @@ export default function CasestudyAixels() {
                 src={vidHero}
               />
               <VideoControls videoRef={heroVideoRef} />
-            </motion.div>
+            </div>
 
           </div>
 
-          {/* ── Section: Overview — remaining content below the hero (moves with it) ── */}
-          <motion.div id="cs-overview" style={{ y: contentY }} className="flex flex-col gap-[var(--gap-section)] items-center w-full">
+          {/* ── Section: Overview ── */}
+          <div id="cs-overview" className="flex flex-col gap-[var(--gap-section)] items-center w-full">
 
             {/* The result — 5 hours of nonstop fun */}
             <div className="flex flex-col gap-[24px] items-start w-full">
               <div className="flex flex-col gap-[16px] items-start w-full">
-                <p className="font-['Inter_Tight',sans-serif] font-regular leading-none text-[color:var(--text\/secondary,#908e99)] text-[15px]">
+                <p className="font-['SF_Pro_Display',sans-serif] font-regular leading-none text-[color:var(--text\/secondary,#908e99)] text-[15px]">
                   The result
                 </p>
-                <p className="font-['Inter_Tight',sans-serif] font-[350] leading-[var(--typography-display-title-smallest-line-height)] font-medium text-[color:var(--text\/primary,#faf9ff)] text-[length:var(--typography-display-title-smallest-font-size)]">
+                <p className="font-['SF_Pro_Display',sans-serif] font-[350] leading-[var(--typography-display-title-smallest-line-height)] font-medium text-[color:var(--text\/primary,#faf9ff)] text-[length:var(--typography-display-title-smallest-font-size)]">
                   5 hours of nonstop fun
                 </p>
-                <p className="font-['Inter_Tight',sans-serif] font-regular leading-[var(--typography-body-default-line-height)] text-[color:var(--text\/secondary,#908e99)] text-[length:var(--typography-body-default-font-size)] w-full">
+                <p className="font-['SF_Pro_Display',sans-serif] font-regular leading-[var(--typography-body-default-line-height)] text-[color:var(--text\/secondary,#908e99)] text-[length:var(--typography-body-default-font-size)] max-w-[65ch] w-full">
                   Our booth was never without a crowd of people. Everyone had something fun and nice to say about our project, even a potential promise to come back to the project later.
                 </p>
               </div>
-              <div className="aspect-[2/1] w-full overflow-hidden rounded-[var(--radius-component-image)] bg-[#242326] p-[16px]">
+              <div className="aspect-[3/2] w-full overflow-hidden rounded-[var(--radius-component-image)] bg-[#242326] p-[16px]">
                 <img src={imgFeedback} className="w-full h-full object-cover rounded-[var(--radius-component-image)]" alt="5 hours of nonstop fun at the booth" />
               </div>
             </div>
@@ -173,21 +133,21 @@ export default function CasestudyAixels() {
                 style={{ objectPosition: "85% 35%" }}
                 alt="Presenting Aixels at the creative collision showcase"
               />
-              <div className="flex flex-col items-start flex-1 min-w-0 font-['Inter_Tight',sans-serif] text-[length:var(--typography-body-default-font-size)]">
-                <p className="font-[var(--typography-body-default-intense-font-weight)] leading-[var(--typography-body-default-intense-line-height)] text-[color:var(--text\/secondary,#D1CEDC)] w-full">
+              <div className="flex flex-col items-start flex-1 min-w-0 font-['SF_Pro_Display',sans-serif] text-[length:var(--typography-body-default-font-size)]">
+                <p className="font-[var(--typography-body-default-intense-font-weight)] leading-[var(--typography-body-default-intense-line-height)] text-[color:var(--text\/secondary,#D1CEDC)] max-w-[65ch] w-full">
                   Poke the bear: AI  →  this was the first year students were mixed in their opinion with the prompt
                 </p>
-                <p className="font-regular leading-[var(--typography-body-default-line-height)] text-[color:var(--text\/secondary,#908e99)] w-full">
+                <p className="font-regular leading-[var(--typography-body-default-line-height)] text-[color:var(--text\/secondary,#908e99)] max-w-[65ch] w-full">
                   Student debate greatly narrowed our scope. We stayed away from interactions with filters, generated content, or chatbots! Mars, my teammate, said AI was a mirror to craft and we ran with that concept.
                 </p>
               </div>
             </div>
-          </motion.div>
+          </div>
 
           {/* ── Section: Process Work ── */}
           <div id="cs-process" className="flex flex-col gap-[var(--gap-section)] items-start w-full">
 
-            <div className="flex flex-col gap-[16px] items-center w-full font-['Inter_Tight',sans-serif]">
+            <div className="flex flex-col gap-[16px] items-center w-full font-['SF_Pro_Display',sans-serif]">
               <p className="font-regular text-[12px] tracking-[0.08em] leading-[16.5px] uppercase text-[#908e99] text-center">
                 Process Work
               </p>
@@ -206,7 +166,7 @@ export default function CasestudyAixels() {
                 className="border border-[#302f34] flex flex-col gap-[var(--gap-section)] items-start p-[24px] relative rounded-[8px] w-full"
                 style={{ background: "linear-gradient(to bottom, rgba(55,54,61,0.1) 0%, rgba(22,22,23,0.1) 50%)" }}
               >
-                <p className="font-['Inter_Tight',sans-serif] font-[350] leading-[var(--typography-display-title-smallest-line-height)] font-medium text-[color:var(--text\/primary,#faf9ff)] text-[length:var(--typography-display-title-smallest-font-size)] w-full">
+                <p className="font-['SF_Pro_Display',sans-serif] font-[350] leading-[var(--typography-display-title-smallest-line-height)] font-medium text-[color:var(--text\/primary,#faf9ff)] text-[length:var(--typography-display-title-smallest-font-size)] max-w-[65ch] w-full">
                   Pixels + Interactions
                 </p>
 
@@ -214,10 +174,10 @@ export default function CasestudyAixels() {
                 <div className="flex gap-[24px] items-start w-full">
                   <div className="flex flex-col gap-[24px] items-start flex-1 min-w-0">
                     <div className="flex flex-col gap-[16px] items-start w-full">
-                      <p className="font-['Inter_Tight',sans-serif] font-regular leading-none text-[color:var(--text\/secondary,#908e99)] text-[15px]">
+                      <p className="font-['SF_Pro_Display',sans-serif] font-regular leading-none text-[color:var(--text\/secondary,#908e99)] text-[15px]">
                         Pixel color
                       </p>
-                      <p className="font-['Inter_Tight',sans-serif] font-[350] leading-[var(--typography-display-title-smallest-line-height)] font-medium text-[color:var(--text\/primary,#faf9ff)] text-[length:var(--typography-display-title-smallest-font-size)]">
+                      <p className="font-['SF_Pro_Display',sans-serif] font-[350] leading-[var(--typography-display-title-smallest-line-height)] font-medium text-[color:var(--text\/primary,#faf9ff)] text-[length:var(--typography-display-title-smallest-font-size)]">
                         Color is mapped to the tone of the room
                       </p>
                     </div>
@@ -227,10 +187,10 @@ export default function CasestudyAixels() {
                   </div>
                   <div className="flex flex-col gap-[24px] items-start flex-1 min-w-0">
                     <div className="flex flex-col gap-[16px] items-start w-full">
-                      <p className="font-['Inter_Tight',sans-serif] font-regular leading-none text-[color:var(--text\/secondary,#908e99)] text-[15px]">
+                      <p className="font-['SF_Pro_Display',sans-serif] font-regular leading-none text-[color:var(--text\/secondary,#908e99)] text-[15px]">
                         Pixel size
                       </p>
-                      <p className="font-['Inter_Tight',sans-serif] font-[350] leading-[var(--typography-display-title-smallest-line-height)] font-medium text-[color:var(--text\/primary,#faf9ff)] text-[length:var(--typography-display-title-smallest-font-size)]">
+                      <p className="font-['SF_Pro_Display',sans-serif] font-[350] leading-[var(--typography-display-title-smallest-line-height)] font-medium text-[color:var(--text\/primary,#faf9ff)] text-[length:var(--typography-display-title-smallest-font-size)]">
                         Size is mapped to volume
                       </p>
                     </div>
@@ -243,13 +203,13 @@ export default function CasestudyAixels() {
                 {/* User inputs */}
                 <div className="flex flex-col gap-[24px] items-start w-full">
                   <div className="flex flex-col gap-[16px] items-start w-full">
-                    <p className="font-['Inter_Tight',sans-serif] font-regular leading-none text-[color:var(--text\/secondary,#908e99)] text-[15px]">
+                    <p className="font-['SF_Pro_Display',sans-serif] font-regular leading-none text-[color:var(--text\/secondary,#908e99)] text-[15px]">
                       User inputs
                     </p>
-                    <p className="font-['Inter_Tight',sans-serif] font-[350] leading-[var(--typography-display-title-smallest-line-height)] font-medium text-[color:var(--text\/primary,#faf9ff)] text-[length:var(--typography-display-title-smallest-font-size)]">
+                    <p className="font-['SF_Pro_Display',sans-serif] font-[350] leading-[var(--typography-display-title-smallest-line-height)] font-medium text-[color:var(--text\/primary,#faf9ff)] text-[length:var(--typography-display-title-smallest-font-size)]">
                       Screenshot and delightful sound
                     </p>
-                    <p className="font-['Inter_Tight',sans-serif] font-regular leading-[1.65] text-[color:var(--text\/secondary,#908e99)] text-[15px] md:text-[length:var(--typography-body-default-font-size)] w-full">
+                    <p className="font-['SF_Pro_Display',sans-serif] font-regular leading-[1.65] text-[color:var(--text\/secondary,#908e99)] text-[15px] md:text-[length:var(--typography-body-default-font-size)] max-w-[65ch] w-full">
                       Using Mediapipe, I mapped common hand signals, the most common being a screenshot for people to share later
                     </p>
                   </div>
@@ -261,17 +221,17 @@ export default function CasestudyAixels() {
                 {/* Layers */}
                 <div className="flex flex-col gap-[24px] items-start w-full">
                   <div className="flex flex-col gap-[16px] items-start w-full">
-                    <p className="font-['Inter_Tight',sans-serif] font-regular leading-none text-[color:var(--text\/secondary,#908e99)] text-[15px]">
+                    <p className="font-['SF_Pro_Display',sans-serif] font-regular leading-none text-[color:var(--text\/secondary,#908e99)] text-[15px]">
                       Layers
                     </p>
-                    <p className="font-['Inter_Tight',sans-serif] font-[350] leading-[var(--typography-display-title-smallest-line-height)] font-medium text-[color:var(--text\/primary,#faf9ff)] text-[length:var(--typography-display-title-smallest-font-size)]">
+                    <p className="font-['SF_Pro_Display',sans-serif] font-[350] leading-[var(--typography-display-title-smallest-line-height)] font-medium text-[color:var(--text\/primary,#faf9ff)] text-[length:var(--typography-display-title-smallest-font-size)]">
                       AI icons
                     </p>
-                    <p className="font-['Inter_Tight',sans-serif] font-regular leading-[1.65] text-[color:var(--text\/secondary,#908e99)] text-[15px] md:text-[length:var(--typography-body-default-font-size)] w-full">
+                    <p className="font-['SF_Pro_Display',sans-serif] font-regular leading-[1.65] text-[color:var(--text\/secondary,#908e99)] text-[15px] md:text-[length:var(--typography-body-default-font-size)] max-w-[65ch] w-full">
                       Icons were chosen based on clarity of size, with Claude, Gemini, and ChatGPT going from light to dark
                     </p>
                   </div>
-                  <div className="aspect-[2/1] w-full overflow-hidden rounded-[var(--radius-component-image)] bg-[#242326]">
+                  <div className="aspect-[3/2] w-full overflow-hidden rounded-[var(--radius-component-image)] bg-[#242326]">
                     <img src={imgStructure} className="w-full h-full object-cover" alt="Four layers of the pixel system, from base color to AI icon overlay" />
                   </div>
                 </div>
@@ -282,7 +242,7 @@ export default function CasestudyAixels() {
                 className="border border-[#302f34] flex flex-col gap-[var(--gap-section)] items-start p-[24px] relative rounded-[8px] w-full"
                 style={{ background: "linear-gradient(to bottom, rgba(55,54,61,0.1) 0%, rgba(22,22,23,0.1) 50%)" }}
               >
-                <p className="font-['Inter_Tight',sans-serif] font-[350] leading-[var(--typography-display-title-smallest-line-height)] font-medium text-[color:var(--text\/primary,#faf9ff)] text-[length:var(--typography-display-title-smallest-font-size)] w-full">
+                <p className="font-['SF_Pro_Display',sans-serif] font-[350] leading-[var(--typography-display-title-smallest-line-height)] font-medium text-[color:var(--text\/primary,#faf9ff)] text-[length:var(--typography-display-title-smallest-font-size)] max-w-[65ch] w-full">
                   Testing the grid
                 </p>
 
@@ -295,10 +255,10 @@ export default function CasestudyAixels() {
                   ].map(({ time, caption, media }, i) => (
                     <div key={i} className="flex flex-col gap-[24px] items-start">
                       <div className="flex flex-col gap-[16px] items-start w-full">
-                        <p className="font-['Inter_Tight',sans-serif] font-regular leading-none text-[color:var(--text\/secondary,#908e99)] text-[15px]">
+                        <p className="font-['SF_Pro_Display',sans-serif] font-regular leading-none text-[color:var(--text\/secondary,#908e99)] text-[15px]">
                           {time}
                         </p>
-                        <p className="font-['Inter_Tight',sans-serif] font-[350] leading-[var(--typography-display-title-smallest-line-height)] font-medium text-[color:var(--text\/primary,#faf9ff)] text-[length:var(--typography-display-title-smallest-font-size)]">
+                        <p className="font-['SF_Pro_Display',sans-serif] font-[350] leading-[var(--typography-display-title-smallest-line-height)] font-medium text-[color:var(--text\/primary,#faf9ff)] text-[length:var(--typography-display-title-smallest-font-size)]">
                           {caption}
                         </p>
                       </div>
@@ -321,17 +281,17 @@ export default function CasestudyAixels() {
               {/* Final Setup — sits directly in the flow, no card wrapper */}
               <div className="flex flex-col gap-[24px] items-start w-full">
                 <div className="flex flex-col gap-[16px] items-start w-full">
-                  <p className="font-['Inter_Tight',sans-serif] font-regular leading-none text-[color:var(--text\/secondary,#908e99)] text-[15px]">
+                  <p className="font-['SF_Pro_Display',sans-serif] font-regular leading-none text-[color:var(--text\/secondary,#908e99)] text-[15px]">
                     Final Setup
                   </p>
-                  <p className="font-['Inter_Tight',sans-serif] font-[350] leading-[var(--typography-display-title-smallest-line-height)] font-medium text-[color:var(--text\/primary,#faf9ff)] text-[length:var(--typography-display-title-smallest-font-size)]">
+                  <p className="font-['SF_Pro_Display',sans-serif] font-[350] leading-[var(--typography-display-title-smallest-line-height)] font-medium text-[color:var(--text\/primary,#faf9ff)] text-[length:var(--typography-display-title-smallest-font-size)]">
                     A macbook and a dream
                   </p>
-                  <p className="font-['Inter_Tight',sans-serif] font-regular leading-[1.65] text-[color:var(--text\/secondary,#908e99)] text-[15px] md:text-[length:var(--typography-body-default-font-size)] w-full">
+                  <p className="font-['SF_Pro_Display',sans-serif] font-regular leading-[1.65] text-[color:var(--text\/secondary,#908e99)] text-[15px] md:text-[length:var(--typography-body-default-font-size)] max-w-[65ch] w-full">
                     The whole experience ran off my macbook and a chrome browser!
                   </p>
                 </div>
-                <div className="aspect-[2/1] w-full overflow-hidden rounded-[var(--radius-component-image)] bg-[#242326] p-[16px]">
+                <div className="aspect-[3/2] w-full overflow-hidden rounded-[var(--radius-component-image)] bg-[#242326] p-[16px]">
                   <img src={imgSetup} className="w-full h-full object-cover rounded-[var(--radius-component-image)]" alt="Final setup" />
                 </div>
               </div>
@@ -343,7 +303,7 @@ export default function CasestudyAixels() {
           {/* ── Section: Results + Reflections ── */}
           <div id="cs-review" className="flex flex-col gap-[16px] items-start w-full">
 
-            <p className="font-['Inter_Tight',sans-serif] font-regular text-[12px] tracking-[0.08em] leading-[16.5px] uppercase text-[#908e99] text-center w-full">
+            <p className="font-['SF_Pro_Display',sans-serif] font-regular text-[12px] tracking-[0.08em] leading-[16.5px] uppercase text-[#908e99] text-center max-w-[65ch] w-full">
               Results + Reflections
             </p>
 
@@ -352,10 +312,10 @@ export default function CasestudyAixels() {
 
               {/* Point 1 */}
               <div className="bg-[#242326] flex gap-[16px] items-start p-[16px] rounded-[8px] w-full">
-                <p className="font-['Inter_Tight',sans-serif] leading-[2.05] text-[color:var(--text\/tertiary,#585564)] text-[14px] w-[10px] shrink-0">1</p>
+                <p className="font-['SF_Pro_Display',sans-serif] leading-[2.05] text-[color:var(--text\/tertiary,#585564)] text-[14px] w-[10px] shrink-0">1</p>
                 <div className="flex flex-col items-start flex-1 min-w-0">
-                  <p className="font-['Inter_Tight',sans-serif] font-[var(--typography-body-default-intense-font-weight)] leading-[var(--typography-body-default-intense-line-height)] text-[color:var(--text\/between,#d1cedc)] text-[length:var(--typography-body-default-intense-font-size)] whitespace-nowrap">Simplicity &gt; Complexity</p>
-                  <p className="font-['Inter_Tight',sans-serif] font-regular leading-[var(--typography-body-default-line-height)] text-[color:var(--text\/secondary,#908e99)] text-[length:var(--typography-body-default-font-size)] w-full">
+                  <p className="font-['SF_Pro_Display',sans-serif] font-[var(--typography-body-default-intense-font-weight)] leading-[var(--typography-body-default-intense-line-height)] text-[color:var(--text\/between,#d1cedc)] text-[length:var(--typography-body-default-intense-font-size)] whitespace-nowrap">Simplicity &gt; Complexity</p>
+                  <p className="font-['SF_Pro_Display',sans-serif] font-regular leading-[var(--typography-body-default-line-height)] text-[color:var(--text\/secondary,#908e99)] text-[length:var(--typography-body-default-font-size)] max-w-[65ch] w-full">
                     The response was incredible! Our work ended up being the lightest project in the showcase, with other teams having lots of touch points and long flows to work with over two days
                   </p>
                 </div>
@@ -363,10 +323,10 @@ export default function CasestudyAixels() {
 
               {/* Point 2 */}
               <div className="bg-[#242326] flex gap-[16px] items-start p-[16px] rounded-[8px] w-full">
-                <p className="font-['Inter_Tight',sans-serif] leading-[2.05] text-[color:var(--text\/tertiary,#585564)] text-[14px] w-[10px] shrink-0">2</p>
+                <p className="font-['SF_Pro_Display',sans-serif] leading-[2.05] text-[color:var(--text\/tertiary,#585564)] text-[14px] w-[10px] shrink-0">2</p>
                 <div className="flex flex-col items-start flex-1 min-w-0">
-                  <p className="font-['Inter_Tight',sans-serif] font-[var(--typography-body-default-intense-font-weight)] leading-[var(--typography-body-default-intense-line-height)] text-[color:var(--text\/between,#d1cedc)] text-[length:var(--typography-body-default-intense-font-size)] whitespace-nowrap">Winning T-Shirts!</p>
-                  <p className="font-['Inter_Tight',sans-serif] font-regular leading-[var(--typography-body-default-line-height)] text-[color:var(--text\/secondary,#908e99)] text-[length:var(--typography-body-default-font-size)] w-full">
+                  <p className="font-['SF_Pro_Display',sans-serif] font-[var(--typography-body-default-intense-font-weight)] leading-[var(--typography-body-default-intense-line-height)] text-[color:var(--text\/between,#d1cedc)] text-[length:var(--typography-body-default-intense-font-size)] whitespace-nowrap">Winning T-Shirts!</p>
+                  <p className="font-['SF_Pro_Display',sans-serif] font-regular leading-[var(--typography-body-default-line-height)] text-[color:var(--text\/secondary,#908e99)] text-[length:var(--typography-body-default-font-size)] max-w-[65ch] w-full">
                     THANK YOU Mauvis and Grace @ Sogni.AI! I really learned a lot from Mauvis especially sharing his personal story and motivation to start Sogni.AI!
                   </p>
                   <img src={imgSogniai} className="aspect-[2/1] rounded-[var(--radius-component-image)] object-cover w-[255px] bg-[#242326] mt-[16px]" alt="Sogni.AI" />
@@ -375,10 +335,10 @@ export default function CasestudyAixels() {
 
               {/* Point 3 */}
               <div className="bg-[#242326] flex gap-[16px] items-start p-[16px] rounded-[8px] w-full">
-                <p className="font-['Inter_Tight',sans-serif] leading-[2.05] text-[color:var(--text\/tertiary,#585564)] text-[14px] w-[10px] shrink-0">3</p>
+                <p className="font-['SF_Pro_Display',sans-serif] leading-[2.05] text-[color:var(--text\/tertiary,#585564)] text-[14px] w-[10px] shrink-0">3</p>
                 <div className="flex flex-col items-start flex-1 min-w-0">
-                  <p className="font-['Inter_Tight',sans-serif] font-[var(--typography-body-default-intense-font-weight)] leading-[var(--typography-body-default-intense-line-height)] text-[color:var(--text\/between,#d1cedc)] text-[length:var(--typography-body-default-intense-font-size)] whitespace-nowrap">Side questing music beats with Strudel</p>
-                  <p className="font-['Inter_Tight',sans-serif] font-regular leading-[var(--typography-body-default-line-height)] text-[color:var(--text\/secondary,#908e99)] text-[length:var(--typography-body-default-font-size)] w-full">
+                  <p className="font-['SF_Pro_Display',sans-serif] font-[var(--typography-body-default-intense-font-weight)] leading-[var(--typography-body-default-intense-line-height)] text-[color:var(--text\/between,#d1cedc)] text-[length:var(--typography-body-default-intense-font-size)] whitespace-nowrap">Side questing music beats with Strudel</p>
+                  <p className="font-['SF_Pro_Display',sans-serif] font-regular leading-[var(--typography-body-default-line-height)] text-[color:var(--text\/secondary,#908e99)] text-[length:var(--typography-body-default-font-size)] max-w-[65ch] w-full">
                     I also made a custom beat for our experience! It was so fun being able to experiment, though music producer will never be in my future LOL
                   </p>
                 </div>

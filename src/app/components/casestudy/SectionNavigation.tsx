@@ -69,7 +69,7 @@ const BACK_TO_TOP_CLEARANCE = 56;
 // `position: fixed` (a JS-tracked `position: absolute` was tried and
 // visibly lagged a frame behind Lenis's own scroll interpolation, causing
 // a jitter/bounce; `fixed` is handled natively by the compositor instead).
-const SIDE_NAV_LEFT = "5vw";
+const SIDE_NAV_LEFT = "4vw";
 const SIDE_NAV_TOP_OFFSET = 81;
 
 // Fallback-only duration (no real completion event exists for native
